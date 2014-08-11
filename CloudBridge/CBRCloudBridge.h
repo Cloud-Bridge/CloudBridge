@@ -43,9 +43,9 @@
 - (instancetype)initWithCloudConnection:(id<CBRCloudConnection>)cloudConnection
                           coreDataStack:(SLCoreDataStack *)coreDataStack NS_DESIGNATED_INITIALIZER;
 
-- (void)fetchEntitiesOfType:(NSString *)entity
-              withPredicate:(NSPredicate *)predicate
-          completionHandler:(void(^)(NSArray *fetchedObjects, NSError *error))completionHandler;
+- (void)fetchManagedObjectsOfType:(NSString *)entity
+                    withPredicate:(NSPredicate *)predicate
+                completionHandler:(void(^)(NSArray *fetchedObjects, NSError *error))completionHandler;
 
 - (void)createManagedObject:(NSManagedObject *)managedObject withCompletionHandler:(void(^)(id managedObject, NSError *error))completionHandler;
 - (void)reloadManagedObject:(NSManagedObject *)managedObject withCompletionHandler:(void(^)(id managedObject, NSError *error))completionHandler;

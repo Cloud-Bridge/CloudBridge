@@ -43,17 +43,17 @@ static CBRCloudBridge *_CloudBridge = nil;
     return [self.class cloudBridge];
 }
 
-+ (void)fetchEntitiesWithPredicate:(NSPredicate *)predicate
-                 completionHandler:(void(^)(NSArray *fetchedObjects, NSError *error))completionHandler
++ (void)fetchObjectsMatchingPredicate:(NSPredicate *)predicate
+                withCompletionHandler:(void(^)(NSArray *fetchedObjects, NSError *error))completionHandler
 {
     Class class = self;
     while (class != [class class]) {
         class = [class class];
     }
 
-    [[self cloudBridge] fetchEntitiesOfType:NSStringFromClass(class)
-                                       withPredicate:predicate
-                                   completionHandler:completionHandler];
+    [[self cloudBridge] fetchManagedObjectsOfType:NSStringFromClass(class)
+                                    withPredicate:predicate
+                                completionHandler:completionHandler];
 }
 
 - (void)fetchObjectsForRelationship:(NSString *)relationship withCompletionHandler:(void(^)(NSArray *objects, NSError *error))completionHandler
@@ -64,9 +64,9 @@ static CBRCloudBridge *_CloudBridge = nil;
     NSParameterAssert(!relationshipDescription.inverseRelationship.isToMany);
 
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", relationshipDescription.inverseRelationship.name, self];
-    [self.cloudBridge fetchEntitiesOfType:relationshipDescription.inverseRelationship.entity.name
-                                     withPredicate:predicate
-                                 completionHandler:completionHandler];
+    [self.cloudBridge fetchManagedObjectsOfType:relationshipDescription.inverseRelationship.entity.name
+                                  withPredicate:predicate
+                              completionHandler:completionHandler];
 }
 
 - (void)createWithCompletionHandler:(void(^)(id managedObject, NSError *error))completionHandler

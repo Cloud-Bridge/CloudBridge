@@ -115,9 +115,9 @@
 
 #pragma mark - Instance methods
 
-- (void)fetchEntitiesOfType:(NSString *)entity
-              withPredicate:(NSPredicate *)predicate
-          completionHandler:(void(^)(NSArray *fetchedObjects, NSError *error))completionHandler
+- (void)fetchManagedObjectsOfType:(NSString *)entity
+                    withPredicate:(NSPredicate *)predicate
+                completionHandler:(void(^)(NSArray *fetchedObjects, NSError *error))completionHandler
 {
     NSEntityDescription *entityDescription = self.mainThreadManagedObjectContext.persistentStoreCoordinator.managedObjectModel.entitiesByName[entity];
     NSParameterAssert(entityDescription);

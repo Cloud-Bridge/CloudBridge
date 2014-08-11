@@ -34,8 +34,8 @@
 
 @property (nonatomic, readonly) CBRCloudBridge *cloudBridge;
 
-+ (void)fetchEntitiesWithPredicate:(NSPredicate *)predicate
-                 completionHandler:(void(^)(NSArray *fetchedObjects, NSError *error))completionHandler;
++ (void)fetchObjectsMatchingPredicate:(NSPredicate *)predicate
+                withCompletionHandler:(void(^)(NSArray *fetchedObjects, NSError *error))completionHandler;
 
 /**
  Fetching object for a relationship queries the backend with `relationshipDescription.inverseRelationship == self`

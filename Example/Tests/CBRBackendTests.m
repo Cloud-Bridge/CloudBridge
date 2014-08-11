@@ -87,7 +87,8 @@
 
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName:NSStringFromClass([SLEntity6Child class]) inManagedObjectContext:self.context];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"parent == %@", entity];
-    [self.backend fetchEntitiesOfType:entityDescription.name withPredicate:predicate completionHandler:NULL];
+
+    [self.backend fetchManagedObjectsOfType:entityDescription.name withPredicate:predicate completionHandler:NULL];
 
     expect(entity.children).will.haveCountOf(2);
 }
