@@ -14,7 +14,7 @@ CloudBridge exposes the following convenience methods on `NSManagedObject`:
 ```
 + (void)fetchObjectsMatchingPredicate:(NSPredicate *)predicate
                 withCompletionHandler:(void(^)(NSArray *fetchedObjects, NSError *error))completionHandler;
-                
+
 - (void)fetchObjectsForRelationship:(NSString *)relationship withCompletionHandler:(void(^)(NSArray *objects, NSError *error))completionHandler;
 
 - (void)createWithCompletionHandler:(void(^)(id managedObject, NSError *error))completionHandler;
@@ -23,7 +23,7 @@ CloudBridge exposes the following convenience methods on `NSManagedObject`:
 - (void)deleteWithCompletionHandler:(void(^)(NSError *error))completionHandler;
 ```
 
-which can be called from any `NSManagedObjectContext` thread and are routed to the managed objects `CBRCloudBridge`. The callbacks are always guaranteed to be delivered on the main thread.
+which can be called from any `NSManagedObjectContext` thread and are routed through the managed objects `CBRCloudBridge`. The callbacks are always guaranteed to be delivered on the main thread.
 
 ## Quick start
 
@@ -79,7 +79,7 @@ NSURL *serverURL = ...;
 MyCoreDataStack *stack = [MyCoreDataStack sharedInstance];
 CBRRESTConnection *connection = [[CBRRESTConnection alloc] initWithBaseURL:serverURL];
 
-// configure Your property mapping
+// configure Your property mapping, if not underscored.
 
 CBRCloudBridge *cloudBridge = [[CBRCloudBridge alloc] initWithCloudConnection:connection coreDataStack:stack];
 [NSManagedObject setCloudBridge:cloudBridge];
