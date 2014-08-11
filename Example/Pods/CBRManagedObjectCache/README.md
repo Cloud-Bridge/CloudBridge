@@ -1,6 +1,6 @@
 # CBRManagedObjectCache
 
-[![CI Status](http://img.shields.io/travis/OliverLetterer/CBRManagedObjectCache.svg?style=flat)](https://travis-ci.org/OliverLetterer/CBRManagedObjectCache)
+[![CI Status](http://img.shields.io/travis/Cloud-Bridge/CBRManagedObjectCache.svg?style=flat)](https://travis-ci.org/Cloud-Bridge/CBRManagedObjectCache)
 [![Version](https://img.shields.io/cocoapods/v/CBRManagedObjectCache.svg?style=flat)](http://cocoadocs.org/docsets/CBRManagedObjectCache)
 [![License](https://img.shields.io/cocoapods/l/CBRManagedObjectCache.svg?style=flat)](http://cocoadocs.org/docsets/CBRManagedObjectCache)
 [![Platform](https://img.shields.io/cocoapods/p/CBRManagedObjectCache.svg?style=flat)](http://cocoadocs.org/docsets/CBRManagedObjectCache)

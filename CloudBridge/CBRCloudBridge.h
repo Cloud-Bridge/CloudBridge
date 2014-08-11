@@ -26,10 +26,6 @@
 #import <CBRCloudConnection.h>
 #import <SLCoreDataStack.h>
 
-#ifndef NS_DESIGNATED_INITIALIZER
-#define NS_DESIGNATED_INITIALIZER
-#endif
-
 
 
 /**

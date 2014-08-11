@@ -21,10 +21,6 @@
  THE SOFTWARE.
  */
 
-#ifndef NS_DESIGNATED_INITIALIZER
-#define NS_DESIGNATED_INITIALIZER
-#endif
-
 
 
 /**
