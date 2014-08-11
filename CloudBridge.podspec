@@ -10,7 +10,7 @@
 Pod::Spec.new do |s|
   s.name             = "CloudBridge"
   s.version          = "1.0.2"
-  s.summary          = "The missing bridge between Your CoreData stack and Cloud backend."
+  s.summary          = "The missing bridge between Your CoreData model and various Cloud backends."
   s.homepage         = "https://github.com/Cloud-Bridge/CloudBridge"
   s.license          = 'MIT'
   s.author           = { "Oliver Letterer" => "oliver.letterer@gmail.com" }
