@@ -21,7 +21,6 @@
  THE SOFTWARE.
  */
 
-@import Foundation;
 @import CoreData;
 
 #import <CBRManagedObjectCache.h>
