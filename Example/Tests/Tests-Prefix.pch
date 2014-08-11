@@ -6,3 +6,7 @@
 
 #define EXP_SHORTHAND
 #import <Expecta/Expecta.h>
+
+#ifndef NS_DESIGNATED_INITIALIZER
+#define NS_DESIGNATED_INITIALIZER
+#endif

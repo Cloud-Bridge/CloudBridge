@@ -117,19 +117,19 @@
 			children = (
 				A72118221998DDAD000D6037 /* CBRTestConnection.h */,
 				A72118231998DDAD000D6037 /* CBRTestConnection.m */,
-				A72118121998DD34000D6037 /* CBRTestDataStore.xcdatamodeld */,
 				A721180F1998DD20000D6037 /* CBRTestDataStore.h */,
 				A72118101998DD20000D6037 /* CBRTestDataStore.m */,
-				6003F5B7195388D20070C39A /* Tests-Info.plist */,
+				A72118121998DD34000D6037 /* CBRTestDataStore.xcdatamodeld */,
+				A72118151998DD5B000D6037 /* CloudBridge-Bridging-Header.h */,
 				6003F5B8195388D20070C39A /* InfoPlist.strings */,
-				606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */,
 				A721181C1998DD5C000D6037 /* SLEntity4.h */,
 				A721181D1998DD5C000D6037 /* SLEntity4.m */,
-				A72118191998DD5C000D6037 /* SLEntity6Child.h */,
-				A721181A1998DD5C000D6037 /* SLEntity6Child.m */,
 				A72118161998DD5B000D6037 /* SLEntity6.h */,
 				A72118171998DD5B000D6037 /* SLEntity6.m */,
-				A72118151998DD5B000D6037 /* CloudBridge-Bridging-Header.h */,
+				A72118191998DD5C000D6037 /* SLEntity6Child.h */,
+				A721181A1998DD5C000D6037 /* SLEntity6Child.m */,
+				6003F5B7195388D20070C39A /* Tests-Info.plist */,
+				606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
