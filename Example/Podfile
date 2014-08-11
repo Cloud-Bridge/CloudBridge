@@ -1,0 +1,7 @@
+
+target 'CloudBridge', :exclusive => true do
+  pod "CloudBridge", :path => "../"
+
+  pod 'Specta', '~> 0.2.1'
+  pod 'Expecta'
+end
