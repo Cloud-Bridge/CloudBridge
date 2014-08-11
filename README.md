@@ -1,6 +1,6 @@
 # CloudBridge
 
-[![CI Status](http://img.shields.io/travis/Oliver Letterer/CloudBridge.svg?style=flat)](https://travis-ci.org/Oliver Letterer/CloudBridge)
+[![CI Status](http://img.shields.io/travis/Cloud-Bridge/CloudBridge.svg?style=flat)](https://travis-ci.org/Cloud-Bridge/CloudBridge)
 [![Version](https://img.shields.io/cocoapods/v/CloudBridge.svg?style=flat)](http://cocoadocs.org/docsets/CloudBridge)
 [![License](https://img.shields.io/cocoapods/l/CloudBridge.svg?style=flat)](http://cocoadocs.org/docsets/CloudBridge)
 [![Platform](https://img.shields.io/cocoapods/p/CloudBridge.svg?style=flat)](http://cocoadocs.org/docsets/CloudBridge)
@@ -17,6 +17,12 @@ CloudBridge is available through [CocoaPods](http://cocoapods.org). To install
 it, simply add the following line to your Podfile:
 
     pod "CloudBridge"
+
+## Dependency status
+
+| Component | State | Version | License | Platform |
+|-----------|-------|---------|---------|----------|
+| [CBRManagedObjectCache](https://github.com/Cloud-Bridge/CBRManagedObjectCache) | [![CI Status](http://img.shields.io/travis/Cloud-Bridge/CBRManagedObjectCache.svg?style=flat)](https://travis-ci.org/OliverLetterer/CBRManagedObjectCache) | [![Version](https://img.shields.io/cocoapods/v/CBRManagedObjectCache.svg?style=flat)](http://cocoadocs.org/docsets/CBRManagedObjectCache) | [![License](https://img.shields.io/cocoapods/l/CBRManagedObjectCache.svg?style=flat)](http://cocoadocs.org/docsets/CBRManagedObjectCache) | [![Platform](https://img.shields.io/cocoapods/p/CBRManagedObjectCache.svg?style=flat)](http://cocoadocs.org/docsets/CBRManagedObjectCache) |
 
 ## Author
 

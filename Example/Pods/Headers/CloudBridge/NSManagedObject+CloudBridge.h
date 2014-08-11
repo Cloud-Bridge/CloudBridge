@@ -1,0 +1,1 @@
+../../../../CloudBridge/NSManagedObject+CloudBridge.h

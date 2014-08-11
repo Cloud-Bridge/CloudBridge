@@ -2,6 +2,6 @@
 target 'CloudBridge', :exclusive => true do
   pod "CloudBridge", :path => "../"
 
-  pod 'Specta', '~> 0.2.1'
-  pod 'Expecta'
+  pod 'Expecta', '~> 0.3.1'
+  pod 'OCMock', :git => 'https://github.com/erikdoe/ocmock.git', :commit => 'c026ab231d1b7c6acace2b8d2f6112ffd9b6bd6d'
 end

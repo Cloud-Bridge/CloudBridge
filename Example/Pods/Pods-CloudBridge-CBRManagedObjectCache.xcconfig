@@ -1,0 +1,1 @@
+PODS_CLOUDBRIDGE_CBRMANAGEDOBJECTCACHE_OTHER_LDFLAGS = -framework CoreData -framework Foundation
