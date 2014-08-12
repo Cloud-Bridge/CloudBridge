@@ -5,7 +5,7 @@
 [![License](https://img.shields.io/cocoapods/l/CloudBridge.svg?style=flat)](http://cocoadocs.org/docsets/CloudBridge)
 [![Platform](https://img.shields.io/cocoapods/p/CloudBridge.svg?style=flat)](http://cocoadocs.org/docsets/CloudBridge)
 
-CloudBridge helps You synchronize Your CoreData objects with various Cloud backends and ships with nativ support for RESTful JSON backends and CloudKit.
+CloudBridge helps synchronizing Your CoreData managed objects with various Cloud backends and ships with nativ support for RESTful JSON backends and CloudKit.
 
 ## Public API
 
