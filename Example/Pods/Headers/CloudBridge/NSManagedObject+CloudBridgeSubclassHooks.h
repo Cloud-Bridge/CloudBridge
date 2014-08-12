@@ -1,0 +1,1 @@
+../../../../CloudBridge/NSManagedObject+CloudBridgeSubclassHooks.h

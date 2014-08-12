@@ -21,15 +21,23 @@
  THE SOFTWARE.
  */
 
-@import CoreData;
+#import "NSManagedObject+CloudBridgeSubclassHooks.h"
 
-#import <SLCoreDataStack.h>
-#import <CBRManagedObjectCache.h>
+@implementation NSManagedObject (CloudBridgeSubclassHooks)
 
-#import <CBRCloudBridge.h>
-#import <CBRCloudObject.h>
-#import <CBRCloudConnection.h>
+- (void)awakeFromCloudFetch
+{
 
-#import <NSManagedObject+CloudBridgeSubclassHooks.h>
-#import <NSManagedObject+CloudBridge.h>
-#import <CBRManagedObjectToCloudObjectTransformer.h>
+}
+
+- (void)setCloudValue:(id)value forKey:(NSString *)key fromCloudObject:(id<CBRCloudObject>)cloudObject
+{
+    [self setValue:value forKey:key];
+}
+
+- (id)cloudValueForKey:(NSString *)key
+{
+    return [self valueForKey:key];
+}
+
+@end

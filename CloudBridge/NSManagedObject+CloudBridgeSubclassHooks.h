@@ -23,13 +23,25 @@
 
 @import CoreData;
 
-#import <SLCoreDataStack.h>
-#import <CBRManagedObjectCache.h>
-
-#import <CBRCloudBridge.h>
 #import <CBRCloudObject.h>
-#import <CBRCloudConnection.h>
 
-#import <NSManagedObject+CloudBridgeSubclassHooks.h>
-#import <NSManagedObject+CloudBridge.h>
-#import <CBRManagedObjectToCloudObjectTransformer.h>
+
+
+@interface NSManagedObject (CloudBridgeSubclassHooks)
+
+/**
+ Called when inserted due to a cloud fetch.
+ */
+- (void)awakeFromCloudFetch;
+
+/**
+ Sets a value for a key for a specific cloud object.
+ */
+- (void)setCloudValue:(id)value forKey:(NSString *)key fromCloudObject:(id<CBRCloudObject>)cloudObject;
+
+/**
+ Returns a cloud value for a given key.
+ */
+- (id)cloudValueForKey:(NSString *)key;
+
+@end
