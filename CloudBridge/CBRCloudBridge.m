@@ -80,11 +80,6 @@
 @end
 
 
-@interface CBRCloudBridge ()
-
-@end
-
-#warning offline mode
 
 @implementation CBRCloudBridge
 
