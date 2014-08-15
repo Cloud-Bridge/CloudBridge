@@ -9,7 +9,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "CloudBridge"
-  s.version          = "0.5.2"
+  s.version          = "0.5.3"
   s.summary          = "The missing bridge between Your CoreData model and various Cloud backends."
   s.homepage         = "https://github.com/Cloud-Bridge/CloudBridge"
   s.license          = 'MIT'
@@ -23,7 +23,7 @@ Pod::Spec.new do |s|
   s.source_files = 'CloudBridge'
 
   s.frameworks = 'CoreData'
-  s.dependency 'SLCoreDataStack', '~> 0.6'
+  s.dependency 'SLCoreDataStack', '~> 0.7'
   s.dependency 'CBRManagedObjectCache', '~> 1.1'
   s.prefix_header_contents = '#ifndef NS_DESIGNATED_INITIALIZER', '#define NS_DESIGNATED_INITIALIZER', '#endif'
 end

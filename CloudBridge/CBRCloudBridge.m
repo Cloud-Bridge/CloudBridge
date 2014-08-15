@@ -22,7 +22,6 @@
  */
 
 #import "CBRCloudBridge.h"
-#import <NSManagedObjectContext+SLRESTfulCoreData.h>
 
 @interface _CBRCloudBridgePredicateDescription : NSObject
 

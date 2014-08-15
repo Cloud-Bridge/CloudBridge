@@ -1,1 +1,0 @@
-../../SLCoreDataStack/SLCoreDataStack/NSManagedObjectContext+SLRESTfulCoreData.h

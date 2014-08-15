@@ -16,7 +16,7 @@
 #define COCOAPODS_POD_AVAILABLE_CloudBridge
 #define COCOAPODS_VERSION_MAJOR_CloudBridge 0
 #define COCOAPODS_VERSION_MINOR_CloudBridge 5
-#define COCOAPODS_VERSION_PATCH_CloudBridge 1
+#define COCOAPODS_VERSION_PATCH_CloudBridge 3
 
 // Expecta
 #define COCOAPODS_POD_AVAILABLE_Expecta
@@ -33,6 +33,6 @@
 // SLCoreDataStack
 #define COCOAPODS_POD_AVAILABLE_SLCoreDataStack
 #define COCOAPODS_VERSION_MAJOR_SLCoreDataStack 0
-#define COCOAPODS_VERSION_MINOR_SLCoreDataStack 6
+#define COCOAPODS_VERSION_MINOR_SLCoreDataStack 7
 #define COCOAPODS_VERSION_PATCH_SLCoreDataStack 0
 
