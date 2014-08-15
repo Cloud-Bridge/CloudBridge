@@ -30,7 +30,7 @@
 @interface NSManagedObject (CloudBridge)
 
 + (CBRCloudBridge *)cloudBridge;
-+ (void)setCloudBridge:(CBRCloudBridge *)backend;
++ (void)setCloudBridge:(CBRCloudBridge *)cloudBridge;
 
 @property (nonatomic, readonly) CBRCloudBridge *cloudBridge;
 
@@ -48,5 +48,20 @@
 - (void)reloadWithCompletionHandler:(void(^)(id managedObject, NSError *error))completionHandler;
 - (void)saveWithCompletionHandler:(void(^)(id managedObject, NSError *error))completionHandler;
 - (void)deleteWithCompletionHandler:(void(^)(NSError *error))completionHandler;
+
+/**
+ Convenience property to return the cloud representation for this object.
+ 
+ @warning Overriding this property is not recommended because all internal implementations go directly through the corresponding object transformer.
+ @note To change the resulting `cloudObjectRepresentation`, override `-[NSManagedObject prepareMutableCloudObject:]`.
+ */
+@property (nonatomic, readonly) id<CBRCloudObject> cloudObjectRepresentation;
+
+/**
+ Convenience method to transform a cloud object into a managed object.
+ 
+ @warning Overriding this impelmentation is not recommended because all internal implementations go directly through the corresponding object transformer.
+ */
++ (instancetype)managedObjectFromCloudObject:(id<CBRCloudObject>)cloudObject inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 
 @end

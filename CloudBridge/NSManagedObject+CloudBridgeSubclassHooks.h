@@ -35,6 +35,16 @@
 - (void)awakeFromCloudFetch;
 
 /**
+ Called right before an update is started.
+ */
+- (void)prepareForUpdateWithMutableCloudObject:(id<CBRMutableCloudObject>)mutableObjectObject;
+
+/**
+ Gives an instance the change to prepare and update a mutable cloud object right before its being sent over the wire.
+ */
+- (void)prepareMutableCloudObject:(id<CBRMutableCloudObject>)mutableObjectObject;
+
+/**
  Sets a value for a key for a specific cloud object.
  */
 - (void)setCloudValue:(id)value forKey:(NSString *)key fromCloudObject:(id<CBRCloudObject>)cloudObject;

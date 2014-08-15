@@ -27,15 +27,20 @@ static CBRCloudBridge *_CloudBridge = nil;
 
 @implementation NSManagedObject (CloudBridge)
 
+- (id<CBRCloudObject>)cloudObjectRepresentation
+{
+    return [self.cloudBridge.cloudConnection.objectTransformer cloudObjectFromManagedObject:self];
+}
+
 + (CBRCloudBridge *)cloudBridge
 {
     NSParameterAssert(_CloudBridge);
     return _CloudBridge;
 }
 
-+ (void)setCloudBridge:(CBRCloudBridge *)backend
++ (void)setCloudBridge:(CBRCloudBridge *)cloudBridge
 {
-    _CloudBridge = backend;
+    _CloudBridge = cloudBridge;
 }
 
 - (CBRCloudBridge *)cloudBridge
@@ -87,6 +92,14 @@ static CBRCloudBridge *_CloudBridge = nil;
 - (void)deleteWithCompletionHandler:(void(^)(NSError *error))completionHandler
 {
     [self.cloudBridge deleteManagedObject:self withCompletionHandler:completionHandler];
+}
+
++ (instancetype)managedObjectFromCloudObject:(id<CBRCloudObject>)cloudObject inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
+{
+    NSEntityDescription *entity = [NSEntityDescription entityForName:NSStringFromClass(self) inManagedObjectContext:managedObjectContext];
+    NSParameterAssert(entity);
+
+    return [[self cloudBridge].cloudConnection.objectTransformer managedObjectFromCloudObject:cloudObject forEntity:entity inManagedObjectContext:managedObjectContext];
 }
 
 @end

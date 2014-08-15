@@ -22,12 +22,28 @@
  */
 
 #import "NSManagedObject+CloudBridgeSubclassHooks.h"
+#import <NSManagedObject+CloudBridge.h>
 
 @implementation NSManagedObject (CloudBridgeSubclassHooks)
+
+- (id<CBRCloudObject>)cloudObjectPresententation
+{
+    return [self.cloudBridge.cloudConnection.objectTransformer cloudObjectFromManagedObject:self];
+}
 
 - (void)awakeFromCloudFetch
 {
 
+}
+
+- (void)prepareForUpdateWithMutableCloudObject:(id<CBRMutableCloudObject>)mutableObjectObject
+{
+    
+}
+
+- (void)prepareMutableCloudObject:(id<CBRMutableCloudObject>)mutableObjectObject
+{
+    
 }
 
 - (void)setCloudValue:(id)value forKey:(NSString *)key fromCloudObject:(id<CBRCloudObject>)cloudObject
