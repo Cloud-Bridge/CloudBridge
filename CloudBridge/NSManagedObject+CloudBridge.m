@@ -61,6 +61,19 @@ static CBRCloudBridge *_CloudBridge = nil;
                                 completionHandler:completionHandler];
 }
 
+- (void)fetchObjectForRelationship:(NSString *)relationship withCompletionHandler:(void(^)(id managedObject, NSError *error))completionHandler
+{
+    NSRelationshipDescription *relationshipDescription = self.entity.relationshipsByName[relationship];
+    NSParameterAssert(relationshipDescription);
+    NSParameterAssert(!relationshipDescription.isToMany);
+
+    [self fetchObjectsForRelationship:relationship withCompletionHandler:^(NSArray *objects, NSError *error) {
+        if (completionHandler) {
+            completionHandler(objects.lastObject, error);
+        }
+    }];
+}
+
 - (void)fetchObjectsForRelationship:(NSString *)relationship withCompletionHandler:(void(^)(NSArray *objects, NSError *error))completionHandler
 {
     NSRelationshipDescription *relationshipDescription = self.entity.relationshipsByName[relationship];

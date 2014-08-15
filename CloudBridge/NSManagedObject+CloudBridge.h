@@ -39,9 +39,10 @@
 
 /**
  Fetching object for a relationship queries the backend with `relationshipDescription.inverseRelationship == self`
- 
+
  @warning: Only supported if `relationshipDescription.inverseRelationship.isToMany` is `NO`.
  */
+- (void)fetchObjectForRelationship:(NSString *)relationship withCompletionHandler:(void(^)(id managedObject, NSError *error))completionHandler;
 - (void)fetchObjectsForRelationship:(NSString *)relationship withCompletionHandler:(void(^)(NSArray *objects, NSError *error))completionHandler;
 
 - (void)createWithCompletionHandler:(void(^)(id managedObject, NSError *error))completionHandler;
