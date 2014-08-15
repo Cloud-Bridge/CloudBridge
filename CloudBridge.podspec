@@ -23,7 +23,7 @@ Pod::Spec.new do |s|
   s.source_files = 'CloudBridge'
 
   s.frameworks = 'CoreData'
-  s.dependency 'SLCoreDataStack', '~> 0.7'
-  s.dependency 'CBRManagedObjectCache', '~> 1.1'
+  s.dependency 'SLCoreDataStack', '~> 0.7.0'
+  s.dependency 'CBRManagedObjectCache', '~> 1.3.0'
   s.prefix_header_contents = '#ifndef NS_DESIGNATED_INITIALIZER', '#define NS_DESIGNATED_INITIALIZER', '#endif'
 end

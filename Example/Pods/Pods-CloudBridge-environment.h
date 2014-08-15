@@ -9,8 +9,8 @@
 // CBRManagedObjectCache
 #define COCOAPODS_POD_AVAILABLE_CBRManagedObjectCache
 #define COCOAPODS_VERSION_MAJOR_CBRManagedObjectCache 1
-#define COCOAPODS_VERSION_MINOR_CBRManagedObjectCache 1
-#define COCOAPODS_VERSION_PATCH_CBRManagedObjectCache 1
+#define COCOAPODS_VERSION_MINOR_CBRManagedObjectCache 3
+#define COCOAPODS_VERSION_PATCH_CBRManagedObjectCache 0
 
 // CloudBridge
 #define COCOAPODS_POD_AVAILABLE_CloudBridge

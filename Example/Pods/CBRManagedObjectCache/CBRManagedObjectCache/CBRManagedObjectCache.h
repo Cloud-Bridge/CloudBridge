@@ -40,12 +40,25 @@
 - (id)objectOfType:(NSString *)type withValue:(id)value forAttribute:(NSString *)attribute;
 
 /**
+ Convenience method around `objectOfType:withValue:forAttribute:`
+ */
+- (id)objectOfClass:(Class)class withValue:(id)value forAttribute:(SEL)attribute;
+
+/**
  Caches and fetches multiple objects where `attribute IN values`.
 
  @param type `managedObjectContext.persistentStoreCoordinator.managedObjectModel.entitiesByName` must return a valid entity for this type.
  */
 - (NSDictionary *)indexedObjectsOfType:(NSString *)type withValues:(NSSet *)values forAttribute:(NSString *)attribute;
 
+/**
+ Convenience method around `objectOfType:withValue:forAttribute:`
+ */
+- (NSDictionary *)indexedObjectsOfClass:(Class)class withValues:(NSSet *)values forAttribute:(SEL)attribute;
+
+/**
+ Removes an object from the cache.
+ */
 - (void)removeManagedObject:(NSManagedObject *)managedObject;
 
 @end
@@ -54,6 +67,6 @@
 
 @interface NSManagedObjectContext (CBRManagedObjectCache)
 
-@property (nonatomic, readonly) CBRManagedObjectCache *cdc_cache;
+@property (nonatomic, readonly) CBRManagedObjectCache *cbr_cache;
 
 @end

@@ -47,7 +47,7 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
 - (void)__SLRESTfulCoreDataObjectCachePrepareForDeletion
 {
     [self __SLRESTfulCoreDataObjectCachePrepareForDeletion];
-    [self.managedObjectContext.cdc_cache removeManagedObject:self];
+    [self.managedObjectContext.cbr_cache removeManagedObject:self];
 }
 
 @end
@@ -105,6 +105,11 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
     return nil;
 }
 
+- (id)objectOfClass:(Class)class withValue:(id)value forAttribute:(SEL)attribute
+{
+    return [self objectOfType:NSStringFromClass(class) withValue:value forAttribute:NSStringFromSelector(attribute)];
+}
+
 - (NSDictionary *)indexedObjectsOfType:(NSString *)type withValues:(NSSet *)values forAttribute:(NSString *)attribute
 {
     NSManagedObjectContext *context = self.managedObjectContext;
@@ -141,8 +146,13 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
         [self.internalCache setObject:managedObject forKey:cacheKey];
         indexedObjects[value] = managedObject;
     }
-    
+
     return [indexedObjects copy];
+}
+
+- (NSDictionary *)indexedObjectsOfClass:(Class)class withValues:(NSSet *)values forAttribute:(SEL)attribute
+{
+    return [self indexedObjectsOfType:NSStringFromClass(class) withValues:values forAttribute:NSStringFromSelector(attribute)];
 }
 
 - (void)removeManagedObject:(NSManagedObject *)managedObject
@@ -168,7 +178,7 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
 
 @implementation NSManagedObjectContext (CBRManagedObjectCache)
 
-- (CBRManagedObjectCache *)cdc_cache
+- (CBRManagedObjectCache *)cbr_cache
 {
     CBRManagedObjectCache *cache = objc_getAssociatedObject(self, _cmd);
 
@@ -176,7 +186,7 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
         cache = [[CBRManagedObjectCache alloc] initWithManagedObjectContext:self];
         objc_setAssociatedObject(self, _cmd, cache, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
-
+    
     return cache;
 }
 

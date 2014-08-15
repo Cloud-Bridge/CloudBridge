@@ -40,7 +40,7 @@
     id identifier = cloudObject[@"identifier"];
     NSParameterAssert(identifier);
 
-    NSManagedObject *managedObject = [managedObjectContext.cdc_cache objectOfType:entity.name withValue:identifier forAttribute:@"identifier"];
+    NSManagedObject *managedObject = [managedObjectContext.cbr_cache objectOfType:entity.name withValue:identifier forAttribute:@"identifier"];
     if (!managedObject) {
         managedObject = [NSEntityDescription insertNewObjectForEntityForName:entity.name
                                                       inManagedObjectContext:managedObjectContext];

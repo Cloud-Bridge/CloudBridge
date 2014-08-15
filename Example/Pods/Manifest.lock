@@ -1,8 +1,8 @@
 PODS:
-  - CBRManagedObjectCache (1.1.1)
+  - CBRManagedObjectCache (1.3.0)
   - CloudBridge (0.5.3):
-    - CBRManagedObjectCache (~> 1.1)
-    - SLCoreDataStack (~> 0.7)
+    - CBRManagedObjectCache (~> 1.3.0)
+    - SLCoreDataStack (~> 0.7.0)
   - Expecta (0.3.1)
   - OCMock (3.0.2)
   - SLCoreDataStack (0.7.0)
@@ -20,8 +20,8 @@ EXTERNAL SOURCES:
     :git: https://github.com/erikdoe/ocmock.git
 
 SPEC CHECKSUMS:
-  CBRManagedObjectCache: 95fdffdf667dea9bd5ed1ca322503b073c154c6f
-  CloudBridge: c17f3f448ddc5b2f50269bcdb18e4c9f7e3054ea
+  CBRManagedObjectCache: 8ef33932382421d783041d39ca2c0f30942661a5
+  CloudBridge: be85aabf18ff05bd2baa7a10975cf515e7ac1aa5
   Expecta: 03aabd0a89d8dea843baecb19a7fd7466a69a31d
   OCMock: 1adf522d315ac895d50da509b783180fc36e1469
   SLCoreDataStack: c5998458cc74e8feef906873ee9b919843200291
