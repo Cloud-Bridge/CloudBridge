@@ -25,14 +25,14 @@
  Abstract definition for an immutable cloud object. Each connection defines it's own implementation.
  */
 @protocol CBRCloudObject <NSObject>
-- (id)objectForKey:(NSString *)key;
-- (id)objectForKeyedSubscript:(NSString *)key;
+- (id)objectForKey:(id)key;
+- (id)objectForKeyedSubscript:(id)key;
 @end
 
 /**
  Abstract definition for a mutable cloud object.
  */
 @protocol CBRMutableCloudObject <CBRCloudObject>
-- (void)setObject:(id)object forKey:(NSString *)key;
-- (void)setObject:(id)object forKeyedSubscript:(NSString *)key;
+- (void)setObject:(id)object forKey:(id<NSCopying>)key;
+- (void)setObject:(id)object forKeyedSubscript:(id<NSCopying>)key;
 @end

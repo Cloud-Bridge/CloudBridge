@@ -27,7 +27,7 @@ static CBRCloudBridge *_CloudBridge = nil;
 
 @implementation NSManagedObject (CloudBridge)
 
-- (id<CBRCloudObject>)cloudObjectRepresentation
+- (id)cloudObjectRepresentation
 {
     return [self.cloudBridge.cloudConnection.objectTransformer cloudObjectFromManagedObject:self];
 }
