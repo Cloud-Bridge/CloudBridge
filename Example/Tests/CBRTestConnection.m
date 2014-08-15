@@ -86,22 +86,22 @@
     completionHandler(self.objectsToReturn ?: @[], nil);
 }
 
-- (void)createCloudObject:(id<CBRCloudObject>)cloudObject forManagedObject:(NSManagedObject *)managedObject withCompletionHandler:(void(^)(id<CBRCloudObject> cloudObject, NSError *error))completionHandler
+- (void)createCloudObject:(id<CBRCloudObject>)cloudObject forManagedObject:(NSManagedObject *)managedObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(id<CBRCloudObject> cloudObject, NSError *error))completionHandler
 {
     completionHandler(self.objectsToReturn.firstObject ?: cloudObject, nil);
 }
 
-- (void)latestCloudObjectForManagedObject:(NSManagedObject *)managedObject withCompletionHandler:(void(^)(id<CBRCloudObject> cloudObject, NSError *error))completionHandler
+- (void)latestCloudObjectForManagedObject:(NSManagedObject *)managedObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(id<CBRCloudObject> cloudObject, NSError *error))completionHandler
 {
     completionHandler(self.objectsToReturn.firstObject ?: [self.objectTransformer cloudObjectFromManagedObject:managedObject], nil);
 }
 
-- (void)saveCloudObject:(id<CBRCloudObject>)cloudObject forManagedObject:(NSManagedObject *)managedObject withCompletionHandler:(void(^)(id<CBRCloudObject> cloudObject, NSError *error))completionHandler
+- (void)saveCloudObject:(id<CBRCloudObject>)cloudObject forManagedObject:(NSManagedObject *)managedObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(id<CBRCloudObject> cloudObject, NSError *error))completionHandler
 {
     completionHandler(self.objectsToReturn.firstObject ?: cloudObject, nil);
 }
 
-- (void)deleteCloudObject:(id<CBRCloudObject>)cloudObject forManagedObject:(NSManagedObject *)managedObject withCompletionHandler:(void(^)(NSError *error))completionHandler
+- (void)deleteCloudObject:(id<CBRCloudObject>)cloudObject forManagedObject:(NSManagedObject *)managedObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(NSError *error))completionHandler
 {
     completionHandler(nil);
 }
