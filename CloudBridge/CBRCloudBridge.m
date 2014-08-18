@@ -113,11 +113,19 @@
                     withPredicate:(NSPredicate *)predicate
                 completionHandler:(void(^)(NSArray *fetchedObjects, NSError *error))completionHandler
 {
+    [self fetchManagedObjectsOfType:entity withPredicate:predicate userInfo:nil completionHandler:completionHandler];
+}
+
+- (void)fetchManagedObjectsOfType:(NSString *)entity
+                    withPredicate:(NSPredicate *)predicate
+                         userInfo:(NSDictionary *)userInfo
+                completionHandler:(void(^)(NSArray *fetchedObjects, NSError *error))completionHandler
+{
     NSEntityDescription *entityDescription = self.mainThreadManagedObjectContext.persistentStoreCoordinator.managedObjectModel.entitiesByName[entity];
     NSParameterAssert(entityDescription);
 
     _CBRCloudBridgePredicateDescription *description = [[_CBRCloudBridgePredicateDescription alloc] initWithPredicate:predicate forEntity:entityDescription];
-    [self.cloudConnection fetchCloudObjectsForEntity:entityDescription withPredicate:predicate completionHandler:^(NSArray *fetchedObjects, NSError *error) {
+    [self.cloudConnection fetchCloudObjectsForEntity:entityDescription withPredicate:predicate userInfo:userInfo completionHandler:^(NSArray *fetchedObjects, NSError *error) {
         if (error) {
             if (completionHandler) {
                 completionHandler(nil, error);

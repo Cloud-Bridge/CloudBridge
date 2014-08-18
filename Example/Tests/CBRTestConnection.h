@@ -25,8 +25,10 @@
 @property (nonatomic, readonly) CBRTestDictionaryTransformer *objectTransformer;
 
 @property (nonatomic, strong) NSArray *objectsToReturn;
+
 - (void)fetchCloudObjectsForEntity:(NSEntityDescription *)entity
                      withPredicate:(NSPredicate *)predicate
+                          userInfo:(NSDictionary *)userInfo
                  completionHandler:(void(^)(NSArray *fetchedObjects, NSError *error))completionHandler;
 
 - (void)createCloudObject:(id<CBRCloudObject>)cloudObject forManagedObject:(NSManagedObject *)managedObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(id<CBRCloudObject> cloudObject, NSError *error))completionHandler;

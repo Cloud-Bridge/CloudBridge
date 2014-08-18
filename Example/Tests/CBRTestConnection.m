@@ -81,6 +81,7 @@
 
 - (void)fetchCloudObjectsForEntity:(NSEntityDescription *)entity
                      withPredicate:(NSPredicate *)predicate
+                          userInfo:(NSDictionary *)userInfo
                  completionHandler:(void(^)(NSArray *fetchedObjects, NSError *error))completionHandler
 {
     completionHandler(self.objectsToReturn ?: @[], nil);

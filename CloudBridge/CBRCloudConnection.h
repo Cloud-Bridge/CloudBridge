@@ -36,8 +36,9 @@
 @property (nonatomic, readonly) id<CBRManagedObjectToCloudObjectTransformer> objectTransformer;
 
 - (void)fetchCloudObjectsForEntity:(NSEntityDescription *)entity
-              withPredicate:(NSPredicate *)predicate
-          completionHandler:(void(^)(NSArray *fetchedObjects, NSError *error))completionHandler;
+                     withPredicate:(NSPredicate *)predicate
+                          userInfo:(NSDictionary *)userInfo
+                 completionHandler:(void(^)(NSArray *fetchedObjects, NSError *error))completionHandler;
 
 - (void)createCloudObject:(id<CBRCloudObject>)cloudObject
          forManagedObject:(NSManagedObject *)managedObject

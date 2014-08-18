@@ -47,6 +47,11 @@
                     withPredicate:(NSPredicate *)predicate
                 completionHandler:(void(^)(NSArray *fetchedObjects, NSError *error))completionHandler;
 
+- (void)fetchManagedObjectsOfType:(NSString *)entity
+                    withPredicate:(NSPredicate *)predicate
+                         userInfo:(NSDictionary *)userInfo
+                completionHandler:(void(^)(NSArray *fetchedObjects, NSError *error))completionHandler;
+
 - (void)createManagedObject:(NSManagedObject *)managedObject withCompletionHandler:(void(^)(id managedObject, NSError *error))completionHandler;
 - (void)reloadManagedObject:(NSManagedObject *)managedObject withCompletionHandler:(void(^)(id managedObject, NSError *error))completionHandler;
 - (void)saveManagedObject:(NSManagedObject *)managedObject withCompletionHandler:(void(^)(id managedObject, NSError *error))completionHandler;
