@@ -41,7 +41,7 @@
     }
 
     if (self == [NSManagedObject class]) {
-        NSAssert(NO, @"No cloud bridge found");
+        [NSException raise:NSInternalInconsistencyException format:@"No cloud bridge found"];
         return nil;
     }
 
