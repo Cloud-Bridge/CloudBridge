@@ -49,14 +49,6 @@
     expect([SLEntity4 cloudBridge]).to.equal(self.cloudBridge);
 }
 
-- (void)testThatReturningNoCloudBridgeThrowsAnException
-{
-    expect(^{ [NSManagedObject cloudBridge]; }).toNot.raise(NSInternalInconsistencyException);
-
-    [NSManagedObject setCloudBridge:nil];
-    expect(^{ [NSManagedObject cloudBridge]; }).to.raise(NSInternalInconsistencyException);
-}
-
 - (void)testThatBackendCreatesManagedObject
 {
     SLEntity4 *entity = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([SLEntity4 class]) inManagedObjectContext:self.context];
