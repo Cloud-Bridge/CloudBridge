@@ -21,9 +21,10 @@
  THE SOFTWARE.
  */
 
+@import ObjectiveC.runtime;
 #import "NSManagedObject+CloudBridge.h"
 
-static CBRCloudBridge *_CloudBridge = nil;
+
 
 @implementation NSManagedObject (CloudBridge)
 
@@ -34,13 +35,22 @@ static CBRCloudBridge *_CloudBridge = nil;
 
 + (CBRCloudBridge *)cloudBridge
 {
-    NSParameterAssert(_CloudBridge);
-    return _CloudBridge;
+    CBRCloudBridge *cloudBridge = objc_getAssociatedObject(self, @selector(cloudBridge));
+    if (cloudBridge) {
+        return cloudBridge;
+    }
+
+    if (self == [NSManagedObject class]) {
+        NSAssert(NO, @"No cloud bridge found");
+        return nil;
+    }
+
+    return [[self superclass] cloudBridge];
 }
 
 + (void)setCloudBridge:(CBRCloudBridge *)cloudBridge
 {
-    _CloudBridge = cloudBridge;
+    objc_setAssociatedObject(self, @selector(cloudBridge), cloudBridge, OBJC_ASSOCIATION_RETAIN);
 }
 
 - (CBRCloudBridge *)cloudBridge
