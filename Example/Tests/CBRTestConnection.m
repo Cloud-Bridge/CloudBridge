@@ -87,24 +87,43 @@
     completionHandler(self.objectsToReturn ?: @[], nil);
 }
 
+#pragma mark - CBRCloudConnection
+
 - (void)createCloudObject:(id<CBRCloudObject>)cloudObject forManagedObject:(NSManagedObject *)managedObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(id<CBRCloudObject> cloudObject, NSError *error))completionHandler
 {
-    completionHandler(self.objectsToReturn.firstObject ?: cloudObject, nil);
+    completionHandler(self.objectsToReturn.firstObject, self.errorToReturn);
 }
 
 - (void)latestCloudObjectForManagedObject:(NSManagedObject *)managedObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(id<CBRCloudObject> cloudObject, NSError *error))completionHandler
 {
-    completionHandler(self.objectsToReturn.firstObject ?: [self.objectTransformer cloudObjectFromManagedObject:managedObject], nil);
+    completionHandler(self.objectsToReturn.firstObject, self.errorToReturn);
 }
 
 - (void)saveCloudObject:(id<CBRCloudObject>)cloudObject forManagedObject:(NSManagedObject *)managedObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(id<CBRCloudObject> cloudObject, NSError *error))completionHandler
 {
-    completionHandler(self.objectsToReturn.firstObject ?: cloudObject, nil);
+    completionHandler(self.objectsToReturn.firstObject, self.errorToReturn);
 }
 
 - (void)deleteCloudObject:(id<CBRCloudObject>)cloudObject forManagedObject:(NSManagedObject *)managedObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(NSError *error))completionHandler
 {
-    completionHandler(nil);
+    completionHandler(self.errorToReturn);
+}
+
+#pragma mark - CBROfflineCapableCloudConnection
+
+- (void)bulkCreateCloudObjects:(NSArray *)cloudObjects forManagedObjects:(NSArray *)managedObjects completionHandler:(void (^)(NSArray *cloudObjects, NSError *error))completionHandler
+{
+    completionHandler(self.objectsToReturn, self.errorToReturn);
+}
+
+- (void)bulkSaveCloudObjects:(NSArray *)cloudObjects forManagedObjects:(NSArray *)managedObjects completionHandler:(void (^)(NSArray *cloudObjects, NSError *error))completionHandler
+{
+    completionHandler(self.objectsToReturn, self.errorToReturn);
+}
+
+- (void)bulkDeleteCloudObjects:(NSArray *)cloudObjects forManagedObjects:(NSArray *)managedObjects completionHandler:(void (^)(NSArray *deletedObjectIdentifiers, NSError *error))completionHandler
+{
+    completionHandler(self.objectsToReturn, self.errorToReturn);
 }
 
 #pragma mark - Private category implementation ()

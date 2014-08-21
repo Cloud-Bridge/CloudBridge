@@ -20,11 +20,12 @@
 /**
  @abstract  <#abstract comment#>
  */
-@interface CBRTestConnection : NSObject <CBRCloudConnection>
+@interface CBRTestConnection : NSObject <CBRCloudConnection, CBROfflineCapableCloudConnection>
 
 @property (nonatomic, readonly) CBRTestDictionaryTransformer *objectTransformer;
 
 @property (nonatomic, strong) NSArray *objectsToReturn;
+@property (nonatomic, strong) NSError *errorToReturn;
 
 - (void)fetchCloudObjectsForEntity:(NSEntityDescription *)entity
                      withPredicate:(NSPredicate *)predicate

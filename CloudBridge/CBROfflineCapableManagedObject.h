@@ -21,17 +21,14 @@
  THE SOFTWARE.
  */
 
-@import CoreData;
 
-#import <SLCoreDataStack.h>
-#import <CBRManagedObjectCache.h>
 
-#import <CBRCloudBridge.h>
-#import <CBRCloudObject.h>
-#import <CBRCloudConnection.h>
+/**
+ Any offline capable `NSManagedObject` subclass must conform to this protocol.
+ */
+@protocol CBROfflineCapableManagedObject <NSObject>
 
-#import <NSManagedObject+CloudBridgeSubclassHooks.h>
-#import <NSManagedObject+CloudBridge.h>
-#import <CBRManagedObjectToCloudObjectTransformer.h>
+@property (nonatomic, strong) NSNumber *hasPendingCloudBridgeChanges;
+@property (nonatomic, strong) NSNumber *hasPendingCloudBridgeDeletion;
 
-#import <CBROfflineCapableCloudBridge.h>
+@end

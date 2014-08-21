@@ -11,7 +11,7 @@
 		6003F5B1195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F5B2195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
 		6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5B8195388D20070C39A /* InfoPlist.strings */; };
-		A721180E1998DD01000D6037 /* CBRBackendTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A721180D1998DD01000D6037 /* CBRBackendTests.m */; };
+		A721180E1998DD01000D6037 /* CBRCloudBridgeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A721180D1998DD01000D6037 /* CBRCloudBridgeTests.m */; };
 		A72118111998DD20000D6037 /* CBRTestDataStore.m in Sources */ = {isa = PBXBuildFile; fileRef = A72118101998DD20000D6037 /* CBRTestDataStore.m */; };
 		A72118141998DD34000D6037 /* CBRTestDataStore.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A72118121998DD34000D6037 /* CBRTestDataStore.xcdatamodeld */; };
 		A72118181998DD5B000D6037 /* SLEntity6.m in Sources */ = {isa = PBXBuildFile; fileRef = A72118171998DD5B000D6037 /* SLEntity6.m */; };
@@ -19,6 +19,9 @@
 		A721181E1998DD5C000D6037 /* SLEntity4.m in Sources */ = {isa = PBXBuildFile; fileRef = A721181D1998DD5C000D6037 /* SLEntity4.m */; };
 		A72118211998DD92000D6037 /* CBRTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = A72118201998DD92000D6037 /* CBRTestCase.m */; };
 		A72118241998DDAD000D6037 /* CBRTestConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = A72118231998DDAD000D6037 /* CBRTestConnection.m */; };
+		A75C0B7819A66902006B3582 /* CBROfflineCapableCloudBridgeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A75C0B7719A66902006B3582 /* CBROfflineCapableCloudBridgeTests.m */; };
+		A75C0B7B19A66B15006B3582 /* OnlyOnlineEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = A75C0B7A19A66B15006B3582 /* OnlyOnlineEntity.m */; };
+		A75C0B7E19A66B16006B3582 /* OfflineEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = A75C0B7D19A66B16006B3582 /* OfflineEntity.m */; };
 		F8990F6086AA4B0B8A6DE5D5 /* libPods-CloudBridge.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 99079D242D7B4CB98EF5E6C1 /* libPods-CloudBridge.a */; };
 /* End PBXBuildFile section */
 
@@ -35,7 +38,7 @@
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
 		97AB759CFE984D7EAF60F7ED /* Pods-CloudBridge.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CloudBridge.xcconfig"; path = "Pods/Pods-CloudBridge.xcconfig"; sourceTree = "<group>"; };
 		99079D242D7B4CB98EF5E6C1 /* libPods-CloudBridge.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CloudBridge.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		A721180D1998DD01000D6037 /* CBRBackendTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBRBackendTests.m; sourceTree = "<group>"; };
+		A721180D1998DD01000D6037 /* CBRCloudBridgeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBRCloudBridgeTests.m; sourceTree = "<group>"; };
 		A721180F1998DD20000D6037 /* CBRTestDataStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBRTestDataStore.h; sourceTree = "<group>"; };
 		A72118101998DD20000D6037 /* CBRTestDataStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBRTestDataStore.m; sourceTree = "<group>"; };
 		A72118131998DD34000D6037 /* CBRTestDataStore.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CBRTestDataStore.xcdatamodel; sourceTree = "<group>"; };
@@ -50,6 +53,11 @@
 		A72118201998DD92000D6037 /* CBRTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBRTestCase.m; sourceTree = "<group>"; };
 		A72118221998DDAD000D6037 /* CBRTestConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBRTestConnection.h; sourceTree = "<group>"; };
 		A72118231998DDAD000D6037 /* CBRTestConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBRTestConnection.m; sourceTree = "<group>"; };
+		A75C0B7719A66902006B3582 /* CBROfflineCapableCloudBridgeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBROfflineCapableCloudBridgeTests.m; sourceTree = "<group>"; };
+		A75C0B7919A66B15006B3582 /* OnlyOnlineEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OnlyOnlineEntity.h; sourceTree = "<group>"; };
+		A75C0B7A19A66B15006B3582 /* OnlyOnlineEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OnlyOnlineEntity.m; sourceTree = "<group>"; };
+		A75C0B7C19A66B16006B3582 /* OfflineEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OfflineEntity.h; sourceTree = "<group>"; };
+		A75C0B7D19A66B16006B3582 /* OfflineEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OfflineEntity.m; sourceTree = "<group>"; };
 		ADFDBFBBE4924ECDA577D119 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		E7B06DCB467F4898BBC3F74A /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -106,7 +114,8 @@
 			children = (
 				A721181F1998DD92000D6037 /* CBRTestCase.h */,
 				A72118201998DD92000D6037 /* CBRTestCase.m */,
-				A721180D1998DD01000D6037 /* CBRBackendTests.m */,
+				A721180D1998DD01000D6037 /* CBRCloudBridgeTests.m */,
+				A75C0B7719A66902006B3582 /* CBROfflineCapableCloudBridgeTests.m */,
 				6003F5B6195388D20070C39A /* Supporting Files */,
 			);
 			path = Tests;
@@ -130,6 +139,10 @@
 				A721181A1998DD5C000D6037 /* SLEntity6Child.m */,
 				6003F5B7195388D20070C39A /* Tests-Info.plist */,
 				606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */,
+				A75C0B7C19A66B16006B3582 /* OfflineEntity.h */,
+				A75C0B7D19A66B16006B3582 /* OfflineEntity.m */,
+				A75C0B7919A66B15006B3582 /* OnlyOnlineEntity.h */,
+				A75C0B7A19A66B15006B3582 /* OnlyOnlineEntity.m */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -249,13 +262,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				A72118241998DDAD000D6037 /* CBRTestConnection.m in Sources */,
+				A75C0B7B19A66B15006B3582 /* OnlyOnlineEntity.m in Sources */,
 				A72118181998DD5B000D6037 /* SLEntity6.m in Sources */,
 				A721181B1998DD5C000D6037 /* SLEntity6Child.m in Sources */,
+				A75C0B7819A66902006B3582 /* CBROfflineCapableCloudBridgeTests.m in Sources */,
 				A721181E1998DD5C000D6037 /* SLEntity4.m in Sources */,
 				A72118141998DD34000D6037 /* CBRTestDataStore.xcdatamodeld in Sources */,
+				A75C0B7E19A66B16006B3582 /* OfflineEntity.m in Sources */,
 				A72118211998DD92000D6037 /* CBRTestCase.m in Sources */,
 				A72118111998DD20000D6037 /* CBRTestDataStore.m in Sources */,
-				A721180E1998DD01000D6037 /* CBRBackendTests.m in Sources */,
+				A721180E1998DD01000D6037 /* CBRCloudBridgeTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

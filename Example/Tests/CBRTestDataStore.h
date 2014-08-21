@@ -12,6 +12,9 @@
 #import "SLEntity6.h"
 #import "SLEntity6Child.h"
 
+#import "OfflineEntity.h"
+#import "OnlyOnlineEntity.h"
+
 
 @interface CBRTestDataStore : SLCoreDataStack
 

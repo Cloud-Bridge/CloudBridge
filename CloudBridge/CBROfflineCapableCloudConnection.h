@@ -21,17 +21,27 @@
  THE SOFTWARE.
  */
 
-@import CoreData;
-
-#import <SLCoreDataStack.h>
-#import <CBRManagedObjectCache.h>
-
-#import <CBRCloudBridge.h>
-#import <CBRCloudObject.h>
 #import <CBRCloudConnection.h>
 
-#import <NSManagedObject+CloudBridgeSubclassHooks.h>
-#import <NSManagedObject+CloudBridge.h>
-#import <CBRManagedObjectToCloudObjectTransformer.h>
+@interface CBRDeletedObjectIdentifier : NSObject <NSCopying>
 
-#import <CBROfflineCapableCloudBridge.h>
+@property (nonatomic, readonly) id cloudIdentifier;
+@property (nonatomic, readonly) NSString *entitiyName;
+
+- (instancetype)init UNAVAILABLE_ATTRIBUTE;
+- (instancetype)initWithCloudIdentifier:(id)cloudIdentifier entitiyName:(NSString *)entitiyName;
+
+@end
+
+
+
+/**
+ Definition of a connection that has offline support.
+ */
+@protocol CBROfflineCapableCloudConnection <CBRCloudConnection>
+
+- (void)bulkCreateCloudObjects:(NSArray *)cloudObjects forManagedObjects:(NSArray *)managedObjects completionHandler:(void (^)(NSArray *cloudObjects, NSError *error))completionHandler;
+- (void)bulkSaveCloudObjects:(NSArray *)cloudObjects forManagedObjects:(NSArray *)managedObjects completionHandler:(void (^)(NSArray *cloudObjects, NSError *error))completionHandler;
+- (void)bulkDeleteCloudObjects:(NSArray *)cloudObjects forManagedObjects:(NSArray *)managedObjects completionHandler:(void (^)(NSArray *deletedObjectIdentifiers, NSError *error))completionHandler;
+
+@end
