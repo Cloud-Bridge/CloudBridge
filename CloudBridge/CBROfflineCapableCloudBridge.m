@@ -64,7 +64,7 @@
 @interface CBROfflineCapableCloudBridge ()
 
 @property (nonatomic, assign) BOOL isRunningInOfflineMode;
-@property (nonatomic, assign) BOOL isReenablingCloudBridge;
+@property (nonatomic, assign) BOOL isReenablingOnlineMode;
 
 @end
 
@@ -101,14 +101,14 @@
             completionHandler(error);
         }
 
-        self.isReenablingCloudBridge = NO;
+        self.isReenablingOnlineMode = NO;
     };
 
     if (!self.isRunningInOfflineMode) {
         return invokeCompletionHandler(nil);
     }
 
-    self.isReenablingCloudBridge = YES;
+    self.isReenablingOnlineMode = YES;
     [self _synchronizePendingObjectCreationsWithCompletionHandler:^(NSError *error) {
         if (error) {
             return invokeCompletionHandler(error);
