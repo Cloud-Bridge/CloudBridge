@@ -36,6 +36,8 @@
 @property (nonatomic, readonly) id<CBRCloudConnection> cloudConnection;
 @property (nonatomic, readonly) SLCoreDataStack *coreDataStack;
 
+@property (nonatomic, assign) BOOL transformsManagedObjectsSynchronous;
+
 @property (nonatomic, readonly) NSManagedObjectContext *mainThreadManagedObjectContext;
 @property (nonatomic, readonly) NSManagedObjectContext *backgroundThreadManagedObjectContext;
 
