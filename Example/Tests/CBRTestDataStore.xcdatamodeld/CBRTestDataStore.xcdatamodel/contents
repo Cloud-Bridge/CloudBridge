@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6220.14" systemVersion="13E28" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6244" systemVersion="13E28" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="OfflineEntity" representedClassName="OfflineEntity" syncable="YES">
         <attribute name="hasPendingCloudBridgeChanges" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="hasPendingCloudBridgeDeletion" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -23,6 +23,7 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="children" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SLEntity6Child" inverseName="parent" inverseEntity="SLEntity6Child" syncable="YES">
             <userInfo>
+                <entry key="cloudBridgeCascades" value="1"/>
                 <entry key="restBaseURL" value="entity6/:id/children"/>
             </userInfo>
         </relationship>
@@ -38,10 +39,10 @@
         <relationship name="parent" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SLEntity6" inverseName="children" inverseEntity="SLEntity6" syncable="YES"/>
     </entity>
     <elements>
+        <element name="OfflineEntity" positionX="18" positionY="153" width="128" height="88"/>
         <element name="OnlyOnlineEntity" positionX="9" positionY="144" width="128" height="60"/>
         <element name="SLEntity4" positionX="0" positionY="99" width="128" height="118"/>
-        <element name="SLEntity6" positionX="27" positionY="126" width="128" height="116"/>
+        <element name="SLEntity6" positionX="27" positionY="126" width="128" height="119"/>
         <element name="SLEntity6Child" positionX="-18" positionY="108" width="128" height="73"/>
-        <element name="OfflineEntity" positionX="18" positionY="153" width="128" height="88"/>
     </elements>
 </model>

@@ -1,1 +1,1 @@
-PODS_CLOUDBRIDGE_SLCOREDATASTACK_OTHER_LDFLAGS = -framework CoreData -framework Foundation -framework UIKit
+PODS_CLOUDBRIDGE_SLCOREDATASTACK_OTHER_LDFLAGS = -framework CoreData -framework Foundation

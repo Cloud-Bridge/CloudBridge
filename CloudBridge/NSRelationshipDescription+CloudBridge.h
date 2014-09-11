@@ -23,16 +23,13 @@
 
 @import CoreData;
 
-#import <SLCoreDataStack.h>
-#import <CBRManagedObjectCache.h>
 
-#import <CBRCloudBridge.h>
-#import <CBRCloudObject.h>
-#import <CBRCloudConnection.h>
 
-#import <NSManagedObject+CloudBridgeSubclassHooks.h>
-#import <NSManagedObject+CloudBridge.h>
-#import <NSRelationshipDescription+CloudBridge.h>
-#import <CBRManagedObjectToCloudObjectTransformer.h>
+@interface NSRelationshipDescription (CloudBridge)
 
-#import <CBROfflineCapableCloudBridge.h>
+/**
+ Delete every object that was not returned by the API for this relationship.
+ */
+@property (nonatomic, readonly) BOOL cloudBridgeCascades;
+
+@end

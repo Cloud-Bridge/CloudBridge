@@ -21,18 +21,13 @@
  THE SOFTWARE.
  */
 
-@import CoreData;
+#import "NSRelationshipDescription+CloudBridge.h"
 
-#import <SLCoreDataStack.h>
-#import <CBRManagedObjectCache.h>
+@implementation NSRelationshipDescription (CloudBridge)
 
-#import <CBRCloudBridge.h>
-#import <CBRCloudObject.h>
-#import <CBRCloudConnection.h>
+- (BOOL)cloudBridgeCascades
+{
+    return self.userInfo[@"cloudBridgeCascades"] != nil || self.inverseRelationship.userInfo[@"cloudBridgeCascades"] != nil;
+}
 
-#import <NSManagedObject+CloudBridgeSubclassHooks.h>
-#import <NSManagedObject+CloudBridge.h>
-#import <NSRelationshipDescription+CloudBridge.h>
-#import <CBRManagedObjectToCloudObjectTransformer.h>
-
-#import <CBROfflineCapableCloudBridge.h>
+@end

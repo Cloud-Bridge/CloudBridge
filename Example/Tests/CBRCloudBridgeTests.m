@@ -112,4 +112,45 @@
     expect(entity.children).will.haveCountOf(2);
 }
 
+- (void)testThatConnectionDeletesEveryOtherObjectWhenFetchingObjectsForRelationship
+{
+    SLEntity6 *entity = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([SLEntity6 class]) inManagedObjectContext:self.context];
+    entity.identifier = @5;
+
+    SLEntity6Child *child = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([SLEntity6Child class]) inManagedObjectContext:self.context];
+    child.identifier = @5;
+    entity.children = [NSSet setWithObject:child];
+
+    self.connection.objectsToReturn = @[ @{ @"identifier": @1 }, @{ @"identifier": @2 } ];
+
+    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:NSStringFromClass([SLEntity6Child class]) inManagedObjectContext:self.context];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"parent == %@", entity];
+
+    [self.cloudBridge fetchManagedObjectsOfType:entityDescription.name withPredicate:predicate completionHandler:NULL];
+
+    expect(entity.children).will.haveCountOf(2);
+    expect(entity.children).toNot.contain(child);
+    expect(child.isDeleted).to.beTruthy();
+}
+
+- (void)testThatConnectionOnlyDeletesEveryOtherObjectFromTheRelationshipWhenFetchingObjectsForRelationship
+{
+    SLEntity6 *entity = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([SLEntity6 class]) inManagedObjectContext:self.context];
+    entity.identifier = @5;
+
+    SLEntity6Child *child = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([SLEntity6Child class]) inManagedObjectContext:self.context];
+    child.identifier = @5;
+
+    self.connection.objectsToReturn = @[ @{ @"identifier": @1 }, @{ @"identifier": @2 } ];
+
+    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:NSStringFromClass([SLEntity6Child class]) inManagedObjectContext:self.context];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"parent == %@", entity];
+
+    [self.cloudBridge fetchManagedObjectsOfType:entityDescription.name withPredicate:predicate completionHandler:NULL];
+
+    expect(entity.children).will.haveCountOf(2);
+    expect(entity.children).toNot.contain(child);
+    expect(child.isDeleted).to.beFalsy();
+}
+
 @end

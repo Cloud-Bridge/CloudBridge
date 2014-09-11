@@ -22,6 +22,7 @@
  */
 
 #import "CBRCloudBridge.h"
+#import "NSRelationshipDescription+CloudBridge.h"
 
 @interface _CBRCloudBridgePredicateDescription : NSObject
 
@@ -56,6 +57,7 @@
 
                 _relationshipToUpdate = relationshipDescription.name;
                 _parentObjectID = managedObject.objectID;
+                _deleteEveryOtherObject = relationshipDescription.cloudBridgeCascades;
             }
         }];
     }
@@ -158,6 +160,17 @@
             if (description.deleteEveryOtherObject) {
                 NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:entityDescription.name];
                 fetchRequest.predicate = [NSPredicate predicateWithFormat:@"NOT %K IN %@", cloudIdentifier, managedObjectsIdentifiers];
+
+                if (description.relationshipToUpdate) {
+                    NSRelationshipDescription *relationship = entityDescription.relationshipsByName[description.relationshipToUpdate];
+
+                    if (!relationship.isToMany) {
+                        NSManagedObject *parentObject = [context objectWithID:description.parentObjectID];
+                        NSPredicate *newPredicate = [NSPredicate predicateWithFormat:@"%K == %@", relationship.name, parentObject];
+
+                        fetchRequest.predicate = [[NSCompoundPredicate alloc] initWithType:NSAndPredicateType subpredicates:@[ fetchRequest.predicate, newPredicate ]];
+                    }
+                }
 
                 NSError *error = nil;
                 NSArray *objectsToBeDeleted = [context executeFetchRequest:fetchRequest error:&error];

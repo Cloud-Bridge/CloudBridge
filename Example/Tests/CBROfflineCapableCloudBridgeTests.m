@@ -114,7 +114,7 @@
     [self.cloudBridge enableOfflineMode];
     [self.cloudBridge reenableOnlineModeWithCompletionHandler:NULL];
 
-    expect(entity.deleted).will.beTruthy();
+    expect(entity.isDeleted).will.beTruthy();
 }
 
 - (void)testThatDisablingOfflineModeCreatesPendingCloudObjects
