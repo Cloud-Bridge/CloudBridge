@@ -101,7 +101,7 @@
 - (instancetype)initWithCloudConnection:(id<CBRCloudConnection>)cloudConnection coreDataStack:(SLCoreDataStack *)coreDataStack
 {
     NSParameterAssert(cloudConnection);
-    
+
     if (self = [super init]) {
         _cloudConnection = cloudConnection;
         _coreDataStack = coreDataStack;
@@ -230,6 +230,12 @@
                     completionHandler(nil, error);
                 }
                 return;
+            }
+
+            if (managedObject.hasChanges || managedObject.isInserted) {
+                NSError *saveError = nil;
+                [managedObject.managedObjectContext save:&saveError];
+                NSAssert(saveError == nil, @"error saving NSManagedObjectContext: %@", saveError);
             }
 
             [context performBlock:^(NSManagedObject *backgroundManagedObject) {
