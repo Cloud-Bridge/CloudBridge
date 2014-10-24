@@ -52,7 +52,7 @@
 /**
  Gives an instance the change to prepare a cloud object right before its being sent over the wire.
  */
-- (id<CBRCloudObject>)prepareCloudObject:(id<CBRCloudObject>)cloudObject;
+- (id<CBRCloudObject>)finalizeCloudObject:(id<CBRCloudObject>)cloudObject;
 
 /**
  Sets a value for a key for a specific cloud object.

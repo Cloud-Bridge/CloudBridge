@@ -46,7 +46,7 @@
     
 }
 
-- (id<CBRCloudObject>)prepareCloudObject:(id<CBRCloudObject>)cloudObject
+- (id<CBRCloudObject>)finalizeCloudObject:(id<CBRCloudObject>)cloudObject
 {
     return cloudObject;
 }
