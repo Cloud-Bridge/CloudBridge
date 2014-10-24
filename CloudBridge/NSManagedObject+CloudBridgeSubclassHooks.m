@@ -26,24 +26,29 @@
 
 @implementation NSManagedObject (CloudBridgeSubclassHooks)
 
-- (id<CBRCloudObject>)cloudObjectPresententation
-{
-    return [self.cloudBridge.cloudConnection.objectTransformer cloudObjectFromManagedObject:self];
-}
-
 - (void)awakeFromCloudFetch
 {
 
 }
 
-- (void)prepareForUpdateWithMutableCloudObject:(id<CBRMutableCloudObject>)mutableObjectObject
++ (id<CBRCloudObject>)prepareCloudObject:(id<CBRCloudObject>)cloudObject
+{
+    return cloudObject;
+}
+
+- (void)prepareForUpdateWithCloudObject:(id<CBRCloudObject>)cloudObject
 {
     
 }
 
-- (void)prepareMutableCloudObject:(id<CBRMutableCloudObject>)mutableObjectObject
+- (void)finalizeUpdateWithCloudObject:(id<CBRCloudObject>)cloudObject
 {
     
+}
+
+- (id<CBRCloudObject>)prepareCloudObject:(id<CBRCloudObject>)cloudObject
+{
+    return cloudObject;
 }
 
 - (void)setCloudValue:(id)value forKey:(NSString *)key fromCloudObject:(id<CBRCloudObject>)cloudObject

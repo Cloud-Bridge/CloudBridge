@@ -28,7 +28,7 @@
 
 @implementation NSManagedObject (CloudBridge)
 
-- (id)cloudObjectRepresentation
+- (id<CBRCloudObject>)cloudObjectRepresentation
 {
     return [self.cloudBridge.cloudConnection.objectTransformer cloudObjectFromManagedObject:self];
 }

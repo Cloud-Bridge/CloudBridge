@@ -30,19 +30,29 @@
 @interface NSManagedObject (CloudBridgeSubclassHooks)
 
 /**
- Called when inserted due to a cloud fetch.
+ Called when inserted after a cloud fetch.
  */
 - (void)awakeFromCloudFetch;
 
 /**
- Called right before an update is started.
+ Called right before the framework tries to map the cloud object to a managed object.
  */
-- (void)prepareForUpdateWithMutableCloudObject:(id<CBRMutableCloudObject>)mutableObjectObject;
++ (id<CBRCloudObject>)prepareCloudObject:(id<CBRCloudObject>)cloudObject;
 
 /**
- Gives an instance the change to prepare and update a mutable cloud object right before its being sent over the wire.
+ Called right before an update is started.
  */
-- (void)prepareMutableCloudObject:(id<CBRMutableCloudObject>)mutableObjectObject;
+- (void)prepareForUpdateWithCloudObject:(id<CBRCloudObject>)cloudObject;
+
+/**
+ Called after the framework updated the managed object with the cloud object.
+ */
+- (void)finalizeUpdateWithCloudObject:(id<CBRCloudObject>)cloudObject;
+
+/**
+ Gives an instance the change to prepare a cloud object right before its being sent over the wire.
+ */
+- (id<CBRCloudObject>)prepareCloudObject:(id<CBRCloudObject>)cloudObject;
 
 /**
  Sets a value for a key for a specific cloud object.
