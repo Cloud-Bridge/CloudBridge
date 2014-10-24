@@ -1,5 +1,0 @@
-#include "Pods-CloudBridge-SLCoreDataStack.xcconfig"
-GCC_PREPROCESSOR_DEFINITIONS = COCOAPODS=1
-HEADER_SEARCH_PATHS = "${PODS_ROOT}/BuildHeaders" "${PODS_ROOT}/BuildHeaders/SLCoreDataStack" "${PODS_ROOT}/Headers" "${PODS_ROOT}/Headers/CBRManagedObjectCache" "${PODS_ROOT}/Headers/CloudBridge" "${PODS_ROOT}/Headers/Expecta" "${PODS_ROOT}/Headers/OCMock" "${PODS_ROOT}/Headers/SLCoreDataStack"
-OTHER_LDFLAGS = -ObjC ${PODS_CLOUDBRIDGE_SLCOREDATASTACK_OTHER_LDFLAGS}
-PODS_ROOT = ${SRCROOT}

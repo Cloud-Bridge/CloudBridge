@@ -1,29 +1,26 @@
 PODS:
   - CBRManagedObjectCache (1.3.0)
-  - CloudBridge (0.9.4):
+  - CloudBridge (0.9.6):
     - CBRManagedObjectCache (~> 1.3.0)
     - SLCoreDataStack (~> 0.8)
   - Expecta (0.3.1)
-  - OCMock (3.0.2)
+  - OCMock (3.1.1)
   - SLCoreDataStack (0.8.0)
 
 DEPENDENCIES:
   - CloudBridge (from `../`)
   - Expecta (~> 0.3.1)
-  - OCMock (from `https://github.com/erikdoe/ocmock.git`, commit `c026ab231d1b7c6acace2b8d2f6112ffd9b6bd6d`)
+  - OCMock (~> 3.1.1)
 
 EXTERNAL SOURCES:
   CloudBridge:
     :path: ../
-  OCMock:
-    :commit: c026ab231d1b7c6acace2b8d2f6112ffd9b6bd6d
-    :git: https://github.com/erikdoe/ocmock.git
 
 SPEC CHECKSUMS:
   CBRManagedObjectCache: 8ef33932382421d783041d39ca2c0f30942661a5
-  CloudBridge: 3885ce061746d8a19c5f5a21607d21cad01705be
+  CloudBridge: e84a29bdaeb05f6f24d41c4676209f4344e0aecb
   Expecta: 03aabd0a89d8dea843baecb19a7fd7466a69a31d
-  OCMock: 1adf522d315ac895d50da509b783180fc36e1469
+  OCMock: f6cb8c162ab9d5620dddf411282c7b2c0ee78854
   SLCoreDataStack: 5ce030f675397684f06932a8b6ffadaaf319cae6
 
-COCOAPODS: 0.33.1
+COCOAPODS: 0.34.4

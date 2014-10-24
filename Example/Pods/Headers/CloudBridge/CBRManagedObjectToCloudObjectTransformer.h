@@ -1,1 +1,0 @@
-../../../../CloudBridge/CBRManagedObjectToCloudObjectTransformer.h

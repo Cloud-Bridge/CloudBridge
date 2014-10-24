@@ -39,7 +39,7 @@ BOOL OCMIsObjectType(const char *objCType)
 {
     objCType = OCMTypeWithoutQualifiers(objCType);
 
-    if(strcmp(objCType, @encode(id)) == 0)
+    if(strcmp(objCType, @encode(id)) == 0 || strcmp(objCType, @encode(Class)) == 0)
         return YES;
 
     // if the returnType is a typedef to an object, it has the form ^{OriginClass=#}
@@ -47,6 +47,11 @@ BOOL OCMIsObjectType(const char *objCType)
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:regexString options:0 error:NULL];
     NSString *type = [NSString stringWithCString:objCType encoding:NSASCIIStringEncoding];
     if([regex numberOfMatchesInString:type options:0 range:NSMakeRange(0, type.length)] > 0)
+        return YES;
+
+    // if the return type is a block we treat it like an object
+    // TODO: if the runtime were to encode the block's argument and/or return types, this test would not be sufficient
+    if(strcmp(objCType, @encode(void(^)())) == 0)
         return YES;
 
     return NO;
