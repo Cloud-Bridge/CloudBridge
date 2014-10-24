@@ -37,7 +37,7 @@
 /**
  Called right before the framework tries to map the cloud object to a managed object.
  */
-+ (id<CBRCloudObject>)prepareCloudObject:(id<CBRCloudObject>)cloudObject;
++ (id<CBRCloudObject>)prepareForUpdateWithCloudObject:(id<CBRCloudObject>)cloudObject;
 
 /**
  Called right before an update is started.
