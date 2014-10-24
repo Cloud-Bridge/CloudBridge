@@ -5,7 +5,7 @@
 [![License](https://img.shields.io/cocoapods/l/CloudBridge.svg?style=flat)](http://cocoadocs.org/docsets/CloudBridge)
 [![Platform](https://img.shields.io/cocoapods/p/CloudBridge.svg?style=flat)](http://cocoadocs.org/docsets/CloudBridge)
 
-CloudBridge helps synchronizing Your CoreData managed objects with various Cloud backends and ships with nativ support for RESTful JSON backends and CloudKit.
+CloudBridge helps synchronizing Your CoreData managed objects with various Cloud backends and ships with native support for RESTful JSON backends and CloudKit.
 
 ## Public API
 
@@ -27,11 +27,11 @@ which can be called from any `NSManagedObjectContext` thread and are routed thro
 
 ## Quick start
 
-To start using the convenience methods on `NSManagedObject`, You need to configure a `CBRCloudBridge` instance. A `CBRCloudBridge` instance is responsible for bridging between a [CoreDataStack](https://github.com/OliverLetterer/SLCoreDataStack) and Your backend.
+To start using the convenience methods on `NSManagedObject`, You need to configure a `CBRCloudBridge` instance. A `CBRCloudBridge` instance is responsible for bridging between a [CoreDataStack](https://github.com/OliverLetterer/SLCoreDataStack) and your backend.
 
 ### 1. Implement Your CoreDataStack
 
-Because setting up a correct and responsible CoreData stack can be challaging, `CloudBridge` relies on [SLCoreDataStack](https://github.com/OliverLetterer/SLCoreDataStack), which takes care of all the heavy lifting and edge cases for You. Implement Your application specific CoreData stack as a subclass of `SLCoreDataStack`:
+Because setting up a correct and responsible CoreData stack can be challaging, `CloudBridge` relies on [SLCoreDataStack](https://github.com/OliverLetterer/SLCoreDataStack), which takes care of all the heavy lifting and edge cases for you. Implement your application specific CoreData stack as a subclass of `SLCoreDataStack`:
 
 ```
 @interface MyCoreDataStack : SLCoreDataStack
@@ -52,14 +52,14 @@ Because setting up a correct and responsible CoreData stack can be challaging, `
 The actual communication with each Cloud backend is encapsulated in an object conforming to the `CBRCloudConnection` protocol
 and is shipped in it's own CocoaPod dependency.
 
-If You want to connect to a CloudKit backend, add `pod 'CBRCloudKitConnection'` to Your Podfile.
-If You want to connect to a RESTful JSON backend, add `pod 'CBRRESTConnection'` to Your Podfile.
+If you want to connect to a CloudKit backend, add `pod 'CBRCloudKitConnection'` to Your Podfile.
+If you want to connect to a RESTful JSON backend, add `pod 'CBRRESTConnection'` to Your Podfile.
 
 More information can be found in the [CBRRESTConnection](https://github.com/Cloud-Bridge/CBRRESTConnection) or [CBRCloudKitConnection](https://github.com/Cloud-Bridge/CBRCloudKitConnection) documentation.
 
 ### 3. Setup Your CloudBridge
 
-As a last step, setup Your CloudBridge stack as follows:
+As a last step, setup your CloudBridge stack as follows:
 
 #### CloudKit backend
 ```
