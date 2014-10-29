@@ -3,6 +3,8 @@
 #endif
 
 #import "Pods-CloudBridge-environment.h"
-#ifndef NS_DESIGNATED_INITIALIZER
-#define NS_DESIGNATED_INITIALIZER
+#ifndef NS_BLOCK_ASSERTIONS
+#define __assert_unused
+#else
+#define __assert_unused __unused
 #endif

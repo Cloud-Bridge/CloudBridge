@@ -72,7 +72,7 @@
 
 - (void)fetchObjectForRelationship:(NSString *)relationship withCompletionHandler:(void(^)(id managedObject, NSError *error))completionHandler
 {
-    NSRelationshipDescription *relationshipDescription = self.entity.relationshipsByName[relationship];
+    __assert_unused NSRelationshipDescription *relationshipDescription = self.entity.relationshipsByName[relationship];
     NSParameterAssert(relationshipDescription);
     NSParameterAssert(!relationshipDescription.isToMany);
 
