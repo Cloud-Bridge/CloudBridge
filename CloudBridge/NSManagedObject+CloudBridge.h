@@ -56,7 +56,7 @@
  @warning Overriding this property is not recommended because all internal implementations go directly through the corresponding object transformer.
  @note To change the resulting `cloudObjectRepresentation`, override `-[NSManagedObject prepareCloudObject:]`.
  */
-@property (nonatomic, readonly) id<CBRCloudObject> cloudObjectRepresentation;
+@property (nonatomic, readonly) id /*<CBRCloudObject>*/ cloudObjectRepresentation;
 
 /**
  Convenience method to transform a cloud object into a managed object.
