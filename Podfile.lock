@@ -1,0 +1,23 @@
+PODS:
+  - CBRManagedObjectCache (1.3.0)
+  - CloudBridge (0.10.5):
+    - CBRManagedObjectCache (~> 1.3)
+    - SLCoreDataStack (~> 0.8)
+  - Expecta (0.3.1)
+  - SLCoreDataStack (0.8.7)
+
+DEPENDENCIES:
+  - CloudBridge (from `.`)
+  - Expecta
+
+EXTERNAL SOURCES:
+  CloudBridge:
+    :path: .
+
+SPEC CHECKSUMS:
+  CBRManagedObjectCache: 8ef33932382421d783041d39ca2c0f30942661a5
+  CloudBridge: 02c44ad2dc31e5e8db0a7886c6eaad34383ed3bc
+  Expecta: 03aabd0a89d8dea843baecb19a7fd7466a69a31d
+  SLCoreDataStack: ff248efc5bcf04ce03e25064a84fb4954cdeccef
+
+COCOAPODS: 0.35.0

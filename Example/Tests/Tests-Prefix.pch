@@ -4,9 +4,9 @@
 //  The contents of this file are implicitly included at the beginning of every test case source file.
 //
 
-#define EXP_SHORTHAND
+#ifdef __OBJC__
+
+  #define EXP_SHORTHAND
 #import <Expecta/Expecta.h>
 
-#ifndef NS_DESIGNATED_INITIALIZER
-#define NS_DESIGNATED_INITIALIZER
 #endif

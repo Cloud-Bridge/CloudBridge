@@ -2,7 +2,7 @@
 //  main.m
 //  CloudBridge
 //
-//  Created by Oliver Letterer on 08/11/2014.
+//  Created by Oliver Letterer on 01/01/2015.
 //  Copyright (c) 2014 Oliver Letterer. All rights reserved.
 //
 
