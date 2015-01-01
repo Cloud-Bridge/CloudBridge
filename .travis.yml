@@ -1,7 +1,6 @@
-# reference: http://www.objc.io/issue-6/travis-ci.html
-
 language: objective-c
 before_install:
-  - gem install xcpretty
+  - gem update xcpretty cocoapods
+  - pod update
 script:
-- xcodebuild -workspace Example/CloudBridge.xcworkspace -scheme CloudBridge test -sdk iphonesimulator -configuration Release | xcpretty -c; exit ${PIPESTATUS[0]}
+- xcodebuild -workspace CloudBridge.xcworkspace -scheme CloudBridge test -sdk iphonesimulator -configuration Release | xcpretty -c; exit ${PIPESTATUS[0]}
