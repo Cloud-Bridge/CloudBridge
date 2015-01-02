@@ -3,7 +3,7 @@
 //  CloudBridge
 //
 //  Created by CocoaPods on 01/01/2015.
-//  Copyright (c) 2014 Oliver Letterer. All rights reserved.
+//  Copyright (c) 2015 Oliver Letterer. All rights reserved.
 //
 
 #import "CBRAppDelegate.h"

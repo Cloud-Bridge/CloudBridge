@@ -1,6 +1,6 @@
 /**
  CloudBridge
- Copyright (c) 2014 Oliver Letterer <oliver.letterer@gmail.com>, Sparrow-Labs
+ Copyright (c) 2015 Oliver Letterer <oliver.letterer@gmail.com>, Sparrow-Labs
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -21,29 +21,26 @@
  THE SOFTWARE.
  */
 
-@import CoreData;
-
+#import <CoreData/CoreData.h>
 #import <CBRCloudConnection.h>
+#import <CBRDatabaseAdapter.h>
 #import <SLCoreDataStack.h>
 
 
 
 /**
- Bridges between the CoreData stack and the cloud backend.
+ Bridges between a persistent database layer and a cloud backend.
  */
 @interface CBRCloudBridge : NSObject
 
 @property (nonatomic, readonly) id<CBRCloudConnection> cloudConnection;
-@property (nonatomic, readonly) SLCoreDataStack *coreDataStack;
+@property (nonatomic, readonly) id<CBRDatabaseAdapter> databaseAdapter;
 
 @property (nonatomic, assign) BOOL transformsManagedObjectsSynchronous;
 
-@property (nonatomic, readonly) NSManagedObjectContext *mainThreadManagedObjectContext;
-@property (nonatomic, readonly) NSManagedObjectContext *backgroundThreadManagedObjectContext;
-
 - (instancetype)init UNAVAILABLE_ATTRIBUTE;
 - (instancetype)initWithCloudConnection:(id<CBRCloudConnection>)cloudConnection
-                          coreDataStack:(SLCoreDataStack *)coreDataStack NS_DESIGNATED_INITIALIZER;
+                        databaseAdapter:(id<CBRDatabaseAdapter>)databaseAdapter NS_DESIGNATED_INITIALIZER;
 
 - (void)fetchManagedObjectsOfType:(NSString *)entity
                     withPredicate:(NSPredicate *)predicate
@@ -63,5 +60,17 @@
 - (void)reloadManagedObject:(NSManagedObject *)managedObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(id managedObject, NSError *error))completionHandler;
 - (void)saveManagedObject:(NSManagedObject *)managedObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(id managedObject, NSError *error))completionHandler;
 - (void)deleteManagedObject:(NSManagedObject *)managedObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(NSError *error))completionHandler;
+
+@end
+
+
+
+@interface CBRCloudBridge (Deprecated)
+
+@property (nonatomic, readonly) NSManagedObjectContext *mainThreadManagedObjectContext DEPRECATED_ATTRIBUTE;
+@property (nonatomic, readonly) NSManagedObjectContext *backgroundThreadManagedObjectContext DEPRECATED_ATTRIBUTE;
+
+@property (nonatomic, readonly) SLCoreDataStack *coreDataStack DEPRECATED_ATTRIBUTE;
+- (instancetype)initWithCloudConnection:(id<CBRCloudConnection>)cloudConnection coreDataStack:(SLCoreDataStack *)coreDataStack DEPRECATED_ATTRIBUTE;
 
 @end

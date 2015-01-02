@@ -1,6 +1,6 @@
 /**
  CloudBridge
- Copyright (c) 2014 Oliver Letterer <oliver.letterer@gmail.com>, Sparrow-Labs
+ Copyright (c) 2015 Oliver Letterer <oliver.letterer@gmail.com>, Sparrow-Labs
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -39,7 +39,8 @@
 - (void)reenableOnlineModeWithCompletionHandler:(void(^)(NSError *error))completionHandler;
 
 @property (nonatomic, readonly) id<CBROfflineCapableCloudConnection> cloudConnection;
-- (instancetype)initWithCloudConnection:(id<CBROfflineCapableCloudConnection>)cloudConnection coreDataStack:(SLCoreDataStack *)coreDataStack;
+- (instancetype)initWithCloudConnection:(id<CBROfflineCapableCloudConnection>)cloudConnection
+                        databaseAdapter:(id<CBRDatabaseAdapter>)databaseAdapter NS_DESIGNATED_INITIALIZER;
 
 - (void)createManagedObject:(NSManagedObject<CBROfflineCapableManagedObject> *)managedObject
                withUserInfo:(NSDictionary *)userInfo
@@ -52,5 +53,13 @@
 - (void)deleteManagedObject:(NSManagedObject<CBROfflineCapableManagedObject> *)managedObject
                withUserInfo:(NSDictionary *)userInfo
           completionHandler:(void(^)(NSError *error))completionHandler;
+
+@end
+
+
+
+@interface CBROfflineCapableCloudBridge (Deprecated)
+
+- (instancetype)initWithCloudConnection:(id<CBROfflineCapableCloudConnection>)cloudConnection coreDataStack:(SLCoreDataStack *)coreDataStack DEPRECATED_ATTRIBUTE;
 
 @end

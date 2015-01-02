@@ -1,6 +1,6 @@
 /**
  CloudBridge
- Copyright (c) 2014 Oliver Letterer <oliver.letterer@gmail.com>, Sparrow-Labs
+ Copyright (c) 2015 Oliver Letterer <oliver.letterer@gmail.com>, Sparrow-Labs
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,8 @@
  */
 
 #import "CBROfflineCapableCloudBridge.h"
-#import "NSManagedObject+CloudBridge.h"
+#import "CBRPersistentObject.h"
+#import "SLCoreDataStack+CBRDatabaseAdapter.h"
 
 @implementation CBRDeletedObjectIdentifier
 
@@ -133,9 +134,15 @@
 
 #pragma mark - Initialization
 
+- (instancetype)initWithCloudConnection:(id<CBROfflineCapableCloudConnection>)cloudConnection
+                        databaseAdapter:(id<CBRDatabaseAdapter>)databaseAdapter
+{
+    return [super initWithCloudConnection:cloudConnection databaseAdapter:databaseAdapter];
+}
+
 - (instancetype)initWithCloudConnection:(id<CBROfflineCapableCloudConnection>)cloudConnection coreDataStack:(SLCoreDataStack *)coreDataStack
 {
-    return [super initWithCloudConnection:cloudConnection coreDataStack:coreDataStack];
+    return [self initWithCloudConnection:cloudConnection databaseAdapter:coreDataStack];
 }
 
 #pragma mark - CBRCloudBridge

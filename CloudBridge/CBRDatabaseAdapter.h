@@ -1,6 +1,6 @@
 /**
  CloudBridge
- Copyright (c) 2014 Oliver Letterer <oliver.letterer@gmail.com>, Sparrow-Labs
+ Copyright (c) 2015 Oliver Letterer <oliver.letterer@gmail.com>, Sparrow-Labs
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -21,44 +21,15 @@
  THE SOFTWARE.
  */
 
-#import "NSManagedObject+CloudBridgeSubclassHooks.h"
-#import <NSManagedObject+CloudBridge.h>
+#import <Foundation/Foundation.h>
 
-@implementation NSManagedObject (CloudBridgeSubclassHooks)
 
-- (void)awakeFromCloudFetch
-{
 
-}
+/**
+ @abstract  <#abstract comment#>
+ */
+@protocol CBRDatabaseAdapter <NSObject>
 
-+ (id<CBRCloudObject>)prepareForUpdateWithCloudObject:(id<CBRCloudObject>)cloudObject
-{
-    return cloudObject;
-}
-
-- (void)prepareForUpdateWithCloudObject:(id<CBRCloudObject>)cloudObject
-{
-    
-}
-
-- (void)finalizeUpdateWithCloudObject:(id<CBRCloudObject>)cloudObject
-{
-    
-}
-
-- (id<CBRCloudObject>)finalizeCloudObject:(id<CBRCloudObject>)cloudObject
-{
-    return cloudObject;
-}
-
-- (void)setCloudValue:(id)value forKey:(NSString *)key fromCloudObject:(id<CBRCloudObject>)cloudObject
-{
-    [self setValue:value forKey:key];
-}
-
-- (id)cloudValueForKey:(NSString *)key
-{
-    return [self valueForKey:key];
-}
+- (void)deletePersistentObjects:(NSArray *)persistentObjects withCompletionHandler:(void(^)(NSError *error))completionHandler;
 
 @end

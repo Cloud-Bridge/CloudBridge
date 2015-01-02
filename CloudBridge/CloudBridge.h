@@ -1,6 +1,6 @@
 /**
  CloudBridge
- Copyright (c) 2014 Oliver Letterer <oliver.letterer@gmail.com>, Sparrow-Labs
+ Copyright (c) 2015 Oliver Letterer <oliver.letterer@gmail.com>, Sparrow-Labs
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,8 @@
  THE SOFTWARE.
  */
 
-@import CoreData;
+#import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
 
 #import <SLCoreDataStack.h>
 #import <CBRManagedObjectCache.h>
@@ -29,9 +30,10 @@
 #import <CBRCloudBridge.h>
 #import <CBRCloudObject.h>
 #import <CBRCloudConnection.h>
+#import <CBRDatabaseAdapter.h>
+#import <CBRPersistentObject.h>
 
-#import <NSManagedObject+CloudBridgeSubclassHooks.h>
-#import <NSManagedObject+CloudBridge.h>
+#import <SLCoreDataStack+CBRDatabaseAdapter.h>
 #import <NSRelationshipDescription+CloudBridge.h>
 #import <CBRManagedObjectToCloudObjectTransformer.h>
 

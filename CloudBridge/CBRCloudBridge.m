@@ -1,6 +1,6 @@
 /**
  CloudBridge
- Copyright (c) 2014 Oliver Letterer <oliver.letterer@gmail.com>, Sparrow-Labs
+ Copyright (c) 2015 Oliver Letterer <oliver.letterer@gmail.com>, Sparrow-Labs
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,7 @@
 
 #import "CBRCloudBridge.h"
 #import "NSRelationshipDescription+CloudBridge.h"
+#import "SLCoreDataStack+CBRDatabaseAdapter.h"
 
 @interface _CBRCloudBridgePredicateDescription : NSObject
 
@@ -96,17 +97,33 @@
     return self.coreDataStack.backgroundThreadManagedObjectContext;
 }
 
+- (SLCoreDataStack *)coreDataStack
+{
+    if ([self.databaseAdapter isKindOfClass:[SLCoreDataStack class]]) {
+        return (SLCoreDataStack *)self.databaseAdapter;
+    }
+
+    [self doesNotRecognizeSelector:_cmd];
+    return nil;
+}
+
 #pragma mark - Initialization
 
-- (instancetype)initWithCloudConnection:(id<CBRCloudConnection>)cloudConnection coreDataStack:(SLCoreDataStack *)coreDataStack
+- (instancetype)initWithCloudConnection:(id<CBRCloudConnection>)cloudConnection
+                        databaseAdapter:(id<CBRDatabaseAdapter>)databaseAdapter
 {
     NSParameterAssert(cloudConnection);
 
     if (self = [super init]) {
         _cloudConnection = cloudConnection;
-        _coreDataStack = coreDataStack;
+        _databaseAdapter = databaseAdapter;
     }
     return self;
+}
+
+- (instancetype)initWithCloudConnection:(id<CBRCloudConnection>)cloudConnection coreDataStack:(SLCoreDataStack *)coreDataStack
+{
+    return [self initWithCloudConnection:cloudConnection databaseAdapter:coreDataStack];
 }
 
 #pragma mark - Instance methods
@@ -332,7 +349,6 @@
         NSAssert(saveError == nil, @"error saving NSManagedObjectContext: %@", saveError);
     }
 
-    NSManagedObjectContext *context = self.backgroundThreadManagedObjectContext;
     [self _transformManagedObject:managedObject toCloudObjectWithCompletionHandler:^(id<CBRCloudObject> cloudObject) {
         [self.cloudConnection deleteCloudObject:cloudObject forManagedObject:managedObject withUserInfo:userInfo completionHandler:^(NSError *error) {
             if (error) {
@@ -342,19 +358,7 @@
                 return;
             }
 
-            [context performBlock:^(NSManagedObject *backgroundManagedObject) {
-                [context deleteObject:backgroundManagedObject];
-
-                NSError *saveError = nil;
-                [context save:&saveError];
-                NSAssert(saveError == nil, @"error saving NSManagedObjectContext: %@", saveError);
-
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    if (completionHandler) {
-                        completionHandler(nil);
-                    }
-                });
-            } withObject:managedObject];
+            [self.databaseAdapter deletePersistentObjects:@[ managedObject ] withCompletionHandler:completionHandler];
         }];
     }];
 }

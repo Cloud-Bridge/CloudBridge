@@ -1,6 +1,6 @@
 /**
  CloudBridge
- Copyright (c) 2014 Oliver Letterer <oliver.letterer@gmail.com>, Sparrow-Labs
+ Copyright (c) 2015 Oliver Letterer <oliver.letterer@gmail.com>, Sparrow-Labs
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -21,13 +21,14 @@
  THE SOFTWARE.
  */
 
-@import CoreData;
+#import <Foundation/Foundation.h>
 
-#import <CBRCloudObject.h>
+@class CBRCloudBridge;
+@protocol CBRCloudObject;
 
 
 
-@interface NSManagedObject (CloudBridgeSubclassHooks)
+@protocol CBRPersistentObjectSubclassHooks
 
 /**
  Called when inserted after a cloud fetch.
@@ -63,5 +64,33 @@
  Returns a cloud value for a given key.
  */
 - (id)cloudValueForKey:(NSString *)key;
+
+@end
+
+
+
+@protocol CBRPersistentObjectQueryInterface
+
++ (void)fetchObjectsMatchingPredicate:(NSPredicate *)predicate
+                withCompletionHandler:(void(^)(NSArray *fetchedObjects, NSError *error))completionHandler;
+
+- (void)createWithCompletionHandler:(void(^)(id managedObject, NSError *error))completionHandler;
+- (void)reloadWithCompletionHandler:(void(^)(id managedObject, NSError *error))completionHandler;
+- (void)saveWithCompletionHandler:(void(^)(id managedObject, NSError *error))completionHandler;
+- (void)deleteWithCompletionHandler:(void(^)(NSError *error))completionHandler;
+
+@end
+
+
+
+/**
+ @abstract  <#abstract comment#>
+ */
+@protocol CBRPersistentObject <CBRPersistentObjectSubclassHooks, CBRPersistentObjectQueryInterface, NSObject>
+
++ (CBRCloudBridge *)cloudBridge;
++ (void)setCloudBridge:(CBRCloudBridge *)cloudBridge;
+
+@property (nonatomic, readonly) CBRCloudBridge *cloudBridge;
 
 @end
