@@ -23,6 +23,8 @@
 
 #import <Foundation/Foundation.h>
 
+@protocol CBRPersistentObject;
+
 
 
 /**
@@ -30,6 +32,15 @@
  */
 @protocol CBRDatabaseAdapter <NSObject>
 
+@optional
+- (void)prepareForMutationWithPersistentObject:(id<CBRPersistentObject>)persistentObject;
+
+@required
+- (void)mutatePersistentObject:(id<CBRPersistentObject>)persitentObject
+                     withBlock:(void(^)(id<CBRPersistentObject> persistentObject))mutation
+                    completion:(void(^)(id<CBRPersistentObject> persistentObject))completion;
+
+@required
 - (void)deletePersistentObjects:(NSArray *)persistentObjects withCompletionHandler:(void(^)(NSError *error))completionHandler;
 
 @end

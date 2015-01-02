@@ -155,6 +155,33 @@
 
 @implementation SLCoreDataStack (CBRDatabaseAdapter)
 
+- (void)prepareForMutationWithPersistentObject:(NSManagedObject *)persistentObject
+{
+    if (persistentObject.hasChanges || persistentObject.isInserted) {
+        NSError *saveError = nil;
+        [persistentObject.managedObjectContext save:&saveError];
+        NSCAssert(saveError == nil, @"error saving managed object context: %@", saveError);
+    }
+}
+
+- (void)mutatePersistentObject:(NSManagedObject *)persitentObject
+                     withBlock:(void(^)(NSManagedObject *persistentObject))mutation
+                    completion:(void(^)(NSManagedObject *persistentObject))completion
+{
+    NSParameterAssert(mutation);
+    NSParameterAssert(completion);
+
+    [self.backgroundThreadManagedObjectContext performBlock:^(NSManagedObject *object) {
+        mutation(object);
+
+        NSError *saveError = nil;
+        [self.backgroundThreadManagedObjectContext save:&saveError];
+        NSCAssert(saveError == nil, @"error saving managed object context: %@", saveError);
+
+        [self.mainThreadManagedObjectContext performBlock:completion withObject:object];
+    } withObject:persitentObject];
+}
+
 - (void)deletePersistentObjects:(NSArray *)persistentObjects withCompletionHandler:(void(^)(NSError *error))completionHandler
 {
     NSManagedObjectContext *context = self.backgroundThreadManagedObjectContext;

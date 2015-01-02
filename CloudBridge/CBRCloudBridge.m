@@ -233,13 +233,10 @@
 
 - (void)createManagedObject:(NSManagedObject *)managedObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(id managedObject, NSError *error))completionHandler
 {
-    if (managedObject.hasChanges || managedObject.isInserted) {
-        NSError *saveError = nil;
-        [managedObject.managedObjectContext save:&saveError];
-        NSAssert(saveError == nil, @"error saving NSManagedObjectContext: %@", saveError);
+    if ([self.databaseAdapter respondsToSelector:@selector(prepareForMutationWithPersistentObject:)]) {
+        [self.databaseAdapter prepareForMutationWithPersistentObject:managedObject];
     }
 
-    NSManagedObjectContext *context = self.backgroundThreadManagedObjectContext;
     [self _transformManagedObject:managedObject toCloudObjectWithCompletionHandler:^(id<CBRCloudObject> cloudObject) {
         [self.cloudConnection createCloudObject:cloudObject forManagedObject:managedObject withUserInfo:userInfo completionHandler:^(id<CBRCloudObject> cloudObject, NSError *error) {
             if (error) {
@@ -249,35 +246,25 @@
                 return;
             }
 
-            if (managedObject.hasChanges || managedObject.isInserted) {
-                NSError *saveError = nil;
-                [managedObject.managedObjectContext save:&saveError];
-                NSAssert(saveError == nil, @"error saving NSManagedObjectContext: %@", saveError);
+            if ([self.databaseAdapter respondsToSelector:@selector(prepareForMutationWithPersistentObject:)]) {
+                [self.databaseAdapter prepareForMutationWithPersistentObject:managedObject];
             }
 
-            [context performBlock:^(NSManagedObject *backgroundManagedObject) {
-                [self.cloudConnection.objectTransformer updateManagedObject:backgroundManagedObject withPropertiesFromCloudObject:cloudObject];
-
-                NSError *saveError = nil;
-                [context save:&saveError];
-                NSAssert(saveError == nil, @"error saving NSManagedObjectContext: %@", saveError);
-
-                [self.mainThreadManagedObjectContext performBlock:^(NSManagedObject *mainManagedObject) {
-                    if (completionHandler) {
-                        completionHandler(mainManagedObject, nil);
-                    }
-                } withObject:backgroundManagedObject];
-            } withObject:managedObject];
+            [self.databaseAdapter mutatePersistentObject:managedObject withBlock:^(id<CBRPersistentObject> persistentObject) {
+                [self.cloudConnection.objectTransformer updateManagedObject:persistentObject withPropertiesFromCloudObject:cloudObject];
+            } completion:^(id<CBRPersistentObject> persistentObject) {
+                if (completionHandler) {
+                    completionHandler(persistentObject, nil);
+                }
+            }];
         }];
     }];
 }
 
 - (void)reloadManagedObject:(NSManagedObject *)managedObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(id managedObject, NSError *error))completionHandler
 {
-    if (managedObject.hasChanges || managedObject.isInserted) {
-        NSError *saveError = nil;
-        [managedObject.managedObjectContext save:&saveError];
-        NSAssert(saveError == nil, @"error saving NSManagedObjectContext: %@", saveError);
+    if ([self.databaseAdapter respondsToSelector:@selector(prepareForMutationWithPersistentObject:)]) {
+        [self.databaseAdapter prepareForMutationWithPersistentObject:managedObject];
     }
 
     [self.cloudConnection latestCloudObjectForManagedObject:managedObject withUserInfo:userInfo completionHandler:^(id<CBRCloudObject> cloudObject, NSError *error) {
@@ -288,32 +275,22 @@
             return;
         }
 
-        NSManagedObjectContext *context = self.backgroundThreadManagedObjectContext;
-        [context performBlock:^(NSManagedObject *backgroundManagedObject) {
-            [self.cloudConnection.objectTransformer updateManagedObject:backgroundManagedObject withPropertiesFromCloudObject:cloudObject];
-
-            NSError *saveError = nil;
-            [context save:&saveError];
-            NSAssert(saveError == nil, @"error saving NSManagedObjectContext: %@", saveError);
-
-            [self.mainThreadManagedObjectContext performBlock:^(NSManagedObject *mainManagedObject) {
-                if (completionHandler) {
-                    completionHandler(mainManagedObject, nil);
-                }
-            } withObject:backgroundManagedObject];
-        } withObject:managedObject];
+        [self.databaseAdapter mutatePersistentObject:managedObject withBlock:^(id<CBRPersistentObject> persistentObject) {
+            [self.cloudConnection.objectTransformer updateManagedObject:persistentObject withPropertiesFromCloudObject:cloudObject];
+        } completion:^(id<CBRPersistentObject> persistentObject) {
+            if (completionHandler) {
+                completionHandler(persistentObject, nil);
+            }
+        }];
     }];
 }
 
 - (void)saveManagedObject:(NSManagedObject *)managedObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(id managedObject, NSError *error))completionHandler
 {
-    if (managedObject.hasChanges || managedObject.isInserted) {
-        NSError *saveError = nil;
-        [managedObject.managedObjectContext save:&saveError];
-        NSAssert(saveError == nil, @"error saving NSManagedObjectContext: %@", saveError);
+    if ([self.databaseAdapter respondsToSelector:@selector(prepareForMutationWithPersistentObject:)]) {
+        [self.databaseAdapter prepareForMutationWithPersistentObject:managedObject];
     }
 
-    NSManagedObjectContext *context = self.backgroundThreadManagedObjectContext;
     [self _transformManagedObject:managedObject toCloudObjectWithCompletionHandler:^(id<CBRCloudObject> cloudObject) {
         [self.cloudConnection saveCloudObject:cloudObject forManagedObject:managedObject withUserInfo:userInfo completionHandler:^(id<CBRCloudObject> cloudObject, NSError *error) {
             if (error) {
@@ -323,19 +300,13 @@
                 return;
             }
 
-            [context performBlock:^(NSManagedObject *backgroundManagedObject) {
-                [self.cloudConnection.objectTransformer updateManagedObject:backgroundManagedObject withPropertiesFromCloudObject:cloudObject];
-
-                NSError *saveError = nil;
-                [context save:&saveError];
-                NSAssert(saveError == nil, @"error saving NSManagedObjectContext: %@", saveError);
-
-                [self.mainThreadManagedObjectContext performBlock:^(NSManagedObject *mainManagedObject) {
-                    if (completionHandler) {
-                        completionHandler(mainManagedObject, nil);
-                    }
-                } withObject:backgroundManagedObject];
-            } withObject:managedObject];
+            [self.databaseAdapter mutatePersistentObject:managedObject withBlock:^(id<CBRPersistentObject> persistentObject) {
+                [self.cloudConnection.objectTransformer updateManagedObject:persistentObject withPropertiesFromCloudObject:cloudObject];
+            } completion:^(id<CBRPersistentObject> persistentObject) {
+                if (completionHandler) {
+                    completionHandler(persistentObject, nil);
+                }
+            }];
         }];
     }];
 
@@ -343,10 +314,8 @@
 
 - (void)deleteManagedObject:(NSManagedObject *)managedObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(NSError *error))completionHandler
 {
-    if (managedObject.hasChanges || managedObject.isInserted) {
-        NSError *saveError = nil;
-        [managedObject.managedObjectContext save:&saveError];
-        NSAssert(saveError == nil, @"error saving NSManagedObjectContext: %@", saveError);
+    if ([self.databaseAdapter respondsToSelector:@selector(prepareForMutationWithPersistentObject:)]) {
+        [self.databaseAdapter prepareForMutationWithPersistentObject:managedObject];
     }
 
     [self _transformManagedObject:managedObject toCloudObjectWithCompletionHandler:^(id<CBRCloudObject> cloudObject) {
@@ -373,14 +342,12 @@
         return completionHandler([self.cloudConnection.objectTransformer cloudObjectFromManagedObject:managedObject]);
     }
 
-    NSManagedObjectContext *context = self.backgroundThreadManagedObjectContext;
-    [context performBlock:^(NSManagedObject *backgroundManagedObject) {
-        id<CBRCloudObject> cloudObject = [self.cloudConnection.objectTransformer cloudObjectFromManagedObject:backgroundManagedObject];
-
-        [managedObject.managedObjectContext performBlock:^{
-            completionHandler(cloudObject);
-        }];
-    } withObject:managedObject];
+    __block id<CBRCloudObject> cloudObject = nil;
+    [self.databaseAdapter mutatePersistentObject:managedObject withBlock:^(id<CBRPersistentObject> persistentObject) {
+        cloudObject = [self.cloudConnection.objectTransformer cloudObjectFromManagedObject:persistentObject];
+    } completion:^(id<CBRPersistentObject> persistentObject) {
+        completionHandler(cloudObject);
+    }];
 }
 
 @end
