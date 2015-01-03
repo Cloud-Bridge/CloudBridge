@@ -23,7 +23,7 @@
 
 #import "CBROfflineCapableCloudBridge.h"
 #import "CBRPersistentObject.h"
-#import "SLCoreDataStack+CBRDatabaseAdapter.h"
+#import "CBRCoreDataDatabaseAdapter.h"
 
 @implementation CBRDeletedObjectIdentifier
 
@@ -142,7 +142,7 @@
 
 - (instancetype)initWithCloudConnection:(id<CBROfflineCapableCloudConnection>)cloudConnection coreDataStack:(SLCoreDataStack *)coreDataStack
 {
-    return [self initWithCloudConnection:cloudConnection databaseAdapter:coreDataStack];
+    return [self initWithCloudConnection:cloudConnection databaseAdapter:[[CBRCoreDataDatabaseAdapter alloc] initWithCoreDataStack:coreDataStack]];
 }
 
 #pragma mark - CBRCloudBridge

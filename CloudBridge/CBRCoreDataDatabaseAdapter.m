@@ -1,14 +1,31 @@
-//
-//  SLCoreDataStack+CBRDatabaseAdapter.m
-//  Pods
-//
-//  Created by Oliver Letterer.
-//  Copyright (c) 2015 __MyCompanyName__. All rights reserved.
-//
+/**
+ CloudBridge
+ Copyright (c) 2015 Oliver Letterer <oliver.letterer@gmail.com>, Sparrow-Labs
 
-#import "SLCoreDataStack+CBRDatabaseAdapter.h"
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+
+ The above copyright notice and this permission notice shall be included in
+ all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ THE SOFTWARE.
+ */
+
 #import <objc/runtime.h>
+#import "CBRCoreDataDatabaseAdapter.h"
 #import "CBRCloudBridge.h"
+
+
 
 @implementation NSManagedObject (CBRPersistentObject)
 
@@ -153,7 +170,25 @@
 
 @end
 
-@implementation SLCoreDataStack (CBRDatabaseAdapter)
+
+
+@implementation CBRCoreDataDatabaseAdapter
+
+- (instancetype)initWithMainThreadContext:(NSManagedObjectContext *)mainContext backgroundThreadContext:(NSManagedObjectContext *)backgroundContext
+{
+    if (self = [super init]) {
+        _mainThreadContext = mainContext;
+        _backgroundThreadContext = backgroundContext;
+    }
+    return self;
+}
+
+- (instancetype)initWithCoreDataStack:(SLCoreDataStack *)coreDataStack
+{
+    return [self initWithMainThreadContext:coreDataStack.mainThreadManagedObjectContext backgroundThreadContext:coreDataStack.backgroundThreadManagedObjectContext];
+}
+
+#pragma mark - CBRDatabaseAdapter
 
 - (void)prepareForMutationWithPersistentObject:(NSManagedObject *)persistentObject
 {
@@ -165,26 +200,26 @@
 }
 
 - (void)mutatePersistentObject:(NSManagedObject *)persitentObject
-                     withBlock:(void(^)(NSManagedObject *persistentObject))mutation
-                    completion:(void(^)(NSManagedObject *persistentObject))completion
+                     withBlock:(void(^)(id<CBRPersistentObject> persistentObject))mutation
+                    completion:(void(^)(id<CBRPersistentObject> persistentObject))completion
 {
     NSParameterAssert(mutation);
     NSParameterAssert(completion);
 
-    [self.backgroundThreadManagedObjectContext performBlock:^(NSManagedObject *object) {
+    [self.backgroundThreadContext performBlock:^(NSManagedObject *object) {
         mutation(object);
 
         NSError *saveError = nil;
-        [self.backgroundThreadManagedObjectContext save:&saveError];
+        [self.backgroundThreadContext save:&saveError];
         NSCAssert(saveError == nil, @"error saving managed object context: %@", saveError);
 
-        [self.mainThreadManagedObjectContext performBlock:completion withObject:object];
+        [self.mainThreadContext performBlock:completion withObject:object];
     } withObject:persitentObject];
 }
 
 - (void)deletePersistentObjects:(NSArray *)persistentObjects withCompletionHandler:(void(^)(NSError *error))completionHandler
 {
-    NSManagedObjectContext *context = self.backgroundThreadManagedObjectContext;
+    NSManagedObjectContext *context = self.backgroundThreadContext;
     [context performBlock:^(NSArray *objects) {
         for (NSManagedObject *managedObject in objects) {
             [context deleteObject:managedObject];

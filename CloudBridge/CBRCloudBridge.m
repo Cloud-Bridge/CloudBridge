@@ -23,7 +23,7 @@
 
 #import "CBRCloudBridge.h"
 #import "NSRelationshipDescription+CloudBridge.h"
-#import "SLCoreDataStack+CBRDatabaseAdapter.h"
+#import "CBRCoreDataDatabaseAdapter.h"
 
 @interface _CBRCloudBridgePredicateDescription : NSObject
 
@@ -123,7 +123,7 @@
 
 - (instancetype)initWithCloudConnection:(id<CBRCloudConnection>)cloudConnection coreDataStack:(SLCoreDataStack *)coreDataStack
 {
-    return [self initWithCloudConnection:cloudConnection databaseAdapter:coreDataStack];
+    return [self initWithCloudConnection:cloudConnection databaseAdapter:[[CBRCoreDataDatabaseAdapter alloc] initWithCoreDataStack:coreDataStack]];
 }
 
 #pragma mark - Instance methods
