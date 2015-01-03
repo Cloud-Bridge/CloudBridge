@@ -70,7 +70,7 @@
 @property (nonatomic, readonly) NSManagedObjectContext *mainThreadManagedObjectContext DEPRECATED_ATTRIBUTE;
 @property (nonatomic, readonly) NSManagedObjectContext *backgroundThreadManagedObjectContext DEPRECATED_ATTRIBUTE;
 
-@property (nonatomic, readonly) SLCoreDataStack *coreDataStack DEPRECATED_ATTRIBUTE;
+@property (nonatomic, readonly) SLCoreDataStack *coreDataStack UNAVAILABLE_ATTRIBUTE;
 - (instancetype)initWithCloudConnection:(id<CBRCloudConnection>)cloudConnection coreDataStack:(SLCoreDataStack *)coreDataStack DEPRECATED_ATTRIBUTE;
 
 @end

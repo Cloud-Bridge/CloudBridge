@@ -142,7 +142,8 @@
 
 - (instancetype)initWithCloudConnection:(id<CBROfflineCapableCloudConnection>)cloudConnection coreDataStack:(SLCoreDataStack *)coreDataStack
 {
-    return [self initWithCloudConnection:cloudConnection databaseAdapter:[[CBRCoreDataDatabaseAdapter alloc] initWithCoreDataStack:coreDataStack]];
+    CBRCoreDataDatabaseAdapter *adapter = [[CBRCoreDataDatabaseAdapter alloc] initWithCoreDataStack:coreDataStack];
+    return [self initWithCloudConnection:cloudConnection databaseAdapter:adapter];
 }
 
 #pragma mark - CBRCloudBridge

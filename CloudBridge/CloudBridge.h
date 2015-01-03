@@ -33,7 +33,7 @@
 #import <CBRPersistentObject.h>
 
 #import <CBRDatabaseAdapter.h>
-#import <SLCoreDataStack.h>
+#import <CBRCoreDataDatabaseAdapter.h>
 
 #import <NSRelationshipDescription+CloudBridge.h>
 #import <CBRManagedObjectToCloudObjectTransformer.h>

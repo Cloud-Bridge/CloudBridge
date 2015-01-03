@@ -89,18 +89,20 @@
 
 - (NSManagedObjectContext *)mainThreadManagedObjectContext
 {
-    return self.coreDataStack.mainThreadManagedObjectContext;
+    if ([self.databaseAdapter isKindOfClass:[CBRCoreDataDatabaseAdapter class]]) {
+        CBRCoreDataDatabaseAdapter *adapter = (CBRCoreDataDatabaseAdapter *)self.databaseAdapter;
+        return adapter.mainThreadContext;
+    }
+
+    [self doesNotRecognizeSelector:_cmd];
+    return nil;
 }
 
 - (NSManagedObjectContext *)backgroundThreadManagedObjectContext
 {
-    return self.coreDataStack.backgroundThreadManagedObjectContext;
-}
-
-- (SLCoreDataStack *)coreDataStack
-{
-    if ([self.databaseAdapter isKindOfClass:[SLCoreDataStack class]]) {
-        return (SLCoreDataStack *)self.databaseAdapter;
+    if ([self.databaseAdapter isKindOfClass:[CBRCoreDataDatabaseAdapter class]]) {
+        CBRCoreDataDatabaseAdapter *adapter = (CBRCoreDataDatabaseAdapter *)self.databaseAdapter;
+        return adapter.backgroundThreadContext;
     }
 
     [self doesNotRecognizeSelector:_cmd];
@@ -123,7 +125,8 @@
 
 - (instancetype)initWithCloudConnection:(id<CBRCloudConnection>)cloudConnection coreDataStack:(SLCoreDataStack *)coreDataStack
 {
-    return [self initWithCloudConnection:cloudConnection databaseAdapter:[[CBRCoreDataDatabaseAdapter alloc] initWithCoreDataStack:coreDataStack]];
+    CBRCoreDataDatabaseAdapter *adapter = [[CBRCoreDataDatabaseAdapter alloc] initWithCoreDataStack:coreDataStack];
+    return [self initWithCloudConnection:cloudConnection databaseAdapter:adapter];
 }
 
 #pragma mark - Instance methods
