@@ -210,7 +210,7 @@
         }
 
         NSEntityDescription *entity = self.managedObjectModel.entitiesByName[name];
-        CBREntityDescription *result = [[CBREntityDescription alloc] initWithCoreDataEntityDescription:entity];
+        CBREntityDescription *result = [[CBREntityDescription alloc] initWithDatabaseAdapter:self coreDataEntityDescription:entity];
         self.entitesByName[name] = result;
         return result;
     }

@@ -15,6 +15,7 @@
 #import "CBRTestConnection.h"
 
 @interface CBRCloudBridgeTests : CBRTestCase
+@property (nonatomic, strong) CBRCoreDataDatabaseAdapter *adapter;
 @property (nonatomic, strong) CBRCloudBridge *cloudBridge;
 @property (nonatomic, strong) CBRTestConnection *connection;
 @end
@@ -26,7 +27,8 @@
     [super setUp];
 
     self.connection = [[CBRTestConnection alloc] init];
-    self.cloudBridge = [[CBRCloudBridge alloc] initWithCloudConnection:self.connection coreDataStack:[CBRTestDataStore sharedInstance]];
+    self.adapter = [[CBRCoreDataDatabaseAdapter alloc] initWithCoreDataStack:[CBRTestDataStore sharedInstance]];
+    self.cloudBridge = [[CBRCloudBridge alloc] initWithCloudConnection:self.connection databaseAdapter:self.adapter];
     [NSManagedObject setCloudBridge:self.cloudBridge];
 }
 
@@ -37,7 +39,7 @@
 
 - (void)testThatSubclassesOverrideGlobalCloudBridge
 {
-    CBRCloudBridge *otherCloudBridge = [[CBRCloudBridge alloc] initWithCloudConnection:self.connection coreDataStack:[CBRTestDataStore sharedInstance]];
+    CBRCloudBridge *otherCloudBridge = [[CBRCloudBridge alloc] initWithCloudConnection:self.connection databaseAdapter:self.adapter];
     expect(otherCloudBridge).toNot.equal(self.cloudBridge);
 
     [SLEntity4 setCloudBridge:otherCloudBridge];

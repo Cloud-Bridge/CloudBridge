@@ -17,6 +17,7 @@
 @interface CBROfflineCapableCloudBridgeTests : CBRTestCase
 @property (nonatomic, strong) CBROfflineCapableCloudBridge *cloudBridge;
 @property (nonatomic, strong) CBRTestConnection *connection;
+@property (nonatomic, strong) CBRCoreDataDatabaseAdapter *adapter;
 @end
 
 @implementation CBROfflineCapableCloudBridgeTests
@@ -26,7 +27,8 @@
     [super setUp];
 
     self.connection = [[CBRTestConnection alloc] init];
-    self.cloudBridge = [[CBROfflineCapableCloudBridge alloc] initWithCloudConnection:self.connection coreDataStack:[CBRTestDataStore sharedInstance]];
+    self.adapter = [[CBRCoreDataDatabaseAdapter alloc] initWithCoreDataStack:[CBRTestDataStore sharedInstance]];
+    self.cloudBridge = [[CBROfflineCapableCloudBridge alloc] initWithCloudConnection:self.connection databaseAdapter:self.adapter];
     [NSManagedObject setCloudBridge:self.cloudBridge];
 
     [self.cloudBridge setValue:@NO forKey:NSStringFromSelector(@selector(isRunningInOfflineMode))];
