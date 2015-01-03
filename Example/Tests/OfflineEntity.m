@@ -10,9 +10,9 @@
 
 
 @implementation OfflineEntity
-
 @dynamic identifier;
 @dynamic hasPendingCloudBridgeChanges;
 @dynamic hasPendingCloudBridgeDeletion;
+@dynamic cloudObjectRepresentation, cloudBridge;
 
 @end

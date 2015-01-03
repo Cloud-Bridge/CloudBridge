@@ -22,44 +22,44 @@
  */
 
 #import <CBRCloudBridge.h>
-#import <CBROfflineCapableManagedObject.h>
+#import <CBROfflineCapablePersistentObject.h>
 #import <CBROfflineCapableCloudConnection.h>
 
 
 
 /**
- Entities which should benifit from the offline mode must conform to the `CBROfflineCapableManagedObject` protocol.
+ Entities which should benifit from the offline mode must conform to the `CBROfflineCapablePersistentObject` protocol.
  */
-//@interface CBROfflineCapableCloudBridge : CBRCloudBridge
-//
-//@property (nonatomic, readonly) BOOL isRunningInOfflineMode;
-//- (void)enableOfflineMode;
-//
-//@property (nonatomic, readonly) BOOL isReenablingOnlineMode;
-//- (void)reenableOnlineModeWithCompletionHandler:(void(^)(NSError *error))completionHandler;
-//
-//@property (nonatomic, readonly) id<CBROfflineCapableCloudConnection> cloudConnection;
-//- (instancetype)initWithCloudConnection:(id<CBROfflineCapableCloudConnection>)cloudConnection
-//                        databaseAdapter:(id<CBRDatabaseAdapter>)databaseAdapter NS_DESIGNATED_INITIALIZER;
-//
-//- (void)createManagedObject:(NSManagedObject<CBROfflineCapableManagedObject> *)managedObject
-//               withUserInfo:(NSDictionary *)userInfo
-//          completionHandler:(void(^)(id managedObject, NSError *error))completionHandler;
-//
-//- (void)saveManagedObject:(NSManagedObject<CBROfflineCapableManagedObject> *)managedObject
-//             withUserInfo:(NSDictionary *)userInfo
-//        completionHandler:(void(^)(id managedObject, NSError *error))completionHandler;
-//
-//- (void)deleteManagedObject:(NSManagedObject<CBROfflineCapableManagedObject> *)managedObject
-//               withUserInfo:(NSDictionary *)userInfo
-//          completionHandler:(void(^)(NSError *error))completionHandler;
-//
-//@end
-//
-//
-//
-//@interface CBROfflineCapableCloudBridge (Deprecated)
-//
-//- (instancetype)initWithCloudConnection:(id<CBROfflineCapableCloudConnection>)cloudConnection coreDataStack:(SLCoreDataStack *)coreDataStack DEPRECATED_ATTRIBUTE;
-//
-//@end
+@interface CBROfflineCapableCloudBridge : CBRCloudBridge
+
+@property (nonatomic, readonly) BOOL isRunningInOfflineMode;
+- (void)enableOfflineMode;
+
+@property (nonatomic, readonly) BOOL isReenablingOnlineMode;
+- (void)reenableOnlineModeWithCompletionHandler:(void(^)(NSError *error))completionHandler;
+
+@property (nonatomic, readonly) id<CBROfflineCapableCloudConnection> cloudConnection;
+- (instancetype)initWithCloudConnection:(id<CBROfflineCapableCloudConnection>)cloudConnection
+                        databaseAdapter:(id<CBRDatabaseAdapter>)databaseAdapter NS_DESIGNATED_INITIALIZER;
+
+- (void)createPersistentObject:(id<CBROfflineCapablePersistentObject>)persistentObject
+                  withUserInfo:(NSDictionary *)userInfo
+             completionHandler:(void(^)(id persistentObject, NSError *error))completionHandler;
+
+- (void)savePersistentObject:(id<CBROfflineCapablePersistentObject>)persistentObject
+                withUserInfo:(NSDictionary *)userInfo
+           completionHandler:(void(^)(id persistentObject, NSError *error))completionHandler;
+
+- (void)deletePersistentObject:(id<CBROfflineCapablePersistentObject>)persistentObject
+                  withUserInfo:(NSDictionary *)userInfo
+             completionHandler:(void(^)(NSError *error))completionHandler;
+
+@end
+
+
+
+@interface CBROfflineCapableCloudBridge (Deprecated)
+
+- (instancetype)initWithCloudConnection:(id<CBROfflineCapableCloudConnection>)cloudConnection coreDataStack:(SLCoreDataStack *)coreDataStack DEPRECATED_ATTRIBUTE;
+
+@end

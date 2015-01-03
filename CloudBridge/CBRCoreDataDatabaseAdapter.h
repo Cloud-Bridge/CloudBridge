@@ -45,12 +45,6 @@
  */
 + (instancetype)managedObjectFromCloudObject:(id<CBRCloudObject>)cloudObject inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 
-/**
- Convenience property to return the cloud representation for this object.
-
- @warning Overriding this property is not recommended because all internal implementations go directly through the corresponding object transformer.
- @note To change the resulting `cloudObjectRepresentation`, override `-[NSManagedObject prepareCloudObject:]`.
- */
 @property (nonatomic, readonly) id /*<CBRCloudObject>*/ cloudObjectRepresentation;
 
 @end

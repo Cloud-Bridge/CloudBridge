@@ -21,12 +21,15 @@
  THE SOFTWARE.
  */
 
+#import <Foundation/Foundation.h>
+#import <CBRPersistentObject.h>
+
 
 
 /**
- Any offline capable `NSManagedObject` subclass must conform to this protocol.
+ Any offline capable `CBRPersistentObject` subclass must conform to this protocol.
  */
-@protocol CBROfflineCapableManagedObject <NSObject>
+@protocol CBROfflineCapablePersistentObject <CBRPersistentObject>
 
 @property (nonatomic, strong) NSNumber *hasPendingCloudBridgeChanges;
 @property (nonatomic, strong) NSNumber *hasPendingCloudBridgeDeletion;

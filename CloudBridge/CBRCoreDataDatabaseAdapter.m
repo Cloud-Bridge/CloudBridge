@@ -202,6 +202,17 @@
 
 #pragma mark - CBRDatabaseAdapter
 
+- (NSArray *)entities
+{
+    NSMutableArray *result = [NSMutableArray array];
+
+    for (NSEntityDescription *entity in self.managedObjectModel.entities) {
+        [result addObject:[self entityDescriptionForClass:NSClassFromString(entity.name)]];
+    }
+
+    return result;
+}
+
 - (CBREntityDescription *)entityDescriptionForClass:(Class)persistentClass
 {
     @synchronized(self) {
@@ -217,7 +228,7 @@
     }
 }
 
-- (void)prepareForMutationWithPersistentObject:(NSManagedObject *)persistentObject
+- (void)saveChangesForPersistentObject:(NSManagedObject *)persistentObject
 {
     if (persistentObject.hasChanges || persistentObject.isInserted) {
         NSError *saveError = nil;
@@ -241,13 +252,12 @@
     return [context.cbr_cache objectOfType:entityDescription.name withValue:primaryKey forAttribute:attribute];
 }
 
-- (NSArray *)fetchObjectsOfType:(CBREntityDescription *)entityDescription withPredicate:(NSPredicate *)predicate sortDescriptors:(NSArray *)sortDescriptors
+- (NSArray *)fetchObjectsOfType:(CBREntityDescription *)entityDescription withPredicate:(NSPredicate *)predicate
 {
     NSManagedObjectContext *context = [NSThread currentThread].isMainThread ? self.mainThreadContext : self.backgroundThreadContext;
 
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:entityDescription.name];
     fetchRequest.predicate = predicate;
-    fetchRequest.sortDescriptors = sortDescriptors;
 
     return [context executeFetchRequest:fetchRequest error:NULL];
 }
@@ -257,7 +267,6 @@
                     completion:(void(^)(id<CBRPersistentObject> persistentObject))completion
 {
     NSParameterAssert(mutation);
-    NSParameterAssert(completion);
 
     NSManagedObjectContext *context = self.backgroundThreadContext;
     [context performBlock:^(NSManagedObject *object) {
@@ -267,7 +276,11 @@
         [context save:&saveError];
         NSCAssert(saveError == nil, @"error saving managed object context: %@", saveError);
 
-        [self.mainThreadContext performBlock:completion withObject:object];
+        [self.mainThreadContext performBlock:^(id object) {
+            if (completion) {
+                completion(object);
+            }
+        } withObject:object];
     } withObject:persitentObject];
 }
 
@@ -276,7 +289,6 @@
                      completion:(void(^)(NSArray *persistentObjects))completion
 {
     NSParameterAssert(mutation);
-    NSParameterAssert(completion);
 
     NSManagedObjectContext *context = self.backgroundThreadContext;
     [context performBlock:^(id object) {
@@ -286,7 +298,11 @@
         [context save:&saveError];
         NSCAssert(saveError == nil, @"error saving managed object context: %@", saveError);
 
-        [self.mainThreadContext performBlock:completion withObject:objects];
+        [self.mainThreadContext performBlock:^(id object) {
+            if (completion) {
+                completion(object);
+            }
+        } withObject:objects];
     } withObject:persitentObjects];
 }
 

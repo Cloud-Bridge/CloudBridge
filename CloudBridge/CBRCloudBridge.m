@@ -50,8 +50,8 @@
             id<CBRPersistentObject> persistentObject = comparisionPredicate.rightExpression.constantValue;
 
             if (relationshipDescription && [persistentObject conformsToProtocol:@protocol(CBRPersistentObject)]) {
-                if ([entityDescription.databaseAdapter respondsToSelector:@selector(prepareForMutationWithPersistentObject:)]) {
-                    [entityDescription.databaseAdapter prepareForMutationWithPersistentObject:persistentObject];
+                if ([entityDescription.databaseAdapter respondsToSelector:@selector(saveChangesForPersistentObject:)]) {
+                    [entityDescription.databaseAdapter saveChangesForPersistentObject:persistentObject];
                 }
 
                 NSString *primaryKey = [[cloudBridge.cloudConnection objectTransformer] primaryKeyOfEntitiyDescription:entityDescription];
@@ -198,7 +198,7 @@
                     }
                 }
 
-                NSArray *objectsToBeDeleted = [self.databaseAdapter fetchObjectsOfType:entityDescription withPredicate:predicate sortDescriptors:nil];
+                NSArray *objectsToBeDeleted = [self.databaseAdapter fetchObjectsOfType:entityDescription withPredicate:predicate];
                 [self.databaseAdapter deletePersistentObjects:objectsToBeDeleted];
             }
             
@@ -233,8 +233,8 @@
 
 - (void)createPersistentObject:(id<CBRPersistentObject>)persitentObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(id persitentObject, NSError *error))completionHandler
 {
-    if ([self.databaseAdapter respondsToSelector:@selector(prepareForMutationWithPersistentObject:)]) {
-        [self.databaseAdapter prepareForMutationWithPersistentObject:persitentObject];
+    if ([self.databaseAdapter respondsToSelector:@selector(saveChangesForPersistentObject:)]) {
+        [self.databaseAdapter saveChangesForPersistentObject:persitentObject];
     }
 
     [self _transformPersistentObject:persitentObject toCloudObjectWithCompletionHandler:^(id<CBRCloudObject> cloudObject) {
@@ -246,8 +246,8 @@
                 return;
             }
 
-            if ([self.databaseAdapter respondsToSelector:@selector(prepareForMutationWithPersistentObject:)]) {
-                [self.databaseAdapter prepareForMutationWithPersistentObject:persitentObject];
+            if ([self.databaseAdapter respondsToSelector:@selector(saveChangesForPersistentObject:)]) {
+                [self.databaseAdapter saveChangesForPersistentObject:persitentObject];
             }
 
             [self.databaseAdapter mutatePersistentObject:persitentObject withBlock:^(id<CBRPersistentObject> persistentObject) {
@@ -263,8 +263,8 @@
 
 - (void)reloadPersistentObject:(id<CBRPersistentObject>)persitentObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(id persitentObject, NSError *error))completionHandler
 {
-    if ([self.databaseAdapter respondsToSelector:@selector(prepareForMutationWithPersistentObject:)]) {
-        [self.databaseAdapter prepareForMutationWithPersistentObject:persitentObject];
+    if ([self.databaseAdapter respondsToSelector:@selector(saveChangesForPersistentObject:)]) {
+        [self.databaseAdapter saveChangesForPersistentObject:persitentObject];
     }
 
     [self.cloudConnection latestCloudObjectForPersistentObject:persitentObject withUserInfo:userInfo completionHandler:^(id<CBRCloudObject> cloudObject, NSError *error) {
@@ -287,8 +287,8 @@
 
 - (void)savePersistentObject:(id<CBRPersistentObject>)persitentObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(id persitentObject, NSError *error))completionHandler
 {
-    if ([self.databaseAdapter respondsToSelector:@selector(prepareForMutationWithPersistentObject:)]) {
-        [self.databaseAdapter prepareForMutationWithPersistentObject:persitentObject];
+    if ([self.databaseAdapter respondsToSelector:@selector(saveChangesForPersistentObject:)]) {
+        [self.databaseAdapter saveChangesForPersistentObject:persitentObject];
     }
 
     [self _transformPersistentObject:persitentObject toCloudObjectWithCompletionHandler:^(id<CBRCloudObject> cloudObject) {
@@ -314,8 +314,8 @@
 
 - (void)deletePersistentObject:(id<CBRPersistentObject>)persitentObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(NSError *error))completionHandler
 {
-    if ([self.databaseAdapter respondsToSelector:@selector(prepareForMutationWithPersistentObject:)]) {
-        [self.databaseAdapter prepareForMutationWithPersistentObject:persitentObject];
+    if ([self.databaseAdapter respondsToSelector:@selector(saveChangesForPersistentObject:)]) {
+        [self.databaseAdapter saveChangesForPersistentObject:persitentObject];
     }
 
     [self _transformPersistentObject:persitentObject toCloudObjectWithCompletionHandler:^(id<CBRCloudObject> cloudObject) {

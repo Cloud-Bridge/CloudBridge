@@ -13,9 +13,9 @@
 
 
 
-@interface OfflineEntity : NSManagedObject <CBROfflineCapableManagedObject>
+@interface OfflineEntity : NSManagedObject <CBROfflineCapablePersistentObject>
 
-@property (nonatomic, retain) NSNumber * identifier;
+@property (nonatomic, retain) NSNumber *identifier;
 @property (nonatomic, strong) NSNumber *hasPendingCloudBridgeChanges;
 @property (nonatomic, strong) NSNumber *hasPendingCloudBridgeDeletion;
 

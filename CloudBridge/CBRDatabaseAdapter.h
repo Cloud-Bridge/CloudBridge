@@ -34,10 +34,13 @@
 @protocol CBRDatabaseAdapter <NSObject>
 
 @required
+@property (nonatomic, readonly) NSArray /* <CBREntityDescription> */ *entities;
+
+@required
 - (CBREntityDescription *)entityDescriptionForClass:(Class)persistentClass;
 
 @optional
-- (void)prepareForMutationWithPersistentObject:(id<CBRPersistentObject>)persistentObject;
+- (void)saveChangesForPersistentObject:(id<CBRPersistentObject>)persistentObject;
 
 @required
 - (id<CBRPersistentObject>)newMutablePersistentObjectOfType:(CBREntityDescription *)entityDescription;
@@ -46,7 +49,7 @@
 - (id<CBRPersistentObject>)persistentObjectOfType:(CBREntityDescription *)entityDescription withPrimaryKey:(id)primaryKey;
 
 @required
-- (NSArray *)fetchObjectsOfType:(CBREntityDescription *)entityDescription withPredicate:(NSPredicate *)predicate sortDescriptors:(NSArray *)sortDescriptors;
+- (NSArray *)fetchObjectsOfType:(CBREntityDescription *)entityDescription withPredicate:(NSPredicate *)predicate;
 
 @required
 - (void)mutatePersistentObject:(id<CBRPersistentObject>)persitentObject

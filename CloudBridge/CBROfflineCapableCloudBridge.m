@@ -24,6 +24,7 @@
 #import "CBROfflineCapableCloudBridge.h"
 #import "CBRPersistentObject.h"
 #import "CBRCoreDataDatabaseAdapter.h"
+#import "CBREntityDescription.h"
 
 @implementation CBRDeletedObjectIdentifier
 
@@ -62,435 +63,395 @@
 
 
 
-//@interface CBROfflineCapableCloudBridge ()
-//
-//@property (nonatomic, assign) BOOL isRunningInOfflineMode;
-//@property (nonatomic, assign) BOOL isReenablingOnlineMode;
-//
-//@end
-//
-//
-//
-//@implementation CBROfflineCapableCloudBridge
-//
-//#pragma mark - setters and getters
-//
-//- (BOOL)isRunningInOfflineMode
-//{
-//    return [[NSUserDefaults standardUserDefaults] boolForKey:@"CBROfflineCapableCloudBridge.isRunningInOfflineMode"];
-//}
-//
-//- (void)setIsRunningInOfflineMode:(BOOL)isRunningInOfflineMode
-//{
-//    [[NSUserDefaults standardUserDefaults] setBool:isRunningInOfflineMode forKey:@"CBROfflineCapableCloudBridge.isRunningInOfflineMode"];
-//    [[NSUserDefaults standardUserDefaults] synchronize];
-//}
-//
-//#pragma mark - Offline mode
-//
-//- (void)enableOfflineMode
-//{
-//    if (!self.isRunningInOfflineMode) {
-//        self.isRunningInOfflineMode = YES;
-//    }
-//}
-//
-//- (void)reenableOnlineModeWithCompletionHandler:(void (^)(NSError *))completionHandler
-//{
-//    void(^invokeCompletionHandler)(NSError *error) = ^(NSError *error) {
-//        if (completionHandler) {
-//            completionHandler(error);
-//        }
-//
-//        self.isReenablingOnlineMode = NO;
-//    };
-//
-//    if (!self.isRunningInOfflineMode) {
-//        return invokeCompletionHandler(nil);
-//    }
-//
-//    self.isReenablingOnlineMode = YES;
-//    [self _synchronizePendingObjectCreationsWithCompletionHandler:^(NSError *error) {
-//        if (error) {
-//            return invokeCompletionHandler(error);
-//        }
-//
-//        [self _synchronizePendingObjectUpdatesWithCompletionHandler:^(NSError *error) {
-//            if (error) {
-//                return invokeCompletionHandler(error);
-//            }
-//
-//            [self _synchronizePendingObjectDeletionsWithCompletionHandler:^(NSError *error) {
-//                if (error) {
-//                    return invokeCompletionHandler(error);
-//                }
-//
-//                self.isRunningInOfflineMode = NO;
-//                invokeCompletionHandler(nil);
-//            }];
-//        }];
-//    }];
-//}
-//
-//#pragma mark - Initialization
-//
-//- (instancetype)initWithCloudConnection:(id<CBROfflineCapableCloudConnection>)cloudConnection
-//                        databaseAdapter:(id<CBRDatabaseAdapter>)databaseAdapter
-//{
-//    return [super initWithCloudConnection:cloudConnection databaseAdapter:databaseAdapter];
-//}
-//
-//- (instancetype)initWithCloudConnection:(id<CBROfflineCapableCloudConnection>)cloudConnection coreDataStack:(SLCoreDataStack *)coreDataStack
-//{
-//    CBRCoreDataDatabaseAdapter *adapter = [[CBRCoreDataDatabaseAdapter alloc] initWithCoreDataStack:coreDataStack];
-//    return [self initWithCloudConnection:cloudConnection databaseAdapter:adapter];
-//}
-//
-//#pragma mark - CBRCloudBridge
-//
-//- (void)createManagedObject:(NSManagedObject<CBROfflineCapableManagedObject> *)managedObject
-//               withUserInfo:(NSDictionary *)userInfo
-//          completionHandler:(void(^)(id managedObject, NSError *error))completionHandler
-//{
-//    if (![managedObject conformsToProtocol:@protocol(CBROfflineCapableManagedObject)]) {
-//        return [super createManagedObject:managedObject withUserInfo:userInfo completionHandler:completionHandler];
-//    }
-//
-//    if (self.isRunningInOfflineMode) {
-//        managedObject.hasPendingCloudBridgeChanges = @YES;
-//
-//        NSError *saveError = nil;
-//        [managedObject.managedObjectContext save:&saveError];
-//        NSAssert(saveError == nil, @"error saving NSManagedObjectContext: %@", saveError);
-//
-//        if (completionHandler) {
-//            completionHandler(managedObject, nil);
-//        }
-//        return;
-//    }
-//
-//    [super createManagedObject:managedObject withUserInfo:userInfo completionHandler:^(id _, NSError *error) {
-//        if (error) {
-//            [self.backgroundThreadManagedObjectContext performBlock:^(NSManagedObject<CBROfflineCapableManagedObject> *backgroundManagedObject) {
-//                backgroundManagedObject.hasPendingCloudBridgeChanges = @YES;
-//
-//                NSError *saveError = nil;
-//                [backgroundManagedObject.managedObjectContext save:&saveError];
-//                NSAssert(saveError == nil, @"error saving NSManagedObjectContext: %@", saveError);
-//
-//                dispatch_async(dispatch_get_main_queue(), ^{
-//                    if (completionHandler) {
-//                        completionHandler(nil, error);
-//                    }
-//                });
-//            } withObject:managedObject];
-//        } else {
-//            if (completionHandler) {
-//                completionHandler(managedObject, nil);
-//            }
-//        }
-//    }];
-//}
-//
-//- (void)saveManagedObject:(NSManagedObject<CBROfflineCapableManagedObject> *)managedObject
-//             withUserInfo:(NSDictionary *)userInfo
-//        completionHandler:(void(^)(id managedObject, NSError *error))completionHandler
-//{
-//    if (![managedObject conformsToProtocol:@protocol(CBROfflineCapableManagedObject)]) {
-//        return [super saveManagedObject:managedObject withUserInfo:userInfo completionHandler:completionHandler];
-//    }
-//
-//    if (self.isRunningInOfflineMode) {
-//        managedObject.hasPendingCloudBridgeChanges = @YES;
-//
-//        NSError *saveError = nil;
-//        [managedObject.managedObjectContext save:&saveError];
-//        NSAssert(saveError == nil, @"error saving NSManagedObjectContext: %@", saveError);
-//
-//        if (completionHandler) {
-//            completionHandler(managedObject, nil);
-//        }
-//        return;
-//    }
-//
-//    [super saveManagedObject:managedObject withUserInfo:userInfo completionHandler:^(id _, NSError *error) {
-//        if (error) {
-//            [self.backgroundThreadManagedObjectContext performBlock:^(NSManagedObject<CBROfflineCapableManagedObject> *backgroundManagedObject) {
-//                backgroundManagedObject.hasPendingCloudBridgeChanges = @YES;
-//
-//                NSError *saveError = nil;
-//                [backgroundManagedObject.managedObjectContext save:&saveError];
-//                NSAssert(saveError == nil, @"error saving NSManagedObjectContext: %@", saveError);
-//
-//                dispatch_async(dispatch_get_main_queue(), ^{
-//                    if (completionHandler) {
-//                        completionHandler(nil, error);
-//                    }
-//                });
-//            } withObject:managedObject];
-//        } else {
-//            if (completionHandler) {
-//                completionHandler(managedObject, nil);
-//            }
-//        }
-//    }];
-//}
-//
-//- (void)deleteManagedObject:(NSManagedObject<CBROfflineCapableManagedObject> *)managedObject
-//               withUserInfo:(NSDictionary *)userInfo
-//          completionHandler:(void(^)(NSError *error))completionHandler
-//{
-//    if (![managedObject conformsToProtocol:@protocol(CBROfflineCapableManagedObject)]) {
-//        return [super deleteManagedObject:managedObject withUserInfo:userInfo completionHandler:completionHandler];
-//    }
-//
-//    if (self.isRunningInOfflineMode) {
-//        NSString *cloudIdentifier = [self.cloudConnection.objectTransformer primaryKeyOfEntitiyDescription:managedObject.entity];
-//        id identifier = [managedObject valueForKey:cloudIdentifier];
-//
-//        BOOL identifierIsNil = identifier == nil || ([identifier isKindOfClass:[NSNumber class]] && [identifier integerValue] == 0) || ([identifier isKindOfClass:[NSString class]] && [identifier length] == 0);
-//        if (managedObject.hasPendingCloudBridgeChanges.boolValue && identifierIsNil) {
-//            [managedObject.managedObjectContext deleteObject:managedObject];
-//        } else {
-//            managedObject.hasPendingCloudBridgeChanges = @NO;
-//            managedObject.hasPendingCloudBridgeDeletion = @YES;
-//        }
-//
-//        NSError *saveError = nil;
-//        [managedObject.managedObjectContext save:&saveError];
-//        NSAssert(saveError == nil, @"error saving NSManagedObjectContext: %@", saveError);
-//
-//        if (completionHandler) {
-//            completionHandler(nil);
-//        }
-//        return;
-//    }
-//
-//    [super deleteManagedObject:managedObject withUserInfo:userInfo completionHandler:^(NSError *error) {
-//        if (error) {
-//            [self.backgroundThreadManagedObjectContext performBlock:^(NSManagedObject<CBROfflineCapableManagedObject> *backgroundManagedObject) {
-//                backgroundManagedObject.hasPendingCloudBridgeChanges = @NO;
-//                backgroundManagedObject.hasPendingCloudBridgeDeletion = @YES;
-//
-//                NSError *saveError = nil;
-//                [backgroundManagedObject.managedObjectContext save:&saveError];
-//                NSAssert(saveError == nil, @"error saving NSManagedObjectContext: %@", saveError);
-//
-//                [self.mainThreadManagedObjectContext performBlock:^(id managedObject) {
-//                    if (completionHandler) {
-//                        completionHandler(error);
-//                    }
-//                } withObject:backgroundManagedObject];
-//            } withObject:managedObject];
-//        } else {
-//            if (completionHandler) {
-//                completionHandler(nil);
-//            }
-//        }
-//    }];
-//}
-//
-//#pragma mark - Private category implementation ()
-//
-//- (void)_synchronizePendingObjectCreationsWithCompletionHandler:(void(^)(NSError *error))completionHandler
-//{
-//    NSManagedObjectContext *context = self.backgroundThreadManagedObjectContext;
-//    [context performBlock:^{
-//        NSManagedObjectModel *model = context.persistentStoreCoordinator.managedObjectModel;
-//
-//        NSMutableArray *cloudObjects = [NSMutableArray array];
-//        NSMutableArray *managedObjects = [NSMutableArray array];
-//
-//        for (NSEntityDescription *entity in model.entities) {
-//            if (![NSClassFromString(entity.name) conformsToProtocol:@protocol(CBROfflineCapableManagedObject)]) {
-//                continue;
-//            }
-//
-//            NSString *cloudIdentifier = [self.cloudConnection.objectTransformer keyPathForCloudIdentifierOfEntitiyDescription:entity];
-//
-//            NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:entity.name];
-//            fetchRequest.predicate = [NSPredicate predicateWithFormat:@"%K == NULL AND hasPendingCloudBridgeChanges == YES", cloudIdentifier];
-//
-//            NSError *error = nil;
-//            NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
-//            NSAssert(error == nil, @"error fetching data: %@", error);
-//
-//            for (NSManagedObject *object in fetchedObjects) {
-//                id<CBRCloudObject> cloudObject = object.cloudObjectRepresentation;
-//
-//                [cloudObjects addObject:cloudObject];
-//                [managedObjects addObject:object];
-//            }
-//        }
-//
-//        if (cloudObjects.count == 0) {
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                completionHandler(nil);
-//            });
-//            return;
-//        }
-//
-//        [self.cloudConnection bulkCreateCloudObjects:cloudObjects forManagedObjects:managedObjects completionHandler:^(NSArray *cloudObjects, NSError *error) {
-//            [context performBlock:^(NSArray *managedObjects) {
-//                NSParameterAssert(cloudObjects.count <= managedObjects.count);
-//                [cloudObjects enumerateObjectsUsingBlock:^(id<CBRCloudObject> cloudObject, NSUInteger idx, BOOL *stop) {
-//                    if (idx >= managedObjects.count) {
-//                        return;
-//                    }
-//
-//                    NSManagedObject<CBROfflineCapableManagedObject> *managedObject = managedObjects[idx];
-//                    [self.cloudConnection.objectTransformer updateManagedObject:managedObject withPropertiesFromCloudObject:cloudObject];
-//
-//                    managedObject.hasPendingCloudBridgeChanges = @NO;
-//                }];
-//
-//                NSError *saveError = nil;
-//                [context save:&saveError];
-//                NSAssert(saveError == nil, @"error saving NSManagedObjectContext: %@", saveError);
-//
-//                dispatch_async(dispatch_get_main_queue(), ^{
-//                    completionHandler(error);
-//                });
-//            } withObject:managedObjects];
-//        }];
-//    }];
-//}
-//
-//- (void)_synchronizePendingObjectUpdatesWithCompletionHandler:(void(^)(NSError *error))completionHandler
-//{
-//    NSManagedObjectContext *context = self.backgroundThreadManagedObjectContext;
-//    [context performBlock:^{
-//        NSManagedObjectModel *model = context.persistentStoreCoordinator.managedObjectModel;
-//
-//        NSMutableArray *cloudObjects = [NSMutableArray array];
-//        NSMutableArray *managedObjects = [NSMutableArray array];
-//
-//        for (NSEntityDescription *entity in model.entities) {
-//            if (![NSClassFromString(entity.name) conformsToProtocol:@protocol(CBROfflineCapableManagedObject)]) {
-//                continue;
-//            }
-//
-//            NSString *cloudIdentifier = [self.cloudConnection.objectTransformer keyPathForCloudIdentifierOfEntitiyDescription:entity];
-//
-//            NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:entity.name];
-//            fetchRequest.predicate = [NSPredicate predicateWithFormat:@"%K != NULL AND hasPendingCloudBridgeChanges == YES", cloudIdentifier];
-//
-//            NSError *error = nil;
-//            NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
-//            NSAssert(error == nil, @"error fetching data: %@", error);
-//
-//            for (NSManagedObject *object in fetchedObjects) {
-//                id<CBRCloudObject> cloudObject = object.cloudObjectRepresentation;
-//
-//                [cloudObjects addObject:cloudObject];
-//                [managedObjects addObject:object];
-//            }
-//        }
-//
-//        if (cloudObjects.count == 0) {
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                completionHandler(nil);
-//            });
-//            return;
-//        }
-//
-//        [self.cloudConnection bulkSaveCloudObjects:cloudObjects forManagedObjects:managedObjects completionHandler:^(NSArray *cloudObjects, NSError *error) {
-//            [context performBlock:^(NSArray *managedObjects) {
-//                NSParameterAssert(cloudObjects.count <= managedObjects.count);
-//                [cloudObjects enumerateObjectsUsingBlock:^(id<CBRCloudObject> cloudObject, NSUInteger idx, BOOL *stop) {
-//                    if (idx >= managedObjects.count) {
-//                        return;
-//                    }
-//
-//                    NSManagedObject<CBROfflineCapableManagedObject> *managedObject = managedObjects[idx];
-//                    [self.cloudConnection.objectTransformer updateManagedObject:managedObject withPropertiesFromCloudObject:cloudObject];
-//
-//                    managedObject.hasPendingCloudBridgeChanges = @NO;
-//                }];
-//
-//                NSError *saveError = nil;
-//                [context save:&saveError];
-//                NSAssert(saveError == nil, @"error saving NSManagedObjectContext: %@", saveError);
-//
-//                dispatch_async(dispatch_get_main_queue(), ^{
-//                    completionHandler(error);
-//                });
-//            } withObject:managedObjects];
-//        }];
-//    }];
-//}
-//
-//- (void)_synchronizePendingObjectDeletionsWithCompletionHandler:(void(^)(NSError *error))completionHandler
-//{
-//    NSDictionary *(^indexManagedObjects)(NSArray *managedObjects) = ^(NSArray *managedObjects) {
-//        NSMutableDictionary *result = [NSMutableDictionary dictionary];
-//
-//        for (NSManagedObject *object in managedObjects) {
-//            NSString *cloudIdentifierKey = [self.cloudConnection.objectTransformer keyPathForCloudIdentifierOfEntitiyDescription:object.entity];
-//
-//            CBRDeletedObjectIdentifier *identifier = [[CBRDeletedObjectIdentifier alloc] initWithCloudIdentifier:[object valueForKey:cloudIdentifierKey]
-//                                                                                                     entitiyName:object.entity.name];
-//            result[identifier] = object;
-//        }
-//
-//        return result;
-//    };
-//
-//    NSManagedObjectContext *context = self.backgroundThreadManagedObjectContext;
-//    [context performBlock:^{
-//        NSManagedObjectModel *model = context.persistentStoreCoordinator.managedObjectModel;
-//
-//        NSMutableArray *cloudObjects = [NSMutableArray array];
-//        NSMutableArray *managedObjects = [NSMutableArray array];
-//
-//        for (NSEntityDescription *entity in model.entities) {
-//            if (![NSClassFromString(entity.name) conformsToProtocol:@protocol(CBROfflineCapableManagedObject)]) {
-//                continue;
-//            }
-//
-//            NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:entity.name];
-//            fetchRequest.predicate = [NSPredicate predicateWithFormat:@"hasPendingCloudBridgeDeletion == YES"];
-//
-//            NSError *error = nil;
-//            NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
-//            NSAssert(error == nil, @"error fetching data: %@", error);
-//
-//            for (NSManagedObject *object in fetchedObjects) {
-//                id<CBRCloudObject> cloudObject = object.cloudObjectRepresentation;
-//
-//                [cloudObjects addObject:cloudObject];
-//                [managedObjects addObject:object];
-//            }
-//        }
-//
-//        if (cloudObjects.count == 0) {
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                completionHandler(nil);
-//            });
-//            return;
-//        }
-//
-//        [self.cloudConnection bulkDeleteCloudObjects:cloudObjects forManagedObjects:managedObjects completionHandler:^(NSArray *deletedObjectIdentifiers, NSError *error) {
-//            [context performBlock:^(NSArray *managedObjects) {
-//                NSParameterAssert(cloudObjects.count <= managedObjects.count);
-//
-//                NSDictionary *indexedManagedObjects = indexManagedObjects(managedObjects);
-//
-//                for (CBRDeletedObjectIdentifier *identifier in deletedObjectIdentifiers) {
-//                    NSManagedObject<CBROfflineCapableManagedObject> *managedObject = indexedManagedObjects[identifier];
-//                    [context deleteObject:managedObject];
-//                }
-//
-//                NSError *saveError = nil;
-//                [context save:&saveError];
-//                NSAssert(saveError == nil, @"error saving NSManagedObjectContext: %@", saveError);
-//
-//                dispatch_async(dispatch_get_main_queue(), ^{
-//                    completionHandler(error);
-//                });
-//            } withObject:managedObjects];
-//        }];
-//    }];
-//}
-//
-//@end
+@interface CBROfflineCapableCloudBridge ()
+
+@property (nonatomic, assign) BOOL isRunningInOfflineMode;
+@property (nonatomic, assign) BOOL isReenablingOnlineMode;
+
+@end
+
+
+
+@implementation CBROfflineCapableCloudBridge
+
+#pragma mark - setters and getters
+
+- (BOOL)isRunningInOfflineMode
+{
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"CBROfflineCapableCloudBridge.isRunningInOfflineMode"];
+}
+
+- (void)setIsRunningInOfflineMode:(BOOL)isRunningInOfflineMode
+{
+    [[NSUserDefaults standardUserDefaults] setBool:isRunningInOfflineMode forKey:@"CBROfflineCapableCloudBridge.isRunningInOfflineMode"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+#pragma mark - Offline mode
+
+- (void)enableOfflineMode
+{
+    if (!self.isRunningInOfflineMode) {
+        self.isRunningInOfflineMode = YES;
+    }
+}
+
+- (void)reenableOnlineModeWithCompletionHandler:(void (^)(NSError *))completionHandler
+{
+    void(^invokeCompletionHandler)(NSError *error) = ^(NSError *error) {
+        if (completionHandler) {
+            completionHandler(error);
+        }
+
+        self.isReenablingOnlineMode = NO;
+    };
+
+    if (!self.isRunningInOfflineMode) {
+        return invokeCompletionHandler(nil);
+    }
+
+    self.isReenablingOnlineMode = YES;
+    [self _synchronizePendingObjectCreationsWithCompletionHandler:^(NSError *error) {
+        if (error) {
+            return invokeCompletionHandler(error);
+        }
+
+        [self _synchronizePendingObjectUpdatesWithCompletionHandler:^(NSError *error) {
+            if (error) {
+                return invokeCompletionHandler(error);
+            }
+
+            [self _synchronizePendingObjectDeletionsWithCompletionHandler:^(NSError *error) {
+                if (error) {
+                    return invokeCompletionHandler(error);
+                }
+
+                self.isRunningInOfflineMode = NO;
+                invokeCompletionHandler(nil);
+            }];
+        }];
+    }];
+}
+
+#pragma mark - Initialization
+
+- (instancetype)initWithCloudConnection:(id<CBROfflineCapableCloudConnection>)cloudConnection
+                        databaseAdapter:(id<CBRDatabaseAdapter>)databaseAdapter
+{
+    return [super initWithCloudConnection:cloudConnection databaseAdapter:databaseAdapter];
+}
+
+- (instancetype)initWithCloudConnection:(id<CBROfflineCapableCloudConnection>)cloudConnection coreDataStack:(SLCoreDataStack *)coreDataStack
+{
+    CBRCoreDataDatabaseAdapter *adapter = [[CBRCoreDataDatabaseAdapter alloc] initWithCoreDataStack:coreDataStack];
+    return [self initWithCloudConnection:cloudConnection databaseAdapter:adapter];
+}
+
+#pragma mark - CBRCloudBridge
+
+- (void)createPersistentObject:(id<CBROfflineCapablePersistentObject>)persistentObject
+                  withUserInfo:(NSDictionary *)userInfo
+             completionHandler:(void(^)(id persistentObject, NSError *error))completionHandler
+{
+    if (![persistentObject conformsToProtocol:@protocol(CBROfflineCapablePersistentObject)]) {
+        return [super createPersistentObject:persistentObject withUserInfo:userInfo completionHandler:completionHandler];
+    }
+
+    if (self.isRunningInOfflineMode) {
+        persistentObject.hasPendingCloudBridgeChanges = @YES;
+
+        if ([self.databaseAdapter respondsToSelector:@selector(saveChangesForPersistentObject:)]) {
+            [self.databaseAdapter saveChangesForPersistentObject:persistentObject];
+        }
+
+        if (completionHandler) {
+            completionHandler(persistentObject, nil);
+        }
+        return;
+    }
+
+    [super createPersistentObject:persistentObject withUserInfo:userInfo completionHandler:^(id _, NSError *error) {
+        if (error) {
+            [self.databaseAdapter mutatePersistentObject:persistentObject withBlock:^(id<CBROfflineCapablePersistentObject> persistentObject) {
+                persistentObject.hasPendingCloudBridgeChanges = @YES;
+            } completion:^(id<CBRPersistentObject> persistentObject) {
+                if (completionHandler) {
+                    completionHandler(nil, error);
+                }
+            }];
+        } else {
+            if (completionHandler) {
+                completionHandler(persistentObject, nil);
+            }
+        }
+    }];
+}
+
+- (void)savePersistentObject:(id<CBROfflineCapablePersistentObject>)persistentObject
+                withUserInfo:(NSDictionary *)userInfo
+           completionHandler:(void(^)(id persistentObject, NSError *error))completionHandler
+{
+    if (![persistentObject conformsToProtocol:@protocol(CBROfflineCapablePersistentObject)]) {
+        return [super savePersistentObject:persistentObject withUserInfo:userInfo completionHandler:completionHandler];
+    }
+
+    if (self.isRunningInOfflineMode) {
+        persistentObject.hasPendingCloudBridgeChanges = @YES;
+
+        [self.databaseAdapter saveChangesForPersistentObject:persistentObject];
+
+        if (completionHandler) {
+            completionHandler(persistentObject, nil);
+        }
+        return;
+    }
+
+    [super savePersistentObject:persistentObject withUserInfo:userInfo completionHandler:^(id _, NSError *error) {
+        if (error) {
+            [self.databaseAdapter mutatePersistentObject:persistentObject withBlock:^(id<CBROfflineCapablePersistentObject> persistentObject) {
+                persistentObject.hasPendingCloudBridgeChanges = @YES;
+            } completion:^(id<CBRPersistentObject> persistentObject) {
+                if (completionHandler) {
+                    completionHandler(nil, error);
+                }
+            }];
+        } else {
+            if (completionHandler) {
+                completionHandler(persistentObject, nil);
+            }
+        }
+    }];
+}
+
+- (void)deletePersistentObject:(id<CBROfflineCapablePersistentObject>)persistentObject
+                  withUserInfo:(NSDictionary *)userInfo
+             completionHandler:(void(^)(NSError *error))completionHandler
+{
+    if (![persistentObject conformsToProtocol:@protocol(CBROfflineCapablePersistentObject)]) {
+        return [super deletePersistentObject:persistentObject withUserInfo:userInfo completionHandler:completionHandler];
+    }
+
+    if (self.isRunningInOfflineMode) {
+        NSString *cloudIdentifier = [self.cloudConnection.objectTransformer primaryKeyOfEntitiyDescription:[self.databaseAdapter entityDescriptionForClass:persistentObject.class]];
+        id identifier = [persistentObject valueForKey:cloudIdentifier];
+
+        BOOL identifierIsNil = identifier == nil || ([identifier isKindOfClass:[NSNumber class]] && [identifier integerValue] == 0) || ([identifier isKindOfClass:[NSString class]] && [identifier length] == 0);
+        if (persistentObject.hasPendingCloudBridgeChanges.boolValue && identifierIsNil) {
+            [self.databaseAdapter deletePersistentObjects:@[ persistentObject ]];
+        } else {
+            persistentObject.hasPendingCloudBridgeChanges = @NO;
+            persistentObject.hasPendingCloudBridgeDeletion = @YES;
+
+            [self.databaseAdapter saveChangesForPersistentObject:persistentObject];
+        }
+
+        if (completionHandler) {
+            completionHandler(nil);
+        }
+        return;
+    }
+
+    [super deletePersistentObject:persistentObject withUserInfo:userInfo completionHandler:^(NSError *error) {
+        if (error) {
+            [self.databaseAdapter mutatePersistentObject:persistentObject withBlock:^(id<CBROfflineCapablePersistentObject> persistentObject) {
+                persistentObject.hasPendingCloudBridgeChanges = @NO;
+                persistentObject.hasPendingCloudBridgeDeletion = @YES;
+            } completion:^(id<CBRPersistentObject> persistentObject) {
+                if (completionHandler) {
+                    completionHandler(error);
+                }
+            }];
+        } else {
+            if (completionHandler) {
+                completionHandler(nil);
+            }
+        }
+    }];
+}
+
+#pragma mark - Private category implementation ()
+
+- (void)_synchronizePendingObjectCreationsWithCompletionHandler:(void(^)(NSError *error))completionHandler
+{
+    [self.databaseAdapter mutatePersistentObjects:@[] withBlock:^NSArray *(NSArray *_) {
+        NSMutableArray *cloudObjects = [NSMutableArray array];
+        NSMutableArray *persistentObjects = [NSMutableArray array];
+
+        for (CBREntityDescription *entity in self.databaseAdapter.entities) {
+            if (![NSClassFromString(entity.name) conformsToProtocol:@protocol(CBROfflineCapablePersistentObject)]) {
+                continue;
+            }
+
+            NSString *cloudIdentifier = [self.cloudConnection.objectTransformer primaryKeyOfEntitiyDescription:entity];
+
+            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == NULL AND hasPendingCloudBridgeChanges == YES", cloudIdentifier];
+            NSArray *fetchedObjects = [self.databaseAdapter fetchObjectsOfType:entity withPredicate:predicate];
+
+            for (id<CBROfflineCapablePersistentObject> object in fetchedObjects) {
+                id<CBRCloudObject> cloudObject = object.cloudObjectRepresentation;
+
+                [cloudObjects addObject:cloudObject];
+                [persistentObjects addObject:object];
+            }
+        }
+
+        if (cloudObjects.count == 0) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandler(nil);
+            });
+            return @[];
+        }
+
+        [self.cloudConnection bulkCreateCloudObjects:cloudObjects forPersistentObjects:persistentObjects completionHandler:^(NSArray *cloudObjects, NSError *error) {
+            [self.databaseAdapter mutatePersistentObjects:persistentObjects withBlock:^NSArray *(NSArray *persistentObjects) {
+                NSParameterAssert(cloudObjects.count <= persistentObjects.count);
+                [cloudObjects enumerateObjectsUsingBlock:^(id<CBRCloudObject> cloudObject, NSUInteger idx, BOOL *stop) {
+                    if (idx >= persistentObjects.count) {
+                        return;
+                    }
+
+                    id<CBROfflineCapablePersistentObject> persistentObject = persistentObjects[idx];
+                    [self.cloudConnection.objectTransformer updatePersistentObject:persistentObject withPropertiesFromCloudObject:cloudObject];
+
+                    persistentObject.hasPendingCloudBridgeChanges = @NO;
+                }];
+
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completionHandler(error);
+                });
+                return @[];
+            } completion:NULL];
+        }];
+
+        return @[];
+    } completion:NULL];
+}
+
+- (void)_synchronizePendingObjectUpdatesWithCompletionHandler:(void(^)(NSError *error))completionHandler
+{
+    [self.databaseAdapter mutatePersistentObjects:@[] withBlock:^NSArray *(NSArray *_) {
+        NSMutableArray *cloudObjects = [NSMutableArray array];
+        NSMutableArray *persistentObjects = [NSMutableArray array];
+
+        for (CBREntityDescription *entity in self.databaseAdapter.entities) {
+            if (![NSClassFromString(entity.name) conformsToProtocol:@protocol(CBROfflineCapablePersistentObject)]) {
+                continue;
+            }
+
+            NSString *cloudIdentifier = [self.cloudConnection.objectTransformer primaryKeyOfEntitiyDescription:entity];
+
+            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K != NULL AND hasPendingCloudBridgeChanges == YES", cloudIdentifier];
+            NSArray *fetchedObjects = [self.databaseAdapter fetchObjectsOfType:entity withPredicate:predicate];
+
+            for (id<CBROfflineCapablePersistentObject>object in fetchedObjects) {
+                id<CBRCloudObject> cloudObject = object.cloudObjectRepresentation;
+
+                [cloudObjects addObject:cloudObject];
+                [persistentObjects addObject:object];
+            }
+        }
+
+        if (cloudObjects.count == 0) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandler(nil);
+            });
+            return @[];
+        }
+
+        [self.cloudConnection bulkSaveCloudObjects:cloudObjects forPersistentObjects:persistentObjects completionHandler:^(NSArray *cloudObjects, NSError *error) {
+            [self.databaseAdapter mutatePersistentObjects:persistentObjects withBlock:^NSArray *(NSArray *persistentObjects) {
+                NSParameterAssert(cloudObjects.count <= persistentObjects.count);
+                [cloudObjects enumerateObjectsUsingBlock:^(id<CBRCloudObject> cloudObject, NSUInteger idx, BOOL *stop) {
+                    if (idx >= persistentObjects.count) {
+                        return;
+                    }
+
+                    id<CBROfflineCapablePersistentObject> persistentObject = persistentObjects[idx];
+                    [self.cloudConnection.objectTransformer updatePersistentObject:persistentObject withPropertiesFromCloudObject:cloudObject];
+
+                    persistentObject.hasPendingCloudBridgeChanges = @NO;
+                }];
+
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completionHandler(error);
+                });
+
+                return @[];
+            } completion:NULL];
+        }];
+
+        return @[];
+    } completion:NULL];
+}
+
+- (void)_synchronizePendingObjectDeletionsWithCompletionHandler:(void(^)(NSError *error))completionHandler
+{
+    NSDictionary *(^indexPersistentObjects)(NSArray *persistentObjects) = ^(NSArray *persistentObjects) {
+        NSMutableDictionary *result = [NSMutableDictionary dictionary];
+
+        for (id<CBROfflineCapablePersistentObject> object in persistentObjects) {
+            CBREntityDescription *entityDescription = [self.databaseAdapter entityDescriptionForClass:object.class];
+            NSString *cloudIdentifierKey = [self.cloudConnection.objectTransformer primaryKeyOfEntitiyDescription:entityDescription];
+
+            CBRDeletedObjectIdentifier *identifier = [[CBRDeletedObjectIdentifier alloc] initWithCloudIdentifier:[object valueForKey:cloudIdentifierKey]
+                                                                                                     entitiyName:entityDescription.name];
+            result[identifier] = object;
+        }
+
+        return result;
+    };
+
+    [self.databaseAdapter mutatePersistentObjects:@[] withBlock:^NSArray *(NSArray *_) {
+        NSMutableArray *cloudObjects = [NSMutableArray array];
+        NSMutableArray *persistentObjects = [NSMutableArray array];
+
+        for (CBREntityDescription *entity in self.databaseAdapter.entities) {
+            if (![NSClassFromString(entity.name) conformsToProtocol:@protocol(CBROfflineCapablePersistentObject)]) {
+                continue;
+            }
+
+            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"hasPendingCloudBridgeDeletion == YES"];
+            NSArray *fetchedObjects = [self.databaseAdapter fetchObjectsOfType:entity withPredicate:predicate];
+
+            for (id<CBROfflineCapablePersistentObject> object in fetchedObjects) {
+                id<CBRCloudObject> cloudObject = object.cloudObjectRepresentation;
+
+                [cloudObjects addObject:cloudObject];
+                [persistentObjects addObject:object];
+            }
+        }
+
+        if (cloudObjects.count == 0) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandler(nil);
+            });
+            return @[];
+        }
+
+        [self.cloudConnection bulkDeleteCloudObjects:cloudObjects forPersistentObjects:persistentObjects completionHandler:^(NSArray *deletedObjectIdentifiers, NSError *error) {
+            [self.databaseAdapter mutatePersistentObjects:persistentObjects withBlock:^NSArray *(NSArray *persistentObjects) {
+                NSParameterAssert(cloudObjects.count <= persistentObjects.count);
+
+                NSDictionary *indexedPersistentObjects = indexPersistentObjects(persistentObjects);
+                NSMutableArray *objectsToDelete = [NSMutableArray array];
+
+                for (CBRDeletedObjectIdentifier *identifier in deletedObjectIdentifiers) {
+                    id<CBROfflineCapablePersistentObject> persistentObject = indexedPersistentObjects[identifier];
+                    [objectsToDelete addObject:persistentObject];
+                }
+
+                [self.databaseAdapter deletePersistentObjects:objectsToDelete];
+
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completionHandler(error);
+                });
+
+                return @[];
+            } completion:NULL];
+        }];
+
+        return @[];
+    } completion:NULL];
+}
+
+@end

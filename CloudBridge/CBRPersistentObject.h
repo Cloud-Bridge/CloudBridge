@@ -93,6 +93,14 @@
 
 @property (nonatomic, readonly) CBRCloudBridge *cloudBridge;
 
+/**
+ Convenience property to return the cloud representation for this object.
+
+ @warning Overriding this property is not recommended because all internal implementations go directly through the corresponding object transformer.
+ @note To change the resulting `cloudObjectRepresentation`, override `-[CBRPersistentObjectQueryInterface prepareCloudObject:]`.
+ */
+@property (nonatomic, readonly) id /*<CBRCloudObject>*/ cloudObjectRepresentation;
+
 - (id)valueForKey:(NSString *)key;
 - (void)setValue:(id)value forKey:(NSString *)key;
 
