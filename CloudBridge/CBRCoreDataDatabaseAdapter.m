@@ -252,6 +252,12 @@
     return [context.cbr_cache objectOfType:entityDescription.name withValue:primaryKey forAttribute:attribute];
 }
 
+- (NSDictionary *)indexedObjectsOfType:(CBREntityDescription *)entityDescription withValues:(NSSet *)values forAttribute:(NSString *)attribute
+{
+    NSManagedObjectContext *context = [NSThread currentThread].isMainThread ? self.mainThreadContext : self.backgroundThreadContext;
+    return [context.cbr_cache indexedObjectsOfType:entityDescription.name withValues:values forAttribute:attribute];
+}
+
 - (NSArray *)fetchObjectsOfType:(CBREntityDescription *)entityDescription withPredicate:(NSPredicate *)predicate
 {
     NSManagedObjectContext *context = [NSThread currentThread].isMainThread ? self.mainThreadContext : self.backgroundThreadContext;

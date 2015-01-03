@@ -54,12 +54,17 @@
 - (instancetype)initWithDatabaseAdapter:(id<CBRDatabaseAdapter>)databaseAdapter coreDataRelationshipDescription:(NSRelationshipDescription *)relationshipDescription
 {
     NSAssert(relationshipDescription.inverseRelationship != nil, @"No inverseRelationship found for %@", relationshipDescription);
-    
+    NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithDictionary:relationshipDescription.userInfo];
+
+    if (!userInfo[@"restBaseURL"] && relationshipDescription.inverseRelationship.userInfo[@"restBaseURL"]) {
+        userInfo[@"restBaseURL"] = relationshipDescription.inverseRelationship.userInfo[@"restBaseURL"];
+    }
+
     if (self = [self initWithDatabaseAdapter:databaseAdapter]) {
         self.name = relationshipDescription.name;
         self.toMany = relationshipDescription.isToMany;
         self.destinationEntityName = relationshipDescription.destinationEntity.name;
-        self.userInfo = relationshipDescription.userInfo;
+        self.userInfo = userInfo.copy;
         self.cascades = relationshipDescription.userInfo[@"cloudBridgeCascades"] != nil || relationshipDescription.inverseRelationship.userInfo[@"cloudBridgeCascades"] != nil;
     }
     return self;
@@ -76,6 +81,7 @@
     if (self = [self initWithDatabaseAdapter:databaseAdapter]) {
         self.name = entityDescription.name;
         self.userInfo = entityDescription.userInfo;
+        self.subentityNames = entityDescription.subentitiesByName.allKeys;
 
         NSMutableArray *attributes = [NSMutableArray array];
         for (NSAttributeDescription *attributeDescription in entityDescription.attributesByName.allValues) {

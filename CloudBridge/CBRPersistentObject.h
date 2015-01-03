@@ -102,6 +102,7 @@
 @property (nonatomic, readonly) id /*<CBRCloudObject>*/ cloudObjectRepresentation;
 
 - (id)valueForKey:(NSString *)key;
+- (id)valueForKeyPath:(NSString *)keyPath;
 - (void)setValue:(id)value forKey:(NSString *)key;
 
 @end

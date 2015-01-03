@@ -41,21 +41,21 @@
                  completionHandler:(void(^)(NSArray *fetchedObjects, NSError *error))completionHandler;
 
 - (void)createCloudObject:(id<CBRCloudObject>)cloudObject
-      forPersistentObject:(id<CBRPersistentObject>)persistent
+      forPersistentObject:(id<CBRPersistentObject>)persistentObject
              withUserInfo:(NSDictionary *)userInfo
         completionHandler:(void(^)(id<CBRCloudObject> cloudObject, NSError *error))completionHandler;
 
-- (void)latestCloudObjectForPersistentObject:(id<CBRPersistentObject>)persistent
+- (void)latestCloudObjectForPersistentObject:(id<CBRPersistentObject>)persistentObject
                                 withUserInfo:(NSDictionary *)userInfo
                            completionHandler:(void(^)(id<CBRCloudObject> cloudObject, NSError *error))completionHandler;
 
 - (void)saveCloudObject:(id<CBRCloudObject>)cloudObject
-    forPersistentObject:(id<CBRPersistentObject>)persistent
+    forPersistentObject:(id<CBRPersistentObject>)persistentObject
            withUserInfo:(NSDictionary *)userInfo
       completionHandler:(void(^)(id<CBRCloudObject> cloudObject, NSError *error))completionHandler;
 
 - (void)deleteCloudObject:(id<CBRCloudObject>)cloudObject
-      forPersistentObject:(id<CBRPersistentObject>)persistent
+      forPersistentObject:(id<CBRPersistentObject>)persistentObject
              withUserInfo:(NSDictionary *)userInfo
         completionHandler:(void(^)(NSError *error))completionHandler;
 

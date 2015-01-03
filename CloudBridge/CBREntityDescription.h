@@ -23,6 +23,7 @@ typedef NS_ENUM(NSInteger, CBRAttributeType) {
 @protocol CBRPropertyDescription <NSObject>
 
 @property (nonatomic, readonly) NSString *name;
+@property (nonatomic, readonly) NSDictionary *userInfo;
 @property (nonatomic, weak, readonly) id<CBRDatabaseAdapter> databaseAdapter;
 
 @end
@@ -70,9 +71,11 @@ typedef NS_ENUM(NSInteger, CBRAttributeType) {
 
 @property (nonatomic, strong) NSArray *attributes;
 @property (nonatomic, strong) NSArray *relationships;
+@property (nonatomic, strong) NSArray *subentityNames;
 
 @property (nonatomic, readonly) NSDictionary *attributesByName;
 @property (nonatomic, readonly) NSDictionary *relationshipsByName;
+@property (nonatomic, readonly) NSArray *subentities;
 
 @property (nonatomic, weak, readonly) id<CBRDatabaseAdapter> databaseAdapter;
 - (instancetype)init UNAVAILABLE_ATTRIBUTE;

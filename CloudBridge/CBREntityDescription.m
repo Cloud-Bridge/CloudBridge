@@ -67,6 +67,17 @@ static NSDictionary *indexBy(NSArray *array, NSString *key)
     return indexBy(self.relationships, @"name");
 }
 
+- (NSArray *)subentities
+{
+    NSMutableArray *result = [NSMutableArray array];
+
+    for (NSString *name in self.subentityNames) {
+        [result addObject:[self.databaseAdapter entityDescriptionForClass:NSClassFromString(name)]];
+    }
+
+    return result;
+}
+
 - (instancetype)initWithDatabaseAdapter:(id<CBRDatabaseAdapter>)databaseAdapter
 {
     if (self = [super init]) {
