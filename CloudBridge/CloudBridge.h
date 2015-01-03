@@ -30,10 +30,11 @@
 #import <CBRCloudBridge.h>
 #import <CBRCloudObject.h>
 #import <CBRCloudConnection.h>
-#import <CBRDatabaseAdapter.h>
 #import <CBRPersistentObject.h>
 
-#import <SLCoreDataStack+CBRDatabaseAdapter.h>
+#import <CBRDatabaseAdapter.h>
+#import <SLCoreDataStack.h>
+
 #import <NSRelationshipDescription+CloudBridge.h>
 #import <CBRManagedObjectToCloudObjectTransformer.h>
 
