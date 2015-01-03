@@ -24,6 +24,8 @@
 #import <objc/runtime.h>
 #import "CBRCoreDataDatabaseAdapter.h"
 #import "CBRCloudBridge.h"
+#import "CBREntityDescription.h"
+#import "CBREntityDescription+CBRCoreDataDatabaseAdapter.h"
 
 
 
@@ -172,6 +174,13 @@
 
 
 
+@interface CBRCoreDataDatabaseAdapter ()
+
+@property (nonatomic, readonly) NSMutableDictionary *entitesByName;
+@property (nonatomic, readonly) NSManagedObjectModel *managedObjectModel;
+
+@end
+
 @implementation CBRCoreDataDatabaseAdapter
 
 - (instancetype)initWithMainThreadContext:(NSManagedObjectContext *)mainContext backgroundThreadContext:(NSManagedObjectContext *)backgroundContext
@@ -179,6 +188,8 @@
     if (self = [super init]) {
         _mainThreadContext = mainContext;
         _backgroundThreadContext = backgroundContext;
+        _entitesByName = [NSMutableDictionary dictionary];
+        _managedObjectModel = _mainThreadContext.persistentStoreCoordinator.managedObjectModel;
     }
     return self;
 }
@@ -189,6 +200,21 @@
 }
 
 #pragma mark - CBRDatabaseAdapter
+
+- (CBREntityDescription *)entityDescriptionForClass:(Class)persistentClass
+{
+    @synchronized(self) {
+        NSString *name = NSStringFromClass(persistentClass);
+        if (self.entitesByName[name]) {
+            return self.entitesByName[name];
+        }
+
+        NSEntityDescription *entity = self.managedObjectModel.entitiesByName[name];
+        CBREntityDescription *result = [[CBREntityDescription alloc] initWithCoreDataEntityDescription:entity];
+        self.entitesByName[name] = result;
+        return result;
+    }
+}
 
 - (void)prepareForMutationWithPersistentObject:(NSManagedObject *)persistentObject
 {

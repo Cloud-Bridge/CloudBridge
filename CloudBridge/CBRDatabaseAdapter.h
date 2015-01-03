@@ -23,6 +23,7 @@
 
 #import <Foundation/Foundation.h>
 
+@class CBREntityDescription;
 @protocol CBRPersistentObject;
 
 
@@ -31,6 +32,9 @@
  @abstract  <#abstract comment#>
  */
 @protocol CBRDatabaseAdapter <NSObject>
+
+@required
+- (CBREntityDescription *)entityDescriptionForClass:(Class)persistentClass;
 
 @optional
 - (void)prepareForMutationWithPersistentObject:(id<CBRPersistentObject>)persistentObject;
