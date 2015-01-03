@@ -40,11 +40,25 @@
 - (void)prepareForMutationWithPersistentObject:(id<CBRPersistentObject>)persistentObject;
 
 @required
+- (id<CBRPersistentObject>)newMutablePersistentObjectOfType:(CBREntityDescription *)entityDescription;
+
+@required
+- (id<CBRPersistentObject>)persistentObjectOfType:(CBREntityDescription *)entityDescription withPrimaryKey:(id)primaryKey;
+
+@required
+- (NSArray *)fetchObjectsOfType:(CBREntityDescription *)entityDescription withPredicate:(NSPredicate *)predicate sortDescriptors:(NSArray *)sortDescriptors;
+
+@required
 - (void)mutatePersistentObject:(id<CBRPersistentObject>)persitentObject
                      withBlock:(void(^)(id<CBRPersistentObject> persistentObject))mutation
                     completion:(void(^)(id<CBRPersistentObject> persistentObject))completion;
 
 @required
-- (void)deletePersistentObjects:(NSArray *)persistentObjects withCompletionHandler:(void(^)(NSError *error))completionHandler;
+- (void)mutatePersistentObjects:(NSArray *)persitentObject
+                     withBlock:(NSArray *(^)(NSArray *persistentObjects))mutation
+                    completion:(void(^)(NSArray *persistentObjects))completion;
+
+@required
+- (void)deletePersistentObjects:(NSArray *)persistentObjects;
 
 @end

@@ -21,38 +21,36 @@
  THE SOFTWARE.
  */
 
-#import <CoreData/CoreData.h>
-#import <CBRCloudObject.h>
+#import <Foundation/Foundation.h>
+@protocol CBRPersistentObject, CBRCloudObject;
+@class CBREntityDescription;
 
 
-
-@protocol CBRManagedObjectToCloudObjectTransformer <NSObject>
+@protocol CBRCloudObjectTransformer <NSObject>
 
 /**
  Defines the key path where the unique cloud identifier can be found.
  */
-- (NSString *)keyPathForCloudIdentifierOfEntitiyDescription:(NSEntityDescription *)entityDescription;
+- (NSString *)primaryKeyOfEntitiyDescription:(CBREntityDescription *)entityDescription;
 
 /**
- Transforms a `NSManagedObject` instance into a `CBRCloudObject`.
+ Transforms a `CBRPersistentObject` instance into a `CBRCloudObject`.
  */
-- (id<CBRCloudObject>)cloudObjectFromManagedObject:(NSManagedObject *)managedObject;
+- (id<CBRCloudObject>)cloudObjectFromPersistentObject:(id<CBRPersistentObject>)persistentObject;
 
 /**
- Updates a `CBRCloudObject` instance with all properties of a `NSManagedObject`.
+ Updates a `CBRCloudObject` instance with all properties of a `CBRPersistentObject`.
  */
-- (void)updateCloudObject:(id<CBRCloudObject>)cloudObject withPropertiesFromManagedObject:(NSManagedObject *)managedObject;
+- (void)updateCloudObject:(id<CBRMutableCloudObject>)cloudObject withPropertiesFromPersistentObject:(id<CBRPersistentObject>)persistentObject;
 
 /**
- Transforms a `CBRCloudObject` instance into a `NSManagedObject`.
+ Transforms a `CBRCloudObject` instance into a `CBRPersistentObject`.
  */
-- (id)managedObjectFromCloudObject:(id<CBRCloudObject>)record
-                         forEntity:(NSEntityDescription *)entity
-            inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+- (id<CBRPersistentObject>)persistentObjectFromCloudObject:(id<CBRCloudObject>)cloudObject forEntity:(CBREntityDescription *)entity;
 
 /**
- Updates a `NSManagedObject` instance with all properties of a `CBRCloudObject`.
+ Updates a `CBRPersistentObject` instance with all properties of a `CBRCloudObject`.
  */
-- (void)updateManagedObject:(NSManagedObject *)managedObject withPropertiesFromCloudObject:(id<CBRCloudObject>)cloudObject;
+- (void)updatePersistentObject:(id<CBRPersistentObject>)persistentObject withPropertiesFromCloudObject:(id<CBRCloudObject>)cloudObject;
 
 @end

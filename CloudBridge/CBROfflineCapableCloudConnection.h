@@ -40,8 +40,8 @@
  */
 @protocol CBROfflineCapableCloudConnection <CBRCloudConnection>
 
-- (void)bulkCreateCloudObjects:(NSArray *)cloudObjects forManagedObjects:(NSArray *)managedObjects completionHandler:(void (^)(NSArray *cloudObjects, NSError *error))completionHandler;
-- (void)bulkSaveCloudObjects:(NSArray *)cloudObjects forManagedObjects:(NSArray *)managedObjects completionHandler:(void (^)(NSArray *cloudObjects, NSError *error))completionHandler;
-- (void)bulkDeleteCloudObjects:(NSArray *)cloudObjects forManagedObjects:(NSArray *)managedObjects completionHandler:(void (^)(NSArray *deletedObjectIdentifiers, NSError *error))completionHandler;
+- (void)bulkCreateCloudObjects:(NSArray *)cloudObjects forPersistentObjects:(NSArray *)persistentObject completionHandler:(void (^)(NSArray *cloudObjects, NSError *error))completionHandler;
+- (void)bulkSaveCloudObjects:(NSArray *)cloudObjects forPersistentObjects:(NSArray *)persistentObject completionHandler:(void (^)(NSArray *cloudObjects, NSError *error))completionHandler;
+- (void)bulkDeleteCloudObjects:(NSArray *)cloudObjects forPersistentObjects:(NSArray *)persistentObject completionHandler:(void (^)(NSArray *deletedObjectIdentifiers, NSError *error))completionHandler;
 
 @end

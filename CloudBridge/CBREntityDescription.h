@@ -7,9 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import <CBRDatabaseAdapter.h>
 @class CBREntityDescription;
-@protocol CBRDatabaseAdapter;
 
 typedef NS_ENUM(NSInteger, CBRAttributeType) {
     CBRAttributeTypeNumber,
@@ -49,6 +48,7 @@ typedef NS_ENUM(NSInteger, CBRAttributeType) {
 
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, assign) BOOL toMany;
+@property (nonatomic, assign) BOOL cascades;
 
 @property (nonatomic, strong) NSString *destinationEntityName;
 @property (nonatomic, readonly) CBREntityDescription *destinationEntity;
@@ -70,6 +70,9 @@ typedef NS_ENUM(NSInteger, CBRAttributeType) {
 
 @property (nonatomic, strong) NSArray *attributes;
 @property (nonatomic, strong) NSArray *relationships;
+
+@property (nonatomic, readonly) NSDictionary *attributesByName;
+@property (nonatomic, readonly) NSDictionary *relationshipsByName;
 
 @property (nonatomic, weak, readonly) id<CBRDatabaseAdapter> databaseAdapter;
 - (instancetype)init UNAVAILABLE_ATTRIBUTE;

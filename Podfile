@@ -5,7 +5,5 @@ target 'CloudBridge', :exclusive => true do
 end
 
 target 'Tests', :exclusive => true do
-  pod "CloudBridge", :path => "."
-
   pod 'Expecta'
 end

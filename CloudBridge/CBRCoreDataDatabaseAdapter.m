@@ -26,6 +26,7 @@
 #import "CBRCloudBridge.h"
 #import "CBREntityDescription.h"
 #import "CBREntityDescription+CBRCoreDataDatabaseAdapter.h"
+#import "CBRManagedObjectCache.h"
 
 
 
@@ -67,29 +68,27 @@
         class = [class class];
     }
 
-    [[self cloudBridge] fetchManagedObjectsOfType:NSStringFromClass(class)
-                                    withPredicate:predicate
-                                completionHandler:completionHandler];
+    [self.cloudBridge fetchPersistentObjectsOfClass:class withPredicate:predicate completionHandler:completionHandler];
 }
 
 - (void)createWithCompletionHandler:(void(^)(id managedObject, NSError *error))completionHandler
 {
-    [self.cloudBridge createManagedObject:self withCompletionHandler:completionHandler];
+    [self.cloudBridge createPersistentObject:self withCompletionHandler:completionHandler];
 }
 
 - (void)reloadWithCompletionHandler:(void(^)(id managedObject, NSError *error))completionHandler
 {
-    [self.cloudBridge reloadManagedObject:self withCompletionHandler:completionHandler];
+    [self.cloudBridge reloadPersistentObject:self withCompletionHandler:completionHandler];
 }
 
 - (void)saveWithCompletionHandler:(void(^)(id managedObject, NSError *error))completionHandler
 {
-    [self.cloudBridge saveManagedObject:self withCompletionHandler:completionHandler];
+    [self.cloudBridge savePersistentObject:self withCompletionHandler:completionHandler];
 }
 
 - (void)deleteWithCompletionHandler:(void(^)(NSError *error))completionHandler
 {
-    [self.cloudBridge deleteManagedObject:self withCompletionHandler:completionHandler];
+    [self.cloudBridge deletePersistentObject:self withCompletionHandler:completionHandler];
 }
 
 #pragma mark - CBRPersistentObjectSubclassHooks
@@ -133,7 +132,7 @@
 
 - (id<CBRCloudObject>)cloudObjectRepresentation
 {
-    return [self.cloudBridge.cloudConnection.objectTransformer cloudObjectFromManagedObject:self];
+    return [self.cloudBridge.cloudConnection.objectTransformer cloudObjectFromPersistentObject:self];
 }
 
 - (void)fetchObjectForRelationship:(NSString *)relationship withCompletionHandler:(void(^)(id managedObject, NSError *error))completionHandler
@@ -157,17 +156,15 @@
     NSParameterAssert(!relationshipDescription.inverseRelationship.isToMany);
 
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", relationshipDescription.inverseRelationship.name, self];
-    [self.cloudBridge fetchManagedObjectsOfType:relationshipDescription.inverseRelationship.entity.name
-                                  withPredicate:predicate
-                              completionHandler:completionHandler];
+    [self.cloudBridge fetchPersistentObjectsOfClass:NSClassFromString(relationshipDescription.inverseRelationship.entity.name)
+                                      withPredicate:predicate
+                                  completionHandler:completionHandler];
 }
 
 + (instancetype)managedObjectFromCloudObject:(id<CBRCloudObject>)cloudObject inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
 {
-    NSEntityDescription *entity = [NSEntityDescription entityForName:NSStringFromClass(self) inManagedObjectContext:managedObjectContext];
-    NSParameterAssert(entity);
-
-    return [[self cloudBridge].cloudConnection.objectTransformer managedObjectFromCloudObject:cloudObject forEntity:entity inManagedObjectContext:managedObjectContext];
+    CBREntityDescription *entity = [[self cloudBridge].databaseAdapter entityDescriptionForClass:self.class];
+    return [[self cloudBridge].cloudConnection.objectTransformer persistentObjectFromCloudObject:cloudObject forEntity:entity];
 }
 
 @end
@@ -183,20 +180,24 @@
 
 @implementation CBRCoreDataDatabaseAdapter
 
-- (instancetype)initWithMainThreadContext:(NSManagedObjectContext *)mainContext backgroundThreadContext:(NSManagedObjectContext *)backgroundContext
+- (NSManagedObjectContext *)mainThreadContext
 {
-    if (self = [super init]) {
-        _mainThreadContext = mainContext;
-        _backgroundThreadContext = backgroundContext;
-        _entitesByName = [NSMutableDictionary dictionary];
-        _managedObjectModel = _mainThreadContext.persistentStoreCoordinator.managedObjectModel;
-    }
-    return self;
+    return self.coreDataStack.mainThreadManagedObjectContext;
+}
+
+- (NSManagedObjectContext *)backgroundThreadContext
+{
+    return self.coreDataStack.backgroundThreadManagedObjectContext;
 }
 
 - (instancetype)initWithCoreDataStack:(SLCoreDataStack *)coreDataStack
 {
-    return [self initWithMainThreadContext:coreDataStack.mainThreadManagedObjectContext backgroundThreadContext:coreDataStack.backgroundThreadManagedObjectContext];
+    if (self = [super init]) {
+        _coreDataStack = coreDataStack;
+        _entitesByName = [NSMutableDictionary dictionary];
+        _managedObjectModel = _coreDataStack.persistentStoreCoordinator.managedObjectModel;
+    }
+    return self;
 }
 
 #pragma mark - CBRDatabaseAdapter
@@ -225,6 +226,32 @@
     }
 }
 
+- (id<CBRPersistentObject>)newMutablePersistentObjectOfType:(CBREntityDescription *)entityDescription
+{
+    NSManagedObjectContext *context = [NSThread currentThread].isMainThread ? self.mainThreadContext : self.backgroundThreadContext;
+    return [NSEntityDescription insertNewObjectForEntityForName:entityDescription.name inManagedObjectContext:context];
+}
+
+- (id<CBRPersistentObject>)persistentObjectOfType:(CBREntityDescription *)entityDescription withPrimaryKey:(id)primaryKey
+{
+    NSManagedObjectContext *context = [NSThread currentThread].isMainThread ? self.mainThreadContext : self.backgroundThreadContext;
+    NSString *attribute = [[NSClassFromString(entityDescription.name) cloudBridge].cloudConnection.objectTransformer primaryKeyOfEntitiyDescription:entityDescription];
+    NSParameterAssert(attribute);
+
+    return [context.cbr_cache objectOfType:entityDescription.name withValue:primaryKey forAttribute:attribute];
+}
+
+- (NSArray *)fetchObjectsOfType:(CBREntityDescription *)entityDescription withPredicate:(NSPredicate *)predicate sortDescriptors:(NSArray *)sortDescriptors
+{
+    NSManagedObjectContext *context = [NSThread currentThread].isMainThread ? self.mainThreadContext : self.backgroundThreadContext;
+
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:entityDescription.name];
+    fetchRequest.predicate = predicate;
+    fetchRequest.sortDescriptors = sortDescriptors;
+
+    return [context executeFetchRequest:fetchRequest error:NULL];
+}
+
 - (void)mutatePersistentObject:(NSManagedObject *)persitentObject
                      withBlock:(void(^)(id<CBRPersistentObject> persistentObject))mutation
                     completion:(void(^)(id<CBRPersistentObject> persistentObject))completion
@@ -232,35 +259,48 @@
     NSParameterAssert(mutation);
     NSParameterAssert(completion);
 
-    [self.backgroundThreadContext performBlock:^(NSManagedObject *object) {
+    NSManagedObjectContext *context = self.backgroundThreadContext;
+    [context performBlock:^(NSManagedObject *object) {
         mutation(object);
 
         NSError *saveError = nil;
-        [self.backgroundThreadContext save:&saveError];
+        [context save:&saveError];
         NSCAssert(saveError == nil, @"error saving managed object context: %@", saveError);
 
         [self.mainThreadContext performBlock:completion withObject:object];
     } withObject:persitentObject];
 }
 
-- (void)deletePersistentObjects:(NSArray *)persistentObjects withCompletionHandler:(void(^)(NSError *error))completionHandler
+- (void)mutatePersistentObjects:(NSArray *)persitentObjects
+                      withBlock:(NSArray *(^)(NSArray *persistentObjects))mutation
+                     completion:(void(^)(NSArray *persistentObjects))completion
 {
+    NSParameterAssert(mutation);
+    NSParameterAssert(completion);
+
     NSManagedObjectContext *context = self.backgroundThreadContext;
-    [context performBlock:^(NSArray *objects) {
-        for (NSManagedObject *managedObject in objects) {
-            [context deleteObject:managedObject];
-        }
+    [context performBlock:^(id object) {
+        NSArray *objects = mutation(object);
 
         NSError *saveError = nil;
         [context save:&saveError];
         NSCAssert(saveError == nil, @"error saving managed object context: %@", saveError);
 
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (completionHandler) {
-                completionHandler(saveError);
-            }
-        });
-    } withObject:persistentObjects];
+        [self.mainThreadContext performBlock:completion withObject:objects];
+    } withObject:persitentObjects];
+}
+
+- (void)deletePersistentObjects:(NSArray *)persistentObjects
+{
+    NSManagedObjectContext *context = [NSThread currentThread].isMainThread ? self.mainThreadContext : self.backgroundThreadContext;
+
+    for (NSManagedObject *managedObject in persistentObjects) {
+        [context deleteObject:managedObject];
+    }
+
+    NSError *saveError = nil;
+    [context save:&saveError];
+    NSCAssert(saveError == nil, @"error saving managed object context: %@", saveError);
 }
 
 @end

@@ -21,10 +21,10 @@
  THE SOFTWARE.
  */
 
-@import CoreData;
-
+#import <Foundation/Foundation.h>
 #import <CBRCloudObject.h>
-#import <CBRManagedObjectToCloudObjectTransformer.h>
+#import <CBRPersistentObject.h>
+#import <CBRCloudObjectTransformer.h>
 
 
 
@@ -33,29 +33,29 @@
  */
 @protocol CBRCloudConnection <NSObject>
 
-@property (nonatomic, readonly) id<CBRManagedObjectToCloudObjectTransformer> objectTransformer;
+@property (nonatomic, readonly) id<CBRCloudObjectTransformer> objectTransformer;
 
-- (void)fetchCloudObjectsForEntity:(NSEntityDescription *)entity
+- (void)fetchCloudObjectsForEntity:(CBREntityDescription *)entity
                      withPredicate:(NSPredicate *)predicate
                           userInfo:(NSDictionary *)userInfo
                  completionHandler:(void(^)(NSArray *fetchedObjects, NSError *error))completionHandler;
 
 - (void)createCloudObject:(id<CBRCloudObject>)cloudObject
-         forManagedObject:(NSManagedObject *)managedObject
+      forPersistentObject:(id<CBRPersistentObject>)persistent
              withUserInfo:(NSDictionary *)userInfo
         completionHandler:(void(^)(id<CBRCloudObject> cloudObject, NSError *error))completionHandler;
 
-- (void)latestCloudObjectForManagedObject:(NSManagedObject *)managedObject
-                             withUserInfo:(NSDictionary *)userInfo
-                        completionHandler:(void(^)(id<CBRCloudObject> cloudObject, NSError *error))completionHandler;
+- (void)latestCloudObjectForPersistentObject:(id<CBRPersistentObject>)persistent
+                                withUserInfo:(NSDictionary *)userInfo
+                           completionHandler:(void(^)(id<CBRCloudObject> cloudObject, NSError *error))completionHandler;
 
 - (void)saveCloudObject:(id<CBRCloudObject>)cloudObject
-       forManagedObject:(NSManagedObject *)managedObject
+    forPersistentObject:(id<CBRPersistentObject>)persistent
            withUserInfo:(NSDictionary *)userInfo
       completionHandler:(void(^)(id<CBRCloudObject> cloudObject, NSError *error))completionHandler;
 
 - (void)deleteCloudObject:(id<CBRCloudObject>)cloudObject
-         forManagedObject:(NSManagedObject *)managedObject
+      forPersistentObject:(id<CBRPersistentObject>)persistent
              withUserInfo:(NSDictionary *)userInfo
         completionHandler:(void(^)(NSError *error))completionHandler;
 

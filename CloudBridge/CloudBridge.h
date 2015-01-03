@@ -27,6 +27,7 @@
 #import <SLCoreDataStack.h>
 #import <CBRManagedObjectCache.h>
 
+#import <CBREntityDescription.h>
 #import <CBRCloudBridge.h>
 #import <CBRCloudObject.h>
 #import <CBRCloudConnection.h>
@@ -34,8 +35,6 @@
 
 #import <CBRDatabaseAdapter.h>
 #import <CBRCoreDataDatabaseAdapter.h>
-
-#import <NSRelationshipDescription+CloudBridge.h>
-#import <CBRManagedObjectToCloudObjectTransformer.h>
+#import <CBRCloudObjectTransformer.h>
 
 #import <CBROfflineCapableCloudBridge.h>

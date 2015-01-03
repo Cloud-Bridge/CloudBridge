@@ -62,11 +62,11 @@
  */
 @interface CBRCoreDataDatabaseAdapter : NSObject <CBRDatabaseAdapter>
 
+@property (nonatomic, readonly) SLCoreDataStack *coreDataStack;
 @property (nonatomic, readonly) NSManagedObjectContext *mainThreadContext;
 @property (nonatomic, readonly) NSManagedObjectContext *backgroundThreadContext;
 
 - (instancetype)init UNAVAILABLE_ATTRIBUTE;
-- (instancetype)initWithMainThreadContext:(NSManagedObjectContext *)mainContext backgroundThreadContext:(NSManagedObjectContext *)backgroundContext NS_DESIGNATED_INITIALIZER;
-- (instancetype)initWithCoreDataStack:(SLCoreDataStack *)coreDataStack;
+- (instancetype)initWithCoreDataStack:(SLCoreDataStack *)coreDataStack NS_DESIGNATED_INITIALIZER;
 
 @end

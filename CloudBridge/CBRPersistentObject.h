@@ -93,4 +93,7 @@
 
 @property (nonatomic, readonly) CBRCloudBridge *cloudBridge;
 
+- (id)valueForKey:(NSString *)key;
+- (void)setValue:(id)value forKey:(NSString *)key;
+
 @end

@@ -36,30 +36,33 @@
 @property (nonatomic, readonly) id<CBRCloudConnection> cloudConnection;
 @property (nonatomic, readonly) id<CBRDatabaseAdapter> databaseAdapter;
 
-@property (nonatomic, assign) BOOL transformsManagedObjectsSynchronous;
+@property (nonatomic, assign) BOOL transformsPersistentObjectsOnMainThread;
 
 - (instancetype)init UNAVAILABLE_ATTRIBUTE;
 - (instancetype)initWithCloudConnection:(id<CBRCloudConnection>)cloudConnection
                         databaseAdapter:(id<CBRDatabaseAdapter>)databaseAdapter NS_DESIGNATED_INITIALIZER;
 
-- (void)fetchManagedObjectsOfType:(NSString *)entity
-                    withPredicate:(NSPredicate *)predicate
-                completionHandler:(void(^)(NSArray *fetchedObjects, NSError *error))completionHandler;
+- (void)fetchPersistentObjectsOfClass:(Class)persistentClass
+                    completionHandler:(void(^)(NSArray *fetchedObjects, NSError *error))completionHandler;
 
-- (void)fetchManagedObjectsOfType:(NSString *)entity
-                    withPredicate:(NSPredicate *)predicate
-                         userInfo:(NSDictionary *)userInfo
-                completionHandler:(void(^)(NSArray *fetchedObjects, NSError *error))completionHandler;
+- (void)fetchPersistentObjectsOfClass:(Class)persistentClass
+                        withPredicate:(NSPredicate *)predicate
+                    completionHandler:(void(^)(NSArray *fetchedObjects, NSError *error))completionHandler;
 
-- (void)createManagedObject:(NSManagedObject *)managedObject withCompletionHandler:(void(^)(id managedObject, NSError *error))completionHandler;
-- (void)reloadManagedObject:(NSManagedObject *)managedObject withCompletionHandler:(void(^)(id managedObject, NSError *error))completionHandler;
-- (void)saveManagedObject:(NSManagedObject *)managedObject withCompletionHandler:(void(^)(id managedObject, NSError *error))completionHandler;
-- (void)deleteManagedObject:(NSManagedObject *)managedObject withCompletionHandler:(void(^)(NSError *error))completionHandler;
+- (void)fetchPersistentObjectsOfClass:(Class)persistentClass
+                        withPredicate:(NSPredicate *)predicate
+                             userInfo:(NSDictionary *)userInfo
+                    completionHandler:(void(^)(NSArray *fetchedObjects, NSError *error))completionHandler;
 
-- (void)createManagedObject:(NSManagedObject *)managedObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(id managedObject, NSError *error))completionHandler;
-- (void)reloadManagedObject:(NSManagedObject *)managedObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(id managedObject, NSError *error))completionHandler;
-- (void)saveManagedObject:(NSManagedObject *)managedObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(id managedObject, NSError *error))completionHandler;
-- (void)deleteManagedObject:(NSManagedObject *)managedObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(NSError *error))completionHandler;
+- (void)createPersistentObject:(id<CBRPersistentObject>)persistentObject withCompletionHandler:(void(^)(id persistentObject, NSError *error))completionHandler;
+- (void)reloadPersistentObject:(id<CBRPersistentObject>)persistentObject withCompletionHandler:(void(^)(id persistentObject, NSError *error))completionHandler;
+- (void)savePersistentObject:(id<CBRPersistentObject>)persistentObject withCompletionHandler:(void(^)(id persistentObject, NSError *error))completionHandler;
+- (void)deletePersistentObject:(id<CBRPersistentObject>)persistentObject withCompletionHandler:(void(^)(NSError *error))completionHandler;
+
+- (void)createPersistentObject:(id<CBRPersistentObject>)persistentObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(id persistentObject, NSError *error))completionHandler;
+- (void)reloadPersistentObject:(id<CBRPersistentObject>)persistentObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(id persistentObject, NSError *error))completionHandler;
+- (void)savePersistentObject:(id<CBRPersistentObject>)persistentObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(id persistentObject, NSError *error))completionHandler;
+- (void)deletePersistentObject:(id<CBRPersistentObject>)persistentObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(NSError *error))completionHandler;
 
 @end
 

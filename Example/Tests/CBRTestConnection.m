@@ -8,60 +8,56 @@
 
 #import "CBRTestConnection.h"
 
+@interface NSDictionary () <CBRCloudObject> @end
+@interface NSMutableDictionary () <CBRMutableCloudObject> @end
+
 @implementation CBRTestDictionaryTransformer
 
-- (NSString *)keyPathForCloudIdentifierOfEntitiyDescription:(NSEntityDescription *)entityDescription
+- (NSString *)primaryKeyOfEntitiyDescription:(CBREntityDescription *)entityDescription
 {
     return @"identifier";
 }
 
-- (NSDictionary *)cloudObjectFromManagedObject:(NSManagedObject *)managedObject
+- (id<CBRCloudObject>)cloudObjectFromPersistentObject:(id<CBRPersistentObject>)persistentObject
 {
     NSMutableDictionary *cloudObject = [NSMutableDictionary dictionary];
-    [self updateCloudObject:cloudObject withPropertiesFromManagedObject:managedObject];
+    [self updateCloudObject:cloudObject withPropertiesFromPersistentObject:persistentObject];
     return cloudObject.copy;
 }
 
-- (void)updateCloudObject:(NSMutableDictionary *)cloudObject withPropertiesFromManagedObject:(NSManagedObject *)managedObject
+- (void)updateCloudObject:(NSMutableDictionary *)cloudObject withPropertiesFromPersistentObject:(NSManagedObject *)persistentObject
 {
     if (![cloudObject isKindOfClass:[NSDictionary class]]) {
         return;
     }
 
-    for (NSAttributeDescription *attributeDescription in managedObject.entity.attributesByName.allValues) {
-        [cloudObject setValue:[managedObject valueForKey:attributeDescription.name] forKey:attributeDescription.name];
+    for (NSAttributeDescription *attributeDescription in persistentObject.entity.attributesByName.allValues) {
+        [cloudObject setValue:[persistentObject valueForKey:attributeDescription.name] forKey:attributeDescription.name];
     }
 }
 
-- (id)managedObjectFromCloudObject:(NSDictionary *)cloudObject forEntity:(NSEntityDescription *)entity inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
+- (id<CBRPersistentObject>)persistentObjectFromCloudObject:(id<CBRCloudObject>)cloudObject forEntity:(CBREntityDescription *)entity
 {
     NSParameterAssert(entity);
 
     id identifier = cloudObject[@"identifier"];
     NSParameterAssert(identifier);
 
-    NSManagedObject *managedObject = [managedObjectContext.cbr_cache objectOfType:entity.name withValue:identifier forAttribute:@"identifier"];
+    NSManagedObject *managedObject = [entity.databaseAdapter persistentObjectOfType:entity withPrimaryKey:identifier];
     if (!managedObject) {
-        managedObject = [NSEntityDescription insertNewObjectForEntityForName:entity.name
-                                                      inManagedObjectContext:managedObjectContext];
+        managedObject = [entity.databaseAdapter newMutablePersistentObjectOfType:entity];
     }
 
-    [self updateManagedObject:managedObject withPropertiesFromCloudObject:cloudObject];
+    [self updatePersistentObject:managedObject withPropertiesFromCloudObject:cloudObject];
     return managedObject;
 }
 
-- (void)updateManagedObject:(NSManagedObject *)managedObject withPropertiesFromCloudObject:(NSDictionary *)cloudObject
+- (void)updatePersistentObject:(NSManagedObject *)persistentObject withPropertiesFromCloudObject:(id<CBRCloudObject>)cloudObject
 {
-    for (NSAttributeDescription *attributeDescription in managedObject.entity.attributesByName.allValues) {
-        [managedObject setValue:cloudObject[attributeDescription.name] forKey:attributeDescription.name];
+    for (NSAttributeDescription *attributeDescription in persistentObject.entity.attributesByName.allValues) {
+        [persistentObject setValue:cloudObject[attributeDescription.name] forKey:attributeDescription.name];
     }
 }
-
-@end
-
-
-
-@interface CBRTestConnection ()
 
 @end
 
@@ -79,7 +75,7 @@
     return self;
 }
 
-- (void)fetchCloudObjectsForEntity:(NSEntityDescription *)entity
+- (void)fetchCloudObjectsForEntity:(CBREntityDescription *)entity
                      withPredicate:(NSPredicate *)predicate
                           userInfo:(NSDictionary *)userInfo
                  completionHandler:(void(^)(NSArray *fetchedObjects, NSError *error))completionHandler
@@ -89,39 +85,39 @@
 
 #pragma mark - CBRCloudConnection
 
-- (void)createCloudObject:(id<CBRCloudObject>)cloudObject forManagedObject:(NSManagedObject *)managedObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(id<CBRCloudObject> cloudObject, NSError *error))completionHandler
+- (void)createCloudObject:(id<CBRCloudObject>)cloudObject forPersistentObject:(NSManagedObject *)managedObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(id<CBRCloudObject> cloudObject, NSError *error))completionHandler
 {
     completionHandler(self.objectsToReturn.firstObject, self.errorToReturn);
 }
 
-- (void)latestCloudObjectForManagedObject:(NSManagedObject *)managedObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(id<CBRCloudObject> cloudObject, NSError *error))completionHandler
+- (void)latestCloudObjectForPersistentObject:(NSManagedObject *)managedObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(id<CBRCloudObject> cloudObject, NSError *error))completionHandler
 {
     completionHandler(self.objectsToReturn.firstObject, self.errorToReturn);
 }
 
-- (void)saveCloudObject:(id<CBRCloudObject>)cloudObject forManagedObject:(NSManagedObject *)managedObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(id<CBRCloudObject> cloudObject, NSError *error))completionHandler
+- (void)saveCloudObject:(id<CBRCloudObject>)cloudObject forPersistentObject:(NSManagedObject *)managedObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(id<CBRCloudObject> cloudObject, NSError *error))completionHandler
 {
     completionHandler(self.objectsToReturn.firstObject, self.errorToReturn);
 }
 
-- (void)deleteCloudObject:(id<CBRCloudObject>)cloudObject forManagedObject:(NSManagedObject *)managedObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(NSError *error))completionHandler
+- (void)deleteCloudObject:(id<CBRCloudObject>)cloudObject forPersistentObject:(NSManagedObject *)managedObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(NSError *error))completionHandler
 {
     completionHandler(self.errorToReturn);
 }
 
 #pragma mark - CBROfflineCapableCloudConnection
 
-- (void)bulkCreateCloudObjects:(NSArray *)cloudObjects forManagedObjects:(NSArray *)managedObjects completionHandler:(void (^)(NSArray *cloudObjects, NSError *error))completionHandler
+- (void)bulkCreateCloudObjects:(NSArray *)cloudObjects forPersistentObjects:(NSArray *)managedObjects completionHandler:(void (^)(NSArray *cloudObjects, NSError *error))completionHandler
 {
     completionHandler(self.objectsToReturn, self.errorToReturn);
 }
 
-- (void)bulkSaveCloudObjects:(NSArray *)cloudObjects forManagedObjects:(NSArray *)managedObjects completionHandler:(void (^)(NSArray *cloudObjects, NSError *error))completionHandler
+- (void)bulkSaveCloudObjects:(NSArray *)cloudObjects forPersistentObjects:(NSArray *)managedObjects completionHandler:(void (^)(NSArray *cloudObjects, NSError *error))completionHandler
 {
     completionHandler(self.objectsToReturn, self.errorToReturn);
 }
 
-- (void)bulkDeleteCloudObjects:(NSArray *)cloudObjects forManagedObjects:(NSArray *)managedObjects completionHandler:(void (^)(NSArray *deletedObjectIdentifiers, NSError *error))completionHandler
+- (void)bulkDeleteCloudObjects:(NSArray *)cloudObjects forPersistentObjects:(NSArray *)managedObjects completionHandler:(void (^)(NSArray *deletedObjectIdentifiers, NSError *error))completionHandler
 {
     completionHandler(self.objectsToReturn, self.errorToReturn);
 }

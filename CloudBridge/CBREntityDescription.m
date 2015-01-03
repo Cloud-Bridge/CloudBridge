@@ -9,6 +9,19 @@
 #import "CBREntityDescription.h"
 #import "CBRDatabaseAdapter.h"
 
+static NSDictionary *indexBy(NSArray *array, NSString *key)
+{
+    NSMutableDictionary *result = [NSMutableDictionary dictionary];
+
+    for (id object in array) {
+        result[[object valueForKey:key]] = object;
+    }
+
+    return result;
+}
+
+
+
 @implementation CBRAttributeDescription
 
 - (instancetype)initWithDatabaseAdapter:(id<CBRDatabaseAdapter>)databaseAdapter
@@ -43,6 +56,16 @@
 
 
 @implementation CBREntityDescription
+
+- (NSDictionary *)attributesByName
+{
+    return indexBy(self.attributes, @"name");
+}
+
+- (NSDictionary *)relationshipsByName
+{
+    return indexBy(self.relationships, @"name");
+}
 
 - (instancetype)initWithDatabaseAdapter:(id<CBRDatabaseAdapter>)databaseAdapter
 {

@@ -60,7 +60,7 @@
     entity.string = @"blubb";
 
     self.connection.objectsToReturn = @[ @{@"identifier": @1337} ];
-    [self.cloudBridge createManagedObject:entity withCompletionHandler:NULL];
+    [self.cloudBridge createPersistentObject:entity withCompletionHandler:NULL];
     expect(entity.identifier).will.equal(1337);
 }
 
@@ -74,7 +74,7 @@
     entity.identifier = @5;
 
     self.connection.objectsToReturn = @[ @{ @"identifier": entity.identifier, @"string": @"bla" } ];
-    [self.cloudBridge saveManagedObject:entity withCompletionHandler:NULL];
+    [self.cloudBridge savePersistentObject:entity withCompletionHandler:NULL];
 
     expect(entity.string).will.equal(@"bla");
 }
@@ -85,7 +85,7 @@
     entity.identifier = @5;
 
     self.connection.objectsToReturn = @[ @{ @"identifier": entity.identifier, @"string": @"bla" } ];
-    [self.cloudBridge reloadManagedObject:entity withCompletionHandler:NULL];
+    [self.cloudBridge reloadPersistentObject:entity withCompletionHandler:NULL];
 
     expect(entity.string).will.equal(@"bla");
 }
@@ -95,7 +95,7 @@
     SLEntity4 *entity = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([SLEntity4 class]) inManagedObjectContext:self.context];
     entity.identifier = @5;
 
-    [self.cloudBridge deleteManagedObject:entity withCompletionHandler:NULL];
+    [self.cloudBridge deletePersistentObject:entity withCompletionHandler:NULL];
     expect(entity.isDeleted).will.beTruthy();
 }
 
@@ -106,10 +106,8 @@
 
     self.connection.objectsToReturn = @[ @{ @"identifier": @1 }, @{ @"identifier": @2 } ];
 
-    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:NSStringFromClass([SLEntity6Child class]) inManagedObjectContext:self.context];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"parent == %@", entity];
-
-    [self.cloudBridge fetchManagedObjectsOfType:entityDescription.name withPredicate:predicate completionHandler:NULL];
+    [self.cloudBridge fetchPersistentObjectsOfClass:[SLEntity6Child class] withPredicate:predicate completionHandler:NULL];
 
     expect(entity.children).will.haveCountOf(2);
 }
@@ -125,10 +123,8 @@
 
     self.connection.objectsToReturn = @[ @{ @"identifier": @1 }, @{ @"identifier": @2 } ];
 
-    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:NSStringFromClass([SLEntity6Child class]) inManagedObjectContext:self.context];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"parent == %@", entity];
-
-    [self.cloudBridge fetchManagedObjectsOfType:entityDescription.name withPredicate:predicate completionHandler:NULL];
+    [self.cloudBridge fetchPersistentObjectsOfClass:[SLEntity6Child class] withPredicate:predicate completionHandler:NULL];
 
     expect(entity.children).will.haveCountOf(2);
     expect(entity.children).toNot.contain(child);
@@ -145,10 +141,8 @@
 
     self.connection.objectsToReturn = @[ @{ @"identifier": @1 }, @{ @"identifier": @2 } ];
 
-    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:NSStringFromClass([SLEntity6Child class]) inManagedObjectContext:self.context];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"parent == %@", entity];
-
-    [self.cloudBridge fetchManagedObjectsOfType:entityDescription.name withPredicate:predicate completionHandler:NULL];
+    [self.cloudBridge fetchPersistentObjectsOfClass:[SLEntity6Child class] withPredicate:predicate completionHandler:NULL];
 
     expect(entity.children).will.haveCountOf(2);
     expect(entity.children).toNot.contain(child);

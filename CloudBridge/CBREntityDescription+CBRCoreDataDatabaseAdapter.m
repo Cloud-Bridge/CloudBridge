@@ -60,6 +60,7 @@
         self.toMany = relationshipDescription.isToMany;
         self.destinationEntityName = relationshipDescription.destinationEntity.name;
         self.userInfo = relationshipDescription.userInfo;
+        self.cascades = relationshipDescription.userInfo[@"cloudBridgeCascades"] != nil || relationshipDescription.inverseRelationship.userInfo[@"cloudBridgeCascades"] != nil;
     }
     return self;
 }
