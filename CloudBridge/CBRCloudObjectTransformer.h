@@ -22,7 +22,7 @@
  */
 
 #import <Foundation/Foundation.h>
-@protocol CBRPersistentObject, CBRCloudObject;
+@protocol CBRPersistentObject, CBRCloudObject, CBRMutableCloudObject;
 @class CBREntityDescription;
 
 

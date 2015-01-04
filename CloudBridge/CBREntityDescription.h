@@ -11,10 +11,12 @@
 @class CBREntityDescription;
 
 typedef NS_ENUM(NSInteger, CBRAttributeType) {
-    CBRAttributeTypeNumber,
+    CBRAttributeTypeInteger,
+    CBRAttributeTypeDouble,
     CBRAttributeTypeBoolean,
     CBRAttributeTypeString,
     CBRAttributeTypeDate,
+    CBRAttributeTypeBinary,
     CBRAttributeTypeTransformable,
 
     CBRAttributeTypeUnknown,

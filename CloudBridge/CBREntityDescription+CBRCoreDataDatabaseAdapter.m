@@ -20,10 +20,12 @@
             case NSInteger16AttributeType:
             case NSInteger32AttributeType:
             case NSInteger64AttributeType:
+                self.type = CBRAttributeTypeInteger;
+                break;
             case NSDecimalAttributeType:
             case NSDoubleAttributeType:
             case NSFloatAttributeType:
-                self.type = CBRAttributeTypeNumber;
+                self.type = CBRAttributeTypeDouble;
                 break;
             case NSBooleanAttributeType:
                 self.type = CBRAttributeTypeBoolean;
@@ -36,6 +38,9 @@
                 break;
             case NSTransformableAttributeType:
                 self.type = CBRAttributeTypeTransformable;
+                break;
+            case NSBinaryDataAttributeType:
+                self.type = CBRAttributeTypeBinary;
                 break;
             default:
                 self.type = CBRAttributeTypeUnknown;
