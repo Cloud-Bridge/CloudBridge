@@ -54,7 +54,7 @@
                     [entityDescription.databaseAdapter saveChangesForPersistentObject:persistentObject];
                 }
 
-                NSString *primaryKey = [[cloudBridge.cloudConnection objectTransformer] primaryKeyOfEntitiyDescription:entityDescription];
+                NSString *primaryKey = [[cloudBridge.cloudConnection objectTransformer] primaryKeyOfEntitiyDescription:[persistentObject cloudBridgeEntityDescription]];
 
                 _relationshipToUpdate = relationshipDescription.name;
                 _primaryKey = [persistentObject valueForKey:primaryKey];
