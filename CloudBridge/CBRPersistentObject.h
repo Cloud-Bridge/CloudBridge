@@ -23,7 +23,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class CBRCloudBridge;
+@class CBRCloudBridge, CBREntityDescription;
 @protocol CBRCloudObject;
 
 
@@ -92,6 +92,9 @@
 + (void)setCloudBridge:(CBRCloudBridge *)cloudBridge;
 
 @property (nonatomic, readonly) CBRCloudBridge *cloudBridge;
+
++ (CBREntityDescription *)cloudBridgeEntityDescription;
+@property (nonatomic, readonly) CBREntityDescription *cloudBridgeEntityDescription;
 
 /**
  Convenience property to return the cloud representation for this object.

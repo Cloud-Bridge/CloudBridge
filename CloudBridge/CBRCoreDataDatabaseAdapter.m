@@ -58,6 +58,16 @@
     return [self.class cloudBridge];
 }
 
++ (CBREntityDescription *)cloudBridgeEntityDescription
+{
+    return [[self cloudBridge].databaseAdapter entityDescriptionForClass:self];
+}
+
+- (CBREntityDescription *)cloudBridgeEntityDescription
+{
+    return [self.class cloudBridgeEntityDescription];
+}
+
 #pragma mark - CBRPersistentObjectQueryInterface
 
 + (void)fetchObjectsMatchingPredicate:(NSPredicate *)predicate
