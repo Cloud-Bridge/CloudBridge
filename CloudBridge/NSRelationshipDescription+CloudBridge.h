@@ -21,7 +21,7 @@
  THE SOFTWARE.
  */
 
-@import CoreData;
+#import <CoreData/CoreData.h>
 
 
 

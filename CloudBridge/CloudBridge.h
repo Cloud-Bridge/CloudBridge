@@ -21,18 +21,19 @@
  THE SOFTWARE.
  */
 
-@import CoreData;
+#import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
 
-#import <SLCoreDataStack.h>
-#import <CBRManagedObjectCache.h>
+#import <SLCoreDataStack/SLCoreDataStack.h>
+#import <CBRManagedObjectCache/CBRManagedObjectCache.h>
 
-#import <CBRCloudBridge.h>
-#import <CBRCloudObject.h>
-#import <CBRCloudConnection.h>
+#import <CloudBridge/CBRCloudBridge.h>
+#import <CloudBridge/CBRCloudObject.h>
+#import <CloudBridge/CBRCloudConnection.h>
 
-#import <NSManagedObject+CloudBridgeSubclassHooks.h>
-#import <NSManagedObject+CloudBridge.h>
-#import <NSRelationshipDescription+CloudBridge.h>
-#import <CBRManagedObjectToCloudObjectTransformer.h>
+#import <CloudBridge/NSManagedObject+CloudBridgeSubclassHooks.h>
+#import <CloudBridge/NSManagedObject+CloudBridge.h>
+#import <CloudBridge/NSRelationshipDescription+CloudBridge.h>
+#import <CloudBridge/CBRManagedObjectToCloudObjectTransformer.h>
 
-#import <CBROfflineCapableCloudBridge.h>
+#import <CloudBridge/CBROfflineCapableCloudBridge.h>

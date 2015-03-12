@@ -1,6 +1,9 @@
 #include "Pods-CloudBridge-OCMock.xcconfig"
-FRAMEWORK_SEARCH_PATHS = ${PODS_CLOUDBRIDGE_OCMOCK_FRAMEWORK_SEARCH_PATHS}
+CONFIGURATION_BUILD_DIR = $PODS_FRAMEWORK_BUILD_PATH
+FRAMEWORK_SEARCH_PATHS = "$PODS_FRAMEWORK_BUILD_PATH"
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Build" "${PODS_ROOT}/Headers/Build/OCMock" "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/CBRManagedObjectCache" "${PODS_ROOT}/Headers/Public/CloudBridge" "${PODS_ROOT}/Headers/Public/Expecta" "${PODS_ROOT}/Headers/Public/OCMock" "${PODS_ROOT}/Headers/Public/SLCoreDataStack"
-OTHER_LDFLAGS = ${PODS_CLOUDBRIDGE_OCMOCK_OTHER_LDFLAGS} -ObjC
+HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Private" "${PODS_ROOT}/Headers/Private/OCMock" "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/CBRManagedObjectCache" "${PODS_ROOT}/Headers/Public/CloudBridge" "${PODS_ROOT}/Headers/Public/Expecta" "${PODS_ROOT}/Headers/Public/OCMock" "${PODS_ROOT}/Headers/Public/SLCoreDataStack"
+OTHER_LDFLAGS = -ObjC
+PODS_FRAMEWORK_BUILD_PATH = $(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/Pods-CloudBridge
 PODS_ROOT = ${SRCROOT}
+SKIP_INSTALL = YES

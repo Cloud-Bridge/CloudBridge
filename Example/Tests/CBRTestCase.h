@@ -8,7 +8,7 @@
 
 #import <XCTest/XCTest.h>
 
-#import <CloudBridge.h>
+#import <CloudBridge/CloudBridge.h>
 #import "CBRTestDataStore.h"
 
 

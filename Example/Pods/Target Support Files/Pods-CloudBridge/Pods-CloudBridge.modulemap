@@ -1,0 +1,6 @@
+framework module Pods_CloudBridge {
+  umbrella header "Pods-CloudBridge-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -26,6 +26,7 @@
 #import "SLCoreDataStack.h"
 #import <objc/runtime.h>
 #import <objc/message.h>
+#import <libkern/OSAtomic.h>
 
 static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSelector)
 {
@@ -206,9 +207,23 @@ NSString *const SLCoreDataStackErrorDomain = @"SLCoreDataStackErrorDomain";
 {
     if (!_managedObjectModel) {
         NSString *managedObjectModelName = self.managedObjectModelName;
-        NSURL *modelURL = [self.bundle URLForResource:managedObjectModelName withExtension:@"momd"];
+        NSURL *momURL = [self.bundle URLForResource:managedObjectModelName withExtension:@"mom"];
+        NSURL *momdURL = [self.bundle URLForResource:managedObjectModelName withExtension:@"momd"];
 
-        _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
+        if (momURL && momdURL) {
+            NSDate *momCreationDate = [[NSFileManager defaultManager] attributesOfItemAtPath:momURL.path error:NULL].fileCreationDate;
+            NSDate *momdCreationDate = [[NSFileManager defaultManager] attributesOfItemAtPath:momdURL.path error:NULL].fileCreationDate;
+
+            if (momCreationDate.timeIntervalSince1970 > momdCreationDate.timeIntervalSince1970) {
+                NSLog(@"Found mom and momd model, will be using mom because fileCreationDate is newer");
+                momdURL = nil;
+            } else {
+                NSLog(@"Found mom and momd model, will be using momd because fileCreationDate is newer");
+                momURL = nil;
+            }
+        }
+
+        _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:momURL ?: momdURL];
     }
 
     return _managedObjectModel;
@@ -487,7 +502,13 @@ NSString *const SLCoreDataStackErrorDomain = @"SLCoreDataStackErrorDomain";
 
 - (BOOL)migrateDataStore:(NSError **)error
 {
-    return [self _performMigrationFromDataStoreAtURL:self.dataStoreURL toDestinationModel:self.managedObjectModel error:error];
+    static OSSpinLock lock = OS_SPINLOCK_INIT;
+
+    OSSpinLockLock(&lock);
+    BOOL success = [self _performMigrationFromDataStoreAtURL:self.dataStoreURL toDestinationModel:self.managedObjectModel error:error];
+    OSSpinLockUnlock(&lock);
+
+    return success;
 }
 
 - (BOOL)_performMigrationFromDataStoreAtURL:(NSURL *)dataStoreURL
@@ -629,18 +650,18 @@ NSString *const SLCoreDataStackErrorDomain = @"SLCoreDataStackErrorDomain";
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
     NSManagedObjectContext *context = self.managedObjectContext;
-
+    
     if (context) {
         __block dispatch_queue_t queue = NULL;
         [context performBlockAndWait:^{
             queue = dispatch_get_current_queue();
         }];
-
+        
         NSAssert(queue == dispatch_get_current_queue(), @"wrong queue buddy");
     }
-
+    
 #pragma clang diagnostic pop
-
+    
     [self __SLCoreDataStackCoreDataThreadDebuggingWillChangeValueForKey:key];
 }
 

@@ -21,7 +21,7 @@
  THE SOFTWARE.
  */
 
-@import ObjectiveC.runtime;
+#import <objc/runtime.h>
 #import "NSManagedObject+CloudBridge.h"
 
 

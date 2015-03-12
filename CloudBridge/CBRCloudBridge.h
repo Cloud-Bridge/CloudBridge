@@ -21,10 +21,10 @@
  THE SOFTWARE.
  */
 
-@import CoreData;
+#import <CoreData/CoreData.h>
 
-#import <CBRCloudConnection.h>
-#import <SLCoreDataStack.h>
+#import <CloudBridge/CBRCloudConnection.h>
+#import <SLCoreDataStack/SLCoreDataStack.h>
 
 
 

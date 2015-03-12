@@ -1,0 +1,1 @@
+../../../../CloudBridge/CBREntityDescription+CBRCoreDataDatabaseAdapter.h

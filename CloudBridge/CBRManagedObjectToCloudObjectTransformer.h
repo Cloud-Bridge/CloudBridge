@@ -21,9 +21,9 @@
  THE SOFTWARE.
  */
 
-@import CoreData;
+#import <CoreData/CoreData.h>
 
-#import <CBRCloudObject.h>
+#import <CloudBridge/CBRCloudObject.h>
 
 
 

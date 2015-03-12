@@ -1,0 +1,6 @@
+framework module CBRManagedObjectCache {
+  umbrella header "Pods-CloudBridge-CBRManagedObjectCache-umbrella.h"
+
+  export *
+  module * { export * }
+}

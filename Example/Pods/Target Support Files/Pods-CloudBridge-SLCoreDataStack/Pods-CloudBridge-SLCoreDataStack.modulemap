@@ -1,0 +1,6 @@
+framework module SLCoreDataStack {
+  umbrella header "Pods-CloudBridge-SLCoreDataStack-umbrella.h"
+
+  export *
+  module * { export * }
+}

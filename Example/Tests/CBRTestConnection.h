@@ -6,7 +6,7 @@
 //  Copyright 2014 Oliver Letterer. All rights reserved.
 //
 
-#import <CloudBridge.h>
+#import <CloudBridge/CloudBridge.h>
 
 @interface NSDictionary () <CBRCloudObject>
 @end

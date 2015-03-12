@@ -1,0 +1,1 @@
+../../../../CloudBridge/CBROfflineCapablePersistentObject.h

@@ -21,6 +21,10 @@
  THE SOFTWARE.
  */
 
+#import <Foundation/Foundation.h>
+
+
+
 /**
  Abstract definition for an immutable cloud object. Each connection defines it's own implementation.
  */

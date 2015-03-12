@@ -6,7 +6,7 @@
 //  Copyright 2014 Oliver Letterer. All rights reserved.
 //
 
-#import <SLCoreDataStack.h>
+#import <SLCoreDataStack/SLCoreDataStack.h>
 
 #import "SLEntity4.h"
 #import "SLEntity6.h"

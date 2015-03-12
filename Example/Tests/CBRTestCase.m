@@ -7,6 +7,7 @@
 //
 
 #import "CBRTestCase.h"
+@import CloudBridge;
 
 @implementation CBRTestCase
 

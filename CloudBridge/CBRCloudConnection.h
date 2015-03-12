@@ -21,10 +21,10 @@
  THE SOFTWARE.
  */
 
-@import CoreData;
+#import <CoreData/CoreData.h>
 
-#import <CBRCloudObject.h>
-#import <CBRManagedObjectToCloudObjectTransformer.h>
+#import <CloudBridge/CBRCloudObject.h>
+#import <CloudBridge/CBRManagedObjectToCloudObjectTransformer.h>
 
 
 
