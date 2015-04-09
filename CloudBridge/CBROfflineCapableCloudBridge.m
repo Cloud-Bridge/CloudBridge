@@ -71,6 +71,7 @@
 
 
 @implementation CBROfflineCapableCloudBridge
+@dynamic cloudConnection;
 
 #pragma mark - setters and getters
 

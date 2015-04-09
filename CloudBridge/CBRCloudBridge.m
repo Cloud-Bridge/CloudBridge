@@ -98,6 +98,12 @@
 
 #pragma mark - Initialization
 
+- (instancetype)init
+{
+    [self doesNotRecognizeSelector:_cmd];
+    return nil;
+}
+
 - (instancetype)initWithCloudConnection:(id<CBRCloudConnection>)cloudConnection coreDataStack:(SLCoreDataStack *)coreDataStack
 {
     NSParameterAssert(cloudConnection);

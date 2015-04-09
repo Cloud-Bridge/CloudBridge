@@ -41,7 +41,7 @@
 @property (nonatomic, readonly) NSManagedObjectContext *mainThreadManagedObjectContext;
 @property (nonatomic, readonly) NSManagedObjectContext *backgroundThreadManagedObjectContext;
 
-- (instancetype)init UNAVAILABLE_ATTRIBUTE;
+- (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithCloudConnection:(id<CBRCloudConnection>)cloudConnection
                           coreDataStack:(SLCoreDataStack *)coreDataStack NS_DESIGNATED_INITIALIZER;
 
