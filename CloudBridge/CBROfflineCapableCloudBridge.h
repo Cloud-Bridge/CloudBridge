@@ -26,7 +26,7 @@
 #import <CloudBridge/CBROfflineCapableCloudConnection.h>
 #import <CloudBridge/CBROfflineCapableManagedObject.h>
 
-
+NS_ASSUME_NONNULL_BEGIN
 
 /**
  Entities which should benifit from the offline mode must conform to the `CBROfflineCapableManagedObject` protocol.
@@ -37,21 +37,23 @@
 - (void)enableOfflineMode;
 
 @property (nonatomic, readonly) BOOL isReenablingOnlineMode;
-- (void)reenableOnlineModeWithCompletionHandler:(void(^)(NSError *error))completionHandler;
+- (void)reenableOnlineModeWithCompletionHandler:(nullable void(^)(NSError *__nullable error))completionHandler;
 
 @property (nonatomic, readonly) id<CBROfflineCapableCloudConnection> cloudConnection;
 - (instancetype)initWithCloudConnection:(id<CBROfflineCapableCloudConnection>)cloudConnection coreDataStack:(SLCoreDataStack *)coreDataStack;
 
 - (void)createManagedObject:(NSManagedObject<CBROfflineCapableManagedObject> *)managedObject
                withUserInfo:(NSDictionary *)userInfo
-          completionHandler:(void(^)(id managedObject, NSError *error))completionHandler;
+          completionHandler:(nullable void(^)(id __nullable managedObject, NSError *__nullable error))completionHandler;
 
 - (void)saveManagedObject:(NSManagedObject<CBROfflineCapableManagedObject> *)managedObject
              withUserInfo:(NSDictionary *)userInfo
-        completionHandler:(void(^)(id managedObject, NSError *error))completionHandler;
+        completionHandler:(nullable void(^)(id __nullable managedObject, NSError *__nullable error))completionHandler;
 
 - (void)deleteManagedObject:(NSManagedObject<CBROfflineCapableManagedObject> *)managedObject
                withUserInfo:(NSDictionary *)userInfo
-          completionHandler:(void(^)(NSError *error))completionHandler;
+          completionHandler:(nullable void(^)(NSError *__nullable error))completionHandler;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -1,6 +1,6 @@
 {
   "name": "CloudBridge",
-  "version": "0.10.5",
+  "version": "0.10.7",
   "summary": "The missing bridge between Your CoreData model and various Cloud backends.",
   "homepage": "https://github.com/Cloud-Bridge/CloudBridge",
   "license": "MIT",
@@ -9,7 +9,7 @@
   },
   "source": {
     "git": "https://github.com/Cloud-Bridge/CloudBridge.git",
-    "tag": "0.10.5"
+    "tag": "0.10.7"
   },
   "social_media_url": "https://twitter.com/oletterer",
   "platforms": {

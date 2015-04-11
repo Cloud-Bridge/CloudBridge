@@ -23,14 +23,16 @@
 
 #import <Foundation/Foundation.h>
 
-
+NS_ASSUME_NONNULL_BEGIN
 
 /**
  Any offline capable `NSManagedObject` subclass must conform to this protocol.
  */
 @protocol CBROfflineCapableManagedObject <NSObject>
 
-@property (nonatomic, strong) NSNumber *hasPendingCloudBridgeChanges;
-@property (nonatomic, strong) NSNumber *hasPendingCloudBridgeDeletion;
+@property (nonatomic, nullable) NSNumber *hasPendingCloudBridgeChanges;
+@property (nonatomic, nullable) NSNumber *hasPendingCloudBridgeDeletion;
 
 @end
+
+NS_ASSUME_NONNULL_END

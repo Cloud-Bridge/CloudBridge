@@ -121,7 +121,7 @@
                     withPredicate:(NSPredicate *)predicate
                 completionHandler:(void(^)(NSArray *fetchedObjects, NSError *error))completionHandler
 {
-    [self fetchManagedObjectsOfType:entity withPredicate:predicate userInfo:nil completionHandler:completionHandler];
+    [self fetchManagedObjectsOfType:entity withPredicate:predicate userInfo:@{} completionHandler:completionHandler];
 }
 
 - (void)fetchManagedObjectsOfType:(NSString *)entity
@@ -202,22 +202,22 @@
 
 - (void)createManagedObject:(NSManagedObject *)managedObject withCompletionHandler:(void(^)(id managedObject, NSError *error))completionHandler
 {
-    [self createManagedObject:managedObject withUserInfo:nil completionHandler:completionHandler];
+    [self createManagedObject:managedObject withUserInfo:@{} completionHandler:completionHandler];
 }
 
 - (void)reloadManagedObject:(NSManagedObject *)managedObject withCompletionHandler:(void(^)(id managedObject, NSError *error))completionHandler
 {
-    [self reloadManagedObject:managedObject withUserInfo:nil completionHandler:completionHandler];
+    [self reloadManagedObject:managedObject withUserInfo:@{} completionHandler:completionHandler];
 }
 
 - (void)saveManagedObject:(NSManagedObject *)managedObject withCompletionHandler:(void(^)(id managedObject, NSError *error))completionHandler
 {
-    [self saveManagedObject:managedObject withUserInfo:nil completionHandler:completionHandler];
+    [self saveManagedObject:managedObject withUserInfo:@{} completionHandler:completionHandler];
 }
 
 - (void)deleteManagedObject:(NSManagedObject *)managedObject withCompletionHandler:(void(^)(NSError *error))completionHandler
 {
-    [self deleteManagedObject:managedObject withUserInfo:nil completionHandler:completionHandler];
+    [self deleteManagedObject:managedObject withUserInfo:@{} completionHandler:completionHandler];
 }
 
 - (void)createManagedObject:(NSManagedObject *)managedObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(id managedObject, NSError *error))completionHandler

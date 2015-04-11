@@ -23,7 +23,7 @@
 
 #import <CloudBridge/CBRCloudConnection.h>
 
-
+NS_ASSUME_NONNULL_BEGIN
 
 @interface CBRDeletedObjectIdentifier : NSObject <NSCopying>
 
@@ -42,8 +42,10 @@
  */
 @protocol CBROfflineCapableCloudConnection <CBRCloudConnection>
 
-- (void)bulkCreateCloudObjects:(NSArray *)cloudObjects forManagedObjects:(NSArray *)managedObjects completionHandler:(void (^)(NSArray *cloudObjects, NSError *error))completionHandler;
-- (void)bulkSaveCloudObjects:(NSArray *)cloudObjects forManagedObjects:(NSArray *)managedObjects completionHandler:(void (^)(NSArray *cloudObjects, NSError *error))completionHandler;
-- (void)bulkDeleteCloudObjects:(NSArray *)cloudObjects forManagedObjects:(NSArray *)managedObjects completionHandler:(void (^)(NSArray *deletedObjectIdentifiers, NSError *error))completionHandler;
+- (void)bulkCreateCloudObjects:(NSArray *)cloudObjects forManagedObjects:(NSArray *)managedObjects completionHandler:(nullable void (^)(NSArray *__nullable cloudObjects, NSError *__nullable error))completionHandler;
+- (void)bulkSaveCloudObjects:(NSArray *)cloudObjects forManagedObjects:(NSArray *)managedObjects completionHandler:(nullable void (^)(NSArray *__nullable cloudObjects, NSError *__nullable error))completionHandler;
+- (void)bulkDeleteCloudObjects:(NSArray *)cloudObjects forManagedObjects:(NSArray *)managedObjects completionHandler:(nullable void (^)(NSArray *__nullable deletedObjectIdentifiers, NSError *__nullable error))completionHandler;
 
 @end
+
+NS_ASSUME_NONNULL_END

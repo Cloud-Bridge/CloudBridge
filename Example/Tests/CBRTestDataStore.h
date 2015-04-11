@@ -20,4 +20,6 @@
 
 - (void)wipeAllData;
 
++ (CBRTestDataStore *)sharedStore;
+
 @end

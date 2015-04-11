@@ -26,7 +26,7 @@
     [super setUp];
 
     self.connection = [[CBRTestConnection alloc] init];
-    self.cloudBridge = [[CBRCloudBridge alloc] initWithCloudConnection:self.connection coreDataStack:[CBRTestDataStore sharedInstance]];
+    self.cloudBridge = [[CBRCloudBridge alloc] initWithCloudConnection:self.connection coreDataStack:[CBRTestDataStore sharedStore]];
     [NSManagedObject setCloudBridge:self.cloudBridge];
 }
 
@@ -37,7 +37,7 @@
 
 - (void)testThatSubclassesOverrideGlobalCloudBridge
 {
-    CBRCloudBridge *otherCloudBridge = [[CBRCloudBridge alloc] initWithCloudConnection:self.connection coreDataStack:[CBRTestDataStore sharedInstance]];
+    CBRCloudBridge *otherCloudBridge = [[CBRCloudBridge alloc] initWithCloudConnection:self.connection coreDataStack:[CBRTestDataStore sharedStore]];
     expect(otherCloudBridge).toNot.equal(self.cloudBridge);
 
     [SLEntity4 setCloudBridge:otherCloudBridge];

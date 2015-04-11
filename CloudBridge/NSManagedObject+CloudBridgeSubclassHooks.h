@@ -24,7 +24,7 @@
 #import <CoreData/CoreData.h>
 #import <CloudBridge/CBRCloudObject.h>
 
-
+NS_ASSUME_NONNULL_BEGIN
 
 @interface NSManagedObject (CloudBridgeSubclassHooks)
 
@@ -56,11 +56,13 @@
 /**
  Sets a value for a key for a specific cloud object.
  */
-- (void)setCloudValue:(id)value forKey:(NSString *)key fromCloudObject:(id<CBRCloudObject>)cloudObject;
+- (void)setCloudValue:(nullable id)value forKey:(NSString *)key fromCloudObject:(id<CBRCloudObject>)cloudObject;
 
 /**
  Returns a cloud value for a given key.
  */
-- (id)cloudValueForKey:(NSString *)key;
+- (nullable id)cloudValueForKey:(NSString *)key;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -26,7 +26,7 @@
 #import <CloudBridge/CBRCloudObject.h>
 #import <CloudBridge/CBRManagedObjectToCloudObjectTransformer.h>
 
-
+NS_ASSUME_NONNULL_BEGIN
 
 /**
  Abstract interface that handles all communication with a specific Cloud backend.
@@ -38,25 +38,27 @@
 - (void)fetchCloudObjectsForEntity:(NSEntityDescription *)entity
                      withPredicate:(NSPredicate *)predicate
                           userInfo:(NSDictionary *)userInfo
-                 completionHandler:(void(^)(NSArray *fetchedObjects, NSError *error))completionHandler;
+                 completionHandler:(nullable void(^)(NSArray *__nullable fetchedObjects, NSError *__nullable error))completionHandler;
 
 - (void)createCloudObject:(id<CBRCloudObject>)cloudObject
          forManagedObject:(NSManagedObject *)managedObject
              withUserInfo:(NSDictionary *)userInfo
-        completionHandler:(void(^)(id<CBRCloudObject> cloudObject, NSError *error))completionHandler;
+        completionHandler:(nullable void(^)(id<CBRCloudObject> __nullable cloudObject, NSError *__nullable error))completionHandler;
 
 - (void)latestCloudObjectForManagedObject:(NSManagedObject *)managedObject
                              withUserInfo:(NSDictionary *)userInfo
-                        completionHandler:(void(^)(id<CBRCloudObject> cloudObject, NSError *error))completionHandler;
+                        completionHandler:(nullable void(^)(id<CBRCloudObject> __nullable cloudObject, NSError *__nullable error))completionHandler;
 
 - (void)saveCloudObject:(id<CBRCloudObject>)cloudObject
        forManagedObject:(NSManagedObject *)managedObject
            withUserInfo:(NSDictionary *)userInfo
-      completionHandler:(void(^)(id<CBRCloudObject> cloudObject, NSError *error))completionHandler;
+      completionHandler:(nullable void(^)(id<CBRCloudObject> __nullable cloudObject, NSError *__nullable error))completionHandler;
 
 - (void)deleteCloudObject:(id<CBRCloudObject>)cloudObject
          forManagedObject:(NSManagedObject *)managedObject
              withUserInfo:(NSDictionary *)userInfo
-        completionHandler:(void(^)(NSError *error))completionHandler;
+        completionHandler:(nullable void(^)(NSError *__nullable error))completionHandler;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -10,19 +10,16 @@
 
 @implementation CBRTestDataStore
 
-+ (BOOL)coreDataThreadDebuggingEnabled
++ (CBRTestDataStore *)sharedStore
 {
-    return YES;
-}
+    static CBRTestDataStore *sharedStore = nil;
 
-- (NSString *)humanReadableInterfaceName
-{
-    return NSLocalizedString(@"Database", @"");
-}
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedStore = [self newConvenientSQLiteStackWithModel:@"CBRTestDataStore" inBundle:[NSBundle bundleForClass:self]];
+    });
 
-- (NSString *)managedObjectModelName
-{
-    return @"CBRTestDataStore";
+    return sharedStore;
 }
 
 - (void)wipeAllData

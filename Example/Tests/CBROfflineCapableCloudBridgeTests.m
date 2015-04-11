@@ -26,7 +26,7 @@
     [super setUp];
 
     self.connection = [[CBRTestConnection alloc] init];
-    self.cloudBridge = [[CBROfflineCapableCloudBridge alloc] initWithCloudConnection:self.connection coreDataStack:[CBRTestDataStore sharedInstance]];
+    self.cloudBridge = [[CBROfflineCapableCloudBridge alloc] initWithCloudConnection:self.connection coreDataStack:[CBRTestDataStore sharedStore]];
     [NSManagedObject setCloudBridge:self.cloudBridge];
 
     [self.cloudBridge setValue:@NO forKey:NSStringFromSelector(@selector(isRunningInOfflineMode))];

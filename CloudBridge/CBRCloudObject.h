@@ -23,20 +23,22 @@
 
 #import <Foundation/Foundation.h>
 
-
+NS_ASSUME_NONNULL_BEGIN
 
 /**
  Abstract definition for an immutable cloud object. Each connection defines it's own implementation.
  */
 @protocol CBRCloudObject <NSObject>
-- (id)objectForKey:(id)key;
-- (id)objectForKeyedSubscript:(id)key;
+- (nullable id)objectForKey:(id)key;
+- (nullable id)objectForKeyedSubscript:(id)key;
 @end
 
 /**
  Abstract definition for a mutable cloud object.
  */
 @protocol CBRMutableCloudObject <CBRCloudObject>
-- (void)setObject:(id)object forKey:(id<NSCopying>)key;
-- (void)setObject:(id)object forKeyedSubscript:(id<NSCopying>)key;
+- (void)setObject:(nullable id)object forKey:(id<NSCopying>)key;
+- (void)setObject:(nullable id)object forKeyedSubscript:(id<NSCopying>)key;
 @end
+
+NS_ASSUME_NONNULL_END

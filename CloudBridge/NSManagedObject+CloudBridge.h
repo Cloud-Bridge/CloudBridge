@@ -24,30 +24,30 @@
 #import <CoreData/CoreData.h>
 #import <CloudBridge/CBRCloudBridge.h>
 
-
+NS_ASSUME_NONNULL_BEGIN
 
 @interface NSManagedObject (CloudBridge)
 
-+ (CBRCloudBridge *)cloudBridge;
-+ (void)setCloudBridge:(CBRCloudBridge *)cloudBridge;
++ (nullable CBRCloudBridge *)cloudBridge;
++ (void)setCloudBridge:(nullable CBRCloudBridge *)cloudBridge;
 
 @property (nonatomic, readonly) CBRCloudBridge *cloudBridge;
 
 + (void)fetchObjectsMatchingPredicate:(NSPredicate *)predicate
-                withCompletionHandler:(void(^)(NSArray *fetchedObjects, NSError *error))completionHandler;
+                withCompletionHandler:(nullable void(^)(NSArray *__nullable fetchedObjects, NSError *__nullable error))completionHandler;
 
 /**
  Fetching object for a relationship queries the backend with `relationshipDescription.inverseRelationship == self`
 
  @warning: Only supported if `relationshipDescription.inverseRelationship.isToMany` is `NO`.
  */
-- (void)fetchObjectForRelationship:(NSString *)relationship withCompletionHandler:(void(^)(id managedObject, NSError *error))completionHandler;
-- (void)fetchObjectsForRelationship:(NSString *)relationship withCompletionHandler:(void(^)(NSArray *objects, NSError *error))completionHandler;
+- (void)fetchObjectForRelationship:(NSString *)relationship withCompletionHandler:(nullable void(^)(id __nullable managedObject, NSError *__nullable error))completionHandler;
+- (void)fetchObjectsForRelationship:(NSString *)relationship withCompletionHandler:(nullable void(^)(NSArray *__nullable objects, NSError *__nullable error))completionHandler;
 
-- (void)createWithCompletionHandler:(void(^)(id managedObject, NSError *error))completionHandler;
-- (void)reloadWithCompletionHandler:(void(^)(id managedObject, NSError *error))completionHandler;
-- (void)saveWithCompletionHandler:(void(^)(id managedObject, NSError *error))completionHandler;
-- (void)deleteWithCompletionHandler:(void(^)(NSError *error))completionHandler;
+- (void)createWithCompletionHandler:(nullable void(^)(id __nullable managedObject, NSError *__nullable error))completionHandler;
+- (void)reloadWithCompletionHandler:(nullable void(^)(id __nullable managedObject, NSError *__nullable error))completionHandler;
+- (void)saveWithCompletionHandler:(nullable void(^)(id __nullable managedObject, NSError *__nullable error))completionHandler;
+- (void)deleteWithCompletionHandler:(nullable void(^)(NSError *__nullable error))completionHandler;
 
 /**
  Convenience property to return the cloud representation for this object.
@@ -65,3 +65,5 @@
 + (instancetype)managedObjectFromCloudObject:(id<CBRCloudObject>)cloudObject inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
 
 @end
+
+NS_ASSUME_NONNULL_END

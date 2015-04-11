@@ -23,7 +23,7 @@
 
 #import <CoreData/CoreData.h>
 
-
+NS_ASSUME_NONNULL_BEGIN
 
 @interface NSRelationshipDescription (CloudBridge)
 
@@ -33,3 +33,5 @@
 @property (nonatomic, readonly) BOOL cloudBridgeCascades;
 
 @end
+
+NS_ASSUME_NONNULL_END

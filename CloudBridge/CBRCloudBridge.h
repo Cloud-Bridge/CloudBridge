@@ -26,7 +26,7 @@
 #import <CloudBridge/CBRCloudConnection.h>
 #import <SLCoreDataStack/SLCoreDataStack.h>
 
-
+NS_ASSUME_NONNULL_BEGIN
 
 /**
  Bridges between the CoreData stack and the cloud backend.
@@ -47,21 +47,23 @@
 
 - (void)fetchManagedObjectsOfType:(NSString *)entity
                     withPredicate:(NSPredicate *)predicate
-                completionHandler:(void(^)(NSArray *fetchedObjects, NSError *error))completionHandler;
+                completionHandler:(nullable void(^)(NSArray *__nullable fetchedObjects, NSError *__nullable error))completionHandler;
 
 - (void)fetchManagedObjectsOfType:(NSString *)entity
                     withPredicate:(NSPredicate *)predicate
                          userInfo:(NSDictionary *)userInfo
-                completionHandler:(void(^)(NSArray *fetchedObjects, NSError *error))completionHandler;
+                completionHandler:(nullable void(^)(NSArray *__nullable fetchedObjects, NSError *__nullable error))completionHandler;
 
-- (void)createManagedObject:(NSManagedObject *)managedObject withCompletionHandler:(void(^)(id managedObject, NSError *error))completionHandler;
-- (void)reloadManagedObject:(NSManagedObject *)managedObject withCompletionHandler:(void(^)(id managedObject, NSError *error))completionHandler;
-- (void)saveManagedObject:(NSManagedObject *)managedObject withCompletionHandler:(void(^)(id managedObject, NSError *error))completionHandler;
-- (void)deleteManagedObject:(NSManagedObject *)managedObject withCompletionHandler:(void(^)(NSError *error))completionHandler;
+- (void)createManagedObject:(NSManagedObject *)managedObject withCompletionHandler:(nullable void(^)(id __nullable managedObject, NSError *__nullable error))completionHandler;
+- (void)reloadManagedObject:(NSManagedObject *)managedObject withCompletionHandler:(nullable void(^)(id __nullable managedObject, NSError *__nullable error))completionHandler;
+- (void)saveManagedObject:(NSManagedObject *)managedObject withCompletionHandler:(nullable void(^)(id __nullable managedObject, NSError *__nullable error))completionHandler;
+- (void)deleteManagedObject:(NSManagedObject *)managedObject withCompletionHandler:(nullable void(^)(NSError *__nullable error))completionHandler;
 
-- (void)createManagedObject:(NSManagedObject *)managedObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(id managedObject, NSError *error))completionHandler;
-- (void)reloadManagedObject:(NSManagedObject *)managedObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(id managedObject, NSError *error))completionHandler;
-- (void)saveManagedObject:(NSManagedObject *)managedObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(id managedObject, NSError *error))completionHandler;
-- (void)deleteManagedObject:(NSManagedObject *)managedObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(NSError *error))completionHandler;
+- (void)createManagedObject:(NSManagedObject *)managedObject withUserInfo:(NSDictionary *)userInfo completionHandler:(nullable void(^)(id __nullable managedObject, NSError *__nullable error))completionHandler;
+- (void)reloadManagedObject:(NSManagedObject *)managedObject withUserInfo:(NSDictionary *)userInfo completionHandler:(nullable void(^)(id __nullable managedObject, NSError *__nullable error))completionHandler;
+- (void)saveManagedObject:(NSManagedObject *)managedObject withUserInfo:(NSDictionary *)userInfo completionHandler:(nullable void(^)(id __nullable managedObject, NSError *__nullable error))completionHandler;
+- (void)deleteManagedObject:(NSManagedObject *)managedObject withUserInfo:(NSDictionary *)userInfo completionHandler:(nullable void(^)(NSError *__nullable error))completionHandler;
 
 @end
+
+NS_ASSUME_NONNULL_END

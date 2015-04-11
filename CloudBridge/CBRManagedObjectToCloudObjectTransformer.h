@@ -25,7 +25,7 @@
 
 #import <CloudBridge/CBRCloudObject.h>
 
-
+NS_ASSUME_NONNULL_BEGIN
 
 @protocol CBRManagedObjectToCloudObjectTransformer <NSObject>
 
@@ -57,3 +57,5 @@
 - (void)updateManagedObject:(NSManagedObject *)managedObject withPropertiesFromCloudObject:(id<CBRCloudObject>)cloudObject;
 
 @end
+
+NS_ASSUME_NONNULL_END
