@@ -118,6 +118,12 @@
 #pragma mark - Instance methods
 
 - (void)fetchManagedObjectsOfType:(NSString *)entity
+                completionHandler:(nullable void(^)(NSArray *__nullable fetchedObjects, NSError *__nullable error))completionHandler
+{
+    return [self fetchManagedObjectsOfType:entity withPredicate:nil completionHandler:completionHandler];
+}
+
+- (void)fetchManagedObjectsOfType:(NSString *)entity
                     withPredicate:(NSPredicate *)predicate
                 completionHandler:(void(^)(NSArray *fetchedObjects, NSError *error))completionHandler
 {

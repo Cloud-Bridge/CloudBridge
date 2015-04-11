@@ -46,11 +46,14 @@ NS_ASSUME_NONNULL_BEGIN
                           coreDataStack:(SLCoreDataStack *)coreDataStack NS_DESIGNATED_INITIALIZER;
 
 - (void)fetchManagedObjectsOfType:(NSString *)entity
-                    withPredicate:(NSPredicate *)predicate
                 completionHandler:(nullable void(^)(NSArray *__nullable fetchedObjects, NSError *__nullable error))completionHandler;
 
 - (void)fetchManagedObjectsOfType:(NSString *)entity
-                    withPredicate:(NSPredicate *)predicate
+                    withPredicate:(nullable NSPredicate *)predicate
+                completionHandler:(nullable void(^)(NSArray *__nullable fetchedObjects, NSError *__nullable error))completionHandler;
+
+- (void)fetchManagedObjectsOfType:(NSString *)entity
+                    withPredicate:(nullable NSPredicate *)predicate
                          userInfo:(NSDictionary *)userInfo
                 completionHandler:(nullable void(^)(NSArray *__nullable fetchedObjects, NSError *__nullable error))completionHandler;
 
