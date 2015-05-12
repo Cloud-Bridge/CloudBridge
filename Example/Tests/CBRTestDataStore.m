@@ -10,11 +10,6 @@
 
 @implementation CBRTestDataStore
 
-+ (BOOL)coreDataThreadDebuggingEnabled
-{
-    return YES;
-}
-
 - (NSString *)humanReadableInterfaceName
 {
     return NSLocalizedString(@"Database", @"");
@@ -44,6 +39,18 @@
     NSError *saveError = nil;
     [self.mainThreadManagedObjectContext save:&saveError];
     NSAssert(saveError == nil, @"error saving NSManagedObjectContext: %@", saveError);
+}
+
++ (CBRTestDataStore *)testStore
+{
+    static CBRTestDataStore *testStore = nil;
+
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        testStore = [self newConvenientSQLiteStackWithModel:@"CBRTestDataStore" inBundle:[NSBundle bundleForClass:self]];
+    });
+
+    return testStore;
 }
 
 @end

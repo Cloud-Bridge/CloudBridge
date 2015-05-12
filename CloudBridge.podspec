@@ -17,13 +17,13 @@ Pod::Spec.new do |s|
   s.source           = { :git => "https://github.com/Cloud-Bridge/CloudBridge.git", :tag => s.version.to_s }
   s.social_media_url = 'https://twitter.com/oletterer'
 
-  s.platform     = :ios, '7.0'
+  s.platform     = :ios, '8.0'
   s.requires_arc = true
 
   s.source_files = 'CloudBridge'
 
   s.frameworks = 'CoreData'
-  s.dependency 'SLCoreDataStack', '~> 0.8'
+  s.dependency 'SLCoreDataStack', '~> 1.0'
   s.dependency 'CBRManagedObjectCache', '~> 1.3'
   s.prefix_header_contents = '#ifndef NS_BLOCK_ASSERTIONS', '#define __assert_unused', '#else', '#define __assert_unused __unused', '#endif'
 end

@@ -18,6 +18,8 @@
 
 @interface CBRTestDataStore : SLCoreDataStack
 
++ (CBRTestDataStore *)testStore;
+
 - (void)wipeAllData;
 
 @end

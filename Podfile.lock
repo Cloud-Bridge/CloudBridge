@@ -1,10 +1,10 @@
 PODS:
   - CBRManagedObjectCache (1.3.0)
-  - CloudBridge (0.11.beta.1.3):
+  - CloudBridge (0.11.beta.1.4):
     - CBRManagedObjectCache (~> 1.3)
-    - SLCoreDataStack (~> 0.8)
-  - Expecta (0.4.0)
-  - SLCoreDataStack (0.9.0)
+    - SLCoreDataStack (~> 1.0)
+  - Expecta (1.0.0)
+  - SLCoreDataStack (1.0.0)
 
 DEPENDENCIES:
   - CloudBridge (from `.`)
@@ -16,8 +16,8 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   CBRManagedObjectCache: cf2a41922f38f0a3b3e8860c9e7a21135842e293
-  CloudBridge: 38aa74369e2cb567465d63479f5f6608683498c5
-  Expecta: 392a6b5bfb9f4097e47dd8064d9b732079490332
-  SLCoreDataStack: 06ddf25a75927f7483bc9268e95841bf60fdfebf
+  CloudBridge: 0473dbdee5f03ac36bb6027fc801b23822987148
+  Expecta: 32604574add2c46a36f8d2f716b6c5736eb75024
+  SLCoreDataStack: 4137459105c5092b79d7809683c5de1d65d3f9b6
 
-COCOAPODS: 0.36.3
+COCOAPODS: 0.37.1

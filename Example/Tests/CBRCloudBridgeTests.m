@@ -27,7 +27,7 @@
     [super setUp];
 
     self.connection = [[CBRTestConnection alloc] init];
-    self.adapter = [[CBRCoreDataDatabaseAdapter alloc] initWithCoreDataStack:[CBRTestDataStore sharedInstance]];
+    self.adapter = [[CBRCoreDataDatabaseAdapter alloc] initWithCoreDataStack:[CBRTestDataStore testStore]];
     self.cloudBridge = [[CBRCloudBridge alloc] initWithCloudConnection:self.connection databaseAdapter:self.adapter];
     [NSManagedObject setCloudBridge:self.cloudBridge];
 }

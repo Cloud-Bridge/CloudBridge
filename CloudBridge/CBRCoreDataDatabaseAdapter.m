@@ -285,14 +285,14 @@
     NSParameterAssert(mutation);
 
     NSManagedObjectContext *context = self.backgroundThreadContext;
-    [context performBlock:^(NSManagedObject *object) {
+    [context performUnsafeBlock:^(NSManagedObject *object) {
         mutation(object);
 
         NSError *saveError = nil;
         [context save:&saveError];
         NSCAssert(saveError == nil, @"error saving managed object context: %@", saveError);
 
-        [self.mainThreadContext performBlock:^(id object) {
+        [self.mainThreadContext performUnsafeBlock:^(id object) {
             if (completion) {
                 completion(object);
             }
@@ -307,14 +307,14 @@
     NSParameterAssert(mutation);
 
     NSManagedObjectContext *context = self.backgroundThreadContext;
-    [context performBlock:^(id object) {
+    [context performUnsafeBlock:^(id object) {
         NSArray *objects = mutation(object);
 
         NSError *saveError = nil;
         [context save:&saveError];
         NSCAssert(saveError == nil, @"error saving managed object context: %@", saveError);
 
-        [self.mainThreadContext performBlock:^(id object) {
+        [self.mainThreadContext performUnsafeBlock:^(id object) {
             if (completion) {
                 completion(object);
             }
