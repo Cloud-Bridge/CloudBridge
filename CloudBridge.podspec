@@ -9,7 +9,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "CloudBridge"
-  s.version          = "0.11.beta.1.4"
+  s.version          = "1.0"
   s.summary          = "The missing bridge between Your CoreData model and various Cloud backends."
   s.homepage         = "https://github.com/Cloud-Bridge/CloudBridge"
   s.license          = 'MIT'
@@ -25,5 +25,6 @@ Pod::Spec.new do |s|
   s.frameworks = 'CoreData'
   s.dependency 'SLCoreDataStack', '~> 1.0'
   s.dependency 'CBRManagedObjectCache', '~> 1.3'
+
   s.prefix_header_contents = '#ifndef NS_BLOCK_ASSERTIONS', '#define __assert_unused', '#else', '#define __assert_unused __unused', '#endif'
 end

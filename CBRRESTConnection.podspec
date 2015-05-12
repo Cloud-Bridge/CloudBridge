@@ -9,7 +9,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "CBRRESTConnection"
-  s.version          = "0.14.beta.5.2"
+  s.version          = "1.0"
   s.summary          = "CloudBridgeConnection for RESTful web services."
   s.homepage         = "https://github.com/Cloud-Bridge/CBRRESTConnection"
   s.license          = 'MIT'
@@ -24,5 +24,5 @@ Pod::Spec.new do |s|
 
   s.frameworks = 'CoreData'
   s.dependency 'AFNetworking', '~> 2.5'
-  s.dependency 'CloudBridge', '~> 0.11.beta.1'
+  s.dependency 'CloudBridge', '~> 1.0'
 end

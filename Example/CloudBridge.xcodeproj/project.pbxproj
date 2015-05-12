@@ -38,6 +38,7 @@
 		A7CEDCFF1B022B2C0011FA33 /* CBRUnderscoredPropertyMappingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CEDCFE1B022B2C0011FA33 /* CBRUnderscoredPropertyMappingTests.m */; };
 		A7CEDD011B022B3E0011FA33 /* CBRRESTConnectionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CEDD001B022B3E0011FA33 /* CBRRESTConnectionTests.m */; };
 		A7CEDD041B022C630011FA33 /* PrefixedEntitiy.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CEDD031B022C630011FA33 /* PrefixedEntitiy.m */; };
+		A7CEDD061B022DA80011FA33 /* CBRRESTConnection.podspec in Resources */ = {isa = PBXBuildFile; fileRef = A7CEDD051B022DA80011FA33 /* CBRRESTConnection.podspec */; };
 		A7D1AC3A1A55529E00D25D50 /* CBRCloudBridgeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D1AC361A55529E00D25D50 /* CBRCloudBridgeTests.m */; };
 		A7D1AC3B1A55529E00D25D50 /* CBROfflineCapableCloudBridgeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D1AC371A55529E00D25D50 /* CBROfflineCapableCloudBridgeTests.m */; };
 		A7D1AC3C1A55529E00D25D50 /* CBRTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D1AC391A55529E00D25D50 /* CBRTestCase.m */; };
@@ -122,6 +123,7 @@
 		A7CEDD001B022B3E0011FA33 /* CBRRESTConnectionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBRRESTConnectionTests.m; sourceTree = "<group>"; };
 		A7CEDD021B022C630011FA33 /* PrefixedEntitiy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrefixedEntitiy.h; sourceTree = "<group>"; };
 		A7CEDD031B022C630011FA33 /* PrefixedEntitiy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrefixedEntitiy.m; sourceTree = "<group>"; };
+		A7CEDD051B022DA80011FA33 /* CBRRESTConnection.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = CBRRESTConnection.podspec; path = ../CBRRESTConnection.podspec; sourceTree = "<group>"; };
 		A7D1AC361A55529E00D25D50 /* CBRCloudBridgeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBRCloudBridgeTests.m; sourceTree = "<group>"; };
 		A7D1AC371A55529E00D25D50 /* CBROfflineCapableCloudBridgeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBROfflineCapableCloudBridgeTests.m; sourceTree = "<group>"; };
 		A7D1AC381A55529E00D25D50 /* CBRTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBRTestCase.h; sourceTree = "<group>"; };
@@ -307,6 +309,7 @@
 			isa = PBXGroup;
 			children = (
 				F6B5409ED320939F22765006 /* CloudBridge.podspec */,
+				A7CEDD051B022DA80011FA33 /* CBRRESTConnection.podspec */,
 				8FB2AC50918F3490E1C5BF02 /* README.md */,
 				2DE14DC1F7377675EEC3E53E /* LICENSE */,
 			);
@@ -407,6 +410,7 @@
 			files = (
 				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,
 				6003F598195388D20070C39A /* InfoPlist.strings in Resources */,
+				A7CEDD061B022DA80011FA33 /* CBRRESTConnection.podspec in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
