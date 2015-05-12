@@ -217,7 +217,7 @@
     NSMutableArray *result = [NSMutableArray array];
 
     for (NSEntityDescription *entity in self.managedObjectModel.entities) {
-        [result addObject:[self entityDescriptionForClass:NSClassFromString(entity.name)]];
+        [result addObject:[self entityDescriptionForClass:NSClassFromString(entity.managedObjectClassName)]];
     }
 
     return result;

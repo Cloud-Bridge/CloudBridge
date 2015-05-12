@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6244" systemVersion="13E28" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7701" systemVersion="14D136" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="JSONEntity1" representedClassName="JSONEntity1" syncable="YES">
+        <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="dictionary" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="floatNumber" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="identifier" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="otherString" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="restKeyPath" value="some_dictionary.string_value"/>
+            </userInfo>
+        </attribute>
+        <attribute name="string" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="OfflineEntity" representedClassName="OfflineEntity" syncable="YES">
         <attribute name="hasPendingCloudBridgeChanges" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="hasPendingCloudBridgeDeletion" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -7,6 +19,23 @@
     </entity>
     <entity name="OnlyOnlineEntity" representedClassName="OnlyOnlineEntity" syncable="YES">
         <attribute name="identifier" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+    </entity>
+    <entity name="PrefixedEntitiy" representedClassName="PrefixedEntitiy" syncable="YES">
+        <attribute name="identifier" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <userInfo>
+            <entry key="restPrefix" value="prefix"/>
+        </userInfo>
+    </entity>
+    <entity name="SLEntity1" representedClassName="SLEntity1" syncable="YES"/>
+    <entity name="SLEntity1Subclass" representedClassName="SLSubclassOfEntity1" parentEntity="SLEntity1" syncable="YES"/>
+    <entity name="SLEntity2" representedClassName="SLEntity2" syncable="YES">
+        <attribute name="identifier" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="unregisteredAttribute" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="SLEntity3" representedClassName="SLEntity3" syncable="YES">
+        <attribute name="someValue" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="SLEntity4" representedClassName="SLEntity4" syncable="YES">
         <attribute name="array" optional="YES" attributeType="Transformable" syncable="YES"/>
@@ -16,6 +45,77 @@
         <attribute name="string" optional="YES" attributeType="String" syncable="YES"/>
         <userInfo>
             <entry key="restBaseURL" value="entity4"/>
+        </userInfo>
+    </entity>
+    <entity name="SLEntity4Subclass" representedClassName="SLEntity4Subclass" syncable="YES"/>
+    <entity name="SLEntity5" representedClassName="SLEntity5" syncable="YES">
+        <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="dictionary" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="floatNumber" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="identifier" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="otherString" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="restKeyPath" value="some_dictionary.string_value"/>
+            </userInfo>
+        </attribute>
+        <attribute name="string" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="camelizedChilds" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SLEntity5Child5" inverseName="parent" inverseEntity="SLEntity5Child5" syncable="YES">
+            <userInfo>
+                <entry key="restIncluded" value="1"/>
+                <entry key="restKeyPath" value="camelizedChilds"/>
+            </userInfo>
+        </relationship>
+        <relationship name="child" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SLEntity5Child1" inverseName="parent" inverseEntity="SLEntity5Child1" syncable="YES"/>
+        <relationship name="differentChilds" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SLEntity5Child6" inverseName="parent" inverseEntity="SLEntity5Child6" syncable="YES">
+            <userInfo>
+                <entry key="restKeyPath" value="differentChilds"/>
+            </userInfo>
+        </relationship>
+        <relationship name="otherChild" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SLEntity5Child2" inverseName="parent" inverseEntity="SLEntity5Child2" syncable="YES"/>
+        <relationship name="otherToManyChilds" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SLEntity5Child4" inverseName="parent" inverseEntity="SLEntity5Child4" syncable="YES"/>
+        <relationship name="toManyChilds" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SLEntity5Child3" inverseName="parent" inverseEntity="SLEntity5Child3" syncable="YES"/>
+        <userInfo>
+            <entry key="stiKeyPath" value="floatNumber"/>
+        </userInfo>
+    </entity>
+    <entity name="SLEntity5Child1" representedClassName="SLEntity5Child1" syncable="YES">
+        <attribute name="identifier" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="parent" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SLEntity5" inverseName="child" inverseEntity="SLEntity5" syncable="YES"/>
+    </entity>
+    <entity name="SLEntity5Child2" representedClassName="SLEntity5Child2" syncable="YES">
+        <attribute name="uniqueString" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="restKeyPath" value="unique_str"/>
+            </userInfo>
+        </attribute>
+        <relationship name="parent" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SLEntity5" inverseName="otherChild" inverseEntity="SLEntity5" syncable="YES"/>
+        <userInfo>
+            <entry key="restIdentifier" value="uniqueString"/>
+        </userInfo>
+    </entity>
+    <entity name="SLEntity5Child3" representedClassName="SLEntity5Child3" syncable="YES">
+        <attribute name="identifier" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="parent" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SLEntity5" inverseName="toManyChilds" inverseEntity="SLEntity5" syncable="YES"/>
+    </entity>
+    <entity name="SLEntity5Child4" representedClassName="SLEntity5Child4" syncable="YES">
+        <attribute name="identifier" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="parentIdentifier" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="parent" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SLEntity5" inverseName="otherToManyChilds" inverseEntity="SLEntity5" syncable="YES"/>
+    </entity>
+    <entity name="SLEntity5Child5" representedClassName="SLEntity5Child5" syncable="YES">
+        <attribute name="identifier" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="parent" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SLEntity5" inverseName="camelizedChilds" inverseEntity="SLEntity5" syncable="YES"/>
+    </entity>
+    <entity name="SLEntity5Child6" representedClassName="SLEntity5Child6" syncable="YES">
+        <attribute name="fooIdentifier" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="parent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SLEntity5" inverseName="differentChilds" inverseEntity="SLEntity5" syncable="YES"/>
+        <userInfo>
+            <entry key="restIdentifier" value="fooIdentifier"/>
+        </userInfo>
+    </entity>
+    <entity name="SLEntity5Subclass" representedClassName="SLEntity5Subclass" parentEntity="SLEntity5" syncable="YES">
+        <userInfo>
+            <entry key="stiValue" value="13371338"/>
         </userInfo>
     </entity>
     <entity name="SLEntity6" representedClassName="SLEntity6" syncable="YES">
@@ -28,7 +128,7 @@
             </userInfo>
         </relationship>
         <fetchedProperty name="fetchedRelationship" optional="YES" transient="YES" syncable="YES">
-            <fetchRequest name="fetchedPropertyFetchRequest" entity="SLEntity6Child" predicateString="identifier > 0"/>
+            <fetchRequest name="fetchedPropertyFetchRequest" entity="SLEntity6Child" predicateString="identifier &gt; 0"/>
         </fetchedProperty>
         <userInfo>
             <entry key="restBaseURL" value="entity6"/>
@@ -44,5 +144,20 @@
         <element name="SLEntity4" positionX="0" positionY="99" width="128" height="118"/>
         <element name="SLEntity6" positionX="27" positionY="126" width="128" height="119"/>
         <element name="SLEntity6Child" positionX="-18" positionY="108" width="128" height="73"/>
+        <element name="JSONEntity1" positionX="9" positionY="153" width="128" height="135"/>
+        <element name="SLEntity5Child4" positionX="18" positionY="180" width="128" height="90"/>
+        <element name="PrefixedEntitiy" positionX="27" positionY="189" width="128" height="75"/>
+        <element name="SLEntity5Subclass" positionX="45" positionY="207" width="128" height="45"/>
+        <element name="SLEntity5" positionX="63" positionY="216" width="128" height="225"/>
+        <element name="SLEntity2" positionX="81" positionY="225" width="128" height="90"/>
+        <element name="SLEntity5Child3" positionX="36" positionY="171" width="128" height="75"/>
+        <element name="SLEntity4Subclass" positionX="45" positionY="180" width="128" height="45"/>
+        <element name="SLEntity5Child6" positionX="54" positionY="189" width="128" height="75"/>
+        <element name="SLEntity5Child2" positionX="63" positionY="198" width="128" height="75"/>
+        <element name="SLEntity3" positionX="72" positionY="207" width="128" height="60"/>
+        <element name="SLEntity5Child5" positionX="90" positionY="225" width="128" height="75"/>
+        <element name="SLEntity5Child1" positionX="36" positionY="171" width="128" height="75"/>
+        <element name="SLEntity1Subclass" positionX="45" positionY="180" width="128" height="45"/>
+        <element name="SLEntity1" positionX="63" positionY="198" width="128" height="45"/>
     </elements>
 </model>

@@ -19,6 +19,25 @@
 		6003F5B1195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F5B2195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
 		6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5B8195388D20070C39A /* InfoPlist.strings */; };
+		A7CEDCCF1B0229D20011FA33 /* CBRIdentityPropertyMappingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CEDCCD1B0229D20011FA33 /* CBRIdentityPropertyMappingTest.m */; };
+		A7CEDCD01B0229D20011FA33 /* CBRJSONDictionaryTransformerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CEDCCE1B0229D20011FA33 /* CBRJSONDictionaryTransformerTests.m */; };
+		A7CEDCD31B022A330011FA33 /* JSONEntity1.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CEDCD21B022A330011FA33 /* JSONEntity1.m */; };
+		A7CEDCDD1B022AA80011FA33 /* SLEntity1.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CEDCD81B022AA80011FA33 /* SLEntity1.m */; };
+		A7CEDCDE1B022AA80011FA33 /* SLEntity2.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CEDCDA1B022AA80011FA33 /* SLEntity2.m */; };
+		A7CEDCDF1B022AA80011FA33 /* SLEntity3.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CEDCDC1B022AA80011FA33 /* SLEntity3.m */; };
+		A7CEDCE21B022AEF0011FA33 /* SLEntity4Subclass.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CEDCE11B022AEF0011FA33 /* SLEntity4Subclass.m */; };
+		A7CEDCE51B022AFA0011FA33 /* SLEntity5.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CEDCE41B022AFA0011FA33 /* SLEntity5.m */; };
+		A7CEDCF21B022B050011FA33 /* SLEntity5Child1.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CEDCE71B022B050011FA33 /* SLEntity5Child1.m */; };
+		A7CEDCF31B022B050011FA33 /* SLEntity5Child2.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CEDCE91B022B050011FA33 /* SLEntity5Child2.m */; };
+		A7CEDCF41B022B050011FA33 /* SLEntity5Child3.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CEDCEB1B022B050011FA33 /* SLEntity5Child3.m */; };
+		A7CEDCF51B022B050011FA33 /* SLEntity5Child4.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CEDCED1B022B050011FA33 /* SLEntity5Child4.m */; };
+		A7CEDCF61B022B050011FA33 /* SLEntity5Child5.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CEDCEF1B022B050011FA33 /* SLEntity5Child5.m */; };
+		A7CEDCF71B022B050011FA33 /* SLEntity5Child6.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CEDCF11B022B050011FA33 /* SLEntity5Child6.m */; };
+		A7CEDCFC1B022B220011FA33 /* SLEntity5Subclass.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CEDCF91B022B220011FA33 /* SLEntity5Subclass.m */; };
+		A7CEDCFD1B022B220011FA33 /* SLSubclassOfEntity1.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CEDCFB1B022B220011FA33 /* SLSubclassOfEntity1.m */; };
+		A7CEDCFF1B022B2C0011FA33 /* CBRUnderscoredPropertyMappingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CEDCFE1B022B2C0011FA33 /* CBRUnderscoredPropertyMappingTests.m */; };
+		A7CEDD011B022B3E0011FA33 /* CBRRESTConnectionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CEDD001B022B3E0011FA33 /* CBRRESTConnectionTests.m */; };
+		A7CEDD041B022C630011FA33 /* PrefixedEntitiy.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CEDD031B022C630011FA33 /* PrefixedEntitiy.m */; };
 		A7D1AC3A1A55529E00D25D50 /* CBRCloudBridgeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D1AC361A55529E00D25D50 /* CBRCloudBridgeTests.m */; };
 		A7D1AC3B1A55529E00D25D50 /* CBROfflineCapableCloudBridgeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D1AC371A55529E00D25D50 /* CBROfflineCapableCloudBridgeTests.m */; };
 		A7D1AC3C1A55529E00D25D50 /* CBRTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D1AC391A55529E00D25D50 /* CBRTestCase.m */; };
@@ -69,6 +88,40 @@
 		764B51D2DD8121F51A1E2CD2 /* libPods-Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		88420E0DFB6ED8257A2D3ED6 /* libPods-CloudBridge.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CloudBridge.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8FB2AC50918F3490E1C5BF02 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		A7CEDCCD1B0229D20011FA33 /* CBRIdentityPropertyMappingTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBRIdentityPropertyMappingTest.m; sourceTree = "<group>"; };
+		A7CEDCCE1B0229D20011FA33 /* CBRJSONDictionaryTransformerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBRJSONDictionaryTransformerTests.m; sourceTree = "<group>"; };
+		A7CEDCD11B022A330011FA33 /* JSONEntity1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONEntity1.h; sourceTree = "<group>"; };
+		A7CEDCD21B022A330011FA33 /* JSONEntity1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONEntity1.m; sourceTree = "<group>"; };
+		A7CEDCD71B022AA80011FA33 /* SLEntity1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEntity1.h; sourceTree = "<group>"; };
+		A7CEDCD81B022AA80011FA33 /* SLEntity1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEntity1.m; sourceTree = "<group>"; };
+		A7CEDCD91B022AA80011FA33 /* SLEntity2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEntity2.h; sourceTree = "<group>"; };
+		A7CEDCDA1B022AA80011FA33 /* SLEntity2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEntity2.m; sourceTree = "<group>"; };
+		A7CEDCDB1B022AA80011FA33 /* SLEntity3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEntity3.h; sourceTree = "<group>"; };
+		A7CEDCDC1B022AA80011FA33 /* SLEntity3.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEntity3.m; sourceTree = "<group>"; };
+		A7CEDCE01B022AEF0011FA33 /* SLEntity4Subclass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEntity4Subclass.h; sourceTree = "<group>"; };
+		A7CEDCE11B022AEF0011FA33 /* SLEntity4Subclass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEntity4Subclass.m; sourceTree = "<group>"; };
+		A7CEDCE31B022AFA0011FA33 /* SLEntity5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEntity5.h; sourceTree = "<group>"; };
+		A7CEDCE41B022AFA0011FA33 /* SLEntity5.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEntity5.m; sourceTree = "<group>"; };
+		A7CEDCE61B022B050011FA33 /* SLEntity5Child1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEntity5Child1.h; sourceTree = "<group>"; };
+		A7CEDCE71B022B050011FA33 /* SLEntity5Child1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEntity5Child1.m; sourceTree = "<group>"; };
+		A7CEDCE81B022B050011FA33 /* SLEntity5Child2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEntity5Child2.h; sourceTree = "<group>"; };
+		A7CEDCE91B022B050011FA33 /* SLEntity5Child2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEntity5Child2.m; sourceTree = "<group>"; };
+		A7CEDCEA1B022B050011FA33 /* SLEntity5Child3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEntity5Child3.h; sourceTree = "<group>"; };
+		A7CEDCEB1B022B050011FA33 /* SLEntity5Child3.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEntity5Child3.m; sourceTree = "<group>"; };
+		A7CEDCEC1B022B050011FA33 /* SLEntity5Child4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEntity5Child4.h; sourceTree = "<group>"; };
+		A7CEDCED1B022B050011FA33 /* SLEntity5Child4.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEntity5Child4.m; sourceTree = "<group>"; };
+		A7CEDCEE1B022B050011FA33 /* SLEntity5Child5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEntity5Child5.h; sourceTree = "<group>"; };
+		A7CEDCEF1B022B050011FA33 /* SLEntity5Child5.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEntity5Child5.m; sourceTree = "<group>"; };
+		A7CEDCF01B022B050011FA33 /* SLEntity5Child6.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEntity5Child6.h; sourceTree = "<group>"; };
+		A7CEDCF11B022B050011FA33 /* SLEntity5Child6.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEntity5Child6.m; sourceTree = "<group>"; };
+		A7CEDCF81B022B220011FA33 /* SLEntity5Subclass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEntity5Subclass.h; sourceTree = "<group>"; };
+		A7CEDCF91B022B220011FA33 /* SLEntity5Subclass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEntity5Subclass.m; sourceTree = "<group>"; };
+		A7CEDCFA1B022B220011FA33 /* SLSubclassOfEntity1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLSubclassOfEntity1.h; sourceTree = "<group>"; };
+		A7CEDCFB1B022B220011FA33 /* SLSubclassOfEntity1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSubclassOfEntity1.m; sourceTree = "<group>"; };
+		A7CEDCFE1B022B2C0011FA33 /* CBRUnderscoredPropertyMappingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBRUnderscoredPropertyMappingTests.m; sourceTree = "<group>"; };
+		A7CEDD001B022B3E0011FA33 /* CBRRESTConnectionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBRRESTConnectionTests.m; sourceTree = "<group>"; };
+		A7CEDD021B022C630011FA33 /* PrefixedEntitiy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrefixedEntitiy.h; sourceTree = "<group>"; };
+		A7CEDD031B022C630011FA33 /* PrefixedEntitiy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrefixedEntitiy.m; sourceTree = "<group>"; };
 		A7D1AC361A55529E00D25D50 /* CBRCloudBridgeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBRCloudBridgeTests.m; sourceTree = "<group>"; };
 		A7D1AC371A55529E00D25D50 /* CBROfflineCapableCloudBridgeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBROfflineCapableCloudBridgeTests.m; sourceTree = "<group>"; };
 		A7D1AC381A55529E00D25D50 /* CBRTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBRTestCase.h; sourceTree = "<group>"; };
@@ -182,6 +235,10 @@
 		6003F5B5195388D20070C39A /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				A7CEDD001B022B3E0011FA33 /* CBRRESTConnectionTests.m */,
+				A7CEDCFE1B022B2C0011FA33 /* CBRUnderscoredPropertyMappingTests.m */,
+				A7CEDCCD1B0229D20011FA33 /* CBRIdentityPropertyMappingTest.m */,
+				A7CEDCCE1B0229D20011FA33 /* CBRJSONDictionaryTransformerTests.m */,
 				A7D1AC361A55529E00D25D50 /* CBRCloudBridgeTests.m */,
 				A7D1AC371A55529E00D25D50 /* CBROfflineCapableCloudBridgeTests.m */,
 				A7D1AC381A55529E00D25D50 /* CBRTestCase.h */,
@@ -199,16 +256,46 @@
 				A7D1AC3E1A5552B000D25D50 /* CBRTestConnection.m */,
 				A7D1AC3F1A5552B000D25D50 /* CBRTestDataStore.h */,
 				A7D1AC401A5552B000D25D50 /* CBRTestDataStore.m */,
+				A7CEDD021B022C630011FA33 /* PrefixedEntitiy.h */,
+				A7CEDD031B022C630011FA33 /* PrefixedEntitiy.m */,
 				A7D1AC411A5552B000D25D50 /* OfflineEntity.h */,
 				A7D1AC421A5552B000D25D50 /* OfflineEntity.m */,
 				A7D1AC431A5552B000D25D50 /* OnlyOnlineEntity.h */,
 				A7D1AC441A5552B000D25D50 /* OnlyOnlineEntity.m */,
+				A7CEDCD11B022A330011FA33 /* JSONEntity1.h */,
+				A7CEDCD21B022A330011FA33 /* JSONEntity1.m */,
+				A7CEDCD71B022AA80011FA33 /* SLEntity1.h */,
+				A7CEDCD81B022AA80011FA33 /* SLEntity1.m */,
+				A7CEDCD91B022AA80011FA33 /* SLEntity2.h */,
+				A7CEDCDA1B022AA80011FA33 /* SLEntity2.m */,
+				A7CEDCDB1B022AA80011FA33 /* SLEntity3.h */,
+				A7CEDCDC1B022AA80011FA33 /* SLEntity3.m */,
 				A7D1AC451A5552B000D25D50 /* SLEntity4.h */,
 				A7D1AC461A5552B000D25D50 /* SLEntity4.m */,
+				A7CEDCE01B022AEF0011FA33 /* SLEntity4Subclass.h */,
+				A7CEDCE11B022AEF0011FA33 /* SLEntity4Subclass.m */,
+				A7CEDCE31B022AFA0011FA33 /* SLEntity5.h */,
+				A7CEDCE41B022AFA0011FA33 /* SLEntity5.m */,
+				A7CEDCE61B022B050011FA33 /* SLEntity5Child1.h */,
+				A7CEDCE71B022B050011FA33 /* SLEntity5Child1.m */,
+				A7CEDCE81B022B050011FA33 /* SLEntity5Child2.h */,
+				A7CEDCE91B022B050011FA33 /* SLEntity5Child2.m */,
+				A7CEDCEA1B022B050011FA33 /* SLEntity5Child3.h */,
+				A7CEDCEB1B022B050011FA33 /* SLEntity5Child3.m */,
+				A7CEDCEC1B022B050011FA33 /* SLEntity5Child4.h */,
+				A7CEDCED1B022B050011FA33 /* SLEntity5Child4.m */,
+				A7CEDCEE1B022B050011FA33 /* SLEntity5Child5.h */,
+				A7CEDCEF1B022B050011FA33 /* SLEntity5Child5.m */,
+				A7CEDCF01B022B050011FA33 /* SLEntity5Child6.h */,
+				A7CEDCF11B022B050011FA33 /* SLEntity5Child6.m */,
 				A7D1AC471A5552B000D25D50 /* SLEntity6.h */,
 				A7D1AC481A5552B000D25D50 /* SLEntity6.m */,
 				A7D1AC491A5552B000D25D50 /* SLEntity6Child.h */,
 				A7D1AC4A1A5552B000D25D50 /* SLEntity6Child.m */,
+				A7CEDCF81B022B220011FA33 /* SLEntity5Subclass.h */,
+				A7CEDCF91B022B220011FA33 /* SLEntity5Subclass.m */,
+				A7CEDCFA1B022B220011FA33 /* SLSubclassOfEntity1.h */,
+				A7CEDCFB1B022B220011FA33 /* SLSubclassOfEntity1.m */,
 				6003F5B7195388D20070C39A /* Tests-Info.plist */,
 				6003F5B8195388D20070C39A /* InfoPlist.strings */,
 				606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */,
@@ -413,15 +500,34 @@
 			files = (
 				A7D1AC3A1A55529E00D25D50 /* CBRCloudBridgeTests.m in Sources */,
 				A7D1AC511A5552B000D25D50 /* SLEntity6Child.m in Sources */,
+				A7CEDD011B022B3E0011FA33 /* CBRRESTConnectionTests.m in Sources */,
+				A7CEDCF41B022B050011FA33 /* SLEntity5Child3.m in Sources */,
+				A7CEDCFC1B022B220011FA33 /* SLEntity5Subclass.m in Sources */,
+				A7CEDCF21B022B050011FA33 /* SLEntity5Child1.m in Sources */,
+				A7CEDCD31B022A330011FA33 /* JSONEntity1.m in Sources */,
 				A7D1AC4B1A5552B000D25D50 /* CBRTestConnection.m in Sources */,
+				A7CEDCDE1B022AA80011FA33 /* SLEntity2.m in Sources */,
+				A7CEDCFF1B022B2C0011FA33 /* CBRUnderscoredPropertyMappingTests.m in Sources */,
+				A7CEDCF71B022B050011FA33 /* SLEntity5Child6.m in Sources */,
+				A7CEDCDF1B022AA80011FA33 /* SLEntity3.m in Sources */,
 				A7D1AC4E1A5552B000D25D50 /* OnlyOnlineEntity.m in Sources */,
+				A7CEDD041B022C630011FA33 /* PrefixedEntitiy.m in Sources */,
+				A7CEDCF51B022B050011FA33 /* SLEntity5Child4.m in Sources */,
+				A7CEDCF31B022B050011FA33 /* SLEntity5Child2.m in Sources */,
 				A7D1AC4D1A5552B000D25D50 /* OfflineEntity.m in Sources */,
+				A7CEDCFD1B022B220011FA33 /* SLSubclassOfEntity1.m in Sources */,
 				A7D1AC541A5552CB00D25D50 /* CBRTestDataStore.xcdatamodeld in Sources */,
+				A7CEDCE51B022AFA0011FA33 /* SLEntity5.m in Sources */,
+				A7CEDCF61B022B050011FA33 /* SLEntity5Child5.m in Sources */,
 				A7D1AC3B1A55529E00D25D50 /* CBROfflineCapableCloudBridgeTests.m in Sources */,
+				A7CEDCD01B0229D20011FA33 /* CBRJSONDictionaryTransformerTests.m in Sources */,
 				A7D1AC3C1A55529E00D25D50 /* CBRTestCase.m in Sources */,
 				A7D1AC4F1A5552B000D25D50 /* SLEntity4.m in Sources */,
 				A7D1AC4C1A5552B000D25D50 /* CBRTestDataStore.m in Sources */,
+				A7CEDCCF1B0229D20011FA33 /* CBRIdentityPropertyMappingTest.m in Sources */,
 				A7D1AC501A5552B000D25D50 /* SLEntity6.m in Sources */,
+				A7CEDCE21B022AEF0011FA33 /* SLEntity4Subclass.m in Sources */,
+				A7CEDCDD1B022AA80011FA33 /* SLEntity1.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
