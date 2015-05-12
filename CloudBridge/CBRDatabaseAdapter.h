@@ -55,12 +55,12 @@
 - (NSArray *)fetchObjectsOfType:(CBREntityDescription *)entityDescription withPredicate:(NSPredicate *)predicate;
 
 @required
-- (void)mutatePersistentObject:(id<CBRPersistentObject>)persitentObject
+- (void)mutatePersistentObject:(id<CBRPersistentObject>)persistentObject
                      withBlock:(void(^)(id<CBRPersistentObject> persistentObject))mutation
                     completion:(void(^)(id<CBRPersistentObject> persistentObject))completion;
 
 @required
-- (void)mutatePersistentObjects:(NSArray *)persitentObject
+- (void)mutatePersistentObjects:(NSArray *)persistentObject
                      withBlock:(NSArray *(^)(NSArray *persistentObjects))mutation
                     completion:(void(^)(NSArray *persistentObjects))completion;
 

@@ -278,7 +278,7 @@
     return [context executeFetchRequest:fetchRequest error:NULL];
 }
 
-- (void)mutatePersistentObject:(NSManagedObject *)persitentObject
+- (void)mutatePersistentObject:(NSManagedObject *)persistentObject
                      withBlock:(void(^)(id<CBRPersistentObject> persistentObject))mutation
                     completion:(void(^)(id<CBRPersistentObject> persistentObject))completion
 {
@@ -297,10 +297,10 @@
                 completion(object);
             }
         } withObject:object];
-    } withObject:persitentObject];
+    } withObject:persistentObject];
 }
 
-- (void)mutatePersistentObjects:(NSArray *)persitentObjects
+- (void)mutatePersistentObjects:(NSArray *)persistentObjects
                       withBlock:(NSArray *(^)(NSArray *persistentObjects))mutation
                      completion:(void(^)(NSArray *persistentObjects))completion
 {
@@ -319,7 +319,7 @@
                 completion(object);
             }
         } withObject:objects];
-    } withObject:persitentObjects];
+    } withObject:persistentObjects];
 }
 
 - (void)deletePersistentObjects:(NSArray *)persistentObjects
