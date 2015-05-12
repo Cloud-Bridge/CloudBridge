@@ -46,8 +46,8 @@ static NSString *filterNamingConvention(NSString *parentString, NSString *naming
 }
 
 @interface CBRIdentityPropertyMapping ()
-@property (nonatomic, strong) NSMutableDictionary *managedObjectJSONObjectNamingConventions;
-@property (nonatomic, strong) NSMutableDictionary *JSONObjectManagedObjectNamingConventions;
+@property (nonatomic, strong) NSMutableDictionary *persistentObjectJSONObjectNamingConventions;
+@property (nonatomic, strong) NSMutableDictionary *JSONObjectPersistentObjectNamingConventions;
 @end
 
 
@@ -56,28 +56,28 @@ static NSString *filterNamingConvention(NSString *parentString, NSString *naming
 - (instancetype)init
 {
     if (self = [super init]) {
-        _managedObjectJSONObjectNamingConventions = [NSMutableDictionary dictionary];
-        _JSONObjectManagedObjectNamingConventions = [NSMutableDictionary dictionary];
+        _persistentObjectJSONObjectNamingConventions = [NSMutableDictionary dictionary];
+        _JSONObjectPersistentObjectNamingConventions = [NSMutableDictionary dictionary];
     }
     return self;
 }
 
-- (NSString *)managedObjectPropertyFromCloudKeyPath:(NSString *)cloudKeyPath
+- (NSString *)persistentObjectPropertyFromCloudKeyPath:(NSString *)cloudKeyPath
 {
-    for (NSString *namingConvention in self.JSONObjectManagedObjectNamingConventions) {
-        cloudKeyPath = filterNamingConvention(cloudKeyPath, namingConvention, self.JSONObjectManagedObjectNamingConventions[namingConvention]);
+    for (NSString *namingConvention in self.JSONObjectPersistentObjectNamingConventions) {
+        cloudKeyPath = filterNamingConvention(cloudKeyPath, namingConvention, self.JSONObjectPersistentObjectNamingConventions[namingConvention]);
     }
 
     return cloudKeyPath;
 }
 
-- (NSString *)cloudKeyPathFromManagedObjectProperty:(NSString *)managedObjectProperty
+- (NSString *)cloudKeyPathFromPersistentObjectProperty:(NSString *)persistentObjectProperty
 {
-    for (NSString *namingConvention in self.managedObjectJSONObjectNamingConventions) {
-        managedObjectProperty = filterNamingConvention(managedObjectProperty, namingConvention, self.managedObjectJSONObjectNamingConventions[namingConvention]);
+    for (NSString *namingConvention in self.persistentObjectJSONObjectNamingConventions) {
+        persistentObjectProperty = filterNamingConvention(persistentObjectProperty, namingConvention, self.persistentObjectJSONObjectNamingConventions[namingConvention]);
     }
 
-    return managedObjectProperty;
+    return persistentObjectProperty;
 }
 
 - (void)registerObjcNamingConvention:(NSString *)objcNamingConvention
@@ -86,8 +86,8 @@ static NSString *filterNamingConvention(NSString *parentString, NSString *naming
     NSParameterAssert(objcNamingConvention);
     NSParameterAssert(JSONNamingConvention);
 
-    self.managedObjectJSONObjectNamingConventions[objcNamingConvention] = JSONNamingConvention;
-    self.JSONObjectManagedObjectNamingConventions[JSONNamingConvention] = objcNamingConvention;
+    self.persistentObjectJSONObjectNamingConventions[objcNamingConvention] = JSONNamingConvention;
+    self.JSONObjectPersistentObjectNamingConventions[JSONNamingConvention] = objcNamingConvention;
 }
 
 @end

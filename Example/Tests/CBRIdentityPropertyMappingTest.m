@@ -29,36 +29,36 @@
 
 - (void)testThatPropertyMappingMapsManagedObjectPropertyToIdentityCloudKeyPath
 {
-    expect([self.propertyMapping cloudKeyPathFromManagedObjectProperty:@"someProperty"]).to.equal(@"someProperty");
+    expect([self.propertyMapping cloudKeyPathFromPersistentObjectProperty:@"someProperty"]).to.equal(@"someProperty");
 }
 
 - (void)testThatPropertyMappingMapsManagedObjectPropertyToIdentityCloudKeyPathWithNamingConvention
 {
     [self.propertyMapping registerObjcNamingConvention:@"identifier" forJSONNamingConvention:@"id"];
-    expect([self.propertyMapping cloudKeyPathFromManagedObjectProperty:@"identifier"]).to.equal(@"id");
+    expect([self.propertyMapping cloudKeyPathFromPersistentObjectProperty:@"identifier"]).to.equal(@"id");
 }
 
 - (void)testThatPropertyMappingMapsComplexManagedObjectPropertyToIdentityCloudKeyPathWithNamingConvention
 {
     [self.propertyMapping registerObjcNamingConvention:@"identifier" forJSONNamingConvention:@"id"];
-    expect([self.propertyMapping cloudKeyPathFromManagedObjectProperty:@"someIdentifier"]).to.equal(@"someId");
+    expect([self.propertyMapping cloudKeyPathFromPersistentObjectProperty:@"someIdentifier"]).to.equal(@"someId");
 }
 
 - (void)testThatPropertyMappingMapsCloudKeyPathToIdentityManagedObjectProperty
 {
-    expect([self.propertyMapping managedObjectPropertyFromCloudKeyPath:@"someProperty"]).to.equal(@"someProperty");
+    expect([self.propertyMapping persistentObjectPropertyFromCloudKeyPath:@"someProperty"]).to.equal(@"someProperty");
 }
 
 - (void)testThatPropertyMappingMapsCloudKeyPathToIdentityManagedObjectPropertyWithNamingConvention
 {
     [self.propertyMapping registerObjcNamingConvention:@"identifier" forJSONNamingConvention:@"id"];
-    expect([self.propertyMapping managedObjectPropertyFromCloudKeyPath:@"id"]).to.equal(@"identifier");
+    expect([self.propertyMapping persistentObjectPropertyFromCloudKeyPath:@"id"]).to.equal(@"identifier");
 }
 
 - (void)testThatPropertyMappingMapsComplexCloudKeyPathToIdentityManagedObjectPropertyWithNamingConvention
 {
     [self.propertyMapping registerObjcNamingConvention:@"identifier" forJSONNamingConvention:@"id"];
-    expect([self.propertyMapping managedObjectPropertyFromCloudKeyPath:@"someId"]).to.equal(@"someIdentifier");
+    expect([self.propertyMapping persistentObjectPropertyFromCloudKeyPath:@"someId"]).to.equal(@"someIdentifier");
 }
 
 @end

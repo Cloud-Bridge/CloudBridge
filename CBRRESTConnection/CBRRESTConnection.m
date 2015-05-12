@@ -119,7 +119,7 @@ NSString * const CBRRESTConnectionUserInfoURLOverrideKey = @"restBaseURL";
                 currentObject = [currentManagedObject valueForKey:managedObjectKeyPath];
                 [newKeyPathComponents addObject:managedObjectKeyPath];
             } else {
-                NSString *managedObjectKeyPath = [self.objectTransformer.propertyMapping managedObjectPropertyFromCloudKeyPath:thisComponent];
+                NSString *managedObjectKeyPath = [self.objectTransformer.propertyMapping persistentObjectPropertyFromCloudKeyPath:thisComponent];
 
                 currentObject = [currentObject valueForKey:managedObjectKeyPath];
                 [newKeyPathComponents addObject:managedObjectKeyPath];

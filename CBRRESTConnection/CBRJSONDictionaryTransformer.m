@@ -117,7 +117,7 @@
 
 - (NSString *)cloudKeyPathFromPropertyDescription:(id<CBRPropertyDescription>)propertyDescription
 {
-    return propertyDescription.userInfo[@"restKeyPath"] ?: [self.propertyMapping cloudKeyPathFromManagedObjectProperty:propertyDescription.name];
+    return propertyDescription.userInfo[@"restKeyPath"] ?: [self.propertyMapping cloudKeyPathFromPersistentObjectProperty:propertyDescription.name];
 }
 
 - (NSString *)persistentObjectKeyPathFromCloudKeyPath:(NSString *)cloudKeyPath ofEntity:(CBREntityDescription *)entity
@@ -136,7 +136,7 @@
         }
     }
 
-    return [self.propertyMapping managedObjectPropertyFromCloudKeyPath:cloudKeyPath];
+    return [self.propertyMapping persistentObjectPropertyFromCloudKeyPath:cloudKeyPath];
 }
 
 #pragma mark - CBRManagedObjectToCloudObjectTransformer
@@ -291,7 +291,7 @@
             }
 
             NSString *firstLetterUppercaseString = [restIdentifier stringByReplacingCharactersInRange:NSMakeRange(0,1) withString:[restIdentifier substringToIndex:1].uppercaseString];
-            restIdentifier = [self.propertyMapping cloudKeyPathFromManagedObjectProperty:[relationshipDescription.name stringByAppendingString:firstLetterUppercaseString]];
+            restIdentifier = [self.propertyMapping cloudKeyPathFromPersistentObjectProperty:[relationshipDescription.name stringByAppendingString:firstLetterUppercaseString]];
 
             id jsonIdentifier = cloudObject[restIdentifier];
             id identifier = [self persistentObjectValueFromCloudValue:jsonIdentifier forAttributeDescription:destinationEntity.attributesByName[destinationEntity.restIdentifier]];
@@ -371,7 +371,7 @@
 - (CBREntityDescription *)_stiEntityForEntity:(CBREntityDescription *)entity cloudObject:(NSDictionary *)cloudObject
 {
     if (entity.stiKeyPath) {
-        NSString *restKeyPath = [self.propertyMapping cloudKeyPathFromManagedObjectProperty:entity.stiKeyPath];
+        NSString *restKeyPath = [self.propertyMapping cloudKeyPathFromPersistentObjectProperty:entity.stiKeyPath];
         NSString *stringToMatch = [NSString stringWithFormat:@"%@", [cloudObject valueForKeyPath:restKeyPath]];
 
         for (CBREntityDescription *subentity in entity.stiSubentities) {

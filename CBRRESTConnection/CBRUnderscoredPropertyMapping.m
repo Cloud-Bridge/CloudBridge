@@ -124,10 +124,10 @@ static NSString *camelizedStringFromUnderscoredString(NSString *underscoredStrin
     [self.attributesCache removeAllObjects];
 }
 
-- (NSString *)cloudKeyPathFromManagedObjectProperty:(NSString *)managedObjectProperty
+- (NSString *)cloudKeyPathFromPersistentObjectProperty:(NSString *)persistentObjectProperty
 {
     NSCache *attributesCache = self.attributesCache;
-    NSString *cachedKey = [attributesCache objectForKey:managedObjectProperty];
+    NSString *cachedKey = [attributesCache objectForKey:persistentObjectProperty];
     if (cachedKey) {
         return cachedKey;
     }
@@ -147,25 +147,25 @@ static NSString *camelizedStringFromUnderscoredString(NSString *underscoredStrin
         return NSOrderedSame;
     }];
 
-    NSString *originalAttribute = managedObjectProperty;
+    NSString *originalAttribute = persistentObjectProperty;
     for (NSString *namingConvention in possibleConventions) {
-        if ([namingConvention isEqualToString:managedObjectProperty]) {
+        if ([namingConvention isEqualToString:persistentObjectProperty]) {
             NSString *key = mergedManagedObjectJSONObjectNamingConventions[namingConvention];
-            [attributesCache setObject:key forKey:managedObjectProperty];
+            [attributesCache setObject:key forKey:persistentObjectProperty];
             return key;
         }
 
-        NSRange range = [managedObjectProperty.uppercaseString rangeOfString:namingConvention.uppercaseString];
+        NSRange range = [persistentObjectProperty.uppercaseString rangeOfString:namingConvention.uppercaseString];
 
         if (range.location == NSNotFound) {
             continue;
         }
 
         BOOL isAtStartOfString = range.location == 0;
-        BOOL isAtEndOfString = range.location + range.length == managedObjectProperty.length;
+        BOOL isAtEndOfString = range.location + range.length == persistentObjectProperty.length;
 
         if (isAtStartOfString && isAtEndOfString) {
-            managedObjectProperty = [managedObjectProperty stringByReplacingCharactersInRange:range withString:mergedManagedObjectJSONObjectNamingConventions[namingConvention]];
+            persistentObjectProperty = [persistentObjectProperty stringByReplacingCharactersInRange:range withString:mergedManagedObjectJSONObjectNamingConventions[namingConvention]];
             continue;
         }
 
@@ -173,14 +173,14 @@ static NSString *camelizedStringFromUnderscoredString(NSString *underscoredStrin
         BOOL isRightCharacterValid = isAtEndOfString;
 
         if (!isLeftCharacterValid && !isAtStartOfString) {
-            isLeftCharacterValid = [lowercaseCharacterSet characterIsMember:[managedObjectProperty characterAtIndex:range.location - 1]];
+            isLeftCharacterValid = [lowercaseCharacterSet characterIsMember:[persistentObjectProperty characterAtIndex:range.location - 1]];
         }
 
         if (!isRightCharacterValid && !isAtEndOfString) {
-            if (managedObjectProperty.length > range.location + range.length + 1) {
-                isRightCharacterValid = ![uppercaseCharacterSet characterIsMember:[managedObjectProperty characterAtIndex:range.location + range.length + 1]];
+            if (persistentObjectProperty.length > range.location + range.length + 1) {
+                isRightCharacterValid = ![uppercaseCharacterSet characterIsMember:[persistentObjectProperty characterAtIndex:range.location + range.length + 1]];
             } else {
-                isRightCharacterValid = [lowercaseCharacterSet characterIsMember:[managedObjectProperty characterAtIndex:range.location + range.length]];
+                isRightCharacterValid = [lowercaseCharacterSet characterIsMember:[persistentObjectProperty characterAtIndex:range.location + range.length]];
             }
         }
 
@@ -196,17 +196,17 @@ static NSString *camelizedStringFromUnderscoredString(NSString *underscoredStrin
                 replacementString = [replacementString stringByAppendingString:@"_"];
             }
 
-            managedObjectProperty = [managedObjectProperty stringByReplacingCharactersInRange:range withString:replacementString];
+            persistentObjectProperty = [persistentObjectProperty stringByReplacingCharactersInRange:range withString:replacementString];
         }
     }
 
-    NSString *underscoredString = underscoredStringFromCamelizedString(managedObjectProperty);
+    NSString *underscoredString = underscoredStringFromCamelizedString(persistentObjectProperty);
     [attributesCache setObject:underscoredString forKey:originalAttribute];
 
     return underscoredString;
 }
 
-- (NSString *)managedObjectPropertyFromCloudKeyPath:(NSString *)cloudKeyPath
+- (NSString *)persistentObjectPropertyFromCloudKeyPath:(NSString *)cloudKeyPath
 {
     NSCache *attributesCache = self.attributesCache;
     NSString *cachedKey = [attributesCache objectForKey:cloudKeyPath];

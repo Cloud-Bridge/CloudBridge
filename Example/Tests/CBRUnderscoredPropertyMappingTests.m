@@ -28,103 +28,103 @@
 
 - (void)testJSONToObjcAttributeConvertionWithSingleWord
 {
-    expect([self.propertyMapping managedObjectPropertyFromCloudKeyPath:@"attribute"]).to.equal(@"attribute");
+    expect([self.propertyMapping persistentObjectPropertyFromCloudKeyPath:@"attribute"]).to.equal(@"attribute");
 }
 
 - (void)testObjcToJSONAttributeConvertionWithSingleWord
 {
-    expect([self.propertyMapping cloudKeyPathFromManagedObjectProperty:@"attribute"]).to.equal(@"attribute");
+    expect([self.propertyMapping cloudKeyPathFromPersistentObjectProperty:@"attribute"]).to.equal(@"attribute");
 }
 
 - (void)testJSONToObjcAttributeConvertionWithMultipleWord
 {
-    expect([self.propertyMapping managedObjectPropertyFromCloudKeyPath:@"attribute_value"]).to.equal(@"attributeValue");
+    expect([self.propertyMapping persistentObjectPropertyFromCloudKeyPath:@"attribute_value"]).to.equal(@"attributeValue");
 }
 
 - (void)testObjcToJSONAttributeConvertionWithMultipleWord
 {
-    expect([self.propertyMapping cloudKeyPathFromManagedObjectProperty:@"attributeValue"]).to.equal(@"attribute_value");
+    expect([self.propertyMapping cloudKeyPathFromPersistentObjectProperty:@"attributeValue"]).to.equal(@"attribute_value");
 }
 
 - (void)testObjcToJSONAttributeConvertionWithMultipleUppercaseWord
 {
-    expect([self.propertyMapping cloudKeyPathFromManagedObjectProperty:@"attributeValueURL"]).to.equal(@"attribute_value_url");
+    expect([self.propertyMapping cloudKeyPathFromPersistentObjectProperty:@"attributeValueURL"]).to.equal(@"attribute_value_url");
 }
 
 - (void)testThatAttributeMappingRegistersNamingConventionsWithSingleWords
 {
     [self.propertyMapping registerObjcNamingConvention:@"identifier" forJSONNamingConvention:@"id"];
 
-    expect([self.propertyMapping managedObjectPropertyFromCloudKeyPath:@"id"]).to.equal(@"identifier");
-    expect([self.propertyMapping cloudKeyPathFromManagedObjectProperty:@"identifier"]).to.equal(@"id");
+    expect([self.propertyMapping persistentObjectPropertyFromCloudKeyPath:@"id"]).to.equal(@"identifier");
+    expect([self.propertyMapping cloudKeyPathFromPersistentObjectProperty:@"identifier"]).to.equal(@"id");
 }
 
 - (void)testThatAttributeMappingRegistersNamingConventionsAtBeginningWithMultipleWords
 {
     [self.propertyMapping registerObjcNamingConvention:@"identifier" forJSONNamingConvention:@"id"];
 
-    expect([self.propertyMapping managedObjectPropertyFromCloudKeyPath:@"id_value"]).to.equal(@"identifierValue");
-    expect([self.propertyMapping cloudKeyPathFromManagedObjectProperty:@"identifierValue"]).to.equal(@"id_value");
+    expect([self.propertyMapping persistentObjectPropertyFromCloudKeyPath:@"id_value"]).to.equal(@"identifierValue");
+    expect([self.propertyMapping cloudKeyPathFromPersistentObjectProperty:@"identifierValue"]).to.equal(@"id_value");
 }
 
 - (void)testThatAttributeMappingRegistersNamingConventionsInTheMiddleWithMultipleWords
 {
     [self.propertyMapping registerObjcNamingConvention:@"identifier" forJSONNamingConvention:@"id"];
 
-    expect([self.propertyMapping managedObjectPropertyFromCloudKeyPath:@"foo_id_bar"]).to.equal(@"fooIdentifierBar");
-    expect([self.propertyMapping cloudKeyPathFromManagedObjectProperty:@"fooIdentifierBar"]).to.equal(@"foo_id_bar");
+    expect([self.propertyMapping persistentObjectPropertyFromCloudKeyPath:@"foo_id_bar"]).to.equal(@"fooIdentifierBar");
+    expect([self.propertyMapping cloudKeyPathFromPersistentObjectProperty:@"fooIdentifierBar"]).to.equal(@"foo_id_bar");
 }
 
 - (void)testThatAttributeMappingRegistersNamingConventionsAtTheEndWithMultipleWorks
 {
     [self.propertyMapping registerObjcNamingConvention:@"identifier" forJSONNamingConvention:@"id"];
 
-    expect([self.propertyMapping managedObjectPropertyFromCloudKeyPath:@"foo_bar_id"]).to.equal(@"fooBarIdentifier");
-    expect([self.propertyMapping cloudKeyPathFromManagedObjectProperty:@"fooBarIdentifier"]).to.equal(@"foo_bar_id");
+    expect([self.propertyMapping persistentObjectPropertyFromCloudKeyPath:@"foo_bar_id"]).to.equal(@"fooBarIdentifier");
+    expect([self.propertyMapping cloudKeyPathFromPersistentObjectProperty:@"fooBarIdentifier"]).to.equal(@"foo_bar_id");
 }
 
 - (void)testThatAttributeMappingRegistersCapitalizedNamingConventionsInTheMiddleWithMultipleWords
 {
     [self.propertyMapping registerObjcNamingConvention:@"URL" forJSONNamingConvention:@"url"];
 
-    expect([self.propertyMapping managedObjectPropertyFromCloudKeyPath:@"foo_url_bar"]).to.equal(@"fooURLBar");
-    expect([self.propertyMapping cloudKeyPathFromManagedObjectProperty:@"fooURLBar"]).to.equal(@"foo_url_bar");
+    expect([self.propertyMapping persistentObjectPropertyFromCloudKeyPath:@"foo_url_bar"]).to.equal(@"fooURLBar");
+    expect([self.propertyMapping cloudKeyPathFromPersistentObjectProperty:@"fooURLBar"]).to.equal(@"foo_url_bar");
 }
 
 - (void)testThatAttributeMappingRegistersCapitalizedNamingConventionsAtTheEndWithMultipleWorks
 {
     [self.propertyMapping registerObjcNamingConvention:@"URL" forJSONNamingConvention:@"url"];
 
-    expect([self.propertyMapping managedObjectPropertyFromCloudKeyPath:@"foo_bar_url"]).to.equal(@"fooBarURL");
-    expect([self.propertyMapping cloudKeyPathFromManagedObjectProperty:@"fooBarURL"]).to.equal(@"foo_bar_url");
+    expect([self.propertyMapping persistentObjectPropertyFromCloudKeyPath:@"foo_bar_url"]).to.equal(@"fooBarURL");
+    expect([self.propertyMapping cloudKeyPathFromPersistentObjectProperty:@"fooBarURL"]).to.equal(@"foo_bar_url");
 }
 
 - (void)testThatAttributeMappingRegistersCapitalizedNamingConventionsInTheMiddleWithMultipleWordsAndDoesntCaptureLongerWords
 {
     [self.propertyMapping registerObjcNamingConvention:@"URL" forJSONNamingConvention:@"url"];
 
-    expect([self.propertyMapping managedObjectPropertyFromCloudKeyPath:@"foo_urll_bar"]).to.equal(@"fooUrllBar");
-    expect([self.propertyMapping cloudKeyPathFromManagedObjectProperty:@"fooURLLBar"]).to.equal(@"foo_urll_bar");
+    expect([self.propertyMapping persistentObjectPropertyFromCloudKeyPath:@"foo_urll_bar"]).to.equal(@"fooUrllBar");
+    expect([self.propertyMapping cloudKeyPathFromPersistentObjectProperty:@"fooURLLBar"]).to.equal(@"foo_urll_bar");
 
-    expect([self.propertyMapping managedObjectPropertyFromCloudKeyPath:@"foo_lurl_bar"]).to.equal(@"fooLurlBar");
-    expect([self.propertyMapping cloudKeyPathFromManagedObjectProperty:@"fooLURLBar"]).to.equal(@"foo_lurl_bar");
+    expect([self.propertyMapping persistentObjectPropertyFromCloudKeyPath:@"foo_lurl_bar"]).to.equal(@"fooLurlBar");
+    expect([self.propertyMapping cloudKeyPathFromPersistentObjectProperty:@"fooLURLBar"]).to.equal(@"foo_lurl_bar");
 
-    expect([self.propertyMapping managedObjectPropertyFromCloudKeyPath:@"foo_lurll_bar"]).to.equal(@"fooLurllBar");
-    expect([self.propertyMapping cloudKeyPathFromManagedObjectProperty:@"fooLURLLBar"]).to.equal(@"foo_lurll_bar");
+    expect([self.propertyMapping persistentObjectPropertyFromCloudKeyPath:@"foo_lurll_bar"]).to.equal(@"fooLurllBar");
+    expect([self.propertyMapping cloudKeyPathFromPersistentObjectProperty:@"fooLURLLBar"]).to.equal(@"foo_lurll_bar");
 }
 
 - (void)testThatAttributeMappingRegistersCapitalizedNamingConventionsAtTheEndWithMultipleWordsAndDoesntCaptureLongerWords
 {
     [self.propertyMapping registerObjcNamingConvention:@"URL" forJSONNamingConvention:@"url"];
 
-    expect([self.propertyMapping managedObjectPropertyFromCloudKeyPath:@"foo_bar_urll"]).to.equal(@"fooBarUrll");
-    expect([self.propertyMapping cloudKeyPathFromManagedObjectProperty:@"fooBarURLL"]).to.equal(@"foo_bar_urll");
+    expect([self.propertyMapping persistentObjectPropertyFromCloudKeyPath:@"foo_bar_urll"]).to.equal(@"fooBarUrll");
+    expect([self.propertyMapping cloudKeyPathFromPersistentObjectProperty:@"fooBarURLL"]).to.equal(@"foo_bar_urll");
 
-    expect([self.propertyMapping managedObjectPropertyFromCloudKeyPath:@"foo_bar_lurl"]).to.equal(@"fooBarLurl");
-    expect([self.propertyMapping cloudKeyPathFromManagedObjectProperty:@"fooBarLURL"]).to.equal(@"foo_bar_lurl");
+    expect([self.propertyMapping persistentObjectPropertyFromCloudKeyPath:@"foo_bar_lurl"]).to.equal(@"fooBarLurl");
+    expect([self.propertyMapping cloudKeyPathFromPersistentObjectProperty:@"fooBarLURL"]).to.equal(@"foo_bar_lurl");
 
-    expect([self.propertyMapping managedObjectPropertyFromCloudKeyPath:@"foo_bar_lurll"]).to.equal(@"fooBarLurll");
-    expect([self.propertyMapping cloudKeyPathFromManagedObjectProperty:@"fooBarLURLL"]).to.equal(@"foo_bar_lurll");
+    expect([self.propertyMapping persistentObjectPropertyFromCloudKeyPath:@"foo_bar_lurll"]).to.equal(@"fooBarLurll");
+    expect([self.propertyMapping cloudKeyPathFromPersistentObjectProperty:@"fooBarLURLL"]).to.equal(@"foo_bar_lurll");
 }
 
 

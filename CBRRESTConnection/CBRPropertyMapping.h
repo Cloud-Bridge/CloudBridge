@@ -21,13 +21,13 @@
  THE SOFTWARE.
  */
 
-@import CoreData;
+#import <CoreData/CoreData.h>
 
 
 
 @protocol CBRPropertyMapping <NSObject>
 
-- (NSString *)cloudKeyPathFromManagedObjectProperty:(NSString *)managedObjectProperty;
-- (NSString *)managedObjectPropertyFromCloudKeyPath:(NSString *)cloudKeyPath;
+- (NSString *)cloudKeyPathFromPersistentObjectProperty:(NSString *)persistentObjectProperty;
+- (NSString *)persistentObjectPropertyFromCloudKeyPath:(NSString *)cloudKeyPath;
 
 @end
