@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
   s.homepage         = "https://github.com/Cloud-Bridge/CBRRESTConnection"
   s.license          = 'MIT'
   s.author           = { "Oliver Letterer" => "oliver.letterer@gmail.com" }
-  s.source           = { :git => "https://github.com/Cloud-Bridge/CBRRESTConnection.git", :tag => s.version.to_s }
+  s.source           = { :git => "https://github.com/Cloud-Bridge/CloudBridge.git", :tag => s.version.to_s }
   s.social_media_url = 'https://twitter.com/oletterer'
 
   s.platform     = :ios, '8.0'
