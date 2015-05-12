@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 
-#import <CloudBridge.h>
+#import <CloudBridge/CloudBridge.h>
 
 #import "CBRTestCase.h"
 #import "CBRTestConnection.h"

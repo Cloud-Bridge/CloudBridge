@@ -6,8 +6,8 @@
 //  Copyright 2014 Oliver Letterer. All rights reserved.
 //
 
-#import <CloudBridge.h>
-#import <CBRCoreDataDatabaseAdapter.h>
+#import <CloudBridge/CloudBridge.h>
+#import <CloudBridge/CBRCoreDataDatabaseAdapter.h>
 
 @interface NSDictionary () <CBRCloudObject>
 @end

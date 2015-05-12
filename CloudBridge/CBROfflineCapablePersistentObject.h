@@ -22,7 +22,7 @@
  */
 
 #import <Foundation/Foundation.h>
-#import <CBRPersistentObject.h>
+#import <CloudBridge/CBRPersistentObject.h>
 
 
 

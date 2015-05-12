@@ -21,7 +21,7 @@
  THE SOFTWARE.
  */
 
-#import <CBRCloudObject.h>
+#import <CloudBridge/CBRCloudObject.h>
 
 @interface NSDictionary (CBRRESTConnection) <CBRCloudObject>
 @end

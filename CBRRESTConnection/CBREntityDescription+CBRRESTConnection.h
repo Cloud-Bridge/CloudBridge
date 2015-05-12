@@ -21,7 +21,7 @@
  THE SOFTWARE.
  */
 
-#import <CloudBridge.h>
+#import <CloudBridge/CloudBridge.h>
 
 
 

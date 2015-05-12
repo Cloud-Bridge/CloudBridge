@@ -9,8 +9,8 @@
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 
-#import <CloudBridge.h>
-#import <CBRUnderscoredPropertyMapping.h>
+#import <CloudBridge/CloudBridge.h>
+#import <CBRRESTConnection/CBRUnderscoredPropertyMapping.h>
 
 #import "CBRTestCase.h"
 

@@ -21,7 +21,7 @@
  THE SOFTWARE.
  */
 
-#import <CBRPropertyMapping.h>
+#import <CBRRESTConnection/CBRPropertyMapping.h>
 
 
 

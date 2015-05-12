@@ -21,19 +21,19 @@
  THE SOFTWARE.
  */
 
-#import <CloudBridge.h>
-#import <AFNetworking.h>
+#import <CloudBridge/CloudBridge.h>
+#import <AFNetworking/AFNetworking.h>
 
-#import <CBRPropertyMapping.h>
-#import <CBRIdentityPropertyMapping.h>
-#import <CBRUnderscoredPropertyMapping.h>
+#import <CBRRESTConnection/CBRPropertyMapping.h>
+#import <CBRRESTConnection/CBRIdentityPropertyMapping.h>
+#import <CBRRESTConnection/CBRUnderscoredPropertyMapping.h>
 
-#import <NSManagedObject+CBRRESTConnection.h>
-#import <CBRJSONDictionaryTransformer.h>
-#import <NSDictionary+CBRRESTConnection.h>
-#import <CBREntityDescription+CBRRESTConnection.h>
-#import <CBRAttributeDescription+CBRRESTConnection.h>
-#import <CBRRelationshipDescription+CBRRESTConnection.h>
+#import <CBRRESTConnection/NSManagedObject+CBRRESTConnection.h>
+#import <CBRRESTConnection/CBRJSONDictionaryTransformer.h>
+#import <CBRRESTConnection/NSDictionary+CBRRESTConnection.h>
+#import <CBRRESTConnection/CBREntityDescription+CBRRESTConnection.h>
+#import <CBRRESTConnection/CBRAttributeDescription+CBRRESTConnection.h>
+#import <CBRRESTConnection/CBRRelationshipDescription+CBRRESTConnection.h>
 
 extern NSString * const CBRRESTConnectionUserInfoURLOverrideKey;
 

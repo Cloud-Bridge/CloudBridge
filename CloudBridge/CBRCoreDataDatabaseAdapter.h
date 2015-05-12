@@ -22,9 +22,9 @@
  */
 
 #import <Foundation/Foundation.h>
-#import <SLCoreDataStack.h>
-#import <CBRDatabaseAdapter.h>
-#import <CBRPersistentObject.h>
+#import <SLCoreDataStack/SLCoreDataStack.h>
+#import <CloudBridge/CBRDatabaseAdapter.h>
+#import <CloudBridge/CBRPersistentObject.h>
 
 
 

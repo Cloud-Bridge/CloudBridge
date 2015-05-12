@@ -24,17 +24,17 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-#import <SLCoreDataStack.h>
-#import <CBRManagedObjectCache.h>
+#import <SLCoreDataStack/SLCoreDataStack.h>
+#import <CBRManagedObjectCache/CBRManagedObjectCache.h>
 
-#import <CBREntityDescription.h>
-#import <CBRCloudBridge.h>
-#import <CBRCloudObject.h>
-#import <CBRCloudConnection.h>
-#import <CBRPersistentObject.h>
+#import <CloudBridge/CBREntityDescription.h>
+#import <CloudBridge/CBRCloudBridge.h>
+#import <CloudBridge/CBRCloudObject.h>
+#import <CloudBridge/CBRCloudConnection.h>
+#import <CloudBridge/CBRPersistentObject.h>
 
-#import <CBRDatabaseAdapter.h>
-#import <CBRCoreDataDatabaseAdapter.h>
-#import <CBRCloudObjectTransformer.h>
+#import <CloudBridge/CBRDatabaseAdapter.h>
+#import <CloudBridge/CBRCoreDataDatabaseAdapter.h>
+#import <CloudBridge/CBRCloudObjectTransformer.h>
 
-#import <CBROfflineCapableCloudBridge.h>
+#import <CloudBridge/CBROfflineCapableCloudBridge.h>

@@ -21,7 +21,7 @@
  THE SOFTWARE.
  */
 
-#import <CBREntityDescription.h>
+#import <CloudBridge/CBREntityDescription.h>
 
 
 

@@ -21,7 +21,7 @@
  THE SOFTWARE.
  */
 
-#import <CBRCloudConnection.h>
+#import <CloudBridge/CBRCloudConnection.h>
 
 @interface CBRDeletedObjectIdentifier : NSObject <NSCopying>
 

@@ -7,7 +7,7 @@
 //
 
 #import <CoreData/CoreData.h>
-#import <CBREntityDescription.h>
+#import <CloudBridge/CBREntityDescription.h>
 
 @interface CBREntityDescription (CBRCoreDataDatabaseAdapter)
 

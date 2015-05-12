@@ -22,9 +22,9 @@
  */
 
 #import <Foundation/Foundation.h>
-#import <CBRCloudObject.h>
-#import <CBRPersistentObject.h>
-#import <CBRCloudObjectTransformer.h>
+#import <CloudBridge/CBRCloudObject.h>
+#import <CloudBridge/CBRPersistentObject.h>
+#import <CloudBridge/CBRCloudObjectTransformer.h>
 
 
 

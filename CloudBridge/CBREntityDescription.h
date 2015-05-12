@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <CBRDatabaseAdapter.h>
+#import <CloudBridge/CBRDatabaseAdapter.h>
 @class CBREntityDescription;
 
 typedef NS_ENUM(NSInteger, CBRAttributeType) {

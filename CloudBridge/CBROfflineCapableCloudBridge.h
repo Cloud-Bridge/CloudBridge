@@ -21,9 +21,9 @@
  THE SOFTWARE.
  */
 
-#import <CBRCloudBridge.h>
-#import <CBROfflineCapablePersistentObject.h>
-#import <CBROfflineCapableCloudConnection.h>
+#import <CloudBridge/CBRCloudBridge.h>
+#import <CloudBridge/CBROfflineCapablePersistentObject.h>
+#import <CloudBridge/CBROfflineCapableCloudConnection.h>
 
 
 
