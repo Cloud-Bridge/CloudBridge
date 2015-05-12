@@ -237,26 +237,25 @@
         [self.databaseAdapter saveChangesForPersistentObject:persitentObject];
     }
 
-    [self _transformPersistentObject:persitentObject toCloudObjectWithCompletionHandler:^(id<CBRCloudObject> cloudObject) {
-        [self.cloudConnection createCloudObject:cloudObject forPersistentObject:persitentObject withUserInfo:userInfo completionHandler:^(id<CBRCloudObject> cloudObject, NSError *error) {
-            if (error) {
-                if (completionHandler) {
-                    completionHandler(nil, error);
-                }
-                return;
+    id<CBRCloudObject> cloudObject = [self.cloudConnection.objectTransformer cloudObjectFromPersistentObject:persitentObject];
+    [self.cloudConnection createCloudObject:cloudObject forPersistentObject:persitentObject withUserInfo:userInfo completionHandler:^(id<CBRCloudObject> cloudObject, NSError *error) {
+        if (error) {
+            if (completionHandler) {
+                completionHandler(nil, error);
             }
+            return;
+        }
 
-            if ([self.databaseAdapter respondsToSelector:@selector(saveChangesForPersistentObject:)]) {
-                [self.databaseAdapter saveChangesForPersistentObject:persitentObject];
+        if ([self.databaseAdapter respondsToSelector:@selector(saveChangesForPersistentObject:)]) {
+            [self.databaseAdapter saveChangesForPersistentObject:persitentObject];
+        }
+
+        [self.databaseAdapter mutatePersistentObject:persitentObject withBlock:^(id<CBRPersistentObject> persistentObject) {
+            [self.cloudConnection.objectTransformer updatePersistentObject:persistentObject withPropertiesFromCloudObject:cloudObject];
+        } completion:^(id<CBRPersistentObject> persistentObject) {
+            if (completionHandler) {
+                completionHandler(persistentObject, nil);
             }
-
-            [self.databaseAdapter mutatePersistentObject:persitentObject withBlock:^(id<CBRPersistentObject> persistentObject) {
-                [self.cloudConnection.objectTransformer updatePersistentObject:persistentObject withPropertiesFromCloudObject:cloudObject];
-            } completion:^(id<CBRPersistentObject> persistentObject) {
-                if (completionHandler) {
-                    completionHandler(persistentObject, nil);
-                }
-            }];
         }];
     }];
 }
@@ -291,25 +290,23 @@
         [self.databaseAdapter saveChangesForPersistentObject:persitentObject];
     }
 
-    [self _transformPersistentObject:persitentObject toCloudObjectWithCompletionHandler:^(id<CBRCloudObject> cloudObject) {
-        [self.cloudConnection saveCloudObject:cloudObject forPersistentObject:persitentObject withUserInfo:userInfo completionHandler:^(id<CBRCloudObject> cloudObject, NSError *error) {
-            if (error) {
-                if (completionHandler) {
-                    completionHandler(nil, error);
-                }
-                return;
+    id<CBRCloudObject> cloudObject = [self.cloudConnection.objectTransformer cloudObjectFromPersistentObject:persitentObject];
+    [self.cloudConnection saveCloudObject:cloudObject forPersistentObject:persitentObject withUserInfo:userInfo completionHandler:^(id<CBRCloudObject> cloudObject, NSError *error) {
+        if (error) {
+            if (completionHandler) {
+                completionHandler(nil, error);
             }
+            return;
+        }
 
-            [self.databaseAdapter mutatePersistentObject:persitentObject withBlock:^(id<CBRPersistentObject> persistentObject) {
-                [self.cloudConnection.objectTransformer updatePersistentObject:persistentObject withPropertiesFromCloudObject:cloudObject];
-            } completion:^(id<CBRPersistentObject> persistentObject) {
-                if (completionHandler) {
-                    completionHandler(persistentObject, nil);
-                }
-            }];
+        [self.databaseAdapter mutatePersistentObject:persitentObject withBlock:^(id<CBRPersistentObject> persistentObject) {
+            [self.cloudConnection.objectTransformer updatePersistentObject:persistentObject withPropertiesFromCloudObject:cloudObject];
+        } completion:^(id<CBRPersistentObject> persistentObject) {
+            if (completionHandler) {
+                completionHandler(persistentObject, nil);
+            }
         }];
     }];
-
 }
 
 - (void)deletePersistentObject:(id<CBRPersistentObject>)persitentObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(NSError *error))completionHandler
@@ -318,43 +315,26 @@
         [self.databaseAdapter saveChangesForPersistentObject:persitentObject];
     }
 
-    [self _transformPersistentObject:persitentObject toCloudObjectWithCompletionHandler:^(id<CBRCloudObject> cloudObject) {
-        [self.cloudConnection deleteCloudObject:cloudObject forPersistentObject:persitentObject withUserInfo:userInfo completionHandler:^(NSError *error) {
-            if (error) {
-                if (completionHandler) {
-                    completionHandler(error);
-                }
-                return;
+    id<CBRCloudObject> cloudObject = [self.cloudConnection.objectTransformer cloudObjectFromPersistentObject:persitentObject];
+    [self.cloudConnection deleteCloudObject:cloudObject forPersistentObject:persitentObject withUserInfo:userInfo completionHandler:^(NSError *error) {
+        if (error) {
+            if (completionHandler) {
+                completionHandler(error);
             }
+            return;
+        }
 
-            [self.databaseAdapter mutatePersistentObjects:@[ persitentObject ] withBlock:^NSArray *(NSArray *persistentObjects) {
-                [self.databaseAdapter deletePersistentObjects:persistentObjects];
-                return @[];
-            } completion:^(NSArray *persistentObjects) {
-                if (completionHandler) {
-                    completionHandler(nil);
-                }
-            }];
+        [self.databaseAdapter mutatePersistentObjects:@[ persitentObject ] withBlock:^NSArray *(NSArray *persistentObjects) {
+            [self.databaseAdapter deletePersistentObjects:persistentObjects];
+            return @[];
+        } completion:^(NSArray *persistentObjects) {
+            if (completionHandler) {
+                completionHandler(nil);
+            }
         }];
     }];
 }
 
 #pragma mark - Private category implementation ()
-
-- (void)_transformPersistentObject:(id<CBRPersistentObject>)persitentObject toCloudObjectWithCompletionHandler:(void(^)(id<CBRCloudObject> cloudObject))completionHandler
-{
-    NSParameterAssert(completionHandler);
-
-    if (self.transformsPersistentObjectsOnMainThread) {
-        return completionHandler([self.cloudConnection.objectTransformer cloudObjectFromPersistentObject:persitentObject]);
-    }
-
-    __block id<CBRCloudObject> cloudObject = nil;
-    [self.databaseAdapter mutatePersistentObject:persitentObject withBlock:^(id<CBRPersistentObject> persistentObject) {
-        cloudObject = [self.cloudConnection.objectTransformer cloudObjectFromPersistentObject:persistentObject];
-    } completion:^(id<CBRPersistentObject> persistentObject) {
-        completionHandler(cloudObject);
-    }];
-}
 
 @end
