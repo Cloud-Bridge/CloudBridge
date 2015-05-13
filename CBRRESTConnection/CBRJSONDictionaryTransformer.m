@@ -318,7 +318,7 @@
 
             NSArray *cloudObjects = relationshipObject;
             NSString *primaryKey = relationshipDescription.destinationEntity.restIdentifier;
-            NSString *dictionaryPrimaryKey = [self cloudKeyPathFromPropertyDescription:relationshipDescription.destinationEntity.relationshipsByName[primaryKey]];
+            NSString *dictionaryPrimaryKey = [self cloudKeyPathFromPropertyDescription:relationshipDescription.destinationEntity.attributesByName[primaryKey]];
 
             NSMutableSet *uniqueIdentifiers = [NSMutableSet set];
             for (NSDictionary *dictionary in cloudObjects) {
