@@ -280,21 +280,29 @@
 
 - (void)mutatePersistentObject:(NSManagedObject *)persistentObject
                      withBlock:(void(^)(id<CBRPersistentObject> persistentObject))mutation
-                    completion:(void(^)(id<CBRPersistentObject> persistentObject))completion
+                    completion:(void(^)(id<CBRPersistentObject> persistentObject, NSError *error))completion
 {
     NSParameterAssert(mutation);
 
     NSManagedObjectContext *context = self.backgroundThreadContext;
-    [context performUnsafeBlock:^(NSManagedObject *object) {
+    [context performBlock:^(NSManagedObject *object, NSError *error) {
+        if (error) {
+            if (completion) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completion(nil, error);
+                });
+            }
+            return;
+        }
+
         mutation(object);
 
         NSError *saveError = nil;
         [context save:&saveError];
         NSCAssert(saveError == nil, @"error saving managed object context: %@", saveError);
-
-        [self.mainThreadContext performUnsafeBlock:^(id object) {
+        [self.mainThreadContext performBlock:^(id object, NSError *error) {
             if (completion) {
-                completion(object);
+                completion(object, error);
             }
         } withObject:object];
     } withObject:persistentObject];
@@ -302,21 +310,30 @@
 
 - (void)mutatePersistentObjects:(NSArray *)persistentObjects
                       withBlock:(NSArray *(^)(NSArray *persistentObjects))mutation
-                     completion:(void(^)(NSArray *persistentObjects))completion
+                     completion:(void(^)(NSArray *persistentObjects, NSError *error))completion
 {
     NSParameterAssert(mutation);
 
     NSManagedObjectContext *context = self.backgroundThreadContext;
-    [context performUnsafeBlock:^(id object) {
+    [context performBlock:^(id object, NSError *error) {
+        if (error) {
+            if (completion) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completion(nil, error);
+                });
+            }
+            return;
+        }
+
         NSArray *objects = mutation(object);
 
         NSError *saveError = nil;
         [context save:&saveError];
         NSCAssert(saveError == nil, @"error saving managed object context: %@", saveError);
 
-        [self.mainThreadContext performUnsafeBlock:^(id object) {
+        [self.mainThreadContext performBlock:^(id object, NSError *error) {
             if (completion) {
-                completion(object);
+                completion(object, error);
             }
         } withObject:objects];
     } withObject:persistentObjects];

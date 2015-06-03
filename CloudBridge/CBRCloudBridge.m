@@ -203,9 +203,9 @@
             }
             
             return parsedPersistentObjects;
-        } completion:^(NSArray *persistentObjects) {
+        } completion:^(NSArray *persistentObjects, NSError *error) {
             if (completionHandler) {
-                completionHandler(persistentObjects, nil);
+                completionHandler(persistentObjects, error);
             }
         }];
     }];
@@ -252,9 +252,9 @@
 
         [self.databaseAdapter mutatePersistentObject:persistentObject withBlock:^(id<CBRPersistentObject> persistentObject) {
             [self.cloudConnection.objectTransformer updatePersistentObject:persistentObject withPropertiesFromCloudObject:cloudObject];
-        } completion:^(id<CBRPersistentObject> persistentObject) {
+        } completion:^(id<CBRPersistentObject> persistentObject, NSError *error) {
             if (completionHandler) {
-                completionHandler(persistentObject, nil);
+                completionHandler(persistentObject, error);
             }
         }];
     }];
@@ -276,9 +276,9 @@
 
         [self.databaseAdapter mutatePersistentObject:persistentObject withBlock:^(id<CBRPersistentObject> persistentObject) {
             [self.cloudConnection.objectTransformer updatePersistentObject:persistentObject withPropertiesFromCloudObject:cloudObject];
-        } completion:^(id<CBRPersistentObject> persistentObject) {
+        } completion:^(id<CBRPersistentObject> persistentObject, NSError *error) {
             if (completionHandler) {
-                completionHandler(persistentObject, nil);
+                completionHandler(persistentObject, error);
             }
         }];
     }];
@@ -301,9 +301,9 @@
 
         [self.databaseAdapter mutatePersistentObject:persistentObject withBlock:^(id<CBRPersistentObject> persistentObject) {
             [self.cloudConnection.objectTransformer updatePersistentObject:persistentObject withPropertiesFromCloudObject:cloudObject];
-        } completion:^(id<CBRPersistentObject> persistentObject) {
+        } completion:^(id<CBRPersistentObject> persistentObject, NSError *error) {
             if (completionHandler) {
-                completionHandler(persistentObject, nil);
+                completionHandler(persistentObject, error);
             }
         }];
     }];
@@ -327,9 +327,9 @@
         [self.databaseAdapter mutatePersistentObjects:@[ persistentObject ] withBlock:^NSArray *(NSArray *persistentObjects) {
             [self.databaseAdapter deletePersistentObjects:persistentObjects];
             return @[];
-        } completion:^(NSArray *persistentObjects) {
+        } completion:^(NSArray *persistentObjects, NSError *error) {
             if (completionHandler) {
-                completionHandler(nil);
+                completionHandler(error);
             }
         }];
     }];

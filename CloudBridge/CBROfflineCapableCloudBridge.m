@@ -175,9 +175,9 @@
         if (error) {
             [self.databaseAdapter mutatePersistentObject:persistentObject withBlock:^(id<CBROfflineCapablePersistentObject> persistentObject) {
                 persistentObject.hasPendingCloudBridgeChanges = @YES;
-            } completion:^(id<CBRPersistentObject> persistentObject) {
+            } completion:^(id<CBRPersistentObject> persistentObject, NSError *mutationError) {
                 if (completionHandler) {
-                    completionHandler(nil, error);
+                    completionHandler(nil, mutationError ?: error);
                 }
             }];
         } else {
@@ -211,9 +211,9 @@
         if (error) {
             [self.databaseAdapter mutatePersistentObject:persistentObject withBlock:^(id<CBROfflineCapablePersistentObject> persistentObject) {
                 persistentObject.hasPendingCloudBridgeChanges = @YES;
-            } completion:^(id<CBRPersistentObject> persistentObject) {
+            } completion:^(id<CBRPersistentObject> persistentObject, NSError *mutationError) {
                 if (completionHandler) {
-                    completionHandler(nil, error);
+                    completionHandler(nil, mutationError ?: error);
                 }
             }];
         } else {
@@ -257,9 +257,9 @@
             [self.databaseAdapter mutatePersistentObject:persistentObject withBlock:^(id<CBROfflineCapablePersistentObject> persistentObject) {
                 persistentObject.hasPendingCloudBridgeChanges = @NO;
                 persistentObject.hasPendingCloudBridgeDeletion = @YES;
-            } completion:^(id<CBRPersistentObject> persistentObject) {
+            } completion:^(id<CBRPersistentObject> persistentObject, NSError *mutationError) {
                 if (completionHandler) {
-                    completionHandler(error);
+                    completionHandler(mutationError ?: error);
                 }
             }];
         } else {

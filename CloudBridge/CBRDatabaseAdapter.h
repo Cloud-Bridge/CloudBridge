@@ -57,12 +57,12 @@
 @required
 - (void)mutatePersistentObject:(id<CBRPersistentObject>)persistentObject
                      withBlock:(void(^)(id<CBRPersistentObject> persistentObject))mutation
-                    completion:(void(^)(id<CBRPersistentObject> persistentObject))completion;
+                    completion:(void(^)(id<CBRPersistentObject> persistentObject, NSError *error))completion;
 
 @required
 - (void)mutatePersistentObjects:(NSArray *)persistentObject
                      withBlock:(NSArray *(^)(NSArray *persistentObjects))mutation
-                    completion:(void(^)(NSArray *persistentObjects))completion;
+                    completion:(void(^)(NSArray *persistentObjects, NSError *error))completion;
 
 @required
 - (void)deletePersistentObjects:(NSArray *)persistentObjects;
