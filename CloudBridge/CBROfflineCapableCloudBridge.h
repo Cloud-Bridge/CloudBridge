@@ -39,6 +39,8 @@
 - (void)reenableOnlineModeWithCompletionHandler:(void(^)(NSError *error))completionHandler;
 
 @property (nonatomic, readonly) id<CBROfflineCapableCloudConnection> cloudConnection;
+
+- (instancetype)init NS_DESIGNATED_INITIALIZER UNAVAILABLE_ATTRIBUTE;
 - (instancetype)initWithCloudConnection:(id<CBROfflineCapableCloudConnection>)cloudConnection
                         databaseAdapter:(id<CBRDatabaseAdapter>)databaseAdapter NS_DESIGNATED_INITIALIZER;
 

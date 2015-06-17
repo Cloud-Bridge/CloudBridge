@@ -38,7 +38,7 @@
 
 @property (nonatomic, assign) BOOL transformsPersistentObjectsOnMainThread;
 
-- (instancetype)init UNAVAILABLE_ATTRIBUTE;
+- (instancetype)init NS_DESIGNATED_INITIALIZER UNAVAILABLE_ATTRIBUTE;
 - (instancetype)initWithCloudConnection:(id<CBRCloudConnection>)cloudConnection
                         databaseAdapter:(id<CBRDatabaseAdapter>)databaseAdapter NS_DESIGNATED_INITIALIZER;
 

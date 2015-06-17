@@ -60,7 +60,7 @@
 @property (nonatomic, readonly) NSManagedObjectContext *mainThreadContext;
 @property (nonatomic, readonly) NSManagedObjectContext *backgroundThreadContext;
 
-- (instancetype)init UNAVAILABLE_ATTRIBUTE;
+- (instancetype)init NS_DESIGNATED_INITIALIZER UNAVAILABLE_ATTRIBUTE;
 - (instancetype)initWithCoreDataStack:(SLCoreDataStack *)coreDataStack NS_DESIGNATED_INITIALIZER;
 
 @end

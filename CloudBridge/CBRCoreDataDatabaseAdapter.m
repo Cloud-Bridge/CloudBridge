@@ -200,6 +200,11 @@
     return self.coreDataStack.backgroundThreadManagedObjectContext;
 }
 
+- (instancetype)init
+{
+    return [super init];
+}
+
 - (instancetype)initWithCoreDataStack:(SLCoreDataStack *)coreDataStack
 {
     if (self = [super init]) {

@@ -111,6 +111,11 @@
 
 #pragma mark - Initialization
 
+- (instancetype)init
+{
+    return [super init];
+}
+
 - (instancetype)initWithCloudConnection:(id<CBRCloudConnection>)cloudConnection
                         databaseAdapter:(id<CBRDatabaseAdapter>)databaseAdapter
 {

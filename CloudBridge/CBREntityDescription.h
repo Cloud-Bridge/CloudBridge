@@ -40,7 +40,7 @@ typedef NS_ENUM(NSInteger, CBRAttributeType) {
 @property (nonatomic, strong) NSDictionary *userInfo;
 
 @property (nonatomic, weak, readonly) id<CBRDatabaseAdapter> databaseAdapter;
-- (instancetype)init UNAVAILABLE_ATTRIBUTE;
+- (instancetype)init NS_DESIGNATED_INITIALIZER UNAVAILABLE_ATTRIBUTE;
 - (instancetype)initWithDatabaseAdapter:(id<CBRDatabaseAdapter>)databaseAdapter NS_DESIGNATED_INITIALIZER;
 
 @end
@@ -59,7 +59,7 @@ typedef NS_ENUM(NSInteger, CBRAttributeType) {
 @property (nonatomic, strong) NSDictionary *userInfo;
 
 @property (nonatomic, weak, readonly) id<CBRDatabaseAdapter> databaseAdapter;
-- (instancetype)init UNAVAILABLE_ATTRIBUTE;
+- (instancetype)init NS_DESIGNATED_INITIALIZER UNAVAILABLE_ATTRIBUTE;
 - (instancetype)initWithDatabaseAdapter:(id<CBRDatabaseAdapter>)databaseAdapter NS_DESIGNATED_INITIALIZER;
 
 @end
@@ -80,7 +80,7 @@ typedef NS_ENUM(NSInteger, CBRAttributeType) {
 @property (nonatomic, readonly) NSArray *subentities;
 
 @property (nonatomic, weak, readonly) id<CBRDatabaseAdapter> databaseAdapter;
-- (instancetype)init UNAVAILABLE_ATTRIBUTE;
+- (instancetype)init NS_DESIGNATED_INITIALIZER UNAVAILABLE_ATTRIBUTE;
 - (instancetype)initWithDatabaseAdapter:(id<CBRDatabaseAdapter>)databaseAdapter NS_DESIGNATED_INITIALIZER;
 
 @end

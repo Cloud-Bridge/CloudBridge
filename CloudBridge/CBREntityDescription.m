@@ -24,6 +24,11 @@ static NSDictionary *indexBy(NSArray *array, NSString *key)
 
 @implementation CBRAttributeDescription
 
+- (instancetype)init
+{
+    return [super init];
+}
+
 - (instancetype)initWithDatabaseAdapter:(id<CBRDatabaseAdapter>)databaseAdapter
 {
     if (self = [super init]) {
@@ -41,6 +46,11 @@ static NSDictionary *indexBy(NSArray *array, NSString *key)
 - (CBREntityDescription *)destinationEntity
 {
     return [self.databaseAdapter entityDescriptionForClass:NSClassFromString(self.destinationEntityName)];
+}
+
+- (instancetype)init
+{
+    return [super init];
 }
 
 - (instancetype)initWithDatabaseAdapter:(id<CBRDatabaseAdapter>)databaseAdapter
@@ -76,6 +86,11 @@ static NSDictionary *indexBy(NSArray *array, NSString *key)
     }
 
     return result;
+}
+
+- (instancetype)init
+{
+    return [super init];
 }
 
 - (instancetype)initWithDatabaseAdapter:(id<CBRDatabaseAdapter>)databaseAdapter

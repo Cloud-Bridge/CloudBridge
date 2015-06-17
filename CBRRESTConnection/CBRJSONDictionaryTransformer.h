@@ -36,7 +36,7 @@
 /**
  Use `initWithPropertyMapping:`.
  */
-- (instancetype)init UNAVAILABLE_ATTRIBUTE;
+- (instancetype)init NS_DESIGNATED_INITIALIZER UNAVAILABLE_ATTRIBUTE;
 
 /**
  The designated initializer.

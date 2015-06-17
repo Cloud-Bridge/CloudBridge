@@ -34,6 +34,11 @@
 
 #pragma mark - Initialization
 
+- (instancetype)init
+{
+    return [super init];
+}
+
 - (instancetype)initWithPropertyMapping:(id<CBRPropertyMapping>)propertyMapping
 {
     if (self = [super init]) {
