@@ -18,6 +18,7 @@
 @interface CBRJSONDictionaryTransformerTests : CBRTestCase
 @property (nonatomic, strong) CBRJSONDictionaryTransformer *transformer;
 @property (nonatomic, strong) CBRCloudBridge *cloudBridge;
+@property (nonatomic, strong) AFHTTPSessionManager *sessionManager;
 @property (nonatomic, strong) CBRRESTConnection *connection;
 @property (nonatomic, strong) CBRCoreDataDatabaseAdapter *adapter;
 @end
@@ -32,7 +33,8 @@
     [propertyMapping registerObjcNamingConvention:@"identifier" forJSONNamingConvention:@"id"];
 
     self.transformer = [[CBRJSONDictionaryTransformer alloc] initWithPropertyMapping:propertyMapping];
-    self.connection = [[CBRRESTConnection alloc] initWithBaseURL:[NSURL URLWithString:@"http://google.de"] propertyMapping:propertyMapping];
+    self.sessionManager = [[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:@"http://google.de"]];
+    self.connection = [[CBRRESTConnection alloc] initWithPropertyMapping:propertyMapping sessionManager:self.sessionManager];
     self.adapter = [[CBRCoreDataDatabaseAdapter alloc] initWithCoreDataStack:[CBRTestDataStore testStore]];
     self.cloudBridge = [[CBRCloudBridge alloc] initWithCloudConnection:self.connection databaseAdapter:self.adapter];
 

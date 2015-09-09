@@ -15,8 +15,8 @@
 #import "CBRTestDataStore.h"
 #import <OCMock/OCMock.h>
 
-typedef void(^AFSuccessBlock)(AFHTTPRequestOperation *operation, id responseObject);
-typedef void(^AFErrorBlock)(AFHTTPRequestOperation *operation, NSError *error);
+typedef void(^AFSuccessBlock)(NSURLSessionDataTask *task, id responseObject);
+typedef void(^AFErrorBlock)(NSURLSessionDataTask *task, NSError *error);
 
 @interface AFQueryDescription : NSObject
 @property (nonatomic, strong) NSString *path;
@@ -69,9 +69,11 @@ typedef void(^AFErrorBlock)(AFHTTPRequestOperation *operation, NSError *error);
 
 @interface CBRRESTConnectionTests : CBRTestCase
 @property (nonatomic, strong) CBRCloudBridge *cloudBridge;
+@property (nonatomic, strong) AFHTTPSessionManager *sessionManager;
+@property (nonatomic, strong) AFHTTPSessionManager *mockedSessionManager;
+
 @property (nonatomic, strong) CBRRESTConnection *connection;
 @property (nonatomic, strong) CBRCoreDataDatabaseAdapter *adapter;
-@property (nonatomic, strong) CBRRESTConnection *mockedConnection;
 @end
 
 @implementation CBRRESTConnectionTests
@@ -83,10 +85,12 @@ typedef void(^AFErrorBlock)(AFHTTPRequestOperation *operation, NSError *error);
     CBRUnderscoredPropertyMapping *propertyMapping = [[CBRUnderscoredPropertyMapping alloc] init];
     [propertyMapping registerObjcNamingConvention:@"identifier" forJSONNamingConvention:@"id"];
 
-    self.connection = [[CBRRESTConnection alloc] initWithBaseURL:[NSURL URLWithString:@"http://localhost/v1"] propertyMapping:propertyMapping];
-    self.mockedConnection = OCMPartialMock(self.connection);
+    self.sessionManager = [[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:@"http://localhost/v1"]];
+    self.mockedSessionManager = OCMPartialMock(self.sessionManager);
+
+    self.connection = [[CBRRESTConnection alloc] initWithPropertyMapping:propertyMapping sessionManager:self.mockedSessionManager];
     self.adapter = [[CBRCoreDataDatabaseAdapter alloc] initWithCoreDataStack:[CBRTestDataStore testStore]];
-    self.cloudBridge = [[CBRCloudBridge alloc] initWithCloudConnection:self.mockedConnection databaseAdapter:self.adapter];
+    self.cloudBridge = [[CBRCloudBridge alloc] initWithCloudConnection:self.connection databaseAdapter:self.adapter];
 
     [NSManagedObject setCloudBridge:self.cloudBridge];
 }
@@ -102,11 +106,11 @@ typedef void(^AFErrorBlock)(AFHTTPRequestOperation *operation, NSError *error);
     NSDictionary *parameters = [self.connection.objectTransformer cloudObjectFromPersistentObject:entity];
 
     __block AFQueryDescription *query = nil;
-    OCMStub([self.mockedConnection POST:OCMOCK_ANY parameters:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY]).andQuery(^(AFQueryDescription *theQuery) {
+    OCMStub([self.mockedSessionManager POST:OCMOCK_ANY parameters:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY]).andQuery(^(AFQueryDescription *theQuery) {
         query = theQuery;
     });
 
-    [self.mockedConnection createCloudObject:parameters forPersistentObject:entity withUserInfo:nil completionHandler:NULL];
+    [self.connection createCloudObject:parameters forPersistentObject:entity withUserInfo:nil completionHandler:NULL];
 
     expect(query).willNot.beNil();
     expect(query.path).to.endWith(@"entity4");
@@ -125,11 +129,11 @@ typedef void(^AFErrorBlock)(AFHTTPRequestOperation *operation, NSError *error);
     NSDictionary *parameters = [self.connection.objectTransformer cloudObjectFromPersistentObject:entity];
 
     __block AFQueryDescription *query = nil;
-    OCMStub([self.mockedConnection PUT:OCMOCK_ANY parameters:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY]).andQuery(^(AFQueryDescription *theQuery) {
+    OCMStub([self.mockedSessionManager PUT:OCMOCK_ANY parameters:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY]).andQuery(^(AFQueryDescription *theQuery) {
         query = theQuery;
     });
 
-    [self.mockedConnection saveCloudObject:parameters forPersistentObject:entity withUserInfo:nil completionHandler:NULL];
+    [self.connection saveCloudObject:parameters forPersistentObject:entity withUserInfo:nil completionHandler:NULL];
 
     expect(query).willNot.beNil();
     expect(query.path).to.endWith(@"entity4/5");
@@ -142,11 +146,11 @@ typedef void(^AFErrorBlock)(AFHTTPRequestOperation *operation, NSError *error);
     entity.identifier = @5;
 
     __block AFQueryDescription *query = nil;
-    OCMStub([self.mockedConnection GET:OCMOCK_ANY parameters:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY]).andQuery(^(AFQueryDescription *theQuery) {
+    OCMStub([self.mockedSessionManager GET:OCMOCK_ANY parameters:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY]).andQuery(^(AFQueryDescription *theQuery) {
         query = theQuery;
     });
 
-    [self.mockedConnection latestCloudObjectForPersistentObject:entity withUserInfo:nil completionHandler:NULL];
+    [self.connection latestCloudObjectForPersistentObject:entity withUserInfo:nil completionHandler:NULL];
 
     expect(query).willNot.beNil();
     expect(query.path).to.endWith(@"entity4/5");
@@ -158,11 +162,11 @@ typedef void(^AFErrorBlock)(AFHTTPRequestOperation *operation, NSError *error);
     entity.identifier = @5;
 
     __block AFQueryDescription *query = nil;
-    OCMStub([self.mockedConnection DELETE:OCMOCK_ANY parameters:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY]).andQuery(^(AFQueryDescription *theQuery) {
+    OCMStub([self.mockedSessionManager DELETE:OCMOCK_ANY parameters:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY]).andQuery(^(AFQueryDescription *theQuery) {
         query = theQuery;
     });
 
-    [self.mockedConnection deleteCloudObject:nil forPersistentObject:entity withUserInfo:nil completionHandler:NULL];
+    [self.connection deleteCloudObject:nil forPersistentObject:entity withUserInfo:nil completionHandler:NULL];
 
     expect(query).willNot.beNil();
     expect(query.path).to.endWith(@"entity4/5");
@@ -176,12 +180,12 @@ typedef void(^AFErrorBlock)(AFHTTPRequestOperation *operation, NSError *error);
     CBREntityDescription *entityDescription = [self.adapter entityDescriptionForClass:[SLEntity6Child class]];
 
     __block AFQueryDescription *query = nil;
-    OCMStub([self.mockedConnection GET:OCMOCK_ANY parameters:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY]).andQuery(^(AFQueryDescription *theQuery) {
+    OCMStub([self.mockedSessionManager GET:OCMOCK_ANY parameters:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY]).andQuery(^(AFQueryDescription *theQuery) {
         query = theQuery;
     });
 
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"parent == %@", entity];
-    [self.mockedConnection fetchCloudObjectsForEntity:entityDescription withPredicate:predicate userInfo:nil completionHandler:NULL];
+    [self.connection fetchCloudObjectsForEntity:entityDescription withPredicate:predicate userInfo:nil completionHandler:NULL];
 
     expect(query).willNot.beNil();
     expect(query.path).to.endWith(@"entity6/5/children");
@@ -195,12 +199,12 @@ typedef void(^AFErrorBlock)(AFHTTPRequestOperation *operation, NSError *error);
     CBREntityDescription *entityDescription = [self.adapter entityDescriptionForClass:[SLEntity6Child class]];
 
     __block AFQueryDescription *query = nil;
-    OCMStub([self.mockedConnection GET:OCMOCK_ANY parameters:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY]).andQuery(^(AFQueryDescription *theQuery) {
+    OCMStub([self.mockedSessionManager GET:OCMOCK_ANY parameters:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY]).andQuery(^(AFQueryDescription *theQuery) {
         query = theQuery;
     });
 
     NSDictionary *userInfo = @{ CBRRESTConnectionUserInfoURLOverrideKey: @"some_path/with_suffix" };
-    [self.mockedConnection fetchCloudObjectsForEntity:entityDescription withPredicate:nil userInfo:userInfo completionHandler:NULL];
+    [self.connection fetchCloudObjectsForEntity:entityDescription withPredicate:nil userInfo:userInfo completionHandler:NULL];
 
     expect(query).willNot.beNil();
     expect(query.path).to.endWith(@"some_path/with_suffix");
@@ -217,12 +221,12 @@ typedef void(^AFErrorBlock)(AFHTTPRequestOperation *operation, NSError *error);
     NSDictionary *parameters = [self.connection.objectTransformer cloudObjectFromPersistentObject:entity];
 
     __block AFQueryDescription *query = nil;
-    OCMStub([self.mockedConnection POST:OCMOCK_ANY parameters:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY]).andQuery(^(AFQueryDescription *theQuery) {
+    OCMStub([self.mockedSessionManager POST:OCMOCK_ANY parameters:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY]).andQuery(^(AFQueryDescription *theQuery) {
         query = theQuery;
     });
 
     NSDictionary *userInfo = @{ CBRRESTConnectionUserInfoURLOverrideKey: @"some_path/:number" };
-    [self.mockedConnection createCloudObject:parameters forPersistentObject:entity withUserInfo:userInfo completionHandler:NULL];
+    [self.connection createCloudObject:parameters forPersistentObject:entity withUserInfo:userInfo completionHandler:NULL];
 
     expect(query).willNot.beNil();
     expect(query.path).to.endWith(@"some_path/5");
@@ -241,12 +245,12 @@ typedef void(^AFErrorBlock)(AFHTTPRequestOperation *operation, NSError *error);
     NSDictionary *parameters = [self.connection.objectTransformer cloudObjectFromPersistentObject:entity];
 
     __block AFQueryDescription *query = nil;
-    OCMStub([self.mockedConnection PUT:OCMOCK_ANY parameters:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY]).andQuery(^(AFQueryDescription *theQuery) {
+    OCMStub([self.mockedSessionManager PUT:OCMOCK_ANY parameters:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY]).andQuery(^(AFQueryDescription *theQuery) {
         query = theQuery;
     });
 
     NSDictionary *userInfo = @{ CBRRESTConnectionUserInfoURLOverrideKey: @"some_path/:id" };
-    [self.mockedConnection saveCloudObject:parameters forPersistentObject:entity withUserInfo:userInfo completionHandler:NULL];
+    [self.connection saveCloudObject:parameters forPersistentObject:entity withUserInfo:userInfo completionHandler:NULL];
 
     expect(query).willNot.beNil();
     expect(query.path).to.endWith(@"some_path/5");
@@ -259,12 +263,12 @@ typedef void(^AFErrorBlock)(AFHTTPRequestOperation *operation, NSError *error);
     entity.identifier = @5;
 
     __block AFQueryDescription *query = nil;
-    OCMStub([self.mockedConnection GET:OCMOCK_ANY parameters:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY]).andQuery(^(AFQueryDescription *theQuery) {
+    OCMStub([self.mockedSessionManager GET:OCMOCK_ANY parameters:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY]).andQuery(^(AFQueryDescription *theQuery) {
         query = theQuery;
     });
 
     NSDictionary *userInfo = @{ CBRRESTConnectionUserInfoURLOverrideKey: @"some_path/:id" };
-    [self.mockedConnection latestCloudObjectForPersistentObject:entity withUserInfo:userInfo completionHandler:NULL];
+    [self.connection latestCloudObjectForPersistentObject:entity withUserInfo:userInfo completionHandler:NULL];
 
     expect(query).willNot.beNil();
     expect(query.path).to.endWith(@"some_path/5");
@@ -276,12 +280,12 @@ typedef void(^AFErrorBlock)(AFHTTPRequestOperation *operation, NSError *error);
     entity.identifier = @5;
 
     __block AFQueryDescription *query = nil;
-    OCMStub([self.mockedConnection DELETE:OCMOCK_ANY parameters:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY]).andQuery(^(AFQueryDescription *theQuery) {
+    OCMStub([self.mockedSessionManager DELETE:OCMOCK_ANY parameters:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY]).andQuery(^(AFQueryDescription *theQuery) {
         query = theQuery;
     });
 
     NSDictionary *userInfo = @{ CBRRESTConnectionUserInfoURLOverrideKey: @"some_path/:id" };
-    [self.mockedConnection deleteCloudObject:nil forPersistentObject:entity withUserInfo:userInfo completionHandler:NULL];
+    [self.connection deleteCloudObject:nil forPersistentObject:entity withUserInfo:userInfo completionHandler:NULL];
 
     expect(query).willNot.beNil();
     expect(query.path).to.endWith(@"some_path/5");

@@ -35,6 +35,8 @@
 #import <CBRRESTConnection/CBRAttributeDescription+CBRRESTConnection.h>
 #import <CBRRESTConnection/CBRRelationshipDescription+CBRRESTConnection.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 extern NSString * const CBRRESTConnectionUserInfoURLOverrideKey;
 
 
@@ -45,12 +47,16 @@ extern NSString * const CBRRESTConnectionUserInfoURLOverrideKey;
  * `requestSerializer` defaults to `AFJSONRequestSerializer` and `responseSerializer` to `AFJSONResponseSerializer`.
  * CRUD accessors require `restBaseURL` to be set on the corresponding `NSEntityDescription`.
  */
-@interface CBRRESTConnection : AFHTTPRequestOperationManager <CBRCloudConnection>
+@interface CBRRESTConnection : NSObject <CBRCloudConnection>
 
-/**
- @param propertyMapping The `CBRRESTConnection.objectTransformers`' property mapping. `CoreDataCloud` ships with `CBRUnderscoredPropertyMapping` and `CBRIdentityPropertyMapping`.
- */
-- (instancetype)initWithBaseURL:(NSURL *)url propertyMapping:(id<CBRPropertyMapping>)propertyMapping NS_DESIGNATED_INITIALIZER;
+@property (nonatomic, nullable, readonly) AFHTTPRequestOperationManager *operationManager;
+@property (nonatomic, nullable, readonly) AFHTTPSessionManager *sessionManager;
+
+@property (nonatomic, readonly) id<CBRPropertyMapping> propertyMapping;
+
+- (instancetype)init NS_DESIGNATED_INITIALIZER NS_UNAVAILABLE;
+- (instancetype)initWithPropertyMapping:(id<CBRPropertyMapping>)propertyMapping operationManager:(AFHTTPRequestOperationManager *)operationManager NS_DESIGNATED_INITIALIZER NS_DEPRECATED(10_5, 10_11, 2_0, 9_0, "Use NSURLSession and -[CBRRESTConnection initWithPropertyMapping:sessionManager:] instead");
+- (instancetype)initWithPropertyMapping:(id<CBRPropertyMapping>)propertyMapping sessionManager:(AFHTTPSessionManager *)sessionManager NS_DESIGNATED_INITIALIZER;
 
 /**
  The `objectTransformer` with underscored `propertyMapping` by default.
@@ -69,14 +75,6 @@ extern NSString * const CBRRESTConnectionUserInfoURLOverrideKey;
  */
 - (NSString *)pathBySubstitutingParametersInPath:(NSString *)path fromPersistentObject:(id<CBRPersistentObject>)persistentObject;
 
-/**
- Use `initWithBaseURL:propertyMapping:`.
- */
-- (instancetype)init NS_UNAVAILABLE;
-
-/**
- Use `initWithBaseURL:propertyMapping:`.
- */
-- (instancetype)initWithBaseURL:(NSURL *)url NS_DESIGNATED_INITIALIZER NS_UNAVAILABLE;
-
 @end
+
+NS_ASSUME_NONNULL_END

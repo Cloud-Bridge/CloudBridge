@@ -44,23 +44,43 @@ NSString * const CBRRESTConnectionUserInfoURLOverrideKey = @"restBaseURL";
 
 #pragma mark - Initialization
 
-- (instancetype)initWithBaseURL:(NSURL *)url
+- (instancetype)init
 {
-    return [super initWithBaseURL:url];
+    return [super init];
 }
 
-- (instancetype)initWithBaseURL:(NSURL *)url propertyMapping:(id<CBRPropertyMapping>)propertyMapping
+- (instancetype)initWithPropertyMapping:(id<CBRPropertyMapping>)propertyMapping operationManager:(AFHTTPRequestOperationManager *)operationManager
 {
-    if (self = [super initWithBaseURL:url]) {
+    if (self = [super init]) {
+        _propertyMapping = propertyMapping;
         _objectTransformer = [[CBRJSONDictionaryTransformer alloc] initWithPropertyMapping:propertyMapping];
+        _operationManager = operationManager;
 
-        self.requestSerializer = [AFJSONRequestSerializer serializerWithWritingOptions:kNilOptions];
-        self.responseSerializer = [AFJSONResponseSerializer serializerWithReadingOptions:kNilOptions];
+        operationManager.requestSerializer = [AFJSONRequestSerializer serializerWithWritingOptions:kNilOptions];
+        operationManager.responseSerializer = [AFJSONResponseSerializer serializerWithReadingOptions:kNilOptions];
 
-        [self.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-        [self.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+        [operationManager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+        [operationManager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
 
-        self.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"application/json"];
+        operationManager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"application/json"];
+    }
+    return self;
+}
+
+- (instancetype)initWithPropertyMapping:(id<CBRPropertyMapping>)propertyMapping sessionManager:(AFHTTPSessionManager *)sessionManager
+{
+    if (self = [super init]) {
+        _propertyMapping = propertyMapping;
+        _objectTransformer = [[CBRJSONDictionaryTransformer alloc] initWithPropertyMapping:propertyMapping];
+        _sessionManager = sessionManager;
+
+        sessionManager.requestSerializer = [AFJSONRequestSerializer serializerWithWritingOptions:kNilOptions];
+        sessionManager.responseSerializer = [AFJSONResponseSerializer serializerWithReadingOptions:kNilOptions];
+
+        [sessionManager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+        [sessionManager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+
+        sessionManager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"application/json"];
     }
     return self;
 }
@@ -71,7 +91,7 @@ NSString * const CBRRESTConnectionUserInfoURLOverrideKey = @"restBaseURL";
                        parameters:(NSDictionary *)parameters
             withCompletionHandler:(void (^)(NSArray *fetchedCloudObjects, NSError *error))completionHandler
 {
-    [self GET:path parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    void(^successHandler)(id responseObject) = ^(id responseObject) {
         NSMutableArray *result = [NSMutableArray array];
 
         if ([responseObject isKindOfClass:[NSArray class]]) {
@@ -87,11 +107,27 @@ NSString * const CBRRESTConnectionUserInfoURLOverrideKey = @"restBaseURL";
         if (completionHandler) {
             completionHandler(result, nil);
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    };
+
+    void(^errorHandler)(NSError *error) = ^(NSError *error) {
         if (completionHandler) {
             completionHandler(nil, error);
         }
-    }];
+    };
+
+    if (self.operationManager != nil) {
+        [self.operationManager GET:path parameters:parameters success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+            successHandler(responseObject);
+        } failure:^(AFHTTPRequestOperation * _Nonnull operation, NSError * _Nonnull error) {
+            errorHandler(error);
+        }];
+    } else {
+        [self.sessionManager GET:path parameters:parameters success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+            successHandler(responseObject);
+        } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+            errorHandler(error);
+        }];
+    }
 }
 
 - (NSString *)pathBySubstitutingParametersInPath:(NSString *)path fromPersistentObject:(id<CBRPersistentObject>)persistentObject
@@ -134,7 +170,7 @@ NSString * const CBRRESTConnectionUserInfoURLOverrideKey = @"restBaseURL";
             restValue = [self.objectTransformer.dateFormatter stringFromDate:value];
         }
 
-        [newComponents addObject:[restValue stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        [newComponents addObject:[restValue stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]];
     }
     
     return [newComponents componentsJoinedByString:@"/"];
@@ -159,57 +195,125 @@ NSString * const CBRRESTConnectionUserInfoURLOverrideKey = @"restBaseURL";
 - (void)createCloudObject:(id<CBRCloudObject>)cloudObject forPersistentObject:(id<CBRPersistentObject>)persistentObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void (^)(id<CBRCloudObject>, NSError *))completionHandler
 {
     NSString *path = [self _CRUDPathForPersistentObject:persistentObject userInfo:userInfo appendIdentifier:NO];
-    [self POST:path parameters:cloudObject success:^(AFHTTPRequestOperation *operation, id responseObject) {
+
+    void(^successHandler)(id responseObject) = ^(id responseObject) {
         if (completionHandler) {
             completionHandler(responseObject, nil);
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    };
+
+    void(^errorHandler)(NSError *error) = ^(NSError *error) {
         if (completionHandler) {
             completionHandler(nil, error);
         }
-    }];
+    };
+
+    if (self.operationManager != nil) {
+        [self.operationManager POST:path parameters:cloudObject success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+            successHandler(responseObject);
+        } failure:^(AFHTTPRequestOperation * _Nonnull operation, NSError * _Nonnull error) {
+            errorHandler(error);
+        }];
+    } else {
+        [self.sessionManager POST:path parameters:cloudObject success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+            successHandler(responseObject);
+        } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+            errorHandler(error);
+        }];
+    }
 }
 
 - (void)latestCloudObjectForPersistentObject:(id<CBRPersistentObject>)persistentObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void (^)(id<CBRCloudObject>, NSError *))completionHandler
 {
     NSString *path = [self _CRUDPathForPersistentObject:persistentObject userInfo:userInfo appendIdentifier:YES];
-    [self GET:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+
+    void(^successHandler)(id responseObject) = ^(id responseObject) {
         if (completionHandler) {
             completionHandler(responseObject, nil);
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    };
+
+    void(^errorHandler)(NSError *error) = ^(NSError *error) {
         if (completionHandler) {
             completionHandler(nil, error);
         }
-    }];
+    };
+
+    if (self.operationManager != nil) {
+        [self.operationManager GET:path parameters:nil success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+            successHandler(responseObject);
+        } failure:^(AFHTTPRequestOperation * _Nonnull operation, NSError * _Nonnull error) {
+            errorHandler(error);
+        }];
+    } else {
+        [self.sessionManager GET:path parameters:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+            successHandler(responseObject);
+        } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+            errorHandler(error);
+        }];
+    }
 }
 
 - (void)saveCloudObject:(id<CBRCloudObject>)cloudObject forPersistentObject:(id<CBRPersistentObject>)persistentObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void (^)(id<CBRCloudObject>, NSError *))completionHandler
 {
     NSString *path = [self _CRUDPathForPersistentObject:persistentObject userInfo:userInfo appendIdentifier:YES];
-    [self PUT:path parameters:cloudObject success:^(AFHTTPRequestOperation *operation, id responseObject) {
+
+    void(^successHandler)(id responseObject) = ^(id responseObject) {
         if (completionHandler) {
             completionHandler(responseObject, nil);
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    };
+
+    void(^errorHandler)(NSError *error) = ^(NSError *error) {
         if (completionHandler) {
             completionHandler(nil, error);
         }
-    }];
+    };
+
+    if (self.operationManager != nil) {
+        [self.operationManager PUT:path parameters:cloudObject success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+            successHandler(responseObject);
+        } failure:^(AFHTTPRequestOperation * _Nonnull operation, NSError * _Nonnull error) {
+            errorHandler(error);
+        }];
+    } else {
+        [self.sessionManager PUT:path parameters:cloudObject success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+            successHandler(responseObject);
+        } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+            errorHandler(error);
+        }];
+    }
 }
 
 - (void)deleteCloudObject:(id<CBRCloudObject>)cloudObject forPersistentObject:(id<CBRPersistentObject>)persistentObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void (^)(NSError *))completionHandler
 {
     NSString *path = [self _CRUDPathForPersistentObject:persistentObject userInfo:userInfo appendIdentifier:YES];
-    [self DELETE:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+
+    void(^successHandler)(id responseObject) = ^(id responseObject) {
         if (completionHandler) {
             completionHandler(nil);
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    };
+
+    void(^errorHandler)(NSError *error) = ^(NSError *error) {
         if (completionHandler) {
             completionHandler(error);
         }
-    }];
+    };
+
+    if (self.operationManager != nil) {
+        [self.operationManager DELETE:path parameters:nil success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+            successHandler(responseObject);
+        } failure:^(AFHTTPRequestOperation * _Nonnull operation, NSError * _Nonnull error) {
+            errorHandler(error);
+        }];
+    } else {
+        [self.sessionManager DELETE:path parameters:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+            successHandler(responseObject);
+        } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+            errorHandler(error);
+        }];
+    }
 }
 
 #pragma mark - Private category implementation ()

@@ -29,7 +29,7 @@ PODS:
     - SLCoreDataStack (~> 1.0)
   - Expecta (1.0.2)
   - OCMock (3.1.5)
-  - SLCoreDataStack (1.0.3)
+  - SLCoreDataStack (1.0.5)
 
 DEPENDENCIES:
   - CBRRESTConnection (from `.`)
@@ -50,6 +50,6 @@ SPEC CHECKSUMS:
   CloudBridge: d15087367a40184190a48e1a9330664d729522e3
   Expecta: 54e8a3530add08f4f0208c111355eda7cde74a53
   OCMock: 4c2925291f80407c3738dd1db14d21d0cc278864
-  SLCoreDataStack: 74c06e9ea6d2dcc347eae2818bd9b2c220a2cecd
+  SLCoreDataStack: 94e30ab9e8af0b68e43f4d7f48a66973b3405566
 
 COCOAPODS: 0.38.2
