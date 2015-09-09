@@ -1,35 +1,35 @@
 PODS:
-  - AFNetworking (2.5.4):
-    - AFNetworking/NSURLConnection (= 2.5.4)
-    - AFNetworking/NSURLSession (= 2.5.4)
-    - AFNetworking/Reachability (= 2.5.4)
-    - AFNetworking/Security (= 2.5.4)
-    - AFNetworking/Serialization (= 2.5.4)
-    - AFNetworking/UIKit (= 2.5.4)
-  - AFNetworking/NSURLConnection (2.5.4):
+  - AFNetworking (2.6.0):
+    - AFNetworking/NSURLConnection (= 2.6.0)
+    - AFNetworking/NSURLSession (= 2.6.0)
+    - AFNetworking/Reachability (= 2.6.0)
+    - AFNetworking/Security (= 2.6.0)
+    - AFNetworking/Serialization (= 2.6.0)
+    - AFNetworking/UIKit (= 2.6.0)
+  - AFNetworking/NSURLConnection (2.6.0):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/NSURLSession (2.5.4):
+  - AFNetworking/NSURLSession (2.6.0):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/Reachability (2.5.4)
-  - AFNetworking/Security (2.5.4)
-  - AFNetworking/Serialization (2.5.4)
-  - AFNetworking/UIKit (2.5.4):
+  - AFNetworking/Reachability (2.6.0)
+  - AFNetworking/Security (2.6.0)
+  - AFNetworking/Serialization (2.6.0)
+  - AFNetworking/UIKit (2.6.0):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - CBRManagedObjectCache (1.3.1)
-  - CBRRESTConnection (1.2.2):
+  - CBRRESTConnection (1.2.3):
     - AFNetworking (~> 2.5)
     - CloudBridge (~> 1.0)
-  - CloudBridge (1.2.2):
+  - CloudBridge (1.2.3):
     - CBRManagedObjectCache (~> 1.3)
     - SLCoreDataStack (~> 1.0)
-  - Expecta (1.0.0)
-  - OCMock (3.1.2)
-  - SLCoreDataStack (1.0.2)
+  - Expecta (1.0.2)
+  - OCMock (3.1.5)
+  - SLCoreDataStack (1.0.3)
 
 DEPENDENCIES:
   - CBRRESTConnection (from `.`)
@@ -44,12 +44,12 @@ EXTERNAL SOURCES:
     :path: "."
 
 SPEC CHECKSUMS:
-  AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
+  AFNetworking: 79f7eb1a0fcfa7beb409332b2ca49afe9ce53b05
   CBRManagedObjectCache: 041a6a63baa804ca01ba67c5f040105117ad9867
-  CBRRESTConnection: 878bf0e7cfedc4b414df42a279042ff3a44a6ab3
-  CloudBridge: c1a3c59ef050dec62a4994ed8b4e57652c05ce14
-  Expecta: 32604574add2c46a36f8d2f716b6c5736eb75024
-  OCMock: a10ea9f0a6e921651f96f78b6faee95ebc813b92
-  SLCoreDataStack: fd3651b1d7795cb322b816a1a1c81ba9833babac
+  CBRRESTConnection: 4b3f4f198212689c5ec8243cfd25f6e96c164a83
+  CloudBridge: d15087367a40184190a48e1a9330664d729522e3
+  Expecta: 54e8a3530add08f4f0208c111355eda7cde74a53
+  OCMock: 4c2925291f80407c3738dd1db14d21d0cc278864
+  SLCoreDataStack: 74c06e9ea6d2dcc347eae2818bd9b2c220a2cecd
 
-COCOAPODS: 0.37.2
+COCOAPODS: 0.38.2
