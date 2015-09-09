@@ -86,6 +86,12 @@ typedef void(^AFErrorBlock)(NSURLSessionDataTask *task, NSError *error);
     [propertyMapping registerObjcNamingConvention:@"identifier" forJSONNamingConvention:@"id"];
 
     self.sessionManager = [[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:@"http://localhost/v1"]];
+    self.sessionManager.requestSerializer = [AFJSONRequestSerializer serializerWithWritingOptions:kNilOptions];
+    self.sessionManager.responseSerializer = [AFJSONResponseSerializer serializerWithReadingOptions:kNilOptions];
+    [self.sessionManager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [self.sessionManager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    self.sessionManager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"application/json"];
+
     self.mockedSessionManager = OCMPartialMock(self.sessionManager);
 
     self.connection = [[CBRRESTConnection alloc] initWithPropertyMapping:propertyMapping sessionManager:self.mockedSessionManager];

@@ -56,13 +56,13 @@ NSString * const CBRRESTConnectionUserInfoURLOverrideKey = @"restBaseURL";
         _objectTransformer = [[CBRJSONDictionaryTransformer alloc] initWithPropertyMapping:propertyMapping];
         _operationManager = operationManager;
 
-        operationManager.requestSerializer = [AFJSONRequestSerializer serializerWithWritingOptions:kNilOptions];
-        operationManager.responseSerializer = [AFJSONResponseSerializer serializerWithReadingOptions:kNilOptions];
+        NSParameterAssert([operationManager.requestSerializer isKindOfClass:[AFJSONRequestSerializer class]]);
+        NSParameterAssert([operationManager.responseSerializer isKindOfClass:[AFJSONResponseSerializer class]]);
 
-        [operationManager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-        [operationManager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+        NSParameterAssert([[operationManager.requestSerializer valueForHTTPHeaderField:@"Accept"] containsString:@"application/json"]);
+        NSParameterAssert([[operationManager.requestSerializer valueForHTTPHeaderField:@"Content-Type"] containsString:@"application/json"]);
 
-        operationManager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"application/json"];
+        NSParameterAssert([operationManager.responseSerializer.acceptableContentTypes containsObject:@"application/json"]);
     }
     return self;
 }
@@ -74,13 +74,13 @@ NSString * const CBRRESTConnectionUserInfoURLOverrideKey = @"restBaseURL";
         _objectTransformer = [[CBRJSONDictionaryTransformer alloc] initWithPropertyMapping:propertyMapping];
         _sessionManager = sessionManager;
 
-        sessionManager.requestSerializer = [AFJSONRequestSerializer serializerWithWritingOptions:kNilOptions];
-        sessionManager.responseSerializer = [AFJSONResponseSerializer serializerWithReadingOptions:kNilOptions];
+        NSParameterAssert([sessionManager.requestSerializer isKindOfClass:[AFJSONRequestSerializer class]]);
+        NSParameterAssert([sessionManager.responseSerializer isKindOfClass:[AFJSONResponseSerializer class]]);
 
-        [sessionManager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-        [sessionManager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+        NSParameterAssert([[sessionManager.requestSerializer valueForHTTPHeaderField:@"Accept"] containsString:@"application/json"]);
+        NSParameterAssert([[sessionManager.requestSerializer valueForHTTPHeaderField:@"Content-Type"] containsString:@"application/json"]);
 
-        sessionManager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"application/json"];
+        NSParameterAssert([sessionManager.responseSerializer.acceptableContentTypes containsObject:@"application/json"]);
     }
     return self;
 }

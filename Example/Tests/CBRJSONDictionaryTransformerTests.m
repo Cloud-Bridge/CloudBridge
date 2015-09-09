@@ -32,8 +32,14 @@
     CBRUnderscoredPropertyMapping *propertyMapping = [[CBRUnderscoredPropertyMapping alloc] init];
     [propertyMapping registerObjcNamingConvention:@"identifier" forJSONNamingConvention:@"id"];
 
-    self.transformer = [[CBRJSONDictionaryTransformer alloc] initWithPropertyMapping:propertyMapping];
     self.sessionManager = [[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:@"http://google.de"]];
+    self.sessionManager.requestSerializer = [AFJSONRequestSerializer serializerWithWritingOptions:kNilOptions];
+    self.sessionManager.responseSerializer = [AFJSONResponseSerializer serializerWithReadingOptions:kNilOptions];
+    [self.sessionManager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [self.sessionManager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    self.sessionManager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"application/json"];
+
+    self.transformer = [[CBRJSONDictionaryTransformer alloc] initWithPropertyMapping:propertyMapping];
     self.connection = [[CBRRESTConnection alloc] initWithPropertyMapping:propertyMapping sessionManager:self.sessionManager];
     self.adapter = [[CBRCoreDataDatabaseAdapter alloc] initWithCoreDataStack:[CBRTestDataStore testStore]];
     self.cloudBridge = [[CBRCloudBridge alloc] initWithCloudConnection:self.connection databaseAdapter:self.adapter];
