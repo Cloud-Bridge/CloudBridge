@@ -50,7 +50,7 @@
 		A7D1AC501A5552B000D25D50 /* SLEntity6.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D1AC481A5552B000D25D50 /* SLEntity6.m */; };
 		A7D1AC511A5552B000D25D50 /* SLEntity6Child.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D1AC4A1A5552B000D25D50 /* SLEntity6Child.m */; };
 		A7D1AC541A5552CB00D25D50 /* CBRTestDataStore.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A7D1AC521A5552CB00D25D50 /* CBRTestDataStore.xcdatamodeld */; };
-		D21B80BB6D45A26E9C4673F3 /* Pods_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44B0860206702640C4D5BD7B /* Pods_Tests.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		D21B80BB6D45A26E9C4673F3 /* Pods_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44B0860206702640C4D5BD7B /* Pods_Tests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */

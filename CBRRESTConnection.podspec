@@ -9,7 +9,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "CBRRESTConnection"
-  s.version          = "1.3.1"
+  s.version          = "1.4.0"
   s.summary          = "CloudBridgeConnection for RESTful web services."
   s.homepage         = "https://github.com/Cloud-Bridge/CBRRESTConnection"
   s.license          = 'MIT'
@@ -17,12 +17,12 @@ Pod::Spec.new do |s|
   s.source           = { :git => "https://github.com/Cloud-Bridge/CloudBridge.git", :tag => s.version.to_s }
   s.social_media_url = 'https://twitter.com/oletterer'
 
-  s.platform     = :ios, '8.0'
+  s.platforms    = { :ios => '8.0', :tvos => '9.0' }
   s.requires_arc = true
 
   s.source_files = 'CBRRESTConnection'
 
   s.frameworks = 'CoreData'
-  s.dependency 'AFNetworking', '~> 2.6'
-  s.dependency 'CloudBridge', '~> 1.3'
+  s.dependency 'AFNetworking', '~> 3.0.0-beta'
+  s.dependency 'CloudBridge', '~> 1.4'
 end

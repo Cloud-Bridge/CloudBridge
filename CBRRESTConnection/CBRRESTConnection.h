@@ -49,13 +49,11 @@ extern NSString * const CBRRESTConnectionUserInfoURLOverrideKey;
  */
 @interface CBRRESTConnection : NSObject <CBRCloudConnection>
 
-@property (nonatomic, nullable, readonly) AFHTTPRequestOperationManager *operationManager;
-@property (nonatomic, nullable, readonly) AFHTTPSessionManager *sessionManager;
+@property (nonatomic, readonly) AFHTTPSessionManager *sessionManager;
 
 @property (nonatomic, readonly) id<CBRPropertyMapping> propertyMapping;
 
 - (instancetype)init NS_DESIGNATED_INITIALIZER NS_UNAVAILABLE;
-- (instancetype)initWithPropertyMapping:(id<CBRPropertyMapping>)propertyMapping operationManager:(AFHTTPRequestOperationManager *)operationManager NS_DESIGNATED_INITIALIZER NS_DEPRECATED(10_5, 10_11, 2_0, 9_0, "Use NSURLSession and -[CBRRESTConnection initWithPropertyMapping:sessionManager:] instead");
 - (instancetype)initWithPropertyMapping:(id<CBRPropertyMapping>)propertyMapping sessionManager:(AFHTTPSessionManager *)sessionManager NS_DESIGNATED_INITIALIZER;
 
 /**
