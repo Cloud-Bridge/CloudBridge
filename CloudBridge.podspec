@@ -9,7 +9,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "CloudBridge"
-  s.version          = "1.4.0"
+  s.version          = "1.4.1"
   s.summary          = "The missing bridge between Your CoreData model and various Cloud backends."
   s.homepage         = "https://github.com/Cloud-Bridge/CloudBridge"
   s.license          = 'MIT'
@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
   s.source           = { :git => "https://github.com/Cloud-Bridge/CloudBridge.git", :tag => s.version.to_s }
   s.social_media_url = 'https://twitter.com/oletterer'
 
-  s.platforms    = { :ios => '8.0', :tvos => '9.0' }
+  s.platforms    = { :ios => '8.0', :tvos => '9.0', :watchos => '2.0' }
   s.requires_arc = true
 
   s.source_files = 'CloudBridge'
