@@ -89,9 +89,9 @@ NSString * const CBRRESTConnectionUserInfoURLOverrideKey = @"restBaseURL";
         }
     };
 
-    [self.sessionManager GET:path parameters:parameters success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+    [self.sessionManager GET:path parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         successHandler(responseObject);
-    } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         errorHandler(error);
     }];
 }
@@ -174,7 +174,7 @@ NSString * const CBRRESTConnectionUserInfoURLOverrideKey = @"restBaseURL";
         }
     };
 
-    [self.sessionManager POST:path parameters:cloudObject success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+    [self.sessionManager POST:path parameters:cloudObject progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
         successHandler(responseObject);
     } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
         errorHandler(error);
@@ -197,7 +197,7 @@ NSString * const CBRRESTConnectionUserInfoURLOverrideKey = @"restBaseURL";
         }
     };
 
-    [self.sessionManager GET:path parameters:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+    [self.sessionManager GET:path parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
         successHandler(responseObject);
     } failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
         errorHandler(error);

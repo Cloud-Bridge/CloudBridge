@@ -112,7 +112,7 @@ typedef void(^AFErrorBlock)(NSURLSessionDataTask *task, NSError *error);
     NSDictionary *parameters = [self.connection.objectTransformer cloudObjectFromPersistentObject:entity];
 
     __block AFQueryDescription *query = nil;
-    OCMStub([self.mockedSessionManager POST:OCMOCK_ANY parameters:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY]).andQuery(^(AFQueryDescription *theQuery) {
+    OCMStub([self.mockedSessionManager POST:OCMOCK_ANY parameters:OCMOCK_ANY progress:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY]).andQuery(^(AFQueryDescription *theQuery) {
         query = theQuery;
     });
 
@@ -152,7 +152,7 @@ typedef void(^AFErrorBlock)(NSURLSessionDataTask *task, NSError *error);
     entity.identifier = @5;
 
     __block AFQueryDescription *query = nil;
-    OCMStub([self.mockedSessionManager GET:OCMOCK_ANY parameters:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY]).andQuery(^(AFQueryDescription *theQuery) {
+    OCMStub([self.mockedSessionManager GET:OCMOCK_ANY parameters:OCMOCK_ANY progress:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY]).andQuery(^(AFQueryDescription *theQuery) {
         query = theQuery;
     });
 
@@ -186,7 +186,7 @@ typedef void(^AFErrorBlock)(NSURLSessionDataTask *task, NSError *error);
     CBREntityDescription *entityDescription = [self.adapter entityDescriptionForClass:[SLEntity6Child class]];
 
     __block AFQueryDescription *query = nil;
-    OCMStub([self.mockedSessionManager GET:OCMOCK_ANY parameters:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY]).andQuery(^(AFQueryDescription *theQuery) {
+    OCMStub([self.mockedSessionManager GET:OCMOCK_ANY parameters:OCMOCK_ANY progress:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY]).andQuery(^(AFQueryDescription *theQuery) {
         query = theQuery;
     });
 
@@ -205,7 +205,7 @@ typedef void(^AFErrorBlock)(NSURLSessionDataTask *task, NSError *error);
     CBREntityDescription *entityDescription = [self.adapter entityDescriptionForClass:[SLEntity6Child class]];
 
     __block AFQueryDescription *query = nil;
-    OCMStub([self.mockedSessionManager GET:OCMOCK_ANY parameters:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY]).andQuery(^(AFQueryDescription *theQuery) {
+    OCMStub([self.mockedSessionManager GET:OCMOCK_ANY parameters:OCMOCK_ANY progress:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY]).andQuery(^(AFQueryDescription *theQuery) {
         query = theQuery;
     });
 
@@ -227,7 +227,7 @@ typedef void(^AFErrorBlock)(NSURLSessionDataTask *task, NSError *error);
     NSDictionary *parameters = [self.connection.objectTransformer cloudObjectFromPersistentObject:entity];
 
     __block AFQueryDescription *query = nil;
-    OCMStub([self.mockedSessionManager POST:OCMOCK_ANY parameters:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY]).andQuery(^(AFQueryDescription *theQuery) {
+    OCMStub([self.mockedSessionManager POST:OCMOCK_ANY parameters:OCMOCK_ANY progress:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY]).andQuery(^(AFQueryDescription *theQuery) {
         query = theQuery;
     });
 
@@ -269,7 +269,7 @@ typedef void(^AFErrorBlock)(NSURLSessionDataTask *task, NSError *error);
     entity.identifier = @5;
 
     __block AFQueryDescription *query = nil;
-    OCMStub([self.mockedSessionManager GET:OCMOCK_ANY parameters:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY]).andQuery(^(AFQueryDescription *theQuery) {
+    OCMStub([self.mockedSessionManager GET:OCMOCK_ANY parameters:OCMOCK_ANY progress:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY]).andQuery(^(AFQueryDescription *theQuery) {
         query = theQuery;
     });
 
