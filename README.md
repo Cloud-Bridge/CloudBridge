@@ -1,4 +1,4 @@
-![Header](https://raw.githubusercontent.com/OliverLetterer/CloudBridge/master/header.png)
+![Header](https://github.com/OliverLetterer/CloudBridge/blob/master/header.png?raw=true)
 
 [![CI Status](http://img.shields.io/travis/Cloud-Bridge/CloudBridge.svg?style=flat)](https://travis-ci.org/Cloud-Bridge/CloudBridge)
 [![Version](https://img.shields.io/cocoapods/v/CloudBridge.svg?style=flat)](http://cocoadocs.org/docsets/CloudBridge)
