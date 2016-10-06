@@ -21,20 +21,32 @@
  THE SOFTWARE.
  */
 
-@import CoreData;
+#import <CoreData/CoreData.h>
+#import <Foundation/Foundation.h>
+
+
+
+NS_ASSUME_NONNULL_BEGIN
+
+@protocol CBRPersistentIdentifier <NSObject> @end
+
+@interface NSNumber (CBRPersistentIdentifier) <CBRPersistentIdentifier> @end
+@interface NSString (CBRPersistentIdentifier) <CBRPersistentIdentifier> @end
 
 
 
 @interface NSManagedObject (CBRRESTConnection)
 
-+ (instancetype)objectWithRemoteIdentifier:(id)identifier inManagedObjectContext:(NSManagedObjectContext *)context;
++ (nullable instancetype)objectWithRemoteIdentifier:(id<CBRPersistentIdentifier>)identifier inManagedObjectContext:(NSManagedObjectContext *)context;
 
-+ (void)fetchObjectFromPath:(NSString *)path withCompletionHandler:(void (^)(id managedObject, NSError *error))completionHandler;
-+ (void)fetchObjectsFromPath:(NSString *)path withCompletionHandler:(void (^)(NSArray *fetchedObjects, NSError *error))completionHandler;
++ (void)fetchObjectFromPath:(NSString *)path withCompletionHandler:(void (^ _Nullable)(id _Nullable managedObject, NSError * _Nullable error))completionHandler;
++ (void)fetchObjectsFromPath:(NSString *)path withCompletionHandler:(void (^ _Nullable)(NSArray * _Nullable fetchedObjects, NSError * _Nullable error))completionHandler;
 
-- (void)createToPath:(NSString *)path withCompletionHandler:(void(^)(id managedObject, NSError *error))completionHandler;
-- (void)reloadFromPath:(NSString *)path withCompletionHandler:(void(^)(id managedObject, NSError *error))completionHandler;
-- (void)saveToPath:(NSString *)path withCompletionHandler:(void(^)(id managedObject, NSError *error))completionHandler;
-- (void)deleteToPath:(NSString *)path withCompletionHandler:(void(^)(NSError *error))completionHandler;
+- (void)createToPath:(NSString *)path withCompletionHandler:(void(^ _Nullable)(id _Nullable managedObject, NSError * _Nullable error))completionHandler;
+- (void)reloadFromPath:(NSString *)path withCompletionHandler:(void(^ _Nullable)(id _Nullable managedObject, NSError * _Nullable error))completionHandler;
+- (void)saveToPath:(NSString *)path withCompletionHandler:(void(^ _Nullable)(id _Nullable managedObject, NSError * _Nullable error))completionHandler;
+- (void)deleteToPath:(NSString *)path withCompletionHandler:(void(^ _Nullable)(NSError * _Nullable error))completionHandler;
 
 @end
+
+NS_ASSUME_NONNULL_END
