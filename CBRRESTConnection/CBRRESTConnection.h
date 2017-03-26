@@ -24,26 +24,38 @@
 #import <CloudBridge/CloudBridge.h>
 #import <AFNetworking/AFNetworking.h>
 
-#import <CBRRESTConnection/CBRPropertyMapping.h>
-#import <CBRRESTConnection/CBRIdentityPropertyMapping.h>
-#import <CBRRESTConnection/CBRUnderscoredPropertyMapping.h>
+#import <CloudBridge/CBRPropertyMapping.h>
+#import <CloudBridge/CBRIdentityPropertyMapping.h>
+#import <CloudBridge/CBRUnderscoredPropertyMapping.h>
 
-#import <CBRRESTConnection/NSManagedObject+CBRRESTConnection.h>
-#import <CBRRESTConnection/CBRJSONDictionaryTransformer.h>
-#import <CBRRESTConnection/NSDictionary+CBRRESTConnection.h>
-#import <CBRRESTConnection/CBREntityDescription+CBRRESTConnection.h>
-#import <CBRRESTConnection/CBRAttributeDescription+CBRRESTConnection.h>
-#import <CBRRESTConnection/CBRRelationshipDescription+CBRRESTConnection.h>
+#import <CloudBridge/CBRJSONDictionaryTransformer.h>
+#import <CloudBridge/NSDictionary+CBRRESTConnection.h>
+#import <CloudBridge/CBREntityDescription+CBRRESTConnection.h>
+#import <CloudBridge/CBRAttributeDescription+CBRRESTConnection.h>
+#import <CloudBridge/CBRRelationshipDescription+CBRRESTConnection.h>
+
+#if __has_include(<CloudBridge/NSManagedObject+CBRRESTConnection.h>)
+#import <CloudBridge/NSManagedObject+CBRRESTConnection.h>
+#endif
+
+#if __has_include(<CloudBridge/RLMObject+CBRRESTConnection.h>)
+#import <CloudBridge/RLMObject+CBRRESTConnection.h>
+#endif
 
 NS_ASSUME_NONNULL_BEGIN
 
 extern NSString * const CBRRESTConnectionUserInfoURLOverrideKey;
 
+@protocol CBRPersistentIdentifier <NSObject> @end
+
+@interface NSNumber (CBRPersistentIdentifier) <CBRPersistentIdentifier> @end
+@interface NSString (CBRPersistentIdentifier) <CBRPersistentIdentifier> @end
+
 
 
 /**
  `CBRCloudConnection` implementation for RESTful backends.
- 
+
  * `requestSerializer` defaults to `AFJSONRequestSerializer` and `responseSerializer` to `AFJSONResponseSerializer`.
  * CRUD accessors require `restBaseURL` to be set on the corresponding `NSEntityDescription`.
  */

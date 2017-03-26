@@ -38,7 +38,6 @@
 		A7CEDCFF1B022B2C0011FA33 /* CBRUnderscoredPropertyMappingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CEDCFE1B022B2C0011FA33 /* CBRUnderscoredPropertyMappingTests.m */; };
 		A7CEDD011B022B3E0011FA33 /* CBRRESTConnectionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CEDD001B022B3E0011FA33 /* CBRRESTConnectionTests.m */; };
 		A7CEDD041B022C630011FA33 /* PrefixedEntitiy.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CEDD031B022C630011FA33 /* PrefixedEntitiy.m */; };
-		A7CEDD061B022DA80011FA33 /* CBRRESTConnection.podspec in Resources */ = {isa = PBXBuildFile; fileRef = A7CEDD051B022DA80011FA33 /* CBRRESTConnection.podspec */; };
 		A7D1AC3A1A55529E00D25D50 /* CBRCloudBridgeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D1AC361A55529E00D25D50 /* CBRCloudBridgeTests.m */; };
 		A7D1AC3B1A55529E00D25D50 /* CBROfflineCapableCloudBridgeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D1AC371A55529E00D25D50 /* CBROfflineCapableCloudBridgeTests.m */; };
 		A7D1AC3C1A55529E00D25D50 /* CBRTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D1AC391A55529E00D25D50 /* CBRTestCase.m */; };
@@ -121,7 +120,6 @@
 		A7CEDD001B022B3E0011FA33 /* CBRRESTConnectionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBRRESTConnectionTests.m; sourceTree = "<group>"; };
 		A7CEDD021B022C630011FA33 /* PrefixedEntitiy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrefixedEntitiy.h; sourceTree = "<group>"; };
 		A7CEDD031B022C630011FA33 /* PrefixedEntitiy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrefixedEntitiy.m; sourceTree = "<group>"; };
-		A7CEDD051B022DA80011FA33 /* CBRRESTConnection.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = CBRRESTConnection.podspec; path = ../CBRRESTConnection.podspec; sourceTree = "<group>"; };
 		A7D1AC361A55529E00D25D50 /* CBRCloudBridgeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBRCloudBridgeTests.m; sourceTree = "<group>"; };
 		A7D1AC371A55529E00D25D50 /* CBROfflineCapableCloudBridgeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBROfflineCapableCloudBridgeTests.m; sourceTree = "<group>"; };
 		A7D1AC381A55529E00D25D50 /* CBRTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBRTestCase.h; sourceTree = "<group>"; };
@@ -307,7 +305,6 @@
 			isa = PBXGroup;
 			children = (
 				F6B5409ED320939F22765006 /* CloudBridge.podspec */,
-				A7CEDD051B022DA80011FA33 /* CBRRESTConnection.podspec */,
 				8FB2AC50918F3490E1C5BF02 /* README.md */,
 				2DE14DC1F7377675EEC3E53E /* LICENSE */,
 			);
@@ -349,12 +346,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6003F5C2195388D20070C39A /* Build configuration list for PBXNativeTarget "Tests" */;
 			buildPhases = (
-				F4B310B85AA5A55C5C56B3C3 /* Check Pods Manifest.lock */,
+				F4B310B85AA5A55C5C56B3C3 /* [CP] Check Pods Manifest.lock */,
 				6003F5AA195388D20070C39A /* Sources */,
 				6003F5AB195388D20070C39A /* Frameworks */,
 				6003F5AC195388D20070C39A /* Resources */,
-				DA0B1E7F9D11D86368FE3C56 /* Copy Pods Resources */,
-				309462669D8EDE22EFE501C3 /* Embed Pods Frameworks */,
+				DA0B1E7F9D11D86368FE3C56 /* [CP] Copy Pods Resources */,
+				309462669D8EDE22EFE501C3 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -373,7 +370,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = CBR;
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = "Oliver Letterer";
 				TargetAttributes = {
 					6003F5AD195388D20070C39A = {
@@ -407,7 +404,6 @@
 			files = (
 				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,
 				6003F598195388D20070C39A /* InfoPlist.strings in Resources */,
-				A7CEDD061B022DA80011FA33 /* CBRRESTConnection.podspec in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -422,14 +418,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		309462669D8EDE22EFE501C3 /* Embed Pods Frameworks */ = {
+		309462669D8EDE22EFE501C3 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -437,14 +433,14 @@
 			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-Tests/Pods-Tests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		DA0B1E7F9D11D86368FE3C56 /* Copy Pods Resources */ = {
+		DA0B1E7F9D11D86368FE3C56 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -452,19 +448,19 @@
 			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-Tests/Pods-Tests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		F4B310B85AA5A55C5C56B3C3 /* Check Pods Manifest.lock */ = {
+		F4B310B85AA5A55C5C56B3C3 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -560,14 +556,19 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -600,13 +601,18 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;

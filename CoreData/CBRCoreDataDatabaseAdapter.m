@@ -205,7 +205,7 @@
     return [super init];
 }
 
-- (instancetype)initWithCoreDataStack:(SLCoreDataStack *)coreDataStack
+- (instancetype)initWithCoreDataStack:(CBRCoreDataStack *)coreDataStack
 {
     if (self = [super init]) {
         _coreDataStack = coreDataStack;

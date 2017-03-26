@@ -9,11 +9,11 @@
   },
   "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "CF74113D-E7D1-4E9B-8343-1F7C0C6E6B76",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
-    "172B7501A43E4E1F4017D3F5269F9A113AEF7CE1" : "CloudBridge",
+    "172B7501A43E4E1F4017D3F5269F9A113AEF7CE1" : "CloudBridge\/",
     "941F58CF725A39640B1D400584B804874E0BC7BD" : "CBRRESTConnection"
   },
   "DVTSourceControlWorkspaceBlueprintNameKey" : "CloudBridge",
-  "DVTSourceControlWorkspaceBlueprintVersion" : 203,
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
   "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "CloudBridge.xcworkspace",
   "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
     {

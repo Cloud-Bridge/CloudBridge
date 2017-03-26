@@ -24,16 +24,11 @@
 #import <CoreData/CoreData.h>
 #import <Foundation/Foundation.h>
 
+@protocol CBRPersistentIdentifier;
+
 
 
 NS_ASSUME_NONNULL_BEGIN
-
-@protocol CBRPersistentIdentifier <NSObject> @end
-
-@interface NSNumber (CBRPersistentIdentifier) <CBRPersistentIdentifier> @end
-@interface NSString (CBRPersistentIdentifier) <CBRPersistentIdentifier> @end
-
-
 
 @interface NSManagedObject (CBRRESTConnection)
 

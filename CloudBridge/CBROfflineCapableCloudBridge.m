@@ -147,7 +147,7 @@
     return [super initWithCloudConnection:cloudConnection databaseAdapter:databaseAdapter];
 }
 
-- (instancetype)initWithCloudConnection:(id<CBROfflineCapableCloudConnection>)cloudConnection coreDataStack:(SLCoreDataStack *)coreDataStack
+- (instancetype)initWithCloudConnection:(id<CBROfflineCapableCloudConnection>)cloudConnection coreDataStack:(CBRCoreDataStack *)coreDataStack
 {
     CBRCoreDataDatabaseAdapter *adapter = [[CBRCoreDataDatabaseAdapter alloc] initWithCoreDataStack:coreDataStack];
     return [self initWithCloudConnection:cloudConnection databaseAdapter:adapter];

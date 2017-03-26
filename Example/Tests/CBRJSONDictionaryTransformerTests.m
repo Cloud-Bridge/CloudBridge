@@ -10,7 +10,7 @@
 #import <XCTest/XCTest.h>
 
 #import <CloudBridge/CloudBridge.h>
-#import <CBRRESTConnection/CBRRESTConnection.h>
+#import <CloudBridge/CBRRESTConnection.h>
 
 #import "CBRTestCase.h"
 #import "CBRTestDataStore.h"
@@ -138,7 +138,7 @@
                                  };
 
     CBREntityDescription *entityDescription = [self.adapter entityDescriptionForClass:[SLEntity5 class]];
-    SLEntity5 *newEntity = [self.transformer persistentObjectFromCloudObject:dictionary forEntity:entityDescription];
+    SLEntity5 *newEntity = (id)[self.transformer persistentObjectFromCloudObject:dictionary forEntity:entityDescription];
 
     expect(newEntity).toNot.beNil();
     expect(newEntity).toNot.equal(entity);
@@ -173,7 +173,7 @@
                                  };
 
     CBREntityDescription *entityDescription = [self.adapter entityDescriptionForClass:[SLEntity5 class]];
-    SLEntity5 *newEntity = [self.transformer persistentObjectFromCloudObject:dictionary forEntity:entityDescription];
+    SLEntity5 *newEntity = (id)[self.transformer persistentObjectFromCloudObject:dictionary forEntity:entityDescription];
 
     expect(newEntity).toNot.beNil();
     expect(newEntity).toNot.equal(entity);
@@ -202,7 +202,7 @@
                                  };
 
     CBREntityDescription *entityDescription = [self.adapter entityDescriptionForClass:[SLEntity5 class]];
-    SLEntity5 *newEntity = [self.transformer persistentObjectFromCloudObject:dictionary forEntity:entityDescription];
+    SLEntity5 *newEntity = (id)[self.transformer persistentObjectFromCloudObject:dictionary forEntity:entityDescription];
 
     expect(newEntity).toNot.beNil();
     expect(newEntity).to.equal(entity);
@@ -238,7 +238,7 @@
                                  };
 
     CBREntityDescription *entityDescription = [self.adapter entityDescriptionForClass:[SLEntity5 class]];
-    SLEntity5 *newEntity = [self.transformer persistentObjectFromCloudObject:dictionary forEntity:entityDescription];
+    SLEntity5 *newEntity = (id)[self.transformer persistentObjectFromCloudObject:dictionary forEntity:entityDescription];
 
     expect(newEntity).toNot.beNil();
     expect(newEntity).to.equal(entity);
@@ -271,7 +271,7 @@
                                  };
 
     CBREntityDescription *entityDescription = [self.adapter entityDescriptionForClass:[SLEntity5 class]];
-    SLEntity5 *newEntity = [self.transformer persistentObjectFromCloudObject:dictionary forEntity:entityDescription];
+    SLEntity5 *newEntity = (id)[self.transformer persistentObjectFromCloudObject:dictionary forEntity:entityDescription];
 
     expect(newEntity).toNot.beNil();
     expect(newEntity).to.equal(entity);
@@ -295,7 +295,7 @@
                                  @"dictionary": @{ @"key": @"value" }
                                  };
 
-    SLEntity5 *newEntity = [self.transformer persistentObjectFromCloudObject:dictionary forEntity:entityDescription];
+    SLEntity5 *newEntity = (id)[self.transformer persistentObjectFromCloudObject:dictionary forEntity:entityDescription];
     expect(newEntity).to.beNil();
 }
 
@@ -319,7 +319,7 @@
                                          }
                                  };
 
-    SLEntity5 *newEntity = [self.transformer persistentObjectFromCloudObject:dictionary forEntity:entityDescription];
+    SLEntity5 *newEntity = (id)[self.transformer persistentObjectFromCloudObject:dictionary forEntity:entityDescription];
     expect(newEntity.otherString).to.equal(@"wuff");
 }
 
@@ -340,7 +340,7 @@
                                  @"child_id": @5
                                  };
 
-    SLEntity5 *entity = [self.transformer persistentObjectFromCloudObject:dictionary forEntity:entityDescription];
+    SLEntity5 *entity = (id)[self.transformer persistentObjectFromCloudObject:dictionary forEntity:entityDescription];
     expect(entity.child).to.equal(child);
 }
 
@@ -352,7 +352,7 @@
                                  };
 
     CBREntityDescription *entityDescription = [self.adapter entityDescriptionForClass:[SLEntity5 class]];
-    SLEntity5 *entity = [self.transformer persistentObjectFromCloudObject:dictionary forEntity:entityDescription];
+    SLEntity5 *entity = (id)[self.transformer persistentObjectFromCloudObject:dictionary forEntity:entityDescription];
     expect(entity.child.identifier).to.equal(6);
 }
 
@@ -365,7 +365,7 @@
                                  @"parent": @{ @"id": @5 }
                                  };
 
-    SLEntity5Child3 *entity = [self.transformer persistentObjectFromCloudObject:dictionary forEntity:entityDescription];
+    SLEntity5Child3 *entity = (id)[self.transformer persistentObjectFromCloudObject:dictionary forEntity:entityDescription];
 
     expect(entity.parent.identifier).to.equal(5);
     expect(entity.parent.toManyChilds).to.contain(entity);
@@ -387,7 +387,7 @@
                                  };
 
     CBREntityDescription *entityDescription = [self.adapter entityDescriptionForClass:[SLEntity5Child3 class]];
-    SLEntity5Child3 *entity = [self.transformer persistentObjectFromCloudObject:dictionary forEntity:entityDescription];
+    SLEntity5Child3 *entity = (id)[self.transformer persistentObjectFromCloudObject:dictionary forEntity:entityDescription];
 
     expect(entity.parent).to.equal(parent);
     expect(parent.toManyChilds).to.contain(entity);
@@ -401,7 +401,7 @@
                                  };
 
     CBREntityDescription *entityDescription = [self.adapter entityDescriptionForClass:[SLEntity5 class]];
-    SLEntity5 *entity = [self.transformer persistentObjectFromCloudObject:dictionary forEntity:entityDescription];
+    SLEntity5 *entity = (id)[self.transformer persistentObjectFromCloudObject:dictionary forEntity:entityDescription];
 
     expect(entity.toManyChilds.count).to.equal(2);
 
@@ -423,7 +423,7 @@
                                  };
 
     CBREntityDescription *entityDescription = [self.adapter entityDescriptionForClass:[SLEntity5 class]];
-    SLEntity5 *entity = [self.transformer persistentObjectFromCloudObject:dictionary forEntity:entityDescription];
+    SLEntity5 *entity = (id)[self.transformer persistentObjectFromCloudObject:dictionary forEntity:entityDescription];
 
     expect(entity.camelizedChilds.count).to.equal(1);
 
@@ -441,7 +441,7 @@
                                  };
 
     CBREntityDescription *entityDescription = [self.adapter entityDescriptionForClass:[SLEntity5 class]];
-    SLEntity5 *entity = [self.transformer persistentObjectFromCloudObject:dictionary forEntity:entityDescription];
+    SLEntity5 *entity = (id)[self.transformer persistentObjectFromCloudObject:dictionary forEntity:entityDescription];
 
     expect(entity.differentChilds.count).to.equal(1);
 
@@ -460,7 +460,7 @@
                                  };
 
     CBREntityDescription *entityDescription = [self.adapter entityDescriptionForClass:[SLEntity5 class]];
-    SLEntity5 *entity = [self.transformer persistentObjectFromCloudObject:dictionary forEntity:entityDescription];
+    SLEntity5 *entity = (id)[self.transformer persistentObjectFromCloudObject:dictionary forEntity:entityDescription];
 
     expect(entity.class).to.equal([SLEntity5Subclass class]);
 }
@@ -488,7 +488,7 @@
                                            }};
 
     CBREntityDescription *entityDescription = [self.adapter entityDescriptionForClass:[PrefixedEntitiy class]];
-    PrefixedEntitiy *managedObject = [self.transformer persistentObjectFromCloudObject:cloudObject forEntity:entityDescription];
+    PrefixedEntitiy *managedObject = (id)[self.transformer persistentObjectFromCloudObject:cloudObject forEntity:entityDescription];
 
     expect(managedObject.identifier).to.equal(1);
     expect(managedObject.name).to.equal(@"foo");
@@ -502,7 +502,7 @@
                                  };
 
     CBREntityDescription *entityDescription = [self.adapter entityDescriptionForClass:[SLEntity5 class]];
-    SLEntity5 *entity = [self.transformer persistentObjectFromCloudObject:dictionary forEntity:entityDescription];
+    SLEntity5 *entity = (id)[self.transformer persistentObjectFromCloudObject:dictionary forEntity:entityDescription];
 
     expect(entity.camelizedChilds.count).to.equal(1);
 

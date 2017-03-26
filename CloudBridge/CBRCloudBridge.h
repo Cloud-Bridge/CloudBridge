@@ -24,7 +24,7 @@
 #import <CoreData/CoreData.h>
 #import <CloudBridge/CBRCloudConnection.h>
 #import <CloudBridge/CBRDatabaseAdapter.h>
-#import <SLCoreDataStack/SLCoreDataStack.h>
+#import <CloudBridge/CBRCoreDataStack.h>
 
 
 
@@ -73,7 +73,7 @@
 @property (nonatomic, readonly) NSManagedObjectContext *mainThreadManagedObjectContext DEPRECATED_ATTRIBUTE;
 @property (nonatomic, readonly) NSManagedObjectContext *backgroundThreadManagedObjectContext DEPRECATED_ATTRIBUTE;
 
-@property (nonatomic, readonly) SLCoreDataStack *coreDataStack UNAVAILABLE_ATTRIBUTE;
-- (instancetype)initWithCloudConnection:(id<CBRCloudConnection>)cloudConnection coreDataStack:(SLCoreDataStack *)coreDataStack DEPRECATED_ATTRIBUTE;
+@property (nonatomic, readonly) CBRCoreDataStack *coreDataStack UNAVAILABLE_ATTRIBUTE;
+- (instancetype)initWithCloudConnection:(id<CBRCloudConnection>)cloudConnection coreDataStack:(CBRCoreDataStack *)coreDataStack DEPRECATED_ATTRIBUTE;
 
 @end

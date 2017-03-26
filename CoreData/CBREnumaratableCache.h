@@ -1,5 +1,5 @@
 /**
- CBRRESTConnection
+ CBRManagedObjectCache
  Copyright (c) 2014 Oliver Letterer <oliver.letterer@gmail.com>, Sparrow-Labs
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,19 +21,13 @@
  THE SOFTWARE.
  */
 
-#import <CloudBridge/CBRPropertyMapping.h>
-
 
 
 /**
- Maps camelized objc properties onto underscored attributes.
+ NSCache subclass that is enumaratable.
  */
-@interface CBRUnderscoredPropertyMapping : NSObject <CBRPropertyMapping>
+@interface CBREnumaratableCache : NSCache <NSFastEnumeration>
 
-/**
- Registers a naming convention that, for example, automatically maps `id` to `identifier`.
- */
-- (void)registerObjcNamingConvention:(NSString *)objcNamingConvention
-             forJSONNamingConvention:(NSString *)JSONNamingConvention;
+- (instancetype)init NS_DESIGNATED_INITIALIZER;
 
 @end

@@ -62,6 +62,6 @@
 
 @interface CBROfflineCapableCloudBridge (Deprecated)
 
-- (instancetype)initWithCloudConnection:(id<CBROfflineCapableCloudConnection>)cloudConnection coreDataStack:(SLCoreDataStack *)coreDataStack DEPRECATED_ATTRIBUTE;
+- (instancetype)initWithCloudConnection:(id<CBROfflineCapableCloudConnection>)cloudConnection coreDataStack:(CBRCoreDataStack *)coreDataStack DEPRECATED_ATTRIBUTE;
 
 @end

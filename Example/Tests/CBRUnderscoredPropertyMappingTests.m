@@ -10,7 +10,7 @@
 #import <XCTest/XCTest.h>
 
 #import <CloudBridge/CloudBridge.h>
-#import <CBRRESTConnection/CBRUnderscoredPropertyMapping.h>
+#import <CloudBridge/CBRUnderscoredPropertyMapping.h>
 
 #import "CBRTestCase.h"
 

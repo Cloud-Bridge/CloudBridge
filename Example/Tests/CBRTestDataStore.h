@@ -6,7 +6,7 @@
 //  Copyright 2014 Oliver Letterer. All rights reserved.
 //
 
-#import <SLCoreDataStack/SLCoreDataStack.h>
+#import <CloudBridge/CBRCoreDataStack.h>
 
 #import "OfflineEntity.h"
 #import "OnlyOnlineEntity.h"
@@ -30,7 +30,7 @@
 #import "PrefixedEntitiy.h"
 
 
-@interface CBRTestDataStore : SLCoreDataStack
+@interface CBRTestDataStore : CBRCoreDataStack
 
 + (CBRTestDataStore *)testStore;
 

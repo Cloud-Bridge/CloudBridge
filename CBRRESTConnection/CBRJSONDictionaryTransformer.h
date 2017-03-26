@@ -23,8 +23,8 @@
 
 #import <CloudBridge/CloudBridge.h>
 
-#import <CBRRESTConnection/CBRPropertyMapping.h>
-#import <CBRRESTConnection/NSDictionary+CBRRESTConnection.h>
+#import <CloudBridge/CBRPropertyMapping.h>
+#import <CloudBridge/NSDictionary+CBRRESTConnection.h>
 
 
 

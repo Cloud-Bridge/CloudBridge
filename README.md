@@ -27,14 +27,14 @@ which can be called from any `NSManagedObjectContext` thread and are routed thro
 
 ## Quick start
 
-To start using the convenience methods on `NSManagedObject`, You need to configure a `CBRCloudBridge` instance. A `CBRCloudBridge` instance is responsible for bridging between a [CoreDataStack](https://github.com/OliverLetterer/SLCoreDataStack) and your backend.
+To start using the convenience methods on `NSManagedObject`, You need to configure a `CBRCloudBridge` instance. A `CBRCloudBridge` instance is responsible for bridging between a [CoreDataStack](https://github.com/OliverLetterer/CBRCoreDataStack) and your backend.
 
 ### 1. Implement Your CoreDataStack
 
-Because setting up a correct and responsible CoreData stack can be challaging, `CloudBridge` relies on [SLCoreDataStack](https://github.com/OliverLetterer/SLCoreDataStack), which takes care of all the heavy lifting and edge cases for you. Implement your application specific CoreData stack as a subclass of `SLCoreDataStack`:
+Because setting up a correct and responsible CoreData stack can be challaging, `CloudBridge` relies on [CBRCoreDataStack](https://github.com/OliverLetterer/CBRCoreDataStack), which takes care of all the heavy lifting and edge cases for you. Implement your application specific CoreData stack as a subclass of `CBRCoreDataStack`:
 
 ```
-@interface MyCoreDataStack : SLCoreDataStack
+@interface MyCoreDataStack : CBRCoreDataStack
 @end
 
 @implementation MyCoreDataStack

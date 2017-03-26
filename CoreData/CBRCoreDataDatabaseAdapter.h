@@ -22,7 +22,7 @@
  */
 
 #import <Foundation/Foundation.h>
-#import <SLCoreDataStack/SLCoreDataStack.h>
+#import <CloudBridge/CBRCoreDataStack.h>
 #import <CloudBridge/CBRDatabaseAdapter.h>
 #import <CloudBridge/CBRPersistentObject.h>
 
@@ -56,11 +56,11 @@
  */
 @interface CBRCoreDataDatabaseAdapter : NSObject <CBRDatabaseAdapter>
 
-@property (nonatomic, readonly) SLCoreDataStack *coreDataStack;
+@property (nonatomic, readonly) CBRCoreDataStack *coreDataStack;
 @property (nonatomic, readonly) NSManagedObjectContext *mainThreadContext;
 @property (nonatomic, readonly) NSManagedObjectContext *backgroundThreadContext;
 
 - (instancetype)init NS_DESIGNATED_INITIALIZER UNAVAILABLE_ATTRIBUTE;
-- (instancetype)initWithCoreDataStack:(SLCoreDataStack *)coreDataStack NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithCoreDataStack:(CBRCoreDataStack *)coreDataStack NS_DESIGNATED_INITIALIZER;
 
 @end

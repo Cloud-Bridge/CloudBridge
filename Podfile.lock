@@ -1,49 +1,61 @@
 PODS:
-  - AFNetworking (3.0.0-beta.3):
-    - AFNetworking/NSURLSession (= 3.0.0-beta.3)
-    - AFNetworking/Reachability (= 3.0.0-beta.3)
-    - AFNetworking/Security (= 3.0.0-beta.3)
-    - AFNetworking/Serialization (= 3.0.0-beta.3)
-    - AFNetworking/UIKit (= 3.0.0-beta.3)
-  - AFNetworking/NSURLSession (3.0.0-beta.3):
+  - AFNetworking (3.1.0):
+    - AFNetworking/NSURLSession (= 3.1.0)
+    - AFNetworking/Reachability (= 3.1.0)
+    - AFNetworking/Security (= 3.1.0)
+    - AFNetworking/Serialization (= 3.1.0)
+    - AFNetworking/UIKit (= 3.1.0)
+  - AFNetworking/NSURLSession (3.1.0):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/Reachability (3.0.0-beta.3)
-  - AFNetworking/Security (3.0.0-beta.3)
-  - AFNetworking/Serialization (3.0.0-beta.3)
-  - AFNetworking/UIKit (3.0.0-beta.3):
+  - AFNetworking/Reachability (3.1.0)
+  - AFNetworking/Security (3.1.0)
+  - AFNetworking/Serialization (3.1.0)
+  - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
-  - CBRManagedObjectCache (1.4.1)
-  - CBRRESTConnection (1.4.1):
-    - AFNetworking (~> 3.0.0-beta)
-    - CloudBridge (~> 1.4)
-  - CloudBridge (1.4.1):
-    - CBRManagedObjectCache (~> 1.4)
-    - SLCoreDataStack (~> 1.0)
+  - CloudBridge (2.0.0):
+    - CloudBridge/Core (= 2.0.0)
+  - CloudBridge/CBRRESTConnection (2.0.0):
+    - AFNetworking (~> 3.0)
+    - CloudBridge/CloudBridge
+  - CloudBridge/CloudBridge (2.0.0)
+  - CloudBridge/Core (2.0.0):
+    - CloudBridge/CoreData+REST
+    - CloudBridge/Realm+REST
+  - CloudBridge/CoreData (2.0.0):
+    - CloudBridge/CloudBridge
+  - CloudBridge/CoreData+REST (2.0.0):
+    - CloudBridge/CBRRESTConnection
+    - CloudBridge/CoreData
+  - CloudBridge/Realm (2.0.0):
+    - CloudBridge/CloudBridge
+    - Realm (~> 2.0)
+  - CloudBridge/Realm+REST (2.0.0):
+    - CloudBridge/CBRRESTConnection
+    - CloudBridge/Realm
   - Expecta (1.0.5)
   - OCMock (3.2)
-  - SLCoreDataStack (1.0.8)
+  - Realm (2.4.4):
+    - Realm/Headers (= 2.4.4)
+  - Realm/Headers (2.4.4)
 
 DEPENDENCIES:
-  - CBRRESTConnection (from `.`)
   - CloudBridge (from `.`)
   - Expecta (~> 1.0)
   - OCMock (< 3.3)
 
 EXTERNAL SOURCES:
-  CBRRESTConnection:
-    :path: "."
   CloudBridge:
     :path: "."
 
 SPEC CHECKSUMS:
-  AFNetworking: 4bbf9c2993fe416e02093128f3be1bfe20c6e847
-  CBRManagedObjectCache: 7244d47680a4df4a27cbaacae3b4175c748fcc30
-  CBRRESTConnection: c7d132bb052f82c7419ef56547e7b5eab9bb8127
-  CloudBridge: 0d86334053b1d152982838a997189399ceb32445
+  AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
+  CloudBridge: a42898c3b35d85e33aa9b56e09396ccf952e1faa
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   OCMock: 28def049ef47f996b515a8eeea958be7ccab2dbb
-  SLCoreDataStack: f6b42f99fef5dea9f80a53ab917eca1062f5dea3
+  Realm: 5a280a1f5a9a3c267bebf4f41ee47911137703d7
 
-COCOAPODS: 0.39.0
+PODFILE CHECKSUM: 44d1e9b8e214e03fd2bb96020e787f2155249797
+
+COCOAPODS: 1.2.0

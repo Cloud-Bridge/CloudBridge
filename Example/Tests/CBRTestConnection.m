@@ -43,9 +43,9 @@
     id identifier = cloudObject[@"identifier"];
     NSParameterAssert(identifier);
 
-    NSManagedObject *managedObject = [entity.databaseAdapter persistentObjectOfType:entity withPrimaryKey:identifier];
+    NSManagedObject *managedObject = (NSManagedObject *)[entity.databaseAdapter persistentObjectOfType:entity withPrimaryKey:identifier];
     if (!managedObject) {
-        managedObject = [entity.databaseAdapter newMutablePersistentObjectOfType:entity];
+        managedObject = (NSManagedObject *)[entity.databaseAdapter newMutablePersistentObjectOfType:entity];
     }
 
     [self updatePersistentObject:managedObject withPropertiesFromCloudObject:cloudObject];

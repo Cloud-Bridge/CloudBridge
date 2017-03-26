@@ -10,7 +10,7 @@
 #import <XCTest/XCTest.h>
 
 #import "CBRTestCase.h"
-#import <CBRRESTConnection/CBRIdentityPropertyMapping.h>
+#import <CloudBridge/CBRIdentityPropertyMapping.h>
 
 @interface CBRIdentityPropertyMappingTest : CBRTestCase
 @property (nonatomic, strong) CBRIdentityPropertyMapping *propertyMapping;

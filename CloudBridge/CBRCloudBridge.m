@@ -128,7 +128,7 @@
     return self;
 }
 
-- (instancetype)initWithCloudConnection:(id<CBRCloudConnection>)cloudConnection coreDataStack:(SLCoreDataStack *)coreDataStack
+- (instancetype)initWithCloudConnection:(id<CBRCloudConnection>)cloudConnection coreDataStack:(CBRCoreDataStack *)coreDataStack
 {
     CBRCoreDataDatabaseAdapter *adapter = [[CBRCoreDataDatabaseAdapter alloc] initWithCoreDataStack:coreDataStack];
     return [self initWithCloudConnection:cloudConnection databaseAdapter:adapter];

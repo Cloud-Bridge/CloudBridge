@@ -1,5 +1,5 @@
 /**
- CBRRESTConnection
+ CBRManagedObjectCache
  Copyright (c) 2014 Oliver Letterer <oliver.letterer@gmail.com>, Sparrow-Labs
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,19 +21,55 @@
  THE SOFTWARE.
  */
 
-#import <CloudBridge/CBRPropertyMapping.h>
+#import "CBREnumaratableCache.h"
 
 
 
-/**
- Maps camelized objc properties onto underscored attributes.
- */
-@interface CBRUnderscoredPropertyMapping : NSObject <CBRPropertyMapping>
+@interface CBREnumaratableCache ()
+@property (nonatomic, strong) NSMutableSet *enumeratableKeys;
+@end
 
-/**
- Registers a naming convention that, for example, automatically maps `id` to `identifier`.
- */
-- (void)registerObjcNamingConvention:(NSString *)objcNamingConvention
-             forJSONNamingConvention:(NSString *)JSONNamingConvention;
+
+
+@implementation CBREnumaratableCache
+
+#pragma mark - Initialization
+
+- (instancetype)init
+{
+    if (self = [super init]) {
+        _enumeratableKeys = [NSMutableSet set];
+    }
+    return self;
+}
+
+#pragma mark - NSCache
+
+- (void)setObject:(id)obj forKey:(id)key
+{
+    [super setObject:obj forKey:key];
+    [self.enumeratableKeys addObject:key];
+}
+
+- (void)setObject:(id)obj forKey:(id)key cost:(NSUInteger)g
+{
+    [super setObject:obj forKey:key cost:g];
+    [self.enumeratableKeys addObject:key];
+}
+
+- (void)removeObjectForKey:(id)key
+{
+    [super removeObjectForKey:key];
+    [self.enumeratableKeys removeObject:key];
+}
+
+#pragma mark - NSFastEnumeration
+
+- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id __unsafe_unretained [])buffer count:(NSUInteger)len
+{
+    return [self.enumeratableKeys countByEnumeratingWithState:state objects:buffer count:len];
+}
+
+#pragma mark - Private category implementation ()
 
 @end

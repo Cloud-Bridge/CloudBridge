@@ -24,8 +24,8 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-#import <SLCoreDataStack/SLCoreDataStack.h>
-#import <CBRManagedObjectCache/CBRManagedObjectCache.h>
+#import <CloudBridge/CBRCoreDataStack.h>
+#import <CloudBridge/CBRManagedObjectCache.h>
 
 #import <CloudBridge/CBREntityDescription.h>
 #import <CloudBridge/CBRCloudBridge.h>
