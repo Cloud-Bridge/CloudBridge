@@ -25,13 +25,14 @@
     return cloudObject.copy;
 }
 
-- (void)updateCloudObject:(NSMutableDictionary *)cloudObject withPropertiesFromPersistentObject:(NSManagedObject *)persistentObject
+- (void)updateCloudObject:(NSMutableDictionary *)cloudObject withPropertiesFromPersistentObject:(id<CBRPersistentObject>)persistentObject
 {
     if (![cloudObject isKindOfClass:[NSDictionary class]]) {
         return;
     }
 
-    for (NSAttributeDescription *attributeDescription in persistentObject.entity.attributesByName.allValues) {
+    CBREntityDescription *entity = [persistentObject.cloudBridge.databaseAdapter entityDescriptionForClass:[persistentObject class]];
+    for (CBRAttributeDescription *attributeDescription in entity.attributes) {
         [cloudObject setValue:[persistentObject valueForKey:attributeDescription.name] forKey:attributeDescription.name];
     }
 }
@@ -43,18 +44,19 @@
     id identifier = cloudObject[@"identifier"];
     NSParameterAssert(identifier);
 
-    NSManagedObject *managedObject = (NSManagedObject *)[entity.databaseAdapter persistentObjectOfType:entity withPrimaryKey:identifier];
+    id<CBRPersistentObject> managedObject = [entity.databaseAdapter persistentObjectOfType:entity withPrimaryKey:identifier];
     if (!managedObject) {
-        managedObject = (NSManagedObject *)[entity.databaseAdapter newMutablePersistentObjectOfType:entity];
+        managedObject = [entity.databaseAdapter newMutablePersistentObjectOfType:entity];
     }
 
     [self updatePersistentObject:managedObject withPropertiesFromCloudObject:cloudObject];
     return managedObject;
 }
 
-- (void)updatePersistentObject:(NSManagedObject *)persistentObject withPropertiesFromCloudObject:(id<CBRCloudObject>)cloudObject
+- (void)updatePersistentObject:(id<CBRPersistentObject>)persistentObject withPropertiesFromCloudObject:(id<CBRCloudObject>)cloudObject
 {
-    for (NSAttributeDescription *attributeDescription in persistentObject.entity.attributesByName.allValues) {
+    CBREntityDescription *entity = [persistentObject.cloudBridge.databaseAdapter entityDescriptionForClass:[persistentObject class]];
+    for (CBRAttributeDescription *attributeDescription in entity.attributes) {
         [persistentObject setValue:cloudObject[attributeDescription.name] forKey:attributeDescription.name];
     }
 }

@@ -10,73 +10,26 @@
 #import <XCTest/XCTest.h>
 
 #import <CloudBridge/CBRRESTConnection.h>
+#import <CloudBridge/CBRRealmDatabaseAdapter.h>
 
 #import "CBRTestCase.h"
-#import "CBRTestDataStore.h"
+#import "OCMStubRecorder+Tests.h"
+
 #import <OCMock/OCMock.h>
 
-typedef void(^AFSuccessBlock)(NSURLSessionDataTask *task, id responseObject);
-typedef void(^AFErrorBlock)(NSURLSessionDataTask *task, NSError *error);
+#import "RLMEntity4.h"
+#import "RLMEntity6.h"
 
-@interface AFQueryDescription : NSObject
-@property (nonatomic, strong) NSString *path;
-@property (nonatomic, strong) id parameters;
-@property (nonatomic, copy) AFSuccessBlock successBlock;
-@property (nonatomic, copy) AFErrorBlock errorBlock;
-@end
-
-@implementation AFQueryDescription @end
-
-
-@interface OCMStubRecorder (CBRRESTConnectionTests)
-
-#define andQuery(aBlock) _andQuery(aBlock)
-@property (nonatomic, readonly) OCMStubRecorder *(^ _andQuery)(void (^)(AFQueryDescription *query));
-
-@end
-
-@implementation OCMStubRecorder (CBRRESTConnectionTests)
-
-- (OCMStubRecorder *(^)(void (^)(AFQueryDescription *query)))_andQuery
-{
-    id (^theBlock)(void (^)(AFQueryDescription *query)) = ^ (void (^ blockToCall)(AFQueryDescription *query))
-    {
-        return [self andDo:^(NSInvocation *invocation) {
-            AFQueryDescription *query = [[AFQueryDescription alloc] init];
-
-            __unsafe_unretained NSString *path = nil;
-            __unsafe_unretained id parameters = nil;
-            __unsafe_unretained AFSuccessBlock successBlock = nil;
-            __unsafe_unretained AFErrorBlock errorBlock = nil;
-
-            [invocation getArgument:&path atIndex:2];
-            [invocation getArgument:&parameters atIndex:3];
-            [invocation getArgument:&successBlock atIndex:4];
-            [invocation getArgument:&errorBlock atIndex:5];
-
-            query.path = path;
-            query.parameters = parameters;
-            query.successBlock = successBlock;
-            query.errorBlock = errorBlock;
-
-            blockToCall(query);
-        }];
-    };
-    return theBlock;
-}
-
-@end
-
-@interface CBRRESTConnectionTests : CBRTestCase
+@interface CBRRESTConnection_RealmTests : CBRTestCase
 @property (nonatomic, strong) CBRCloudBridge *cloudBridge;
 @property (nonatomic, strong) AFHTTPSessionManager *sessionManager;
 @property (nonatomic, strong) AFHTTPSessionManager *mockedSessionManager;
 
 @property (nonatomic, strong) CBRRESTConnection *connection;
-@property (nonatomic, strong) CBRCoreDataDatabaseAdapter *adapter;
+@property (nonatomic, strong) CBRRealmDatabaseAdapter *adapter;
 @end
 
-@implementation CBRRESTConnectionTests
+@implementation CBRRESTConnection_RealmTests
 
 - (void)setUp
 {
@@ -94,16 +47,20 @@ typedef void(^AFErrorBlock)(NSURLSessionDataTask *task, NSError *error);
 
     self.mockedSessionManager = OCMPartialMock(self.sessionManager);
 
+    RLMRealmConfiguration *configuration = [RLMRealmConfiguration defaultConfiguration];
+    configuration.inMemoryIdentifier = self.testRun.test.name;
+
     self.connection = [[CBRRESTConnection alloc] initWithPropertyMapping:propertyMapping sessionManager:self.mockedSessionManager];
-    self.adapter = [[CBRCoreDataDatabaseAdapter alloc] initWithCoreDataStack:[CBRTestDataStore testStore]];
+    self.adapter = [[CBRRealmDatabaseAdapter alloc] initWithConfiguration:configuration];
     self.cloudBridge = [[CBRCloudBridge alloc] initWithCloudConnection:self.connection databaseAdapter:self.adapter];
 
-    [NSManagedObject setCloudBridge:self.cloudBridge];
+    [CBRRealmObject setCloudBridge:self.cloudBridge];
 }
 
 - (void)testThatConnectionPostsCloudObject
 {
-    SLEntity4 *entity = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([SLEntity4 class]) inManagedObjectContext:self.context];
+    RLMEntity4 *entity = [[RLMEntity4 alloc] init];
+    [entity setValue:[NSData data] forKey:@"arrayData"];
     entity.array = @[ @1, @2 ];
     entity.date = [NSDate date];
     entity.number = @5;
@@ -125,7 +82,7 @@ typedef void(^AFErrorBlock)(NSURLSessionDataTask *task, NSError *error);
 
 - (void)testThatConnectionSavesLatestCloudObject
 {
-    SLEntity4 *entity = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([SLEntity4 class]) inManagedObjectContext:self.context];
+    RLMEntity4 *entity = [[RLMEntity4 alloc] init];
     entity.array = @[ @1, @2 ];
     entity.date = [NSDate date];
     entity.number = @5;
@@ -148,7 +105,7 @@ typedef void(^AFErrorBlock)(NSURLSessionDataTask *task, NSError *error);
 
 - (void)testThatConnectionFetchesLatesCloudObject
 {
-    SLEntity4 *entity = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([SLEntity4 class]) inManagedObjectContext:self.context];
+    RLMEntity4 *entity = [[RLMEntity4 alloc] init];
     entity.identifier = @5;
 
     __block AFQueryDescription *query = nil;
@@ -164,7 +121,7 @@ typedef void(^AFErrorBlock)(NSURLSessionDataTask *task, NSError *error);
 
 - (void)testThatConnectionDeletesManagedObject
 {
-    SLEntity4 *entity = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([SLEntity4 class]) inManagedObjectContext:self.context];
+    RLMEntity4 *entity = [[RLMEntity4 alloc] init];
     entity.identifier = @5;
 
     __block AFQueryDescription *query = nil;
@@ -180,10 +137,10 @@ typedef void(^AFErrorBlock)(NSURLSessionDataTask *task, NSError *error);
 
 - (void)testThatConnectionFetchesObjectsForRelationship
 {
-    SLEntity6 *entity = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([SLEntity6 class]) inManagedObjectContext:self.context];
+    RLMEntity6 *entity = [[RLMEntity6 alloc] init];
     entity.identifier = @5;
 
-    CBREntityDescription *entityDescription = [self.adapter entityDescriptionForClass:[SLEntity6Child class]];
+    CBREntityDescription *entityDescription = [self.adapter entityDescriptionForClass:[RLMEntity6Child class]];
 
     __block AFQueryDescription *query = nil;
     OCMStub([self.mockedSessionManager GET:OCMOCK_ANY parameters:OCMOCK_ANY progress:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY]).andQuery(^(AFQueryDescription *theQuery) {
@@ -199,10 +156,10 @@ typedef void(^AFErrorBlock)(NSURLSessionDataTask *task, NSError *error);
 
 - (void)testThatConnectionFetchesObjectsFromAPath
 {
-    SLEntity6 *entity = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([SLEntity6 class]) inManagedObjectContext:self.context];
+    RLMEntity6 *entity = [[RLMEntity6 alloc] init];
     entity.identifier = @5;
 
-    CBREntityDescription *entityDescription = [self.adapter entityDescriptionForClass:[SLEntity6Child class]];
+    CBREntityDescription *entityDescription = [self.adapter entityDescriptionForClass:[RLMEntity6Child class]];
 
     __block AFQueryDescription *query = nil;
     OCMStub([self.mockedSessionManager GET:OCMOCK_ANY parameters:OCMOCK_ANY progress:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY]).andQuery(^(AFQueryDescription *theQuery) {
@@ -218,7 +175,7 @@ typedef void(^AFErrorBlock)(NSURLSessionDataTask *task, NSError *error);
 
 - (void)testThatConnectionPostsCloudObjectToPath
 {
-    SLEntity4 *entity = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([SLEntity4 class]) inManagedObjectContext:self.context];
+    RLMEntity4 *entity = [[RLMEntity4 alloc] init];
     entity.array = @[ @1, @2 ];
     entity.date = [NSDate date];
     entity.number = @5;
@@ -241,7 +198,7 @@ typedef void(^AFErrorBlock)(NSURLSessionDataTask *task, NSError *error);
 
 - (void)testThatConnectionSavesCloudObjectToPath
 {
-    SLEntity4 *entity = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([SLEntity4 class]) inManagedObjectContext:self.context];
+    RLMEntity4 *entity = [[RLMEntity4 alloc] init];
     entity.array = @[ @1, @2 ];
     entity.date = [NSDate date];
     entity.number = @5;
@@ -265,7 +222,7 @@ typedef void(^AFErrorBlock)(NSURLSessionDataTask *task, NSError *error);
 
 - (void)testThatConnectionFetchesLatesCloudObjectFromPath
 {
-    SLEntity4 *entity = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([SLEntity4 class]) inManagedObjectContext:self.context];
+    RLMEntity4 *entity = [[RLMEntity4 alloc] init];
     entity.identifier = @5;
 
     __block AFQueryDescription *query = nil;
@@ -282,7 +239,7 @@ typedef void(^AFErrorBlock)(NSURLSessionDataTask *task, NSError *error);
 
 - (void)testThatConnectionDeletesManagedObjectToPath
 {
-    SLEntity4 *entity = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([SLEntity4 class]) inManagedObjectContext:self.context];
+    RLMEntity4 *entity = [[RLMEntity4 alloc] init];
     entity.identifier = @5;
 
     __block AFQueryDescription *query = nil;
@@ -292,7 +249,7 @@ typedef void(^AFErrorBlock)(NSURLSessionDataTask *task, NSError *error);
 
     NSDictionary *userInfo = @{ CBRRESTConnectionUserInfoURLOverrideKey: @"some_path/:id" };
     [self.connection deleteCloudObject:nil forPersistentObject:entity withUserInfo:userInfo completionHandler:NULL];
-
+    
     expect(query).willNot.beNil();
     expect(query.path).to.endWith(@"some_path/5");
 }

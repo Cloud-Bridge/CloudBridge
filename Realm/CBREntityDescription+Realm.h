@@ -21,27 +21,20 @@
  THE SOFTWARE.
  */
 
+#import <Realm/Realm.h>
 #import <Foundation/Foundation.h>
-#import <CoreData/CoreData.h>
-
 #import <CloudBridge/CBREntityDescription.h>
-#import <CloudBridge/CBRCloudObject.h>
-#import <CloudBridge/CBRCloudConnection.h>
-#import <CloudBridge/CBRPersistentObject.h>
 
-#import <CloudBridge/CBRCloudBridge.h>
-#import <CloudBridge/CBROfflineCapableCloudBridge.h>
+@class CBRRealmDatabaseAdapter;
 
-#import <CloudBridge/CBRDatabaseAdapter.h>
-#import <CloudBridge/CBRCloudObjectTransformer.h>
 
-#if __has_include(<CloudBridge/CBRRealmDatabaseAdapter.h>)
-#import <CloudBridge/CBRRealmObject.h>
-#import <CloudBridge/CBRRealmDatabaseAdapter.h>
-#endif
 
-#if __has_include(<CloudBridge/CBRCoreDataDatabaseAdapter.h>)
-#import <CloudBridge/CBRCoreDataStack.h>
-#import <CloudBridge/CBRManagedObjectCache.h>
-#import <CloudBridge/CBRCoreDataDatabaseAdapter.h>
-#endif
+NS_ASSUME_NONNULL_BEGIN
+
+@interface CBREntityDescription (Realm)
+
+- (instancetype)initWithDatabaseAdapter:(CBRRealmDatabaseAdapter *)databaseAdapter realmObjectSchema:(RLMObjectSchema *)schema;
+
+@end
+
+NS_ASSUME_NONNULL_END

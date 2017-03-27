@@ -7,6 +7,7 @@
 //
 
 #import "CBRTestCase.h"
+#import "CBRTestDataStore.h"
 
 @implementation CBRTestCase
 

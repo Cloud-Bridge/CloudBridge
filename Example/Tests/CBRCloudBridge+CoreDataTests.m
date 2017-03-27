@@ -12,15 +12,16 @@
 #import <CloudBridge/CloudBridge.h>
 
 #import "CBRTestCase.h"
+#import "CBRTestDataStore.h"
 #import "CBRTestConnection.h"
 
-@interface CBRCloudBridgeTests : CBRTestCase
+@interface CBRCloudBridge_CoreDataTests : CBRTestCase
 @property (nonatomic, strong) CBRCoreDataDatabaseAdapter *adapter;
 @property (nonatomic, strong) CBRCloudBridge *cloudBridge;
 @property (nonatomic, strong) CBRTestConnection *connection;
 @end
 
-@implementation CBRCloudBridgeTests
+@implementation CBRCloudBridge_CoreDataTests
 
 - (void)setUp
 {
@@ -30,6 +31,15 @@
     self.adapter = [[CBRCoreDataDatabaseAdapter alloc] initWithCoreDataStack:[CBRTestDataStore testStore]];
     self.cloudBridge = [[CBRCloudBridge alloc] initWithCloudConnection:self.connection databaseAdapter:self.adapter];
     [NSManagedObject setCloudBridge:self.cloudBridge];
+}
+
+- (void)testInverseRelation
+{
+    CBREntityDescription *parent = [self.adapter entityDescriptionForClass:[SLEntity6 class]];
+    CBREntityDescription *child = [self.adapter entityDescriptionForClass:[SLEntity6Child class]];
+
+    expect(parent.relationshipsByName[@"children"].inverseRelationship.name).to.equal(@"parent");
+    expect(child.relationshipsByName[@"parent"].inverseRelationship.name).to.equal(@"children");
 }
 
 - (void)testThatManagedObjectReturnsGlobalCloudBridge

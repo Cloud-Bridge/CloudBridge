@@ -21,27 +21,21 @@
  THE SOFTWARE.
  */
 
+#import <Realm/Realm.h>
 #import <Foundation/Foundation.h>
-#import <CoreData/CoreData.h>
 
-#import <CloudBridge/CBREntityDescription.h>
-#import <CloudBridge/CBRCloudObject.h>
-#import <CloudBridge/CBRCloudConnection.h>
-#import <CloudBridge/CBRPersistentObject.h>
+NS_ASSUME_NONNULL_BEGIN
 
-#import <CloudBridge/CBRCloudBridge.h>
-#import <CloudBridge/CBROfflineCapableCloudBridge.h>
+@interface CBRRealmObject : RLMObject
 
-#import <CloudBridge/CBRDatabaseAdapter.h>
-#import <CloudBridge/CBRCloudObjectTransformer.h>
++ (NSDictionary<NSString *, NSString *> *)userInfo;
++ (NSDictionary<NSString *, NSDictionary<NSString *, NSString *> *> *)propertyUserInfo;
 
-#if __has_include(<CloudBridge/CBRRealmDatabaseAdapter.h>)
-#import <CloudBridge/CBRRealmObject.h>
-#import <CloudBridge/CBRRealmDatabaseAdapter.h>
-#endif
++ (void)initialize NS_REQUIRES_SUPER;
++ (nullable NSArray<NSString *> *)ignoredProperties NS_REQUIRES_SUPER;
 
-#if __has_include(<CloudBridge/CBRCoreDataDatabaseAdapter.h>)
-#import <CloudBridge/CBRCoreDataStack.h>
-#import <CloudBridge/CBRManagedObjectCache.h>
-#import <CloudBridge/CBRCoreDataDatabaseAdapter.h>
-#endif
++ (nullable NSArray<NSString *> *)transformableProperties;
+
+@end
+
+NS_ASSUME_NONNULL_END

@@ -35,7 +35,7 @@ PODS:
     - CloudBridge/CBRRESTConnection
     - CloudBridge/Realm
   - Expecta (1.0.5)
-  - OCMock (3.2)
+  - OCMock (3.2.2)
   - Realm (2.4.4):
     - Realm/Headers (= 2.4.4)
   - Realm/Headers (2.4.4)
@@ -53,9 +53,9 @@ SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
   CloudBridge: a42898c3b35d85e33aa9b56e09396ccf952e1faa
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
-  OCMock: 28def049ef47f996b515a8eeea958be7ccab2dbb
+  OCMock: 18c9b7e67d4c2770e95bb77a9cc1ae0c91fe3835
   Realm: 5a280a1f5a9a3c267bebf4f41ee47911137703d7
 
-PODFILE CHECKSUM: 44d1e9b8e214e03fd2bb96020e787f2155249797
+PODFILE CHECKSUM: 06a1dfe3123e0ec3bb1f48c5e6f22e7a3c0d0b95
 
 COCOAPODS: 1.2.0

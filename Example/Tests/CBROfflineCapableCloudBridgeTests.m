@@ -12,6 +12,7 @@
 #import <CloudBridge/CloudBridge.h>
 
 #import "CBRTestCase.h"
+#import "CBRTestDataStore.h"
 #import "CBRTestConnection.h"
 
 @interface CBROfflineCapableCloudBridgeTests : CBRTestCase

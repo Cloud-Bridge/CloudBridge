@@ -23,7 +23,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class CBREntityDescription;
+@class CBREntityDescription, CBRRelationshipDescription;
 @protocol CBRPersistentObject;
 
 
@@ -33,38 +33,31 @@
  */
 @protocol CBRDatabaseAdapter <NSObject>
 
-@required
-@property (nonatomic, readonly) NSArray /* <CBREntityDescription> */ *entities;
+@property (nonatomic, readonly) NSArray<CBREntityDescription *> *entities;
 
-@required
 - (CBREntityDescription *)entityDescriptionForClass:(Class)persistentClass;
+- (CBRRelationshipDescription *)inverseRelationshipForEntity:(CBREntityDescription *)entity relationship:(CBRRelationshipDescription *)relationship;
 
-@optional
-- (void)saveChangesForPersistentObject:(id<CBRPersistentObject>)persistentObject;
-
-@required
+- (BOOL)hasPersistentObjects:(NSArray<id<CBRPersistentObject>> *)persistentObjects;
 - (id<CBRPersistentObject>)newMutablePersistentObjectOfType:(CBREntityDescription *)entityDescription;
 
-@required
 - (id<CBRPersistentObject>)persistentObjectOfType:(CBREntityDescription *)entityDescription withPrimaryKey:(id)primaryKey;
 
-@required
 - (NSDictionary *)indexedObjectsOfType:(CBREntityDescription *)entityDescription withValues:(NSSet *)values forAttribute:(NSString *)attribute;
 
-@required
 - (NSArray *)fetchObjectsOfType:(CBREntityDescription *)entityDescription withPredicate:(NSPredicate *)predicate;
 
-@required
 - (void)mutatePersistentObject:(id<CBRPersistentObject>)persistentObject
                      withBlock:(void(^)(id<CBRPersistentObject> persistentObject))mutation
                     completion:(void(^)(id<CBRPersistentObject> persistentObject, NSError *error))completion;
 
-@required
-- (void)mutatePersistentObjects:(NSArray *)persistentObject
-                     withBlock:(NSArray *(^)(NSArray *persistentObjects))mutation
-                    completion:(void(^)(NSArray *persistentObjects, NSError *error))completion;
+- (void)mutatePersistentObjects:(NSArray<id<CBRPersistentObject>> *)persistentObject
+                     withBlock:(NSArray *(^)(NSArray<id<CBRPersistentObject>> *persistentObjects))mutation
+                    completion:(void(^)(NSArray<id<CBRPersistentObject>> *persistentObjects, NSError *error))completion;
 
-@required
-- (void)deletePersistentObjects:(NSArray *)persistentObjects;
+- (void)deletePersistentObjects:(NSArray<id<CBRPersistentObject>> *)persistentObjects;
+
+@optional
+- (void)saveChangesForPersistentObject:(id<CBRPersistentObject>)persistentObject;
 
 @end

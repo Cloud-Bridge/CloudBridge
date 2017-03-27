@@ -43,6 +43,16 @@ static NSDictionary *indexBy(NSArray *array, NSString *key)
 
 @implementation CBRRelationshipDescription
 
+- (CBREntityDescription *)entity
+{
+    return [self.databaseAdapter entityDescriptionForClass:NSClassFromString(self.entityName)];
+}
+
+- (CBRRelationshipDescription *)inverseRelationship
+{
+    return [self.databaseAdapter inverseRelationshipForEntity:self.entity relationship:self];
+}
+
 - (CBREntityDescription *)destinationEntity
 {
     return [self.databaseAdapter entityDescriptionForClass:NSClassFromString(self.destinationEntityName)];

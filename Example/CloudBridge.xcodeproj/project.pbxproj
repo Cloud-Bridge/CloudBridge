@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5B1ED0BBE01BC5B6572DEF82 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D5FB358378AAE3D8484FC581 /* libPods-Tests.a */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
 		6003F592195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
@@ -19,37 +20,42 @@
 		6003F5B1195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F5B2195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
 		6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5B8195388D20070C39A /* InfoPlist.strings */; };
+		A7561C0B1E8947470065654D /* CBRRESTConnection+RealmTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7561C0A1E8947470065654D /* CBRRESTConnection+RealmTests.m */; };
+		A7561C0E1E8947A80065654D /* OCMStubRecorder+Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7561C0D1E8947A80065654D /* OCMStubRecorder+Tests.m */; };
+		A7561C3A1E8949280065654D /* CBRTestDataStore.m in Sources */ = {isa = PBXBuildFile; fileRef = A7561C111E8949280065654D /* CBRTestDataStore.m */; };
+		A7561C3B1E8949280065654D /* JSONEntity1.m in Sources */ = {isa = PBXBuildFile; fileRef = A7561C131E8949280065654D /* JSONEntity1.m */; };
+		A7561C3C1E8949280065654D /* OfflineEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = A7561C151E8949280065654D /* OfflineEntity.m */; };
+		A7561C3D1E8949280065654D /* OnlyOnlineEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = A7561C171E8949280065654D /* OnlyOnlineEntity.m */; };
+		A7561C3E1E8949280065654D /* PrefixedEntitiy.m in Sources */ = {isa = PBXBuildFile; fileRef = A7561C191E8949280065654D /* PrefixedEntitiy.m */; };
+		A7561C3F1E8949280065654D /* SLEntity1.m in Sources */ = {isa = PBXBuildFile; fileRef = A7561C1B1E8949280065654D /* SLEntity1.m */; };
+		A7561C401E8949280065654D /* SLEntity2.m in Sources */ = {isa = PBXBuildFile; fileRef = A7561C1D1E8949280065654D /* SLEntity2.m */; };
+		A7561C411E8949280065654D /* SLEntity3.m in Sources */ = {isa = PBXBuildFile; fileRef = A7561C1F1E8949280065654D /* SLEntity3.m */; };
+		A7561C421E8949280065654D /* SLEntity4.m in Sources */ = {isa = PBXBuildFile; fileRef = A7561C211E8949280065654D /* SLEntity4.m */; };
+		A7561C431E8949280065654D /* SLEntity4Subclass.m in Sources */ = {isa = PBXBuildFile; fileRef = A7561C231E8949280065654D /* SLEntity4Subclass.m */; };
+		A7561C441E8949280065654D /* SLEntity5.m in Sources */ = {isa = PBXBuildFile; fileRef = A7561C251E8949280065654D /* SLEntity5.m */; };
+		A7561C451E8949280065654D /* SLEntity5Child1.m in Sources */ = {isa = PBXBuildFile; fileRef = A7561C271E8949280065654D /* SLEntity5Child1.m */; };
+		A7561C461E8949280065654D /* SLEntity5Child2.m in Sources */ = {isa = PBXBuildFile; fileRef = A7561C291E8949280065654D /* SLEntity5Child2.m */; };
+		A7561C471E8949280065654D /* SLEntity5Child3.m in Sources */ = {isa = PBXBuildFile; fileRef = A7561C2B1E8949280065654D /* SLEntity5Child3.m */; };
+		A7561C481E8949280065654D /* SLEntity5Child4.m in Sources */ = {isa = PBXBuildFile; fileRef = A7561C2D1E8949280065654D /* SLEntity5Child4.m */; };
+		A7561C491E8949280065654D /* SLEntity5Child5.m in Sources */ = {isa = PBXBuildFile; fileRef = A7561C2F1E8949280065654D /* SLEntity5Child5.m */; };
+		A7561C4A1E8949280065654D /* SLEntity5Child6.m in Sources */ = {isa = PBXBuildFile; fileRef = A7561C311E8949280065654D /* SLEntity5Child6.m */; };
+		A7561C4B1E8949280065654D /* SLEntity5Subclass.m in Sources */ = {isa = PBXBuildFile; fileRef = A7561C331E8949280065654D /* SLEntity5Subclass.m */; };
+		A7561C4C1E8949280065654D /* SLEntity6.m in Sources */ = {isa = PBXBuildFile; fileRef = A7561C351E8949280065654D /* SLEntity6.m */; };
+		A7561C4D1E8949280065654D /* SLEntity6Child.m in Sources */ = {isa = PBXBuildFile; fileRef = A7561C371E8949280065654D /* SLEntity6Child.m */; };
+		A7561C4E1E8949280065654D /* SLSubclassOfEntity1.m in Sources */ = {isa = PBXBuildFile; fileRef = A7561C391E8949280065654D /* SLSubclassOfEntity1.m */; };
+		A7561C521E89495C0065654D /* RLMEntity4.m in Sources */ = {isa = PBXBuildFile; fileRef = A7561C511E89495C0065654D /* RLMEntity4.m */; };
 		A7CEDCCF1B0229D20011FA33 /* CBRIdentityPropertyMappingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CEDCCD1B0229D20011FA33 /* CBRIdentityPropertyMappingTest.m */; };
 		A7CEDCD01B0229D20011FA33 /* CBRJSONDictionaryTransformerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CEDCCE1B0229D20011FA33 /* CBRJSONDictionaryTransformerTests.m */; };
-		A7CEDCD31B022A330011FA33 /* JSONEntity1.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CEDCD21B022A330011FA33 /* JSONEntity1.m */; };
-		A7CEDCDD1B022AA80011FA33 /* SLEntity1.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CEDCD81B022AA80011FA33 /* SLEntity1.m */; };
-		A7CEDCDE1B022AA80011FA33 /* SLEntity2.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CEDCDA1B022AA80011FA33 /* SLEntity2.m */; };
-		A7CEDCDF1B022AA80011FA33 /* SLEntity3.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CEDCDC1B022AA80011FA33 /* SLEntity3.m */; };
-		A7CEDCE21B022AEF0011FA33 /* SLEntity4Subclass.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CEDCE11B022AEF0011FA33 /* SLEntity4Subclass.m */; };
-		A7CEDCE51B022AFA0011FA33 /* SLEntity5.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CEDCE41B022AFA0011FA33 /* SLEntity5.m */; };
-		A7CEDCF21B022B050011FA33 /* SLEntity5Child1.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CEDCE71B022B050011FA33 /* SLEntity5Child1.m */; };
-		A7CEDCF31B022B050011FA33 /* SLEntity5Child2.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CEDCE91B022B050011FA33 /* SLEntity5Child2.m */; };
-		A7CEDCF41B022B050011FA33 /* SLEntity5Child3.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CEDCEB1B022B050011FA33 /* SLEntity5Child3.m */; };
-		A7CEDCF51B022B050011FA33 /* SLEntity5Child4.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CEDCED1B022B050011FA33 /* SLEntity5Child4.m */; };
-		A7CEDCF61B022B050011FA33 /* SLEntity5Child5.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CEDCEF1B022B050011FA33 /* SLEntity5Child5.m */; };
-		A7CEDCF71B022B050011FA33 /* SLEntity5Child6.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CEDCF11B022B050011FA33 /* SLEntity5Child6.m */; };
-		A7CEDCFC1B022B220011FA33 /* SLEntity5Subclass.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CEDCF91B022B220011FA33 /* SLEntity5Subclass.m */; };
-		A7CEDCFD1B022B220011FA33 /* SLSubclassOfEntity1.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CEDCFB1B022B220011FA33 /* SLSubclassOfEntity1.m */; };
 		A7CEDCFF1B022B2C0011FA33 /* CBRUnderscoredPropertyMappingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CEDCFE1B022B2C0011FA33 /* CBRUnderscoredPropertyMappingTests.m */; };
-		A7CEDD011B022B3E0011FA33 /* CBRRESTConnectionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CEDD001B022B3E0011FA33 /* CBRRESTConnectionTests.m */; };
-		A7CEDD041B022C630011FA33 /* PrefixedEntitiy.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CEDD031B022C630011FA33 /* PrefixedEntitiy.m */; };
-		A7D1AC3A1A55529E00D25D50 /* CBRCloudBridgeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D1AC361A55529E00D25D50 /* CBRCloudBridgeTests.m */; };
+		A7CEDD011B022B3E0011FA33 /* CBRRESTConnection+CoreDataTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7CEDD001B022B3E0011FA33 /* CBRRESTConnection+CoreDataTests.m */; };
 		A7D1AC3B1A55529E00D25D50 /* CBROfflineCapableCloudBridgeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D1AC371A55529E00D25D50 /* CBROfflineCapableCloudBridgeTests.m */; };
 		A7D1AC3C1A55529E00D25D50 /* CBRTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D1AC391A55529E00D25D50 /* CBRTestCase.m */; };
 		A7D1AC4B1A5552B000D25D50 /* CBRTestConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D1AC3E1A5552B000D25D50 /* CBRTestConnection.m */; };
-		A7D1AC4C1A5552B000D25D50 /* CBRTestDataStore.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D1AC401A5552B000D25D50 /* CBRTestDataStore.m */; };
-		A7D1AC4D1A5552B000D25D50 /* OfflineEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D1AC421A5552B000D25D50 /* OfflineEntity.m */; };
-		A7D1AC4E1A5552B000D25D50 /* OnlyOnlineEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D1AC441A5552B000D25D50 /* OnlyOnlineEntity.m */; };
-		A7D1AC4F1A5552B000D25D50 /* SLEntity4.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D1AC461A5552B000D25D50 /* SLEntity4.m */; };
-		A7D1AC501A5552B000D25D50 /* SLEntity6.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D1AC481A5552B000D25D50 /* SLEntity6.m */; };
-		A7D1AC511A5552B000D25D50 /* SLEntity6Child.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D1AC4A1A5552B000D25D50 /* SLEntity6Child.m */; };
 		A7D1AC541A5552CB00D25D50 /* CBRTestDataStore.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A7D1AC521A5552CB00D25D50 /* CBRTestDataStore.xcdatamodeld */; };
-		D21B80BB6D45A26E9C4673F3 /* Pods_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44B0860206702640C4D5BD7B /* Pods_Tests.framework */; };
+		A7F817531E896A6C001EDA01 /* RLMEntity6.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F817521E896A6C001EDA01 /* RLMEntity6.m */; };
+		A7F817571E897390001EDA01 /* CBRCloudBridge+RealmTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F817561E897390001EDA01 /* CBRCloudBridge+RealmTests.m */; };
+		A7F817581E897580001EDA01 /* CBRCloudBridge+CoreDataTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D1AC361A55529E00D25D50 /* CBRCloudBridge+CoreDataTests.m */; };
+		C7AAF75B09793C31DCCD9FE4 /* libPods-iOS-CloudBridge.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C56332626E5FCB48AC6AC20 /* libPods-iOS-CloudBridge.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,10 +69,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1B7DF1EBB473983AE6EB7EE5 /* Pods-Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-Tests/Pods-Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		2DE14DC1F7377675EEC3E53E /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
-		3C8A9AC090880158911193F7 /* Pods-Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-Tests/Pods-Tests.debug.xcconfig"; sourceTree = "<group>"; };
-		44B0860206702640C4D5BD7B /* Pods_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		5FDDCD4EE7164D622A37CC3E /* Pods-CloudBridge.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CloudBridge.release.xcconfig"; path = "../Pods/Target Support Files/Pods-CloudBridge/Pods-CloudBridge.release.xcconfig"; sourceTree = "<group>"; };
+		4515D808F79C89B3893787D8 /* Pods-iOS-CloudBridge.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS-CloudBridge.release.xcconfig"; path = "../Pods/Target Support Files/Pods-iOS-CloudBridge/Pods-iOS-CloudBridge.release.xcconfig"; sourceTree = "<group>"; };
+		4673337293DFD4CF0AAE0B1D /* Pods-iOS-CloudBridge.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS-CloudBridge.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-iOS-CloudBridge/Pods-iOS-CloudBridge.debug.xcconfig"; sourceTree = "<group>"; };
+		4C56332626E5FCB48AC6AC20 /* libPods-iOS-CloudBridge.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-iOS-CloudBridge.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4F918352D5685A4FDF9AE9B5 /* Pods-Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.release.xcconfig"; path = "../Pods/Target Support Files/Pods-Tests/Pods-Tests.release.xcconfig"; sourceTree = "<group>"; };
 		6003F58A195388D20070C39A /* CloudBridge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CloudBridge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6003F58F195388D20070C39A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -86,63 +94,68 @@
 		6003F5B9195388D20070C39A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
 		8FB2AC50918F3490E1C5BF02 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		A7561C0A1E8947470065654D /* CBRRESTConnection+RealmTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CBRRESTConnection+RealmTests.m"; sourceTree = "<group>"; };
+		A7561C0C1E8947A80065654D /* OCMStubRecorder+Tests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OCMStubRecorder+Tests.h"; sourceTree = "<group>"; };
+		A7561C0D1E8947A80065654D /* OCMStubRecorder+Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "OCMStubRecorder+Tests.m"; sourceTree = "<group>"; };
+		A7561C101E8949280065654D /* CBRTestDataStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBRTestDataStore.h; sourceTree = "<group>"; };
+		A7561C111E8949280065654D /* CBRTestDataStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBRTestDataStore.m; sourceTree = "<group>"; };
+		A7561C121E8949280065654D /* JSONEntity1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONEntity1.h; sourceTree = "<group>"; };
+		A7561C131E8949280065654D /* JSONEntity1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONEntity1.m; sourceTree = "<group>"; };
+		A7561C141E8949280065654D /* OfflineEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OfflineEntity.h; sourceTree = "<group>"; };
+		A7561C151E8949280065654D /* OfflineEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OfflineEntity.m; sourceTree = "<group>"; };
+		A7561C161E8949280065654D /* OnlyOnlineEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OnlyOnlineEntity.h; sourceTree = "<group>"; };
+		A7561C171E8949280065654D /* OnlyOnlineEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OnlyOnlineEntity.m; sourceTree = "<group>"; };
+		A7561C181E8949280065654D /* PrefixedEntitiy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrefixedEntitiy.h; sourceTree = "<group>"; };
+		A7561C191E8949280065654D /* PrefixedEntitiy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrefixedEntitiy.m; sourceTree = "<group>"; };
+		A7561C1A1E8949280065654D /* SLEntity1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEntity1.h; sourceTree = "<group>"; };
+		A7561C1B1E8949280065654D /* SLEntity1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEntity1.m; sourceTree = "<group>"; };
+		A7561C1C1E8949280065654D /* SLEntity2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEntity2.h; sourceTree = "<group>"; };
+		A7561C1D1E8949280065654D /* SLEntity2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEntity2.m; sourceTree = "<group>"; };
+		A7561C1E1E8949280065654D /* SLEntity3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEntity3.h; sourceTree = "<group>"; };
+		A7561C1F1E8949280065654D /* SLEntity3.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEntity3.m; sourceTree = "<group>"; };
+		A7561C201E8949280065654D /* SLEntity4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEntity4.h; sourceTree = "<group>"; };
+		A7561C211E8949280065654D /* SLEntity4.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEntity4.m; sourceTree = "<group>"; };
+		A7561C221E8949280065654D /* SLEntity4Subclass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEntity4Subclass.h; sourceTree = "<group>"; };
+		A7561C231E8949280065654D /* SLEntity4Subclass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEntity4Subclass.m; sourceTree = "<group>"; };
+		A7561C241E8949280065654D /* SLEntity5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEntity5.h; sourceTree = "<group>"; };
+		A7561C251E8949280065654D /* SLEntity5.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEntity5.m; sourceTree = "<group>"; };
+		A7561C261E8949280065654D /* SLEntity5Child1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEntity5Child1.h; sourceTree = "<group>"; };
+		A7561C271E8949280065654D /* SLEntity5Child1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEntity5Child1.m; sourceTree = "<group>"; };
+		A7561C281E8949280065654D /* SLEntity5Child2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEntity5Child2.h; sourceTree = "<group>"; };
+		A7561C291E8949280065654D /* SLEntity5Child2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEntity5Child2.m; sourceTree = "<group>"; };
+		A7561C2A1E8949280065654D /* SLEntity5Child3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEntity5Child3.h; sourceTree = "<group>"; };
+		A7561C2B1E8949280065654D /* SLEntity5Child3.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEntity5Child3.m; sourceTree = "<group>"; };
+		A7561C2C1E8949280065654D /* SLEntity5Child4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEntity5Child4.h; sourceTree = "<group>"; };
+		A7561C2D1E8949280065654D /* SLEntity5Child4.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEntity5Child4.m; sourceTree = "<group>"; };
+		A7561C2E1E8949280065654D /* SLEntity5Child5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEntity5Child5.h; sourceTree = "<group>"; };
+		A7561C2F1E8949280065654D /* SLEntity5Child5.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEntity5Child5.m; sourceTree = "<group>"; };
+		A7561C301E8949280065654D /* SLEntity5Child6.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEntity5Child6.h; sourceTree = "<group>"; };
+		A7561C311E8949280065654D /* SLEntity5Child6.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEntity5Child6.m; sourceTree = "<group>"; };
+		A7561C321E8949280065654D /* SLEntity5Subclass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEntity5Subclass.h; sourceTree = "<group>"; };
+		A7561C331E8949280065654D /* SLEntity5Subclass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEntity5Subclass.m; sourceTree = "<group>"; };
+		A7561C341E8949280065654D /* SLEntity6.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEntity6.h; sourceTree = "<group>"; };
+		A7561C351E8949280065654D /* SLEntity6.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEntity6.m; sourceTree = "<group>"; };
+		A7561C361E8949280065654D /* SLEntity6Child.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEntity6Child.h; sourceTree = "<group>"; };
+		A7561C371E8949280065654D /* SLEntity6Child.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEntity6Child.m; sourceTree = "<group>"; };
+		A7561C381E8949280065654D /* SLSubclassOfEntity1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLSubclassOfEntity1.h; sourceTree = "<group>"; };
+		A7561C391E8949280065654D /* SLSubclassOfEntity1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSubclassOfEntity1.m; sourceTree = "<group>"; };
+		A7561C501E89495C0065654D /* RLMEntity4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMEntity4.h; sourceTree = "<group>"; };
+		A7561C511E89495C0065654D /* RLMEntity4.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMEntity4.m; sourceTree = "<group>"; };
 		A7CEDCCD1B0229D20011FA33 /* CBRIdentityPropertyMappingTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBRIdentityPropertyMappingTest.m; sourceTree = "<group>"; };
 		A7CEDCCE1B0229D20011FA33 /* CBRJSONDictionaryTransformerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBRJSONDictionaryTransformerTests.m; sourceTree = "<group>"; };
-		A7CEDCD11B022A330011FA33 /* JSONEntity1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONEntity1.h; sourceTree = "<group>"; };
-		A7CEDCD21B022A330011FA33 /* JSONEntity1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONEntity1.m; sourceTree = "<group>"; };
-		A7CEDCD71B022AA80011FA33 /* SLEntity1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEntity1.h; sourceTree = "<group>"; };
-		A7CEDCD81B022AA80011FA33 /* SLEntity1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEntity1.m; sourceTree = "<group>"; };
-		A7CEDCD91B022AA80011FA33 /* SLEntity2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEntity2.h; sourceTree = "<group>"; };
-		A7CEDCDA1B022AA80011FA33 /* SLEntity2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEntity2.m; sourceTree = "<group>"; };
-		A7CEDCDB1B022AA80011FA33 /* SLEntity3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEntity3.h; sourceTree = "<group>"; };
-		A7CEDCDC1B022AA80011FA33 /* SLEntity3.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEntity3.m; sourceTree = "<group>"; };
-		A7CEDCE01B022AEF0011FA33 /* SLEntity4Subclass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEntity4Subclass.h; sourceTree = "<group>"; };
-		A7CEDCE11B022AEF0011FA33 /* SLEntity4Subclass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEntity4Subclass.m; sourceTree = "<group>"; };
-		A7CEDCE31B022AFA0011FA33 /* SLEntity5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEntity5.h; sourceTree = "<group>"; };
-		A7CEDCE41B022AFA0011FA33 /* SLEntity5.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEntity5.m; sourceTree = "<group>"; };
-		A7CEDCE61B022B050011FA33 /* SLEntity5Child1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEntity5Child1.h; sourceTree = "<group>"; };
-		A7CEDCE71B022B050011FA33 /* SLEntity5Child1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEntity5Child1.m; sourceTree = "<group>"; };
-		A7CEDCE81B022B050011FA33 /* SLEntity5Child2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEntity5Child2.h; sourceTree = "<group>"; };
-		A7CEDCE91B022B050011FA33 /* SLEntity5Child2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEntity5Child2.m; sourceTree = "<group>"; };
-		A7CEDCEA1B022B050011FA33 /* SLEntity5Child3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEntity5Child3.h; sourceTree = "<group>"; };
-		A7CEDCEB1B022B050011FA33 /* SLEntity5Child3.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEntity5Child3.m; sourceTree = "<group>"; };
-		A7CEDCEC1B022B050011FA33 /* SLEntity5Child4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEntity5Child4.h; sourceTree = "<group>"; };
-		A7CEDCED1B022B050011FA33 /* SLEntity5Child4.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEntity5Child4.m; sourceTree = "<group>"; };
-		A7CEDCEE1B022B050011FA33 /* SLEntity5Child5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEntity5Child5.h; sourceTree = "<group>"; };
-		A7CEDCEF1B022B050011FA33 /* SLEntity5Child5.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEntity5Child5.m; sourceTree = "<group>"; };
-		A7CEDCF01B022B050011FA33 /* SLEntity5Child6.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEntity5Child6.h; sourceTree = "<group>"; };
-		A7CEDCF11B022B050011FA33 /* SLEntity5Child6.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEntity5Child6.m; sourceTree = "<group>"; };
-		A7CEDCF81B022B220011FA33 /* SLEntity5Subclass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEntity5Subclass.h; sourceTree = "<group>"; };
-		A7CEDCF91B022B220011FA33 /* SLEntity5Subclass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEntity5Subclass.m; sourceTree = "<group>"; };
-		A7CEDCFA1B022B220011FA33 /* SLSubclassOfEntity1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLSubclassOfEntity1.h; sourceTree = "<group>"; };
-		A7CEDCFB1B022B220011FA33 /* SLSubclassOfEntity1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSubclassOfEntity1.m; sourceTree = "<group>"; };
 		A7CEDCFE1B022B2C0011FA33 /* CBRUnderscoredPropertyMappingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBRUnderscoredPropertyMappingTests.m; sourceTree = "<group>"; };
-		A7CEDD001B022B3E0011FA33 /* CBRRESTConnectionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBRRESTConnectionTests.m; sourceTree = "<group>"; };
-		A7CEDD021B022C630011FA33 /* PrefixedEntitiy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrefixedEntitiy.h; sourceTree = "<group>"; };
-		A7CEDD031B022C630011FA33 /* PrefixedEntitiy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrefixedEntitiy.m; sourceTree = "<group>"; };
-		A7D1AC361A55529E00D25D50 /* CBRCloudBridgeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBRCloudBridgeTests.m; sourceTree = "<group>"; };
+		A7CEDD001B022B3E0011FA33 /* CBRRESTConnection+CoreDataTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CBRRESTConnection+CoreDataTests.m"; sourceTree = "<group>"; };
+		A7D1AC361A55529E00D25D50 /* CBRCloudBridge+CoreDataTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CBRCloudBridge+CoreDataTests.m"; sourceTree = "<group>"; };
 		A7D1AC371A55529E00D25D50 /* CBROfflineCapableCloudBridgeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBROfflineCapableCloudBridgeTests.m; sourceTree = "<group>"; };
 		A7D1AC381A55529E00D25D50 /* CBRTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBRTestCase.h; sourceTree = "<group>"; };
 		A7D1AC391A55529E00D25D50 /* CBRTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBRTestCase.m; sourceTree = "<group>"; };
 		A7D1AC3D1A5552B000D25D50 /* CBRTestConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBRTestConnection.h; sourceTree = "<group>"; };
 		A7D1AC3E1A5552B000D25D50 /* CBRTestConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBRTestConnection.m; sourceTree = "<group>"; };
-		A7D1AC3F1A5552B000D25D50 /* CBRTestDataStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBRTestDataStore.h; sourceTree = "<group>"; };
-		A7D1AC401A5552B000D25D50 /* CBRTestDataStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBRTestDataStore.m; sourceTree = "<group>"; };
-		A7D1AC411A5552B000D25D50 /* OfflineEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OfflineEntity.h; sourceTree = "<group>"; };
-		A7D1AC421A5552B000D25D50 /* OfflineEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OfflineEntity.m; sourceTree = "<group>"; };
-		A7D1AC431A5552B000D25D50 /* OnlyOnlineEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OnlyOnlineEntity.h; sourceTree = "<group>"; };
-		A7D1AC441A5552B000D25D50 /* OnlyOnlineEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OnlyOnlineEntity.m; sourceTree = "<group>"; };
-		A7D1AC451A5552B000D25D50 /* SLEntity4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEntity4.h; sourceTree = "<group>"; };
-		A7D1AC461A5552B000D25D50 /* SLEntity4.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEntity4.m; sourceTree = "<group>"; };
-		A7D1AC471A5552B000D25D50 /* SLEntity6.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEntity6.h; sourceTree = "<group>"; };
-		A7D1AC481A5552B000D25D50 /* SLEntity6.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEntity6.m; sourceTree = "<group>"; };
-		A7D1AC491A5552B000D25D50 /* SLEntity6Child.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SLEntity6Child.h; sourceTree = "<group>"; };
-		A7D1AC4A1A5552B000D25D50 /* SLEntity6Child.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLEntity6Child.m; sourceTree = "<group>"; };
 		A7D1AC531A5552CB00D25D50 /* CBRTestDataStore.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CBRTestDataStore.xcdatamodel; sourceTree = "<group>"; };
-		C70DCD240AEA30EE13D43FE0 /* Pods-Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.release.xcconfig"; path = "../Pods/Target Support Files/Pods-Tests/Pods-Tests.release.xcconfig"; sourceTree = "<group>"; };
-		D8FA532FD646DABE9FE60BB9 /* Pods-CloudBridge.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CloudBridge.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-CloudBridge/Pods-CloudBridge.debug.xcconfig"; sourceTree = "<group>"; };
-		E91DFC8BBBE19C1D59184287 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		F1AE2995C27A5EED9D2E04C7 /* Pods_CloudBridge.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CloudBridge.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A7F817511E896A6C001EDA01 /* RLMEntity6.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMEntity6.h; sourceTree = "<group>"; };
+		A7F817521E896A6C001EDA01 /* RLMEntity6.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMEntity6.m; sourceTree = "<group>"; };
+		A7F817561E897390001EDA01 /* CBRCloudBridge+RealmTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CBRCloudBridge+RealmTests.m"; sourceTree = "<group>"; };
+		D5FB358378AAE3D8484FC581 /* libPods-Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6B5409ED320939F22765006 /* CloudBridge.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = CloudBridge.podspec; path = ../CloudBridge.podspec; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -154,6 +167,7 @@
 				6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */,
 				6003F592195388D20070C39A /* UIKit.framework in Frameworks */,
 				6003F58E195388D20070C39A /* Foundation.framework in Frameworks */,
+				C7AAF75B09793C31DCCD9FE4 /* libPods-iOS-CloudBridge.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -164,7 +178,7 @@
 				6003F5B0195388D20070C39A /* XCTest.framework in Frameworks */,
 				6003F5B2195388D20070C39A /* UIKit.framework in Frameworks */,
 				6003F5B1195388D20070C39A /* Foundation.framework in Frameworks */,
-				D21B80BB6D45A26E9C4673F3 /* Pods_Tests.framework in Frameworks */,
+				5B1ED0BBE01BC5B6572DEF82 /* libPods-Tests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -179,7 +193,7 @@
 				6003F5B5195388D20070C39A /* Tests */,
 				6003F58C195388D20070C39A /* Frameworks */,
 				6003F58B195388D20070C39A /* Products */,
-				8095564BB43C49656F25BA91 /* Pods */,
+				C825E37983CEBD76D38D3EE5 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -199,9 +213,8 @@
 				6003F58F195388D20070C39A /* CoreGraphics.framework */,
 				6003F591195388D20070C39A /* UIKit.framework */,
 				6003F5AF195388D20070C39A /* XCTest.framework */,
-				E91DFC8BBBE19C1D59184287 /* libPods.a */,
-				F1AE2995C27A5EED9D2E04C7 /* Pods_CloudBridge.framework */,
-				44B0860206702640C4D5BD7B /* Pods_Tests.framework */,
+				D5FB358378AAE3D8484FC581 /* libPods-Tests.a */,
+				4C56332626E5FCB48AC6AC20 /* libPods-iOS-CloudBridge.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -233,14 +246,18 @@
 		6003F5B5195388D20070C39A /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				A7CEDD001B022B3E0011FA33 /* CBRRESTConnectionTests.m */,
+				A7CEDD001B022B3E0011FA33 /* CBRRESTConnection+CoreDataTests.m */,
+				A7561C0A1E8947470065654D /* CBRRESTConnection+RealmTests.m */,
 				A7CEDCFE1B022B2C0011FA33 /* CBRUnderscoredPropertyMappingTests.m */,
 				A7CEDCCD1B0229D20011FA33 /* CBRIdentityPropertyMappingTest.m */,
 				A7CEDCCE1B0229D20011FA33 /* CBRJSONDictionaryTransformerTests.m */,
-				A7D1AC361A55529E00D25D50 /* CBRCloudBridgeTests.m */,
+				A7D1AC361A55529E00D25D50 /* CBRCloudBridge+CoreDataTests.m */,
+				A7F817561E897390001EDA01 /* CBRCloudBridge+RealmTests.m */,
 				A7D1AC371A55529E00D25D50 /* CBROfflineCapableCloudBridgeTests.m */,
 				A7D1AC381A55529E00D25D50 /* CBRTestCase.h */,
 				A7D1AC391A55529E00D25D50 /* CBRTestCase.m */,
+				A7561C4F1E8949500065654D /* Realm */,
+				A7561C0F1E8949280065654D /* CoreData */,
 				6003F5B6195388D20070C39A /* Supporting Files */,
 			);
 			path = Tests;
@@ -252,51 +269,11 @@
 				A7D1AC521A5552CB00D25D50 /* CBRTestDataStore.xcdatamodeld */,
 				A7D1AC3D1A5552B000D25D50 /* CBRTestConnection.h */,
 				A7D1AC3E1A5552B000D25D50 /* CBRTestConnection.m */,
-				A7D1AC3F1A5552B000D25D50 /* CBRTestDataStore.h */,
-				A7D1AC401A5552B000D25D50 /* CBRTestDataStore.m */,
-				A7CEDD021B022C630011FA33 /* PrefixedEntitiy.h */,
-				A7CEDD031B022C630011FA33 /* PrefixedEntitiy.m */,
-				A7D1AC411A5552B000D25D50 /* OfflineEntity.h */,
-				A7D1AC421A5552B000D25D50 /* OfflineEntity.m */,
-				A7D1AC431A5552B000D25D50 /* OnlyOnlineEntity.h */,
-				A7D1AC441A5552B000D25D50 /* OnlyOnlineEntity.m */,
-				A7CEDCD11B022A330011FA33 /* JSONEntity1.h */,
-				A7CEDCD21B022A330011FA33 /* JSONEntity1.m */,
-				A7CEDCD71B022AA80011FA33 /* SLEntity1.h */,
-				A7CEDCD81B022AA80011FA33 /* SLEntity1.m */,
-				A7CEDCD91B022AA80011FA33 /* SLEntity2.h */,
-				A7CEDCDA1B022AA80011FA33 /* SLEntity2.m */,
-				A7CEDCDB1B022AA80011FA33 /* SLEntity3.h */,
-				A7CEDCDC1B022AA80011FA33 /* SLEntity3.m */,
-				A7D1AC451A5552B000D25D50 /* SLEntity4.h */,
-				A7D1AC461A5552B000D25D50 /* SLEntity4.m */,
-				A7CEDCE01B022AEF0011FA33 /* SLEntity4Subclass.h */,
-				A7CEDCE11B022AEF0011FA33 /* SLEntity4Subclass.m */,
-				A7CEDCE31B022AFA0011FA33 /* SLEntity5.h */,
-				A7CEDCE41B022AFA0011FA33 /* SLEntity5.m */,
-				A7CEDCE61B022B050011FA33 /* SLEntity5Child1.h */,
-				A7CEDCE71B022B050011FA33 /* SLEntity5Child1.m */,
-				A7CEDCE81B022B050011FA33 /* SLEntity5Child2.h */,
-				A7CEDCE91B022B050011FA33 /* SLEntity5Child2.m */,
-				A7CEDCEA1B022B050011FA33 /* SLEntity5Child3.h */,
-				A7CEDCEB1B022B050011FA33 /* SLEntity5Child3.m */,
-				A7CEDCEC1B022B050011FA33 /* SLEntity5Child4.h */,
-				A7CEDCED1B022B050011FA33 /* SLEntity5Child4.m */,
-				A7CEDCEE1B022B050011FA33 /* SLEntity5Child5.h */,
-				A7CEDCEF1B022B050011FA33 /* SLEntity5Child5.m */,
-				A7CEDCF01B022B050011FA33 /* SLEntity5Child6.h */,
-				A7CEDCF11B022B050011FA33 /* SLEntity5Child6.m */,
-				A7D1AC471A5552B000D25D50 /* SLEntity6.h */,
-				A7D1AC481A5552B000D25D50 /* SLEntity6.m */,
-				A7D1AC491A5552B000D25D50 /* SLEntity6Child.h */,
-				A7D1AC4A1A5552B000D25D50 /* SLEntity6Child.m */,
-				A7CEDCF81B022B220011FA33 /* SLEntity5Subclass.h */,
-				A7CEDCF91B022B220011FA33 /* SLEntity5Subclass.m */,
-				A7CEDCFA1B022B220011FA33 /* SLSubclassOfEntity1.h */,
-				A7CEDCFB1B022B220011FA33 /* SLSubclassOfEntity1.m */,
 				6003F5B7195388D20070C39A /* Tests-Info.plist */,
 				6003F5B8195388D20070C39A /* InfoPlist.strings */,
 				606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */,
+				A7561C0C1E8947A80065654D /* OCMStubRecorder+Tests.h */,
+				A7561C0D1E8947A80065654D /* OCMStubRecorder+Tests.m */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -311,13 +288,73 @@
 			name = "Podspec Metadata";
 			sourceTree = "<group>";
 		};
-		8095564BB43C49656F25BA91 /* Pods */ = {
+		A7561C0F1E8949280065654D /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
-				D8FA532FD646DABE9FE60BB9 /* Pods-CloudBridge.debug.xcconfig */,
-				5FDDCD4EE7164D622A37CC3E /* Pods-CloudBridge.release.xcconfig */,
-				3C8A9AC090880158911193F7 /* Pods-Tests.debug.xcconfig */,
-				C70DCD240AEA30EE13D43FE0 /* Pods-Tests.release.xcconfig */,
+				A7561C101E8949280065654D /* CBRTestDataStore.h */,
+				A7561C111E8949280065654D /* CBRTestDataStore.m */,
+				A7561C121E8949280065654D /* JSONEntity1.h */,
+				A7561C131E8949280065654D /* JSONEntity1.m */,
+				A7561C141E8949280065654D /* OfflineEntity.h */,
+				A7561C151E8949280065654D /* OfflineEntity.m */,
+				A7561C161E8949280065654D /* OnlyOnlineEntity.h */,
+				A7561C171E8949280065654D /* OnlyOnlineEntity.m */,
+				A7561C181E8949280065654D /* PrefixedEntitiy.h */,
+				A7561C191E8949280065654D /* PrefixedEntitiy.m */,
+				A7561C1A1E8949280065654D /* SLEntity1.h */,
+				A7561C1B1E8949280065654D /* SLEntity1.m */,
+				A7561C1C1E8949280065654D /* SLEntity2.h */,
+				A7561C1D1E8949280065654D /* SLEntity2.m */,
+				A7561C1E1E8949280065654D /* SLEntity3.h */,
+				A7561C1F1E8949280065654D /* SLEntity3.m */,
+				A7561C201E8949280065654D /* SLEntity4.h */,
+				A7561C211E8949280065654D /* SLEntity4.m */,
+				A7561C221E8949280065654D /* SLEntity4Subclass.h */,
+				A7561C231E8949280065654D /* SLEntity4Subclass.m */,
+				A7561C241E8949280065654D /* SLEntity5.h */,
+				A7561C251E8949280065654D /* SLEntity5.m */,
+				A7561C261E8949280065654D /* SLEntity5Child1.h */,
+				A7561C271E8949280065654D /* SLEntity5Child1.m */,
+				A7561C281E8949280065654D /* SLEntity5Child2.h */,
+				A7561C291E8949280065654D /* SLEntity5Child2.m */,
+				A7561C2A1E8949280065654D /* SLEntity5Child3.h */,
+				A7561C2B1E8949280065654D /* SLEntity5Child3.m */,
+				A7561C2C1E8949280065654D /* SLEntity5Child4.h */,
+				A7561C2D1E8949280065654D /* SLEntity5Child4.m */,
+				A7561C2E1E8949280065654D /* SLEntity5Child5.h */,
+				A7561C2F1E8949280065654D /* SLEntity5Child5.m */,
+				A7561C301E8949280065654D /* SLEntity5Child6.h */,
+				A7561C311E8949280065654D /* SLEntity5Child6.m */,
+				A7561C321E8949280065654D /* SLEntity5Subclass.h */,
+				A7561C331E8949280065654D /* SLEntity5Subclass.m */,
+				A7561C341E8949280065654D /* SLEntity6.h */,
+				A7561C351E8949280065654D /* SLEntity6.m */,
+				A7561C361E8949280065654D /* SLEntity6Child.h */,
+				A7561C371E8949280065654D /* SLEntity6Child.m */,
+				A7561C381E8949280065654D /* SLSubclassOfEntity1.h */,
+				A7561C391E8949280065654D /* SLSubclassOfEntity1.m */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
+		A7561C4F1E8949500065654D /* Realm */ = {
+			isa = PBXGroup;
+			children = (
+				A7561C501E89495C0065654D /* RLMEntity4.h */,
+				A7561C511E89495C0065654D /* RLMEntity4.m */,
+				A7F817511E896A6C001EDA01 /* RLMEntity6.h */,
+				A7F817521E896A6C001EDA01 /* RLMEntity6.m */,
+			);
+			path = Realm;
+			sourceTree = "<group>";
+		};
+		C825E37983CEBD76D38D3EE5 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				1B7DF1EBB473983AE6EB7EE5 /* Pods-Tests.debug.xcconfig */,
+				4F918352D5685A4FDF9AE9B5 /* Pods-Tests.release.xcconfig */,
+				4673337293DFD4CF0AAE0B1D /* Pods-iOS-CloudBridge.debug.xcconfig */,
+				4515D808F79C89B3893787D8 /* Pods-iOS-CloudBridge.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -329,9 +366,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6003F5BF195388D20070C39A /* Build configuration list for PBXNativeTarget "CloudBridge" */;
 			buildPhases = (
+				8A3CE2F4D3963F4757281952 /* [CP] Check Pods Manifest.lock */,
 				6003F586195388D20070C39A /* Sources */,
 				6003F587195388D20070C39A /* Frameworks */,
 				6003F588195388D20070C39A /* Resources */,
+				5E03F0F4355CCC78AA14248F /* [CP] Embed Pods Frameworks */,
+				511FBE3E3184CA7DB327F5E7 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -346,12 +386,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6003F5C2195388D20070C39A /* Build configuration list for PBXNativeTarget "Tests" */;
 			buildPhases = (
-				F4B310B85AA5A55C5C56B3C3 /* [CP] Check Pods Manifest.lock */,
+				B0284D1EAF611CAABC3F7828 /* [CP] Check Pods Manifest.lock */,
 				6003F5AA195388D20070C39A /* Sources */,
 				6003F5AB195388D20070C39A /* Frameworks */,
 				6003F5AC195388D20070C39A /* Resources */,
-				DA0B1E7F9D11D86368FE3C56 /* [CP] Copy Pods Resources */,
-				309462669D8EDE22EFE501C3 /* [CP] Embed Pods Frameworks */,
+				BF467B0F3AD6F24817FDACF2 /* [CP] Embed Pods Frameworks */,
+				4DC2460CABE79065B1BFD3BA /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -418,22 +458,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		309462669D8EDE22EFE501C3 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-Tests/Pods-Tests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		DA0B1E7F9D11D86368FE3C56 /* [CP] Copy Pods Resources */ = {
+		4DC2460CABE79065B1BFD3BA /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -448,7 +473,37 @@
 			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-Tests/Pods-Tests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		F4B310B85AA5A55C5C56B3C3 /* [CP] Check Pods Manifest.lock */ = {
+		511FBE3E3184CA7DB327F5E7 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-iOS-CloudBridge/Pods-iOS-CloudBridge-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5E03F0F4355CCC78AA14248F /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-iOS-CloudBridge/Pods-iOS-CloudBridge-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8A3CE2F4D3963F4757281952 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -461,6 +516,36 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		B0284D1EAF611CAABC3F7828 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		BF467B0F3AD6F24817FDACF2 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-Tests/Pods-Tests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -480,36 +565,41 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A7D1AC3A1A55529E00D25D50 /* CBRCloudBridgeTests.m in Sources */,
-				A7D1AC511A5552B000D25D50 /* SLEntity6Child.m in Sources */,
-				A7CEDD011B022B3E0011FA33 /* CBRRESTConnectionTests.m in Sources */,
-				A7CEDCF41B022B050011FA33 /* SLEntity5Child3.m in Sources */,
-				A7CEDCFC1B022B220011FA33 /* SLEntity5Subclass.m in Sources */,
-				A7CEDCF21B022B050011FA33 /* SLEntity5Child1.m in Sources */,
-				A7CEDCD31B022A330011FA33 /* JSONEntity1.m in Sources */,
+				A7561C3B1E8949280065654D /* JSONEntity1.m in Sources */,
+				A7561C471E8949280065654D /* SLEntity5Child3.m in Sources */,
+				A7561C4B1E8949280065654D /* SLEntity5Subclass.m in Sources */,
+				A7561C4D1E8949280065654D /* SLEntity6Child.m in Sources */,
+				A7561C411E8949280065654D /* SLEntity3.m in Sources */,
+				A7561C421E8949280065654D /* SLEntity4.m in Sources */,
+				A7561C3F1E8949280065654D /* SLEntity1.m in Sources */,
+				A7561C491E8949280065654D /* SLEntity5Child5.m in Sources */,
+				A7561C481E8949280065654D /* SLEntity5Child4.m in Sources */,
+				A7F817571E897390001EDA01 /* CBRCloudBridge+RealmTests.m in Sources */,
+				A7561C401E8949280065654D /* SLEntity2.m in Sources */,
+				A7CEDD011B022B3E0011FA33 /* CBRRESTConnection+CoreDataTests.m in Sources */,
+				A7561C0E1E8947A80065654D /* OCMStubRecorder+Tests.m in Sources */,
+				A7561C4A1E8949280065654D /* SLEntity5Child6.m in Sources */,
+				A7561C3C1E8949280065654D /* OfflineEntity.m in Sources */,
+				A7561C4C1E8949280065654D /* SLEntity6.m in Sources */,
+				A7561C0B1E8947470065654D /* CBRRESTConnection+RealmTests.m in Sources */,
+				A7561C431E8949280065654D /* SLEntity4Subclass.m in Sources */,
+				A7561C4E1E8949280065654D /* SLSubclassOfEntity1.m in Sources */,
+				A7561C461E8949280065654D /* SLEntity5Child2.m in Sources */,
+				A7561C3D1E8949280065654D /* OnlyOnlineEntity.m in Sources */,
 				A7D1AC4B1A5552B000D25D50 /* CBRTestConnection.m in Sources */,
-				A7CEDCDE1B022AA80011FA33 /* SLEntity2.m in Sources */,
 				A7CEDCFF1B022B2C0011FA33 /* CBRUnderscoredPropertyMappingTests.m in Sources */,
-				A7CEDCF71B022B050011FA33 /* SLEntity5Child6.m in Sources */,
-				A7CEDCDF1B022AA80011FA33 /* SLEntity3.m in Sources */,
-				A7D1AC4E1A5552B000D25D50 /* OnlyOnlineEntity.m in Sources */,
-				A7CEDD041B022C630011FA33 /* PrefixedEntitiy.m in Sources */,
-				A7CEDCF51B022B050011FA33 /* SLEntity5Child4.m in Sources */,
-				A7CEDCF31B022B050011FA33 /* SLEntity5Child2.m in Sources */,
-				A7D1AC4D1A5552B000D25D50 /* OfflineEntity.m in Sources */,
-				A7CEDCFD1B022B220011FA33 /* SLSubclassOfEntity1.m in Sources */,
+				A7561C3E1E8949280065654D /* PrefixedEntitiy.m in Sources */,
 				A7D1AC541A5552CB00D25D50 /* CBRTestDataStore.xcdatamodeld in Sources */,
-				A7CEDCE51B022AFA0011FA33 /* SLEntity5.m in Sources */,
-				A7CEDCF61B022B050011FA33 /* SLEntity5Child5.m in Sources */,
+				A7F817531E896A6C001EDA01 /* RLMEntity6.m in Sources */,
+				A7561C3A1E8949280065654D /* CBRTestDataStore.m in Sources */,
+				A7561C451E8949280065654D /* SLEntity5Child1.m in Sources */,
+				A7561C441E8949280065654D /* SLEntity5.m in Sources */,
+				A7F817581E897580001EDA01 /* CBRCloudBridge+CoreDataTests.m in Sources */,
 				A7D1AC3B1A55529E00D25D50 /* CBROfflineCapableCloudBridgeTests.m in Sources */,
 				A7CEDCD01B0229D20011FA33 /* CBRJSONDictionaryTransformerTests.m in Sources */,
 				A7D1AC3C1A55529E00D25D50 /* CBRTestCase.m in Sources */,
-				A7D1AC4F1A5552B000D25D50 /* SLEntity4.m in Sources */,
-				A7D1AC4C1A5552B000D25D50 /* CBRTestDataStore.m in Sources */,
 				A7CEDCCF1B0229D20011FA33 /* CBRIdentityPropertyMappingTest.m in Sources */,
-				A7D1AC501A5552B000D25D50 /* SLEntity6.m in Sources */,
-				A7CEDCE21B022AEF0011FA33 /* SLEntity4Subclass.m in Sources */,
-				A7CEDCDD1B022AA80011FA33 /* SLEntity1.m in Sources */,
+				A7561C521E89495C0065654D /* RLMEntity4.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -628,6 +718,7 @@
 		};
 		6003F5C0195388D20070C39A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4673337293DFD4CF0AAE0B1D /* Pods-iOS-CloudBridge.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -642,6 +733,7 @@
 		};
 		6003F5C1195388D20070C39A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4515D808F79C89B3893787D8 /* Pods-iOS-CloudBridge.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -656,7 +748,7 @@
 		};
 		6003F5C3195388D20070C39A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3C8A9AC090880158911193F7 /* Pods-Tests.debug.xcconfig */;
+			baseConfigurationReference = 1B7DF1EBB473983AE6EB7EE5 /* Pods-Tests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/CloudBridge.app/CloudBridge";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -675,7 +767,7 @@
 		};
 		6003F5C4195388D20070C39A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C70DCD240AEA30EE13D43FE0 /* Pods-Tests.release.xcconfig */;
+			baseConfigurationReference = 4F918352D5685A4FDF9AE9B5 /* Pods-Tests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/CloudBridge.app/CloudBridge";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;

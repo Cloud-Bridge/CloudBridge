@@ -49,12 +49,17 @@ typedef NS_ENUM(NSInteger, CBRAttributeType) {
 
 @interface CBRRelationshipDescription : NSObject <CBRPropertyDescription>
 
+@property (nonatomic, strong) NSString *entityName;
+@property (nonatomic, readonly) CBREntityDescription *entity;
+
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, assign) BOOL toMany;
 @property (nonatomic, assign) BOOL cascades;
 
 @property (nonatomic, strong) NSString *destinationEntityName;
 @property (nonatomic, readonly) CBREntityDescription *destinationEntity;
+
+@property (nonatomic, readonly) CBRRelationshipDescription *inverseRelationship;
 
 @property (nonatomic, strong) NSDictionary *userInfo;
 
@@ -71,13 +76,13 @@ typedef NS_ENUM(NSInteger, CBRAttributeType) {
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSDictionary *userInfo;
 
-@property (nonatomic, strong) NSArray *attributes;
-@property (nonatomic, strong) NSArray *relationships;
-@property (nonatomic, strong) NSArray *subentityNames;
+@property (nonatomic, strong) NSArray<CBRAttributeDescription *> *attributes;
+@property (nonatomic, strong) NSArray<CBRRelationshipDescription *> *relationships;
+@property (nonatomic, strong) NSArray<NSString *> *subentityNames;
 
-@property (nonatomic, readonly) NSDictionary *attributesByName;
-@property (nonatomic, readonly) NSDictionary *relationshipsByName;
-@property (nonatomic, readonly) NSArray *subentities;
+@property (nonatomic, readonly) NSDictionary<NSString *, CBRAttributeDescription *> *attributesByName;
+@property (nonatomic, readonly) NSDictionary<NSString *, CBRRelationshipDescription *> *relationshipsByName;
+@property (nonatomic, readonly) NSArray<CBRRelationshipDescription *> *subentities;
 
 @property (nonatomic, weak, readonly) id<CBRDatabaseAdapter> databaseAdapter;
 - (instancetype)init NS_DESIGNATED_INITIALIZER UNAVAILABLE_ATTRIBUTE;

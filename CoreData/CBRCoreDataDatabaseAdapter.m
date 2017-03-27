@@ -183,7 +183,7 @@
 
 @interface CBRCoreDataDatabaseAdapter ()
 
-@property (nonatomic, readonly) NSMutableDictionary *entitesByName;
+@property (nonatomic, readonly) NSMutableDictionary<NSString *, CBREntityDescription *> *entitesByName;
 @property (nonatomic, readonly) NSManagedObjectModel *managedObjectModel;
 
 @end
@@ -217,9 +217,9 @@
 
 #pragma mark - CBRDatabaseAdapter
 
-- (NSArray *)entities
+- (NSArray<CBREntityDescription *> *)entities
 {
-    NSMutableArray *result = [NSMutableArray array];
+    NSMutableArray<CBREntityDescription *> *result = [NSMutableArray array];
 
     for (NSEntityDescription *entity in self.managedObjectModel.entities) {
         [result addObject:[self entityDescriptionForClass:NSClassFromString(entity.managedObjectClassName)]];
@@ -243,6 +243,17 @@
     }
 }
 
+- (CBRRelationshipDescription *)inverseRelationshipForEntity:(CBREntityDescription *)entity relationship:(CBRRelationshipDescription *)relationship
+{
+    NSRelationshipDescription *relationshipDescription = self.managedObjectModel.entitiesByName[entity.name].relationshipsByName[relationship.name];
+    NSParameterAssert(relationshipDescription);
+
+    NSRelationshipDescription *inverseRelationship = relationshipDescription.inverseRelationship;
+    NSParameterAssert(inverseRelationship);
+
+    return [self entityDescriptionForClass:NSClassFromString(relationship.destinationEntityName)].relationshipsByName[inverseRelationship.name];
+}
+
 - (void)saveChangesForPersistentObject:(NSManagedObject *)persistentObject
 {
     if (persistentObject.hasChanges || persistentObject.isInserted) {
@@ -250,6 +261,17 @@
         [persistentObject.managedObjectContext save:&saveError];
         NSCAssert(saveError == nil, @"error saving managed object context: %@", saveError);
     }
+}
+
+- (BOOL)hasPersistentObjects:(NSArray<NSManagedObject *> *)persistentObjects
+{
+    for (NSManagedObject *object in persistentObjects) {
+        if (object.isInserted) {
+            return NO;
+        }
+    }
+
+    return YES;
 }
 
 - (id<CBRPersistentObject>)newMutablePersistentObjectOfType:(CBREntityDescription *)entityDescription
@@ -313,9 +335,9 @@
     } withObject:persistentObject];
 }
 
-- (void)mutatePersistentObjects:(NSArray *)persistentObjects
-                      withBlock:(NSArray *(^)(NSArray *persistentObjects))mutation
-                     completion:(void(^)(NSArray *persistentObjects, NSError *error))completion
+- (void)mutatePersistentObjects:(NSArray<NSManagedObject *> *)persistentObjects
+                      withBlock:(NSArray *(^)(NSArray<id<CBRPersistentObject>> *persistentObjects))mutation
+                     completion:(void(^)(NSArray<id<CBRPersistentObject>> *persistentObjects, NSError *error))completion
 {
     NSParameterAssert(mutation);
 
@@ -344,7 +366,7 @@
     } withObject:persistentObjects];
 }
 
-- (void)deletePersistentObjects:(NSArray *)persistentObjects
+- (void)deletePersistentObjects:(NSArray<NSManagedObject *> *)persistentObjects
 {
     NSManagedObjectContext *context = [NSThread currentThread].isMainThread ? self.mainThreadContext : self.backgroundThreadContext;
 

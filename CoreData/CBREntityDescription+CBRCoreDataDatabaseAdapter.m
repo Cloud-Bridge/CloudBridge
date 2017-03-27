@@ -66,6 +66,8 @@
     }
 
     if (self = [self initWithDatabaseAdapter:databaseAdapter]) {
+        self.entityName = relationshipDescription.entity.name;
+        
         self.name = relationshipDescription.name;
         self.toMany = relationshipDescription.isToMany;
         self.destinationEntityName = relationshipDescription.destinationEntity.name;

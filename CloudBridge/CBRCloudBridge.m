@@ -32,13 +32,13 @@
 @property (nonatomic, readonly) NSString *relationshipToUpdate;
 @property (nonatomic, readonly) id primaryKey;
 
-- (instancetype)initWithPredicate:(NSPredicate *)predicate forEntity:(CBREntityDescription *)entityDescription cloudBridge:(CBRCloudBridge *)cloudBridge;
+- (instancetype)initWithPredicate:(NSPredicate *)predicate forEntity:(CBREntityDescription *)entityDescription cloudBridge:(CBRCloudBridge *)cloudBridge parent:(id<CBRPersistentObject> *)parent;
 
 @end
 
 @implementation _CBRCloudBridgePredicateDescription
 
-- (instancetype)initWithPredicate:(NSPredicate *)predicate forEntity:(CBREntityDescription *)entityDescription cloudBridge:(CBRCloudBridge *)cloudBridge
+- (instancetype)initWithPredicate:(NSPredicate *)predicate forEntity:(CBREntityDescription *)entityDescription cloudBridge:(CBRCloudBridge *)cloudBridge parent:(id<CBRPersistentObject> *)parent
 {
     if (self = [super init]) {
         if (!predicate || [predicate isEqual:[NSPredicate predicateWithValue:YES]]) {
@@ -55,6 +55,10 @@
                 }
 
                 NSString *primaryKey = [[cloudBridge.cloudConnection objectTransformer] primaryKeyOfEntitiyDescription:[persistentObject cloudBridgeEntityDescription]];
+
+                if (parent != NULL) {
+                    *parent = persistentObject;
+                }
 
                 _relationshipToUpdate = relationshipDescription.name;
                 _primaryKey = [persistentObject valueForKey:primaryKey];
@@ -157,7 +161,13 @@
     CBREntityDescription *entityDescription = [self.databaseAdapter entityDescriptionForClass:persistentClass];
     NSParameterAssert(entityDescription);
 
-    _CBRCloudBridgePredicateDescription *description = [[_CBRCloudBridgePredicateDescription alloc] initWithPredicate:predicate forEntity:entityDescription cloudBridge:self];
+    id<CBRPersistentObject> parent = nil;
+    _CBRCloudBridgePredicateDescription *description = [[_CBRCloudBridgePredicateDescription alloc] initWithPredicate:predicate forEntity:entityDescription cloudBridge:self parent:&parent];
+
+    if (parent) {
+        assert([self.databaseAdapter hasPersistentObjects:@[ parent ]]);
+    }
+
     [self.cloudConnection fetchCloudObjectsForEntity:entityDescription withPredicate:predicate userInfo:userInfo completionHandler:^(NSArray *fetchedObjects, NSError *error) {
         if (error) {
             if (completionHandler) {
