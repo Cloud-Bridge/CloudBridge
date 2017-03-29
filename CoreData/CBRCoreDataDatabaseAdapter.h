@@ -43,7 +43,7 @@
 
  @warning Overriding this impelmentation is not recommended because all internal implementations go directly through the corresponding object transformer.
  */
-+ (instancetype)managedObjectFromCloudObject:(id<CBRCloudObject>)cloudObject inManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
++ (instancetype)persistentObjectFromCloudObject:(id<CBRCloudObject>)cloudObject;
 
 @property (nonatomic, readonly) id<CBRCloudObject> cloudObjectRepresentation;
 

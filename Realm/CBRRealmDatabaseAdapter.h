@@ -44,7 +44,7 @@
 
  @warning Overriding this impelmentation is not recommended because all internal implementations go directly through the corresponding object transformer.
  */
-+ (instancetype)fromCloudObject:(id<CBRCloudObject>)cloudObject;
++ (instancetype)persistentObjectFromCloudObject:(id<CBRCloudObject>)cloudObject;
 
 @property (nonatomic, readonly) id<CBRCloudObject> cloudObjectRepresentation;
 

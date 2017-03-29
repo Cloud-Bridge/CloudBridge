@@ -38,8 +38,8 @@
 #import <CloudBridge/NSManagedObject+CBRRESTConnection.h>
 #endif
 
-#if __has_include(<CloudBridge/RLMObject+CBRRESTConnection.h>)
-#import <CloudBridge/RLMObject+CBRRESTConnection.h>
+#if __has_include(<CloudBridge/CBRRealmObject+CBRRESTConnection.h>)
+#import <CloudBridge/CBRRealmObject+CBRRESTConnection.h>
 #endif
 
 NS_ASSUME_NONNULL_BEGIN

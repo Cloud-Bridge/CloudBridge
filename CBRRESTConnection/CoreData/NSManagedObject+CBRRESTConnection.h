@@ -32,7 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface NSManagedObject (CBRRESTConnection)
 
-+ (nullable instancetype)objectWithRemoteIdentifier:(id<CBRPersistentIdentifier>)identifier inManagedObjectContext:(NSManagedObjectContext *)context;
++ (nullable instancetype)objectWithRemoteIdentifier:(id<CBRPersistentIdentifier>)identifier;
 
 + (void)fetchObjectFromPath:(NSString *)path withCompletionHandler:(void (^ _Nullable)(id _Nullable managedObject, NSError * _Nullable error))completionHandler;
 + (void)fetchObjectsFromPath:(NSString *)path withCompletionHandler:(void (^ _Nullable)(NSArray * _Nullable fetchedObjects, NSError * _Nullable error))completionHandler;

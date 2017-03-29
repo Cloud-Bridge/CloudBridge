@@ -29,10 +29,10 @@
 
 @implementation NSManagedObject (CBRRESTConnection)
 
-+ (instancetype)objectWithRemoteIdentifier:(id)identifier inManagedObjectContext:(NSManagedObjectContext *)context
++ (instancetype)objectWithRemoteIdentifier:(id)identifier
 {
     CBREntityDescription *entityDescription = [[self cloudBridge].databaseAdapter entityDescriptionForClass:self];
-    return [context.cbr_cache objectOfType:entityDescription.name withValue:identifier forAttribute:entityDescription.restIdentifier];
+    return (id)[[self cloudBridge].databaseAdapter persistentObjectOfType:entityDescription withPrimaryKey:identifier];
 }
 
 + (void)fetchObjectFromPath:(NSString *)path withCompletionHandler:(void (^)(id, NSError *))completionHandler

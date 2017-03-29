@@ -21,10 +21,13 @@
  THE SOFTWARE.
  */
 
-#import <CloudBridge/CloudBridge.h>
-
 #import <CloudBridge/CBRPropertyMapping.h>
+#import <CloudBridge/CBRPersistentObject.h>
+#import <CloudBridge/CBRCloudObjectTransformer.h>
 #import <CloudBridge/NSDictionary+CBRRESTConnection.h>
+
+@class CBRAttributeDescription;
+@protocol CBRPropertyDescription;
 
 
 

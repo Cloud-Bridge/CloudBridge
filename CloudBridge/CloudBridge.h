@@ -45,3 +45,7 @@
 #import <CloudBridge/CBRManagedObjectCache.h>
 #import <CloudBridge/CBRCoreDataDatabaseAdapter.h>
 #endif
+
+#if __has_include(<CloudBridge/CBRRESTConnection.h>)
+#import <CloudBridge/CBRRESTConnection.h>
+#endif

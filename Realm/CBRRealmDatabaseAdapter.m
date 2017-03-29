@@ -195,7 +195,7 @@
                                   completionHandler:completionHandler];
 }
 
-+ (instancetype)fromCloudObject:(id<CBRCloudObject>)cloudObject
++ (instancetype)persistentObjectFromCloudObject:(id<CBRCloudObject>)cloudObject
 {
     CBREntityDescription *entity = [[self cloudBridge].databaseAdapter entityDescriptionForClass:self.class];
     return (id)[[self cloudBridge].cloudConnection.objectTransformer persistentObjectFromCloudObject:cloudObject forEntity:entity];
