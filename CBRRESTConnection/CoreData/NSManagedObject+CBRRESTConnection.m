@@ -29,12 +29,6 @@
 
 @implementation NSManagedObject (CBRRESTConnection)
 
-+ (instancetype)objectWithRemoteIdentifier:(id)identifier
-{
-    CBREntityDescription *entityDescription = [[self cloudBridge].databaseAdapter entityDescriptionForClass:self];
-    return (id)[[self cloudBridge].databaseAdapter persistentObjectOfType:entityDescription withPrimaryKey:identifier];
-}
-
 + (void)fetchObjectFromPath:(NSString *)path withCompletionHandler:(void (^)(id, NSError *))completionHandler
 {
     [self fetchObjectsFromPath:path withCompletionHandler:^(NSArray *fetchedObjects, NSError *error) {

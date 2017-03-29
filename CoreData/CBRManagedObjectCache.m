@@ -47,7 +47,7 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
 - (void)__SLRESTfulCoreDataObjectCachePrepareForDeletion
 {
     [self __SLRESTfulCoreDataObjectCachePrepareForDeletion];
-    [self.managedObjectContext.cbr_cache removeManagedObject:self];
+    [self.managedObjectContext.cloudBridgeCache removeManagedObject:self];
 }
 
 @end
@@ -183,7 +183,7 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
 
 @implementation NSManagedObjectContext (CBRManagedObjectCache)
 
-- (CBRManagedObjectCache *)cbr_cache
+- (CBRManagedObjectCache *)cloudBridgeCache
 {
     CBRManagedObjectCache *cache = objc_getAssociatedObject(self, _cmd);
 

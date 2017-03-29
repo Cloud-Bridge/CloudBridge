@@ -67,6 +67,6 @@
 
 @interface NSManagedObjectContext (CBRManagedObjectCache)
 
-@property (nonatomic, readonly) CBRManagedObjectCache *cbr_cache;
+@property (nonatomic, readonly) CBRManagedObjectCache *cloudBridgeCache;
 
 @end

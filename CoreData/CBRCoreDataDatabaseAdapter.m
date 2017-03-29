@@ -70,6 +70,21 @@
 
 #pragma mark - CBRPersistentObjectQueryInterface
 
++ (instancetype)objectWithRemoteIdentifier:(id)identifier
+{
+    CBREntityDescription *entityDescription = [[self cloudBridge].databaseAdapter entityDescriptionForClass:self];
+    return (id)[[self cloudBridge].databaseAdapter persistentObjectOfType:entityDescription withPrimaryKey:identifier];
+}
+
++ (NSDictionary<id<CBRPersistentIdentifier>, id> *)objectsWithRemoteIdentifiers:(NSArray<id<CBRPersistentIdentifier>> *)identifiers
+{
+    CBREntityDescription *entityDescription = [[self cloudBridge].databaseAdapter entityDescriptionForClass:self];
+    NSString *attribute = [[self cloudBridge].cloudConnection.objectTransformer primaryKeyOfEntitiyDescription:entityDescription];
+    NSParameterAssert(attribute);
+
+    return [[self cloudBridge].databaseAdapter indexedObjectsOfType:entityDescription withValues:[NSSet setWithArray:identifiers] forAttribute:attribute];
+}
+
 + (void)fetchObjectsMatchingPredicate:(NSPredicate *)predicate
                 withCompletionHandler:(void(^)(NSArray *fetchedObjects, NSError *error))completionHandler
 {
@@ -286,13 +301,13 @@
     NSString *attribute = [[NSClassFromString(entityDescription.name) cloudBridge].cloudConnection.objectTransformer primaryKeyOfEntitiyDescription:entityDescription];
     NSParameterAssert(attribute);
 
-    return [context.cbr_cache objectOfType:entityDescription.name withValue:primaryKey forAttribute:attribute];
+    return [context.cloudBridgeCache objectOfType:entityDescription.name withValue:primaryKey forAttribute:attribute];
 }
 
 - (NSDictionary *)indexedObjectsOfType:(CBREntityDescription *)entityDescription withValues:(NSSet *)values forAttribute:(NSString *)attribute
 {
     NSManagedObjectContext *context = [NSThread currentThread].isMainThread ? self.mainThreadContext : self.backgroundThreadContext;
-    return [context.cbr_cache indexedObjectsOfType:entityDescription.name withValues:values forAttribute:attribute];
+    return [context.cloudBridgeCache indexedObjectsOfType:entityDescription.name withValues:values forAttribute:attribute];
 }
 
 - (NSArray *)fetchObjectsOfType:(CBREntityDescription *)entityDescription withPredicate:(NSPredicate *)predicate

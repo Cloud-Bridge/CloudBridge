@@ -28,6 +28,13 @@
 
 
 
+@protocol CBRPersistentIdentifier <NSObject> @end
+
+@interface NSNumber (CBRPersistentIdentifier) <CBRPersistentIdentifier> @end
+@interface NSString (CBRPersistentIdentifier) <CBRPersistentIdentifier> @end
+
+
+
 @protocol CBRPersistentObjectSubclassHooks
 
 /**
@@ -70,6 +77,9 @@
 
 
 @protocol CBRPersistentObjectQueryInterface
+
++ (instancetype)objectWithRemoteIdentifier:(id<CBRPersistentIdentifier>)identifier;
++ (NSDictionary<id, id> *)objectsWithRemoteIdentifiers:(NSArray<id<CBRPersistentIdentifier>> *)identifiers;
 
 + (void)fetchObjectsMatchingPredicate:(NSPredicate *)predicate
                 withCompletionHandler:(void(^)(NSArray *fetchedObjects, NSError *error))completionHandler;

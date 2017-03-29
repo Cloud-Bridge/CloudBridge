@@ -26,6 +26,8 @@
 
 #import "NSManagedObjectContext+CBRCoreDataStack.h"
 
+#warning add basic realm support
+
 static id managedObjectIDCollector(id object)
 {
     if ([object isKindOfClass:[NSArray class]]) {

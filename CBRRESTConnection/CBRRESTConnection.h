@@ -46,11 +46,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 extern NSString * const CBRRESTConnectionUserInfoURLOverrideKey;
 
-@protocol CBRPersistentIdentifier <NSObject> @end
-
-@interface NSNumber (CBRPersistentIdentifier) <CBRPersistentIdentifier> @end
-@interface NSString (CBRPersistentIdentifier) <CBRPersistentIdentifier> @end
-
 
 
 /**

@@ -29,16 +29,6 @@
 
 @implementation CBRRealmObject (CBRRESTConnection)
 
-+ (nullable instancetype)objectWithRemoteIdentifier:(id<CBRPersistentIdentifier>)identifier
-{
-    if (identifier == nil) {
-        return nil;
-    }
-
-    CBREntityDescription *entityDescription = [[self cloudBridge].databaseAdapter entityDescriptionForClass:self];
-    return [[self cloudBridge].databaseAdapter indexedObjectsOfType:entityDescription withValues:[NSSet setWithObject:identifier] forAttribute:entityDescription.restIdentifier].allValues.firstObject;
-}
-
 + (void)fetchObjectFromPath:(NSString *)path withCompletionHandler:(void (^)(id, NSError *))completionHandler
 {
     [self fetchObjectsFromPath:path withCompletionHandler:^(NSArray *fetchedObjects, NSError *error) {
