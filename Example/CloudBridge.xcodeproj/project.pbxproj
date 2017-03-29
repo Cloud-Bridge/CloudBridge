@@ -70,6 +70,7 @@
 
 /* Begin PBXFileReference section */
 		1B7DF1EBB473983AE6EB7EE5 /* Pods-Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-Tests/Pods-Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		2385E0AAB2B17F897725911E /* Pods-tvOS-CloudBridgeTV.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tvOS-CloudBridgeTV.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-tvOS-CloudBridgeTV/Pods-tvOS-CloudBridgeTV.debug.xcconfig"; sourceTree = "<group>"; };
 		2DE14DC1F7377675EEC3E53E /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		4515D808F79C89B3893787D8 /* Pods-iOS-CloudBridge.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS-CloudBridge.release.xcconfig"; path = "../Pods/Target Support Files/Pods-iOS-CloudBridge/Pods-iOS-CloudBridge.release.xcconfig"; sourceTree = "<group>"; };
 		4673337293DFD4CF0AAE0B1D /* Pods-iOS-CloudBridge.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS-CloudBridge.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-iOS-CloudBridge/Pods-iOS-CloudBridge.debug.xcconfig"; sourceTree = "<group>"; };
@@ -93,6 +94,7 @@
 		6003F5B7195388D20070C39A /* Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Tests-Info.plist"; sourceTree = "<group>"; };
 		6003F5B9195388D20070C39A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
+		773FA18944A4C73A2C3772F3 /* libPods-tvOS-CloudBridgeTV.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-tvOS-CloudBridgeTV.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8FB2AC50918F3490E1C5BF02 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		A7561C0A1E8947470065654D /* CBRRESTConnection+RealmTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CBRRESTConnection+RealmTests.m"; sourceTree = "<group>"; };
 		A7561C0C1E8947A80065654D /* OCMStubRecorder+Tests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OCMStubRecorder+Tests.h"; sourceTree = "<group>"; };
@@ -141,6 +143,14 @@
 		A7561C391E8949280065654D /* SLSubclassOfEntity1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSubclassOfEntity1.m; sourceTree = "<group>"; };
 		A7561C501E89495C0065654D /* RLMEntity4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMEntity4.h; sourceTree = "<group>"; };
 		A7561C511E89495C0065654D /* RLMEntity4.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMEntity4.m; sourceTree = "<group>"; };
+		A7C532A21E8BABF40007B882 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		A7C532A41E8BABF40007B882 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		A7C532A51E8BABF40007B882 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		A7C532A71E8BABF40007B882 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		A7C532A81E8BABF40007B882 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		A7C532AB1E8BABF40007B882 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		A7C532AD1E8BABF40007B882 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A7C532AF1E8BABF40007B882 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A7CEDCCD1B0229D20011FA33 /* CBRIdentityPropertyMappingTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBRIdentityPropertyMappingTest.m; sourceTree = "<group>"; };
 		A7CEDCCE1B0229D20011FA33 /* CBRJSONDictionaryTransformerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBRJSONDictionaryTransformerTests.m; sourceTree = "<group>"; };
 		A7CEDCFE1B022B2C0011FA33 /* CBRUnderscoredPropertyMappingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBRUnderscoredPropertyMappingTests.m; sourceTree = "<group>"; };
@@ -157,6 +167,7 @@
 		A7F817561E897390001EDA01 /* CBRCloudBridge+RealmTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CBRCloudBridge+RealmTests.m"; sourceTree = "<group>"; };
 		D5FB358378AAE3D8484FC581 /* libPods-Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6B5409ED320939F22765006 /* CloudBridge.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = CloudBridge.podspec; path = ../CloudBridge.podspec; sourceTree = "<group>"; };
+		F88C019D5B0F69C1E89568BA /* Pods-tvOS-CloudBridgeTV.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tvOS-CloudBridgeTV.release.xcconfig"; path = "../Pods/Target Support Files/Pods-tvOS-CloudBridgeTV/Pods-tvOS-CloudBridgeTV.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -191,6 +202,7 @@
 				60FF7A9C1954A5C5007DD14C /* Podspec Metadata */,
 				6003F593195388D20070C39A /* CloudBridge */,
 				6003F5B5195388D20070C39A /* Tests */,
+				A7C532A01E8BABF40007B882 /* CloudBridgeTV */,
 				6003F58C195388D20070C39A /* Frameworks */,
 				6003F58B195388D20070C39A /* Products */,
 				C825E37983CEBD76D38D3EE5 /* Pods */,
@@ -215,6 +227,7 @@
 				6003F5AF195388D20070C39A /* XCTest.framework */,
 				D5FB358378AAE3D8484FC581 /* libPods-Tests.a */,
 				4C56332626E5FCB48AC6AC20 /* libPods-iOS-CloudBridge.a */,
+				773FA18944A4C73A2C3772F3 /* libPods-tvOS-CloudBridgeTV.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -348,6 +361,29 @@
 			path = Realm;
 			sourceTree = "<group>";
 		};
+		A7C532A01E8BABF40007B882 /* CloudBridgeTV */ = {
+			isa = PBXGroup;
+			children = (
+				A7C532A41E8BABF40007B882 /* AppDelegate.h */,
+				A7C532A51E8BABF40007B882 /* AppDelegate.m */,
+				A7C532A71E8BABF40007B882 /* ViewController.h */,
+				A7C532A81E8BABF40007B882 /* ViewController.m */,
+				A7C532AA1E8BABF40007B882 /* Main.storyboard */,
+				A7C532AD1E8BABF40007B882 /* Assets.xcassets */,
+				A7C532AF1E8BABF40007B882 /* Info.plist */,
+				A7C532A11E8BABF40007B882 /* Supporting Files */,
+			);
+			path = CloudBridgeTV;
+			sourceTree = "<group>";
+		};
+		A7C532A11E8BABF40007B882 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				A7C532A21E8BABF40007B882 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		C825E37983CEBD76D38D3EE5 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -355,6 +391,8 @@
 				4F918352D5685A4FDF9AE9B5 /* Pods-Tests.release.xcconfig */,
 				4673337293DFD4CF0AAE0B1D /* Pods-iOS-CloudBridge.debug.xcconfig */,
 				4515D808F79C89B3893787D8 /* Pods-iOS-CloudBridge.release.xcconfig */,
+				2385E0AAB2B17F897725911E /* Pods-tvOS-CloudBridgeTV.debug.xcconfig */,
+				F88C019D5B0F69C1E89568BA /* Pods-tvOS-CloudBridgeTV.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -630,6 +668,14 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
+		A7C532AA1E8BABF40007B882 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A7C532AB1E8BABF40007B882 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -671,10 +717,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				TVOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Debug;
 		};
@@ -709,9 +756,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				TVOS_DEPLOYMENT_TARGET = 10.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -725,6 +773,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CloudBridge/CloudBridge-Prefix.pch";
 				INFOPLIST_FILE = "CloudBridge/CloudBridge-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -740,6 +789,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CloudBridge/CloudBridge-Prefix.pch";
 				INFOPLIST_FILE = "CloudBridge/CloudBridge-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;

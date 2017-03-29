@@ -30,15 +30,15 @@ PODS:
     - CloudBridge/CoreData
   - CloudBridge/Realm (2.0.0):
     - CloudBridge/CloudBridge
-    - Realm (~> 2.0)
+    - Realm (= 2.5.0.1)
   - CloudBridge/Realm+REST (2.0.0):
     - CloudBridge/CBRRESTConnection
     - CloudBridge/Realm
   - Expecta (1.0.5)
   - OCMock (3.2.2)
-  - Realm (2.4.4):
-    - Realm/Headers (= 2.4.4)
-  - Realm/Headers (2.4.4)
+  - Realm (2.5.0.1):
+    - Realm/Headers (= 2.5.0.1)
+  - Realm/Headers (2.5.0.1)
 
 DEPENDENCIES:
   - CloudBridge (from `.`)
@@ -51,11 +51,11 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
-  CloudBridge: a42898c3b35d85e33aa9b56e09396ccf952e1faa
+  CloudBridge: 7fb99e105775b1603677ec6883d1b05a305e20c7
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   OCMock: 18c9b7e67d4c2770e95bb77a9cc1ae0c91fe3835
-  Realm: 5a280a1f5a9a3c267bebf4f41ee47911137703d7
+  Realm: 3facc691bb8b693a0118a90cbd2e659aead63c03
 
-PODFILE CHECKSUM: 06a1dfe3123e0ec3bb1f48c5e6f22e7a3c0d0b95
+PODFILE CHECKSUM: b97fd821b6e03f8a1e7ee4ef9e00fd9150939095
 
 COCOAPODS: 1.2.0
