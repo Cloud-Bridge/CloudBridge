@@ -41,6 +41,8 @@ typedef NS_ENUM(NSInteger, CBRThread) {
 
 @interface NSNumber (CBRThreadTransferable) <CBRThreadTransferable> @end
 @interface NSString (CBRThreadTransferable) <CBRThreadTransferable> @end
+@interface NSDate (CBRThreadTransferable) <CBRThreadTransferable> @end
+@interface NSData (CBRThreadTransferable) <CBRThreadTransferable> @end
 @interface NSArray (CBRThreadTransferable) <CBRThreadTransferable> @end
 @interface NSDictionary (CBRThreadTransferable) <CBRThreadTransferable> @end
 

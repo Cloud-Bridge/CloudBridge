@@ -29,6 +29,24 @@
 #endif
 
 
+@implementation NSNumber (CBRThreadTransferable) @end
+@implementation NSString (CBRThreadTransferable) @end
+@implementation NSDate (CBRThreadTransferable) @end
+@implementation NSData (CBRThreadTransferable) @end
+@implementation NSArray (CBRThreadTransferable) @end
+@implementation NSDictionary (CBRThreadTransferable) @end
+
+#if CBRCoreDataAvailable
+@implementation NSManagedObject (CBRThreadTransferable) @end
+@implementation NSManagedObjectID (CBRThreadTransferable) @end
+#endif
+
+#if CBRRealmAvailable
+@implementation CBRRealmObject (CBRThreadTransferable) @end
+@implementation RLMThreadSafeReference (CBRThreadTransferable) @end
+#endif
+
+
 
 @implementation CBRThreadingEnvironment
 
