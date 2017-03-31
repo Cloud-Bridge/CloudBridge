@@ -21,7 +21,7 @@ Pod::Spec.new do |s|
   s.requires_arc = true
 
   s.frameworks = 'Foundation'
-  s.default_subspec = 'Core'
+  s.default_subspec = 'CoreData+REST'
 
   s.subspec 'CloudBridge' do |ss|
     ss.source_files = 'CloudBridge'

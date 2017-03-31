@@ -23,7 +23,6 @@
 
 #import "CBROfflineCapableCloudBridge.h"
 #import "CBRPersistentObject.h"
-#import "CBRCoreDataDatabaseAdapter.h"
 #import "CBREntityDescription.h"
 
 @implementation CBRDeletedObjectIdentifier

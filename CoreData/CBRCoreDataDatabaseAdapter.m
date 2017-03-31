@@ -60,6 +60,16 @@
     return [self.class cloudBridge];
 }
 
++ (id<CBRDatabaseAdapter>)databaseAdapter
+{
+    return [self cloudBridge].databaseAdapter;
+}
+
+- (id<CBRDatabaseAdapter>)databaseAdapter
+{
+    return [self cloudBridge].databaseAdapter;
+}
+
 + (CBREntityDescription *)cloudBridgeEntityDescription
 {
     return [[self cloudBridge].databaseAdapter entityDescriptionForClass:self];
@@ -358,6 +368,10 @@
     } completion:^(id  _Nullable object, NSError * _Nullable error) {
         if (completion != nil) {
             completion(error);
+        } else {
+            if (error != nil) {
+                [NSException raise:NSInternalInconsistencyException format:@"uncaught error moving to main thread %@", error];
+            }
         }
     }];
 }
@@ -366,11 +380,13 @@
 {
     [self.threadingEnvironment moveObject:object toThread:CBRThreadBackground completion:^(id  _Nullable object, NSError * _Nullable error) {
         if (error != nil) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (completion != nil) {
+            if (completion != nil) {
+                dispatch_async(dispatch_get_main_queue(), ^{
                     completion(nil, error);
-                }
-            });
+                });
+            } else {
+                [NSException raise:NSInternalInconsistencyException format:@"uncaught error moving to background thread %@", error];
+            }
             return;
         }
 
@@ -383,17 +399,23 @@
         save();
 
         if (saveError != nil) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (completion != nil) {
+            if (completion != nil) {
+                dispatch_async(dispatch_get_main_queue(), ^{
                     completion(nil, saveError);
-                }
-            });
+                });
+            } else {
+                [NSException raise:NSInternalInconsistencyException format:@"uncaught error after transaction %@", error];
+            }
             return;
         }
 
         [self.threadingEnvironment moveObject:result toThread:CBRThreadMain completion:^(id  _Nullable object, NSError * _Nullable error) {
             if (completion != nil) {
                 completion(object, error);
+            } else {
+                if (error != nil) {
+                    [NSException raise:NSInternalInconsistencyException format:@"uncaught error moving to main thread %@", error];
+                }
             }
         }];
     }];

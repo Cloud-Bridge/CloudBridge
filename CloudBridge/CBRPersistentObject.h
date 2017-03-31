@@ -24,7 +24,7 @@
 #import <Foundation/Foundation.h>
 
 @class CBRCloudBridge, CBREntityDescription;
-@protocol CBRCloudObject;
+@protocol CBRCloudObject, CBRDatabaseAdapter;
 
 
 
@@ -104,6 +104,9 @@
 + (void)setCloudBridge:(CBRCloudBridge *)cloudBridge;
 
 @property (nonatomic, readonly) CBRCloudBridge *cloudBridge;
+
++ (id<CBRDatabaseAdapter>)databaseAdapter;
+@property (nonatomic, readonly) id<CBRDatabaseAdapter> databaseAdapter;
 
 + (CBREntityDescription *)cloudBridgeEntityDescription;
 @property (nonatomic, readonly) CBREntityDescription *cloudBridgeEntityDescription;

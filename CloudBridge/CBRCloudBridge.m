@@ -22,7 +22,6 @@
  */
 
 #import "CBRCloudBridge.h"
-#import "CBRCoreDataDatabaseAdapter.h"
 #import "CBREntityDescription.h"
 
 @interface _CBRCloudBridgePredicateDescription : NSObject

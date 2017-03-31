@@ -26,7 +26,6 @@
 #import <CBRAttributeDescription+CBRRESTConnection.h>
 #import <CBREntityDescription+CBRRESTConnection.h>
 #import <CBRRelationshipDescription+CBRRESTConnection.h>
-#import <CloudBridge/CBRCoreDataDatabaseAdapter.h>
 
 
 

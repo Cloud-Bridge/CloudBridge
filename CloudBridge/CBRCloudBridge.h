@@ -24,7 +24,6 @@
 #import <CoreData/CoreData.h>
 #import <CloudBridge/CBRCloudConnection.h>
 #import <CloudBridge/CBRDatabaseAdapter.h>
-#import <CloudBridge/CBRCoreDataStack.h>
 
 @class CBRThreadingEnvironment;
 
