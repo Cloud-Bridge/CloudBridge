@@ -24,6 +24,9 @@
 #import "CBRCloudBridge.h"
 #import "CBREntityDescription.h"
 
+@implementation NSNumber (CBRPersistentIdentifier) @end
+@implementation NSString (CBRPersistentIdentifier) @end
+
 @interface _CBRCloudBridgePredicateDescription : NSObject
 
 @property (nonatomic, readonly) BOOL deleteEveryOtherObject;

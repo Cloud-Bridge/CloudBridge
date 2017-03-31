@@ -84,6 +84,7 @@
 
 + (instancetype)objectWithRemoteIdentifier:(id)identifier
 {
+    assert(identifier == nil || [identifier conformsToProtocol:@protocol(CBRPersistentIdentifier)]);
     CBREntityDescription *entityDescription = [self cloudBridgeEntityDescription];
     return (id)[[self cloudBridge].databaseAdapter persistentObjectOfType:entityDescription withPrimaryKey:identifier];
 }
