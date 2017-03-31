@@ -37,6 +37,23 @@ typedef NS_ENUM(NSInteger, CBRThread) {
     CBRThreadBackground,
 };
 
+@protocol CBRThreadTransferable <NSObject> @end
+
+@interface NSNumber (CBRThreadTransferable) <CBRThreadTransferable> @end
+@interface NSString (CBRThreadTransferable) <CBRThreadTransferable> @end
+@interface NSArray (CBRThreadTransferable) <CBRThreadTransferable> @end
+@interface NSDictionary (CBRThreadTransferable) <CBRThreadTransferable> @end
+
+#if CBRCoreDataAvailable
+@interface NSManagedObject (CBRThreadTransferable) <CBRThreadTransferable> @end
+@interface NSManagedObjectID (CBRThreadTransferable) <CBRThreadTransferable> @end
+#endif
+
+#if CBRRealmAvailable
+@interface CBRRealmObject (CBRThreadTransferable) <CBRThreadTransferable> @end
+@interface RLMThreadSafeReference (CBRThreadTransferable) <CBRThreadTransferable> @end
+#endif
+
 
 
 NS_ASSUME_NONNULL_BEGIN
@@ -62,7 +79,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)init NS_DESIGNATED_INITIALIZER NS_UNAVAILABLE;
 - (instancetype)initWithQueue:(dispatch_queue_t)queue NS_DESIGNATED_INITIALIZER;
 
-- (void)moveObject:(nullable id)object toThread:(CBRThread)thread completion:(void(^)(id _Nullable object, NSError * _Nullable error))completion;
+- (void)moveObject:(nullable id<CBRThreadTransferable>)object toThread:(CBRThread)thread completion:(void(^)(id _Nullable object, NSError * _Nullable error))completion;
 
 @end
 

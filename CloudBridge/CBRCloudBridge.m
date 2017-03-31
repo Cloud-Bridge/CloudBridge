@@ -147,7 +147,7 @@
             return;
         }
 
-        [self.databaseAdapter transactionWithObject:nil transaction:^id _Nullable(id  _Nullable object, dispatch_block_t  _Nonnull save) {
+        [self.databaseAdapter transactionWithObject:nil transaction:^id _Nullable(id  _Nullable object) {
             NSMutableArray *parsedPersistentObjects = [NSMutableArray array];
             NSMutableArray *persistentObjectsIdentifiers = [NSMutableArray array];
 
@@ -236,7 +236,7 @@
             [self.databaseAdapter saveChangesForPersistentObject:persistentObject];
         }
 
-        [self.databaseAdapter transactionWithObject:persistentObject transaction:^id _Nullable(id  _Nullable persistentObject, dispatch_block_t  _Nonnull save) {
+        [self.databaseAdapter transactionWithObject:persistentObject transaction:^id _Nullable(id  _Nullable persistentObject) {
             [self.cloudConnection.objectTransformer updatePersistentObject:persistentObject withPropertiesFromCloudObject:cloudObject];
             return persistentObject;
         } completion:^(id  _Nullable persistentObject, NSError * _Nullable error) {
@@ -261,7 +261,7 @@
             return;
         }
 
-        [self.databaseAdapter transactionWithObject:persistentObject transaction:^id _Nullable(id  _Nullable persistentObject, dispatch_block_t  _Nonnull save) {
+        [self.databaseAdapter transactionWithObject:persistentObject transaction:^id _Nullable(id  _Nullable persistentObject) {
             [self.cloudConnection.objectTransformer updatePersistentObject:persistentObject withPropertiesFromCloudObject:cloudObject];
             return persistentObject;
         } completion:^(id  _Nullable persistentObject, NSError * _Nullable error) {
@@ -287,7 +287,7 @@
             return;
         }
 
-        [self.databaseAdapter transactionWithObject:persistentObject transaction:^id _Nullable(id  _Nullable persistentObject, dispatch_block_t  _Nonnull save) {
+        [self.databaseAdapter transactionWithObject:persistentObject transaction:^id _Nullable(id  _Nullable persistentObject) {
             [self.cloudConnection.objectTransformer updatePersistentObject:persistentObject withPropertiesFromCloudObject:cloudObject];
             return persistentObject;
         } completion:^(id  _Nullable persistentObject, NSError * _Nullable error) {
@@ -313,7 +313,7 @@
             return;
         }
 
-        [self.databaseAdapter transactionWithObject:persistentObject transaction:^id _Nullable(id  _Nullable persistentObject, dispatch_block_t  _Nonnull save) {
+        [self.databaseAdapter transactionWithObject:persistentObject transaction:^id _Nullable(id  _Nullable persistentObject) {
             [self.databaseAdapter deletePersistentObjects:@[ persistentObject ]];
             return nil;
         } completion:^(id  _Nullable object, NSError * _Nullable error) {

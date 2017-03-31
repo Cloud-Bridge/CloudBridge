@@ -349,7 +349,7 @@
     return [context executeFetchRequest:fetchRequest error:NULL];
 }
 
-- (void)transactionWithBlock:(void(^)(dispatch_block_t save))transaction
+- (void)transactionWithBlock:(dispatch_block_t)transaction
 {
     NSArray<NSString *> *callStack = [NSThread callStackSymbols];
 
@@ -360,10 +360,10 @@
     }];
 }
 
-- (void)transactionWithBlock:(void(^)(dispatch_block_t save))transaction completion:(void (^ _Nullable)(NSError * _Nonnull))completion
+- (void)transactionWithBlock:(dispatch_block_t)transaction completion:(void (^ _Nullable)(NSError * _Nonnull))completion
 {
-    [self transactionWithObject:nil transaction:^id _Nullable(id  _Nullable object, dispatch_block_t  _Nonnull save) {
-        transaction(save);
+    [self transactionWithObject:nil transaction:^id _Nullable(id  _Nullable object) {
+        transaction();
         return nil;
     } completion:^(id  _Nullable object, NSError * _Nullable error) {
         if (completion != nil) {
@@ -376,7 +376,7 @@
     }];
 }
 
-- (void)transactionWithObject:(id)object transaction:(id  _Nullable (^)(id _Nullable, dispatch_block_t _Nonnull))transaction completion:(void (^)(id _Nullable, NSError * _Nullable))completion
+- (void)transactionWithObject:(id)object transaction:(id  _Nullable (^)(id _Nullable))transaction completion:(void (^)(id _Nullable, NSError * _Nullable))completion
 {
     [self.threadingEnvironment moveObject:object toThread:CBRThreadBackground completion:^(id  _Nullable object, NSError * _Nullable error) {
         if (error != nil) {
@@ -395,7 +395,7 @@
             [self.stack.backgroundThreadManagedObjectContext save:&saveError];
         };
 
-        id result = transaction(object, save);
+        id result = transaction(object);
         save();
 
         if (saveError != nil) {
@@ -421,12 +421,15 @@
     }];
 }
 
-- (void)unsafeTransactionWithObject:(id)object transaction:(id  _Nullable (^)(id _Nullable, dispatch_block_t _Nonnull))transaction
+- (void)unsafeTransactionWithObject:(id)object transaction:(void(^)(id _Nullable))transaction
 {
-    [self unsafeTransactionWithObject:object transaction:transaction completion:nil];
+    [self unsafeTransactionWithObject:object transaction:^id _Nullable(id  _Nullable object) {
+        transaction(object);
+        return nil;
+    } completion:nil];
 }
 
-- (void)unsafeTransactionWithObject:(id)object transaction:(id  _Nullable (^)(id _Nullable, dispatch_block_t _Nonnull))transaction completion:(void (^)(id _Nullable))completion
+- (void)unsafeTransactionWithObject:(id)object transaction:(id  _Nullable (^)(id _Nullable))transaction completion:(void (^)(id _Nullable))completion
 {
     NSArray<NSString *> *callStack = [NSThread callStackSymbols];
 

@@ -49,14 +49,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSArray *)fetchObjectsOfType:(CBREntityDescription *)entityDescription withPredicate:(NSPredicate *)predicate;
 
-- (void)transactionWithBlock:(void(^)(dispatch_block_t save))transaction;
-- (void)transactionWithBlock:(void(^)(dispatch_block_t save))transaction completion:(void(^_Nullable)(NSError *error))completion;
+- (void)transactionWithBlock:(dispatch_block_t)transaction;
+- (void)transactionWithBlock:(dispatch_block_t)transaction completion:(void(^_Nullable)(NSError *error))completion;
 - (void)transactionWithObject:(nullable id)object
-                  transaction:(id _Nullable(^)(id _Nullable object, dispatch_block_t save))transaction
+                  transaction:(id _Nullable(^)(id _Nullable object))transaction
                    completion:(void(^_Nullable)(id _Nullable object, NSError * _Nullable error))completion;
 
-- (void)unsafeTransactionWithObject:(nullable id)object transaction:(id _Nullable(^)(id _Nullable object, dispatch_block_t save))transaction;
-- (void)unsafeTransactionWithObject:(nullable id)object transaction:(id _Nullable(^)(id _Nullable object, dispatch_block_t save))transaction completion:(void(^_Nullable)(id _Nullable object))completion;
+- (void)unsafeTransactionWithObject:(nullable id)object transaction:(void(^)(id _Nullable object))transaction;
+- (void)unsafeTransactionWithObject:(nullable id)object transaction:(id _Nullable(^)(id _Nullable object))transaction completion:(void(^_Nullable)(id _Nullable object))completion;
 
 - (void)deletePersistentObjects:(NSArray<id<CBRPersistentObject>> *)persistentObjects;
 

@@ -172,7 +172,7 @@
 
     [super createPersistentObject:persistentObject withUserInfo:userInfo completionHandler:^(id _, NSError *error) {
         if (error) {
-            [self.databaseAdapter transactionWithObject:persistentObject transaction:^id _Nullable(id<CBROfflineCapablePersistentObject> _Nullable persistentObject, dispatch_block_t  _Nonnull save) {
+            [self.databaseAdapter transactionWithObject:persistentObject transaction:^id _Nullable(id<CBROfflineCapablePersistentObject> _Nullable persistentObject) {
                 persistentObject.hasPendingCloudBridgeChanges = @YES;
                 return nil;
             } completion:^(id  _Nullable object, NSError * _Nullable mutationError) {
@@ -209,7 +209,7 @@
 
     [super savePersistentObject:persistentObject withUserInfo:userInfo completionHandler:^(id _, NSError *error) {
         if (error) {
-            [self.databaseAdapter transactionWithObject:persistentObject transaction:^id _Nullable(id<CBROfflineCapablePersistentObject> _Nullable persistentObject, dispatch_block_t  _Nonnull save) {
+            [self.databaseAdapter transactionWithObject:persistentObject transaction:^id _Nullable(id<CBROfflineCapablePersistentObject> _Nullable persistentObject) {
                 persistentObject.hasPendingCloudBridgeChanges = @YES;
                 return nil;
             } completion:^(id  _Nullable object, NSError * _Nullable mutationError) {
@@ -255,7 +255,7 @@
 
     [super deletePersistentObject:persistentObject withUserInfo:userInfo completionHandler:^(NSError *error) {
         if (error) {
-            [self.databaseAdapter transactionWithObject:persistentObject transaction:^id _Nullable(id<CBROfflineCapablePersistentObject> _Nullable persistentObject, dispatch_block_t  _Nonnull save) {
+            [self.databaseAdapter transactionWithObject:persistentObject transaction:^id _Nullable(id<CBROfflineCapablePersistentObject> _Nullable persistentObject) {
                 persistentObject.hasPendingCloudBridgeChanges = @NO;
                 persistentObject.hasPendingCloudBridgeDeletion = @YES;
                 return nil;
@@ -276,7 +276,7 @@
 
 - (void)_synchronizePendingObjectCreationsWithCompletionHandler:(void(^)(NSError *error))completionHandler
 {
-    [self.databaseAdapter transactionWithBlock:^(dispatch_block_t  _Nonnull save) {
+    [self.databaseAdapter transactionWithBlock:^{
         NSMutableArray *cloudObjects = [NSMutableArray array];
         NSMutableArray *persistentObjects = [NSMutableArray array];
 
@@ -313,7 +313,7 @@
                 return;
             }
 
-            [self.databaseAdapter transactionWithObject:persistentObjects transaction:^id _Nullable(NSArray * _Nullable persistentObjects, dispatch_block_t  _Nonnull save) {
+            [self.databaseAdapter transactionWithObject:persistentObjects transaction:^id _Nullable(NSArray * _Nullable persistentObjects) {
                 NSParameterAssert(cloudObjects.count <= persistentObjects.count);
                 [cloudObjects enumerateObjectsUsingBlock:^(id<CBRCloudObject> cloudObject, NSUInteger idx, BOOL *stop) {
                     if (idx >= persistentObjects.count) {
@@ -338,7 +338,7 @@
 
 - (void)_synchronizePendingObjectUpdatesWithCompletionHandler:(void(^)(NSError *error))completionHandler
 {
-    [self.databaseAdapter transactionWithBlock:^(dispatch_block_t  _Nonnull save) {
+    [self.databaseAdapter transactionWithBlock:^{
         NSMutableArray *cloudObjects = [NSMutableArray array];
         NSMutableArray *persistentObjects = [NSMutableArray array];
 
@@ -368,7 +368,7 @@
         }
 
         [self.cloudConnection bulkSaveCloudObjects:cloudObjects forPersistentObjects:persistentObjects completionHandler:^(NSArray *cloudObjects, NSError *error) {
-            [self.databaseAdapter transactionWithObject:persistentObjects transaction:^id _Nullable(NSArray * _Nullable persistentObjects, dispatch_block_t  _Nonnull save) {
+            [self.databaseAdapter transactionWithObject:persistentObjects transaction:^id _Nullable(NSArray * _Nullable persistentObjects) {
                 NSParameterAssert(cloudObjects.count <= persistentObjects.count);
                 [cloudObjects enumerateObjectsUsingBlock:^(id<CBRCloudObject> cloudObject, NSUInteger idx, BOOL *stop) {
                     if (idx >= persistentObjects.count) {
@@ -408,7 +408,7 @@
         return result;
     };
 
-    [self.databaseAdapter transactionWithBlock:^(dispatch_block_t  _Nonnull save) {
+    [self.databaseAdapter transactionWithBlock:^{
         NSMutableArray *cloudObjects = [NSMutableArray array];
         NSMutableArray *persistentObjects = [NSMutableArray array];
 
@@ -436,7 +436,7 @@
         }
 
         [self.cloudConnection bulkDeleteCloudObjects:cloudObjects forPersistentObjects:persistentObjects completionHandler:^(NSArray *deletedObjectIdentifiers, NSError *error) {
-            [self.databaseAdapter transactionWithObject:persistentObjects transaction:^id _Nullable(NSArray * _Nullable persistentObjects, dispatch_block_t  _Nonnull save) {
+            [self.databaseAdapter transactionWithObject:persistentObjects transaction:^id _Nullable(NSArray * _Nullable persistentObjects) {
                 NSParameterAssert(cloudObjects.count <= persistentObjects.count);
 
                 NSDictionary *indexedPersistentObjects = indexPersistentObjects(persistentObjects);

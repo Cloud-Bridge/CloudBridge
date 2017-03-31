@@ -185,6 +185,8 @@
         [self _assertRealm];
         return object;
 #endif
+    } else if ([object conformsToProtocol:@protocol(CBRThreadTransferable)]) {
+        return object;
     }
 
     [NSException raise:NSInternalInconsistencyException format:@"Cannot move %@ between threads, type unknown", object];
@@ -287,6 +289,8 @@
 
         return object;
 #endif
+    } else if ([reference conformsToProtocol:@protocol(CBRThreadTransferable)]) {
+        return reference;
     }
 
     [NSException raise:NSInternalInconsistencyException format:@"Cannot resolve %@ for any thread", reference];
