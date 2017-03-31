@@ -287,8 +287,12 @@
 
             NSString *cloudIdentifier = [self.cloudConnection.objectTransformer primaryKeyOfEntitiyDescription:entity];
 
-            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == NULL AND hasPendingCloudBridgeChanges == YES", cloudIdentifier];
-            NSArray *fetchedObjects = [self.databaseAdapter fetchObjectsOfType:entity withPredicate:predicate];
+            NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:entity.name];
+            fetchRequest.predicate = [NSPredicate predicateWithFormat:@"%K == NULL AND hasPendingCloudBridgeChanges == YES", cloudIdentifier];
+
+            NSError *error = nil;
+            NSArray *fetchedObjects = [self.databaseAdapter executeFetchRequest:fetchRequest error:&error];
+            NSAssert(error == nil, @"error executing fetch request: %@", error);
 
             for (id<CBROfflineCapablePersistentObject> object in fetchedObjects) {
                 id<CBRCloudObject> cloudObject = object.cloudObjectRepresentation;
@@ -349,8 +353,12 @@
 
             NSString *cloudIdentifier = [self.cloudConnection.objectTransformer primaryKeyOfEntitiyDescription:entity];
 
-            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K != NULL AND hasPendingCloudBridgeChanges == YES", cloudIdentifier];
-            NSArray *fetchedObjects = [self.databaseAdapter fetchObjectsOfType:entity withPredicate:predicate];
+            NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:entity.name];
+            fetchRequest.predicate = [NSPredicate predicateWithFormat:@"%K != NULL AND hasPendingCloudBridgeChanges == YES", cloudIdentifier];
+
+            NSError *error = nil;
+            NSArray *fetchedObjects = [self.databaseAdapter executeFetchRequest:fetchRequest error:&error];
+            NSAssert(error == nil, @"error executing fetch request: %@", error);
 
             for (id<CBROfflineCapablePersistentObject>object in fetchedObjects) {
                 id<CBRCloudObject> cloudObject = object.cloudObjectRepresentation;
@@ -417,8 +425,12 @@
                 continue;
             }
 
-            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"hasPendingCloudBridgeDeletion == YES"];
-            NSArray *fetchedObjects = [self.databaseAdapter fetchObjectsOfType:entity withPredicate:predicate];
+            NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:entity.name];
+            fetchRequest.predicate = [NSPredicate predicateWithFormat:@"hasPendingCloudBridgeDeletion == YES"];
+
+            NSError *error = nil;
+            NSArray *fetchedObjects = [self.databaseAdapter executeFetchRequest:fetchRequest error:&error];
+            NSAssert(error == nil, @"error executing fetch request: %@", error);
 
             for (id<CBROfflineCapablePersistentObject> object in fetchedObjects) {
                 id<CBRCloudObject> cloudObject = object.cloudObjectRepresentation;

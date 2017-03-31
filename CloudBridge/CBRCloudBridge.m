@@ -184,7 +184,13 @@
                     }
                 }
 
-                NSArray *objectsToBeDeleted = [self.databaseAdapter fetchObjectsOfType:entityDescription withPredicate:predicate];
+                NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:entityDescription.name];
+                fetchRequest.predicate = predicate;
+
+                NSError *error = nil;
+                NSArray *objectsToBeDeleted = [self.databaseAdapter executeFetchRequest:fetchRequest error:&error];
+                NSAssert(error == nil, @"error executing fetch request: %@", error);
+
                 [self.databaseAdapter deletePersistentObjects:objectsToBeDeleted];
             }
             

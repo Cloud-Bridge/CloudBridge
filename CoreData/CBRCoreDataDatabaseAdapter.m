@@ -339,14 +339,12 @@
     return [context.cloudBridgeCache indexedObjectsOfType:entityDescription.name withValues:values forAttribute:attribute];
 }
 
-- (NSArray *)fetchObjectsOfType:(CBREntityDescription *)entityDescription withPredicate:(NSPredicate *)predicate
+- (NSArray *)executeFetchRequest:(NSFetchRequest *)fetchRequest error:(NSError **)error
 {
+    assert([self entityDescriptionForClass:NSClassFromString(fetchRequest.entityName)] != nil);
+    
     NSManagedObjectContext *context = [NSThread currentThread].isMainThread ? self.stack.mainThreadManagedObjectContext : self.stack.backgroundThreadManagedObjectContext;
-
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:entityDescription.name];
-    fetchRequest.predicate = predicate;
-
-    return [context executeFetchRequest:fetchRequest error:NULL];
+    return [context executeFetchRequest:fetchRequest error:error];
 }
 
 - (void)transactionWithBlock:(dispatch_block_t)transaction

@@ -410,10 +410,21 @@
     return result;
 }
 
-- (NSArray *)fetchObjectsOfType:(CBREntityDescription *)entityDescription withPredicate:(NSPredicate *)predicate
+- (NSArray *)executeFetchRequest:(NSFetchRequest *)fetchRequest error:(NSError **)error
 {
+    assert([self entityDescriptionForClass:NSClassFromString(fetchRequest.entityName)] != nil);
+
     RLMRealm *realm = self.realm;
-    RLMResults *results = [NSClassFromString(entityDescription.name) objectsInRealm:realm withPredicate:predicate];
+    RLMResults *results = [NSClassFromString(fetchRequest.entityName) objectsInRealm:realm withPredicate:fetchRequest.predicate];
+
+    if (fetchRequest.sortDescriptors.count > 0) {
+        NSMutableArray<RLMSortDescriptor *> *sortDescriptors = [NSMutableArray array];
+        for (NSSortDescriptor *descriptor in fetchRequest.sortDescriptors) {
+            [sortDescriptors addObject:[RLMSortDescriptor sortDescriptorWithKeyPath:descriptor.key ascending:descriptor.ascending]];
+        }
+
+        results = [results sortedResultsUsingDescriptors:sortDescriptors];
+    }
 
     NSMutableArray *result = [NSMutableArray arrayWithCapacity:results.count];
     for (CBRRealmObject *object in results) {

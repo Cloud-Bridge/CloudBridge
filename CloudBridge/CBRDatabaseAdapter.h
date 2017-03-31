@@ -22,6 +22,7 @@
  */
 
 #import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
 
 @class CBREntityDescription, CBRRelationshipDescription;
 @protocol CBRPersistentObject;
@@ -47,7 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSDictionary *)indexedObjectsOfType:(CBREntityDescription *)entityDescription withValues:(NSSet *)values forAttribute:(NSString *)attribute;
 
-- (NSArray *)fetchObjectsOfType:(CBREntityDescription *)entityDescription withPredicate:(NSPredicate *)predicate;
+- (NSArray *)executeFetchRequest:(NSFetchRequest *)fetchRequest error:(NSError **)error;
 
 - (void)transactionWithBlock:(dispatch_block_t)transaction;
 - (void)transactionWithBlock:(dispatch_block_t)transaction completion:(void(^_Nullable)(NSError *error))completion;
