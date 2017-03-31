@@ -21,6 +21,7 @@
 @property (nonatomic, strong) CBRRealmDatabaseAdapter *adapter;
 @property (nonatomic, strong) CBRCloudBridge *cloudBridge;
 @property (nonatomic, strong) CBRTestConnection *connection;
+@property (nonatomic, strong) CBRThreadingEnvironment *environment;
 @end
 
 @implementation CBRCloudBridge_RealmTests
@@ -33,8 +34,13 @@
     config.inMemoryIdentifier = self.testRun.test.name;
 
     self.connection = [[CBRTestConnection alloc] init];
-    self.adapter = [[CBRRealmDatabaseAdapter alloc] initWithConfiguration:config];
-    self.cloudBridge = [[CBRCloudBridge alloc] initWithCloudConnection:self.connection databaseAdapter:self.adapter];
+    __block __weak CBRCloudBridge *bridge = nil;
+    self.adapter = [[CBRRealmDatabaseAdapter alloc] initWithConfiguration:config threadingEnvironment:^CBRThreadingEnvironment *{
+        return bridge.threadingEnvironment;
+    }];
+    self.environment = [[CBRThreadingEnvironment alloc] initWithRealmAdapter:self.adapter];
+    self.cloudBridge = [[CBRCloudBridge alloc] initWithCloudConnection:self.connection databaseAdapter:self.adapter threadingEnvironment:self.environment];
+    bridge = self.cloudBridge;
     [CBRRealmObject setCloudBridge:self.cloudBridge];
 }
 
@@ -54,7 +60,7 @@
 
 - (void)testThatSubclassesOverrideGlobalCloudBridge
 {
-    CBRCloudBridge *otherCloudBridge = [[CBRCloudBridge alloc] initWithCloudConnection:self.connection databaseAdapter:self.adapter];
+    CBRCloudBridge *otherCloudBridge = [[CBRCloudBridge alloc] initWithCloudConnection:self.connection databaseAdapter:self.adapter threadingEnvironment:self.environment];
     expect(otherCloudBridge).toNot.equal(self.cloudBridge);
 
     [RLMEntity4 setCloudBridge:otherCloudBridge];

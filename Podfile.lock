@@ -30,7 +30,7 @@ PODS:
     - CloudBridge/CoreData
   - CloudBridge/Realm (2.0.0):
     - CloudBridge/CloudBridge
-    - Realm (= 2.5.0.1)
+    - Realm (~> 2.0)
   - CloudBridge/Realm+REST (2.0.0):
     - CloudBridge/CBRRESTConnection
     - CloudBridge/Realm
@@ -51,7 +51,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
-  CloudBridge: 7fb99e105775b1603677ec6883d1b05a305e20c7
+  CloudBridge: a42898c3b35d85e33aa9b56e09396ccf952e1faa
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   OCMock: 18c9b7e67d4c2770e95bb77a9cc1ae0c91fe3835
   Realm: 3facc691bb8b693a0118a90cbd2e659aead63c03

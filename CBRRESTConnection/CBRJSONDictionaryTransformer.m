@@ -250,7 +250,7 @@
 
     id<CBRPersistentObject> persistentObject = [entity.databaseAdapter persistentObjectOfType:entity withPrimaryKey:identifier];
     if (!persistentObject) {
-        persistentObject = [entity.databaseAdapter newMutablePersistentObjectOfType:entity];
+        persistentObject = [entity.databaseAdapter newMutablePersistentObjectOfType:entity save:NULL];
         [persistentObject awakeFromCloudFetch];
     }
 
@@ -348,7 +348,8 @@
 
                 id<CBRPersistentObject> newPersistentObject = existingObjectsByPrimaryKey[dictionary[dictionaryPrimaryKey]];
                 if (!newPersistentObject) {
-                    newPersistentObject = [destinationEntity.databaseAdapter newMutablePersistentObjectOfType:realDestinationEntity];
+                    newPersistentObject = [destinationEntity.databaseAdapter newMutablePersistentObjectOfType:realDestinationEntity save:NULL];
+                    [newPersistentObject awakeFromCloudFetch];
                 }
 
                 [self updatePersistentObject:newPersistentObject withPropertiesFromCloudObject:dictionary];

@@ -23,7 +23,6 @@
 
 #import <CoreData/CoreData.h>
 #import <Foundation/Foundation.h>
-#import <CloudBridge/NSManagedObjectContext+CBRCoreDataStack.h>
 
 extern NSString *const CBRCoreDataStackErrorDomain;
 

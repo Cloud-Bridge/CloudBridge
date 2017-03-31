@@ -81,6 +81,8 @@
 + (instancetype)objectWithRemoteIdentifier:(id<CBRPersistentIdentifier>)identifier;
 + (NSDictionary<id, id> *)objectsWithRemoteIdentifiers:(NSArray<id<CBRPersistentIdentifier>> *)identifiers;
 
++ (instancetype)newWithBlock:(dispatch_block_t *)saveBlock;
+
 + (void)fetchObjectsMatchingPredicate:(NSPredicate *)predicate
                 withCompletionHandler:(void(^)(NSArray *fetchedObjects, NSError *error))completionHandler;
 

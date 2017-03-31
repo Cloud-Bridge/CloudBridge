@@ -46,7 +46,7 @@
 
     id<CBRPersistentObject> managedObject = [entity.databaseAdapter persistentObjectOfType:entity withPrimaryKey:identifier];
     if (!managedObject) {
-        managedObject = [entity.databaseAdapter newMutablePersistentObjectOfType:entity];
+        managedObject = [entity.databaseAdapter newMutablePersistentObjectOfType:entity save:NULL];
     }
 
     [self updatePersistentObject:managedObject withPropertiesFromCloudObject:cloudObject];

@@ -23,11 +23,11 @@
 
 #import <Realm/Realm.h>
 #import <objc/runtime.h>
-#import "CBRRealmDatabaseAdapter.h"
 
+#import "CBRRealmDatabaseAdapter.h"
 #import "CBRCloudBridge.h"
 #import "CBREntityDescription.h"
-
+#import "CBRThreadingEnvironment.h"
 #import "CBREntityDescription+Realm.h"
 
 @implementation CBRRelationshipDescription (CBRRealmDatabaseAdapter)
@@ -108,6 +108,12 @@
     NSParameterAssert(attribute);
 
     return [[self cloudBridge].databaseAdapter indexedObjectsOfType:entityDescription withValues:[NSSet setWithArray:identifiers] forAttribute:attribute];
+}
+
++ (instancetype)newWithBlock:(dispatch_block_t *)saveBlock
+{
+    CBREntityDescription *entityDescription = [self cloudBridgeEntityDescription];
+    return [[self cloudBridge].databaseAdapter newMutablePersistentObjectOfType:entityDescription save:saveBlock];
 }
 
 + (void)fetchObjectsMatchingPredicate:(NSPredicate *)predicate
@@ -227,10 +233,19 @@
 @interface CBRRealmDatabaseAdapter ()
 
 @property (nonatomic, readonly) NSMutableDictionary<NSString *, CBREntityDescription *> *entitesByName;
+@property (nonatomic, readonly) CBRThreadingEnvironment *(^threadingEnvironmentBlock)(void);
 
 @end
 
 @implementation CBRRealmDatabaseAdapter
+
+- (CBRThreadingEnvironment *)threadingEnvironment
+{
+    CBRThreadingEnvironment *threadingEnvironment = self.threadingEnvironmentBlock();
+    assert(threadingEnvironment.realmAdapter != nil);
+
+    return threadingEnvironment;
+}
 
 - (RLMRealm *)realm
 {
@@ -246,12 +261,12 @@
     return [super init];
 }
 
-- (instancetype)initWithConfiguration:(RLMRealmConfiguration *)configuration
+- (instancetype)initWithConfiguration:(RLMRealmConfiguration *)configuration threadingEnvironment:(CBRThreadingEnvironment *(^)(void))threadingEnvironment
 {
     if (self = [super init]) {
         _configuration = configuration;
         _entitesByName = [NSMutableDictionary dictionary];
-        _queue = dispatch_queue_create("de.sparrow-labs.CloudBridge.realm", DISPATCH_QUEUE_SERIAL);
+        _threadingEnvironmentBlock = threadingEnvironment;
     }
     return self;
 }
@@ -321,7 +336,7 @@
     return nil;
 }
 
-- (BOOL)hasPersistentObjects:(NSArray<CBRRealmObject *> *)persistentObjects
+- (BOOL)hasPersistedObjects:(NSArray<CBRRealmObject *> *)persistentObjects
 {
     for (CBRRealmObject *object in persistentObjects) {
         if (object.realm == nil) {
@@ -332,14 +347,25 @@
     return YES;
 }
 
-- (CBRRealmObject *)newMutablePersistentObjectOfType:(CBREntityDescription *)entityDescription
+- (__kindof id<CBRPersistentObject>)newMutablePersistentObjectOfType:(CBREntityDescription *)entityDescription save:(dispatch_block_t *)saveBlock
 {
     RLMRealm *realm = self.realm;
 
-    __block CBRRealmObject *result = nil;
-    [self _transactionInRealm:realm block:^{
-        [realm addObject:(result = [[NSClassFromString(entityDescription.name) alloc] init])];
-    }];
+    CBRRealmObject *result = [[NSClassFromString(entityDescription.name) alloc] init];
+
+    if (saveBlock != NULL) {
+        dispatch_block_t previousSaveBlock = *saveBlock;
+        *saveBlock = ^{
+            [self _transactionInRealm:realm block:^{
+                previousSaveBlock();
+                [realm addObject:result];
+            }];
+        };
+    } else {
+        [self _transactionInRealm:realm block:^{
+            [realm addObject:result];
+        }];
+    }
 
     return result;
 }
@@ -387,129 +413,84 @@
     return result;
 }
 
-- (void)mutatePersistentObject:(CBRRealmObject *)persistentObject
-                     withBlock:(void(^)(id<CBRPersistentObject> persistentObject))mutation
-                    completion:(void(^)(id<CBRPersistentObject> persistentObject, NSError *error))completion
+- (void)transactionWithBlock:(void(^)(dispatch_block_t save))transaction
 {
-    RLMRealm *realm = self.realm;
+    NSArray<NSString *> *callStack = [NSThread callStackSymbols];
 
-    if (persistentObject.realm == nil) {
-        [self _transactionInRealm:realm block:^{
-            [realm addObject:persistentObject];
-        }];
-    }
-
-    if (persistentObject.invalidated) {
-        return completion(nil, [NSError errorWithDomain:NSCocoaErrorDomain code:NSCoreDataError userInfo:nil]);
-    }
-
-    RLMThreadSafeReference *ref1 = [RLMThreadSafeReference referenceWithThreadConfined:persistentObject];
-
-    dispatch_async(self.queue, ^{
-        RLMRealm *realm = self.realm;
-        CBRRealmObject *object = [realm resolveThreadSafeReference:ref1];
-
-        NSError *error = nil;
-        [realm transactionWithBlock:^{
-            mutation(object);
-        } error:&error];
-
-        RLMThreadSafeReference *ref2 = [RLMThreadSafeReference referenceWithThreadConfined:object];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (completion != nil) {
-                completion([self.realm resolveThreadSafeReference:ref2], error);
-            }
-        });
-    });
+    [self transactionWithBlock:transaction completion:^(NSError * _Nonnull error) {
+        if (error != nil) {
+            [NSException raise:NSInternalInconsistencyException format:@"uncaught error after transaction %@, call stack: %@", error, callStack];
+        }
+    }];
 }
 
-- (void)mutatePersistentObjects:(NSArray<CBRRealmObject *> *)persistentObject
-                      withBlock:(NSArray *(^)(NSArray<id<CBRPersistentObject>> *persistentObjects))mutation
-                     completion:(void(^)(NSArray<id<CBRPersistentObject>> *persistentObjects, NSError *error))completion
+- (void)transactionWithBlock:(void(^)(dispatch_block_t save))transaction completion:(void (^ _Nullable)(NSError * _Nonnull))completion
 {
-    if ([persistentObject indexOfObjectPassingTest:^BOOL(CBRRealmObject * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        return obj.realm == nil;
-    }] != NSNotFound) {
+    [self transactionWithObject:nil transaction:^id _Nullable(id  _Nullable object, dispatch_block_t  _Nonnull save) {
+        transaction(save);
+        return nil;
+    } completion:^(id  _Nullable object, NSError * _Nullable error) {
+        if (completion != nil) {
+            completion(error);
+        }
+    }];
+}
+
+- (void)transactionWithObject:(id)object transaction:(id  _Nullable (^)(id _Nullable, dispatch_block_t _Nonnull))transaction completion:(void (^)(id _Nullable, NSError * _Nullable))completion
+{
+    [self.threadingEnvironment moveObject:object toThread:CBRThreadBackground completion:^(id _Nullable object, NSError * _Nullable error) {
+        if (error != nil) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (completion != nil) {
+                    completion(nil, error);
+                }
+            });
+            return;
+        }
+
         RLMRealm *realm = self.realm;
 
-        [self _transactionInRealm:realm block:^{
-            for (CBRRealmObject *object in persistentObject) {
-                if (object.realm == nil) {
-                    [realm addObject:object];
+        [realm beginWriteTransaction];
+        id result = transaction(object, ^{});
+
+        NSError *saveError = nil;
+        [realm commitWriteTransaction:&error];
+
+        if (saveError != nil) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (completion != nil) {
+                    completion(nil, saveError);
                 }
+            });
+            return;
+        }
+
+        [self.threadingEnvironment moveObject:result toThread:CBRThreadMain completion:^(id  _Nullable object, NSError * _Nullable error) {
+            if (completion != nil) {
+                completion(object, error);
             }
         }];
-    }
+    }];
+}
 
-    NSMutableArray<RLMThreadSafeReference *> *refs1 = [NSMutableArray array];
-    for (CBRRealmObject *object in persistentObject) {
-        if (object.invalidated) {
-            return completion(nil, [NSError errorWithDomain:NSCocoaErrorDomain code:NSCoreDataError userInfo:nil]);
+- (void)unsafeTransactionWithObject:(id)object transaction:(id  _Nullable (^)(id _Nullable, dispatch_block_t _Nonnull))transaction
+{
+    [self unsafeTransactionWithObject:object transaction:transaction completion:nil];
+}
+
+- (void)unsafeTransactionWithObject:(id)object transaction:(id  _Nullable (^)(id _Nullable, dispatch_block_t _Nonnull))transaction completion:(void (^)(id _Nullable))completion
+{
+    NSArray<NSString *> *callStack = [NSThread callStackSymbols];
+
+    [self transactionWithObject:object transaction:transaction completion:^(id  _Nullable object, NSError * _Nullable error) {
+        if (error != nil) {
+            [NSException raise:NSInternalInconsistencyException format:@"uncaught error after transaction %@, call stack: %@", error, callStack];
         }
 
-        [refs1 addObject:[RLMThreadSafeReference referenceWithThreadConfined:object]];
-    }
-
-    dispatch_async(self.queue, ^{
-        RLMRealm *realm = self.realm;
-
-        NSMutableArray<CBRRealmObject *> *objects = [NSMutableArray array];
-        for (RLMThreadSafeReference *ref in refs1) {
-            CBRRealmObject *object = [realm resolveThreadSafeReference:ref];
-
-            if (object == nil) {
-                return dispatch_async(dispatch_get_main_queue(), ^{
-                    return completion(nil, [NSError errorWithDomain:NSCocoaErrorDomain code:NSCoreDataError userInfo:nil]);
-                });
-            }
-
-            [objects addObject:object];
+        if (completion != nil) {
+            completion(object);
         }
-
-        NSError *error = nil;
-        __block NSArray<CBRRealmObject *> *nextObjects = [NSMutableArray array];
-        [realm transactionWithBlock:^{
-            nextObjects = mutation(objects);
-
-            for (RLMObject *object in nextObjects) {
-                if (object.realm == nil) {
-                    [realm addObject:object];
-                }
-            }
-        } error:&error];
-
-        NSMutableArray<RLMThreadSafeReference *> *refs2 = [NSMutableArray array];
-        for (CBRRealmObject *object in nextObjects) {
-            if (object.invalidated) {
-                return dispatch_async(dispatch_get_main_queue(), ^{
-                    return completion(nil, [NSError errorWithDomain:NSCocoaErrorDomain code:NSCoreDataError userInfo:nil]);
-                });
-            }
-
-            [refs2 addObject:[RLMThreadSafeReference referenceWithThreadConfined:object]];
-        }
-
-        dispatch_async(dispatch_get_main_queue(), ^{
-            RLMRealm *realm = self.realm;
-
-            NSMutableArray<CBRRealmObject *> *objects = [NSMutableArray array];
-            for (RLMThreadSafeReference *ref in refs2) {
-                CBRRealmObject *object = [realm resolveThreadSafeReference:ref];
-
-                if (object == nil) {
-                    return dispatch_async(dispatch_get_main_queue(), ^{
-                        return completion(nil, [NSError errorWithDomain:NSCocoaErrorDomain code:NSCoreDataError userInfo:nil]);
-                    });
-                }
-                
-                [objects addObject:object];
-            }
-
-            if (completion != nil) {
-                completion(objects, error);
-            }
-        });
-    });
+    }];
 }
 
 - (void)deletePersistentObjects:(NSArray<CBRRealmObject *> *)persistentObjects

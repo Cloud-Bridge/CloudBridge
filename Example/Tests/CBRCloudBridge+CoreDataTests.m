@@ -19,6 +19,7 @@
 @property (nonatomic, strong) CBRCoreDataDatabaseAdapter *adapter;
 @property (nonatomic, strong) CBRCloudBridge *cloudBridge;
 @property (nonatomic, strong) CBRTestConnection *connection;
+@property (nonatomic, strong) CBRThreadingEnvironment *environment;
 @end
 
 @implementation CBRCloudBridge_CoreDataTests
@@ -28,8 +29,14 @@
     [super setUp];
 
     self.connection = [[CBRTestConnection alloc] init];
-    self.adapter = [[CBRCoreDataDatabaseAdapter alloc] initWithCoreDataStack:[CBRTestDataStore testStore]];
-    self.cloudBridge = [[CBRCloudBridge alloc] initWithCloudConnection:self.connection databaseAdapter:self.adapter];
+    __block __weak CBRCloudBridge *bridge = nil;
+    self.adapter = [[CBRCoreDataDatabaseAdapter alloc] initWithStack:[CBRTestDataStore testStore] threadingEnvironment:^CBRThreadingEnvironment *{
+        return bridge.threadingEnvironment;
+    }];
+    self.environment = [[CBRThreadingEnvironment alloc] initWithCoreDataAdapter:self.adapter];
+    self.cloudBridge = [[CBRCloudBridge alloc] initWithCloudConnection:self.connection databaseAdapter:self.adapter threadingEnvironment:self.environment];
+    bridge = self.cloudBridge;
+
     [NSManagedObject setCloudBridge:self.cloudBridge];
 }
 
@@ -49,7 +56,7 @@
 
 - (void)testThatSubclassesOverrideGlobalCloudBridge
 {
-    CBRCloudBridge *otherCloudBridge = [[CBRCloudBridge alloc] initWithCloudConnection:self.connection databaseAdapter:self.adapter];
+    CBRCloudBridge *otherCloudBridge = [[CBRCloudBridge alloc] initWithCloudConnection:self.connection databaseAdapter:self.adapter threadingEnvironment:self.environment];
     expect(otherCloudBridge).toNot.equal(self.cloudBridge);
 
     [SLEntity4 setCloudBridge:otherCloudBridge];

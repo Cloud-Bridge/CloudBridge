@@ -21,6 +21,7 @@
 @property (nonatomic, strong) AFHTTPSessionManager *sessionManager;
 @property (nonatomic, strong) CBRRESTConnection *connection;
 @property (nonatomic, strong) CBRCoreDataDatabaseAdapter *adapter;
+@property (nonatomic, strong) CBRThreadingEnvironment *environment;
 @end
 
 @implementation CBRJSONDictionaryTransformerTests
@@ -39,10 +40,15 @@
     [self.sessionManager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     self.sessionManager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"application/json"];
 
+    __block __weak CBRCloudBridge *bridge = nil;
     self.transformer = [[CBRJSONDictionaryTransformer alloc] initWithPropertyMapping:propertyMapping];
     self.connection = [[CBRRESTConnection alloc] initWithPropertyMapping:propertyMapping sessionManager:self.sessionManager];
-    self.adapter = [[CBRCoreDataDatabaseAdapter alloc] initWithCoreDataStack:[CBRTestDataStore testStore]];
-    self.cloudBridge = [[CBRCloudBridge alloc] initWithCloudConnection:self.connection databaseAdapter:self.adapter];
+    self.adapter = [[CBRCoreDataDatabaseAdapter alloc] initWithStack:[CBRTestDataStore testStore] threadingEnvironment:^CBRThreadingEnvironment *{
+        return bridge.threadingEnvironment;
+    }];
+    self.environment = [[CBRThreadingEnvironment alloc] initWithCoreDataAdapter:self.adapter];
+    self.cloudBridge = [[CBRCloudBridge alloc] initWithCloudConnection:self.connection databaseAdapter:self.adapter threadingEnvironment:self.environment];
+    bridge = self.cloudBridge;
 
     [NSManagedObject setCloudBridge:self.cloudBridge];
 }
@@ -405,8 +411,8 @@
 
     expect(entity.toManyChilds.count).to.equal(2);
 
-    SLEntity5Child3 *child1 = [SLEntity5Child3 objectWithRemoteIdentifier:@1 inManagedObjectContext:self.context];
-    SLEntity5Child3 *child2 = [SLEntity5Child3 objectWithRemoteIdentifier:@2 inManagedObjectContext:self.context];
+    SLEntity5Child3 *child1 = [SLEntity5Child3 objectWithRemoteIdentifier:@1];
+    SLEntity5Child3 *child2 = [SLEntity5Child3 objectWithRemoteIdentifier:@2];
 
     expect(child1).toNot.beNil();
     expect(child2).toNot.beNil();
@@ -427,7 +433,7 @@
 
     expect(entity.camelizedChilds.count).to.equal(1);
 
-    SLEntity5Child5 *child1 = [SLEntity5Child5 objectWithRemoteIdentifier:@1 inManagedObjectContext:self.context];
+    SLEntity5Child5 *child1 = [SLEntity5Child5 objectWithRemoteIdentifier:@1];
 
     expect(child1).toNot.beNil();
     expect(entity.camelizedChilds).to.contain(child1);
@@ -445,7 +451,7 @@
 
     expect(entity.differentChilds.count).to.equal(1);
 
-    SLEntity5Child6 *child1 = [SLEntity5Child6 objectWithRemoteIdentifier:@1 inManagedObjectContext:self.context];
+    SLEntity5Child6 *child1 = [SLEntity5Child6 objectWithRemoteIdentifier:@1];
 
     expect(child1).toNot.beNil();
     expect(entity.differentChilds).to.contain(child1);

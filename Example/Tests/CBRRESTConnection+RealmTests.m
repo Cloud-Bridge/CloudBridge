@@ -27,6 +27,7 @@
 
 @property (nonatomic, strong) CBRRESTConnection *connection;
 @property (nonatomic, strong) CBRRealmDatabaseAdapter *adapter;
+@property (nonatomic, strong) CBRThreadingEnvironment *environment;
 @end
 
 @implementation CBRRESTConnection_RealmTests
@@ -50,9 +51,14 @@
     RLMRealmConfiguration *configuration = [RLMRealmConfiguration defaultConfiguration];
     configuration.inMemoryIdentifier = self.testRun.test.name;
 
+    __block __weak CBRCloudBridge *bridge = nil;
     self.connection = [[CBRRESTConnection alloc] initWithPropertyMapping:propertyMapping sessionManager:self.mockedSessionManager];
-    self.adapter = [[CBRRealmDatabaseAdapter alloc] initWithConfiguration:configuration];
-    self.cloudBridge = [[CBRCloudBridge alloc] initWithCloudConnection:self.connection databaseAdapter:self.adapter];
+    self.adapter = [[CBRRealmDatabaseAdapter alloc] initWithConfiguration:configuration threadingEnvironment:^CBRThreadingEnvironment *{
+        return bridge.threadingEnvironment;
+    }];
+    self.environment = [[CBRThreadingEnvironment alloc] initWithRealmAdapter:self.adapter];
+    self.cloudBridge = [[CBRCloudBridge alloc] initWithCloudConnection:self.connection databaseAdapter:self.adapter threadingEnvironment:self.environment];
+    bridge = self.cloudBridge;
 
     [CBRRealmObject setCloudBridge:self.cloudBridge];
 }

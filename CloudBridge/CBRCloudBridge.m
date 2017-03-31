@@ -89,30 +89,6 @@
 
 @implementation CBRCloudBridge
 
-#pragma mark - Setters and getters
-
-- (NSManagedObjectContext *)mainThreadManagedObjectContext
-{
-    if ([self.databaseAdapter isKindOfClass:[CBRCoreDataDatabaseAdapter class]]) {
-        CBRCoreDataDatabaseAdapter *adapter = (CBRCoreDataDatabaseAdapter *)self.databaseAdapter;
-        return adapter.mainThreadContext;
-    }
-
-    [self doesNotRecognizeSelector:_cmd];
-    return nil;
-}
-
-- (NSManagedObjectContext *)backgroundThreadManagedObjectContext
-{
-    if ([self.databaseAdapter isKindOfClass:[CBRCoreDataDatabaseAdapter class]]) {
-        CBRCoreDataDatabaseAdapter *adapter = (CBRCoreDataDatabaseAdapter *)self.databaseAdapter;
-        return adapter.backgroundThreadContext;
-    }
-
-    [self doesNotRecognizeSelector:_cmd];
-    return nil;
-}
-
 #pragma mark - Initialization
 
 - (instancetype)init
@@ -122,20 +98,16 @@
 
 - (instancetype)initWithCloudConnection:(id<CBRCloudConnection>)cloudConnection
                         databaseAdapter:(id<CBRDatabaseAdapter>)databaseAdapter
+                   threadingEnvironment:(CBRThreadingEnvironment *)threadingEnvironment
 {
     NSParameterAssert(cloudConnection);
 
     if (self = [super init]) {
         _cloudConnection = cloudConnection;
         _databaseAdapter = databaseAdapter;
+        _threadingEnvironment = threadingEnvironment;
     }
     return self;
-}
-
-- (instancetype)initWithCloudConnection:(id<CBRCloudConnection>)cloudConnection coreDataStack:(CBRCoreDataStack *)coreDataStack
-{
-    CBRCoreDataDatabaseAdapter *adapter = [[CBRCoreDataDatabaseAdapter alloc] initWithCoreDataStack:coreDataStack];
-    return [self initWithCloudConnection:cloudConnection databaseAdapter:adapter];
 }
 
 #pragma mark - Instance methods
@@ -165,7 +137,7 @@
     _CBRCloudBridgePredicateDescription *description = [[_CBRCloudBridgePredicateDescription alloc] initWithPredicate:predicate forEntity:entityDescription cloudBridge:self parent:&parent];
 
     if (parent) {
-        assert([self.databaseAdapter hasPersistentObjects:@[ parent ]]);
+        assert([self.databaseAdapter hasPersistedObjects:@[ parent ]]);
     }
 
     [self.cloudConnection fetchCloudObjectsForEntity:entityDescription withPredicate:predicate userInfo:userInfo completionHandler:^(NSArray *fetchedObjects, NSError *error) {
@@ -176,7 +148,7 @@
             return;
         }
 
-        [self.databaseAdapter mutatePersistentObjects:@[] withBlock:^NSArray *(NSArray *persistentObjects) {
+        [self.databaseAdapter transactionWithObject:nil transaction:^id _Nullable(id  _Nullable object, dispatch_block_t  _Nonnull save) {
             NSMutableArray *parsedPersistentObjects = [NSMutableArray array];
             NSMutableArray *persistentObjectsIdentifiers = [NSMutableArray array];
 
@@ -189,7 +161,7 @@
 
             for (id<CBRCloudObject> cloudObject in fetchedObjects) {
                 id<CBRPersistentObject>persistentObject = [self.cloudConnection.objectTransformer persistentObjectFromCloudObject:cloudObject
-                                                                                                               forEntity:entityDescription];
+                                                                                                                        forEntity:entityDescription];
 
                 if (persistentObject) {
                     [parsedPersistentObjects addObject:persistentObject];
@@ -218,9 +190,9 @@
             }
             
             return parsedPersistentObjects;
-        } completion:^(NSArray *persistentObjects, NSError *error) {
+        } completion:^(id  _Nullable object, NSError * _Nullable error) {
             if (completionHandler) {
-                completionHandler(persistentObjects, error);
+                completionHandler(object, error);
             }
         }];
     }];
@@ -265,9 +237,10 @@
             [self.databaseAdapter saveChangesForPersistentObject:persistentObject];
         }
 
-        [self.databaseAdapter mutatePersistentObject:persistentObject withBlock:^(id<CBRPersistentObject> persistentObject) {
+        [self.databaseAdapter transactionWithObject:persistentObject transaction:^id _Nullable(id  _Nullable persistentObject, dispatch_block_t  _Nonnull save) {
             [self.cloudConnection.objectTransformer updatePersistentObject:persistentObject withPropertiesFromCloudObject:cloudObject];
-        } completion:^(id<CBRPersistentObject> persistentObject, NSError *error) {
+            return persistentObject;
+        } completion:^(id  _Nullable persistentObject, NSError * _Nullable error) {
             if (completionHandler) {
                 completionHandler(persistentObject, error);
             }
@@ -289,9 +262,10 @@
             return;
         }
 
-        [self.databaseAdapter mutatePersistentObject:persistentObject withBlock:^(id<CBRPersistentObject> persistentObject) {
+        [self.databaseAdapter transactionWithObject:persistentObject transaction:^id _Nullable(id  _Nullable persistentObject, dispatch_block_t  _Nonnull save) {
             [self.cloudConnection.objectTransformer updatePersistentObject:persistentObject withPropertiesFromCloudObject:cloudObject];
-        } completion:^(id<CBRPersistentObject> persistentObject, NSError *error) {
+            return persistentObject;
+        } completion:^(id  _Nullable persistentObject, NSError * _Nullable error) {
             if (completionHandler) {
                 completionHandler(persistentObject, error);
             }
@@ -314,9 +288,10 @@
             return;
         }
 
-        [self.databaseAdapter mutatePersistentObject:persistentObject withBlock:^(id<CBRPersistentObject> persistentObject) {
+        [self.databaseAdapter transactionWithObject:persistentObject transaction:^id _Nullable(id  _Nullable persistentObject, dispatch_block_t  _Nonnull save) {
             [self.cloudConnection.objectTransformer updatePersistentObject:persistentObject withPropertiesFromCloudObject:cloudObject];
-        } completion:^(id<CBRPersistentObject> persistentObject, NSError *error) {
+            return persistentObject;
+        } completion:^(id  _Nullable persistentObject, NSError * _Nullable error) {
             if (completionHandler) {
                 completionHandler(persistentObject, error);
             }
@@ -339,10 +314,10 @@
             return;
         }
 
-        [self.databaseAdapter mutatePersistentObjects:@[ persistentObject ] withBlock:^NSArray *(NSArray *persistentObjects) {
-            [self.databaseAdapter deletePersistentObjects:persistentObjects];
-            return @[];
-        } completion:^(NSArray *persistentObjects, NSError *error) {
+        [self.databaseAdapter transactionWithObject:persistentObject transaction:^id _Nullable(id  _Nullable persistentObject, dispatch_block_t  _Nonnull save) {
+            [self.databaseAdapter deletePersistentObjects:@[ persistentObject ]];
+            return nil;
+        } completion:^(id  _Nullable object, NSError * _Nullable error) {
             if (completionHandler) {
                 completionHandler(error);
             }

@@ -27,6 +27,8 @@
 #import <CloudBridge/CBRDatabaseAdapter.h>
 #import <CloudBridge/CBRPersistentObject.h>
 
+@class CBRThreadingEnvironment;
+
 
 
 @interface CBRRealmObject (CBRPersistentObject) <CBRPersistentObject>
@@ -58,10 +60,10 @@
 @interface CBRRealmDatabaseAdapter : NSObject <CBRDatabaseAdapter>
 
 @property (nonatomic, readonly) RLMRealm *realm;
-@property (nonatomic, readonly) dispatch_queue_t queue;
 @property (nonatomic, readonly) RLMRealmConfiguration *configuration;
+@property (nonatomic, readonly) CBRThreadingEnvironment *threadingEnvironment;
 
 - (instancetype)init NS_DESIGNATED_INITIALIZER UNAVAILABLE_ATTRIBUTE;
-- (instancetype)initWithConfiguration:(RLMRealmConfiguration *)configuration NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithConfiguration:(RLMRealmConfiguration *)configuration threadingEnvironment:(CBRThreadingEnvironment *(^)(void))threadingEnvironment NS_DESIGNATED_INITIALIZER;
 
 @end

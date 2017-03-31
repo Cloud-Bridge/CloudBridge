@@ -19,6 +19,7 @@
 @property (nonatomic, strong) CBROfflineCapableCloudBridge *cloudBridge;
 @property (nonatomic, strong) CBRTestConnection *connection;
 @property (nonatomic, strong) CBRCoreDataDatabaseAdapter *adapter;
+@property (nonatomic, strong) CBRThreadingEnvironment *environment;
 @end
 
 @implementation CBROfflineCapableCloudBridgeTests
@@ -27,9 +28,14 @@
 {
     [super setUp];
 
+    __block __weak CBRCloudBridge *bridge = nil;
     self.connection = [[CBRTestConnection alloc] init];
-    self.adapter = [[CBRCoreDataDatabaseAdapter alloc] initWithCoreDataStack:[CBRTestDataStore testStore]];
-    self.cloudBridge = [[CBROfflineCapableCloudBridge alloc] initWithCloudConnection:self.connection databaseAdapter:self.adapter];
+    self.adapter = [[CBRCoreDataDatabaseAdapter alloc] initWithStack:[CBRTestDataStore testStore] threadingEnvironment:^CBRThreadingEnvironment *{
+        return bridge.threadingEnvironment;
+    }];
+    self.environment = [[CBRThreadingEnvironment alloc] initWithCoreDataAdapter:self.adapter];
+    self.cloudBridge = [[CBROfflineCapableCloudBridge alloc] initWithCloudConnection:self.connection databaseAdapter:self.adapter threadingEnvironment:self.environment];
+    bridge = self.cloudBridge;
     [NSManagedObject setCloudBridge:self.cloudBridge];
 
     [self.cloudBridge setValue:@NO forKey:NSStringFromSelector(@selector(isRunningInOfflineMode))];

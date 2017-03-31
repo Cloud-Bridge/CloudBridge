@@ -28,6 +28,8 @@
 
 
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  @abstract  <#abstract comment#>
  */
@@ -38,22 +40,23 @@
 - (CBREntityDescription *)entityDescriptionForClass:(Class)persistentClass;
 - (CBRRelationshipDescription *)inverseRelationshipForEntity:(CBREntityDescription *)entity relationship:(CBRRelationshipDescription *)relationship;
 
-- (BOOL)hasPersistentObjects:(NSArray<id<CBRPersistentObject>> *)persistentObjects;
-- (id<CBRPersistentObject>)newMutablePersistentObjectOfType:(CBREntityDescription *)entityDescription;
+- (BOOL)hasPersistedObjects:(NSArray<id<CBRPersistentObject>> *)persistentObjects;
+- (__kindof id<CBRPersistentObject>)newMutablePersistentObjectOfType:(CBREntityDescription *)entityDescription save:(dispatch_block_t _Nonnull *_Nullable)saveBlock;
 
-- (id<CBRPersistentObject>)persistentObjectOfType:(CBREntityDescription *)entityDescription withPrimaryKey:(id)primaryKey;
+- (__kindof id<CBRPersistentObject>)persistentObjectOfType:(CBREntityDescription *)entityDescription withPrimaryKey:(id)primaryKey;
 
 - (NSDictionary *)indexedObjectsOfType:(CBREntityDescription *)entityDescription withValues:(NSSet *)values forAttribute:(NSString *)attribute;
 
 - (NSArray *)fetchObjectsOfType:(CBREntityDescription *)entityDescription withPredicate:(NSPredicate *)predicate;
 
-- (void)mutatePersistentObject:(id<CBRPersistentObject>)persistentObject
-                     withBlock:(void(^)(id<CBRPersistentObject> persistentObject))mutation
-                    completion:(void(^)(id<CBRPersistentObject> persistentObject, NSError *error))completion;
+- (void)transactionWithBlock:(void(^)(dispatch_block_t save))transaction;
+- (void)transactionWithBlock:(void(^)(dispatch_block_t save))transaction completion:(void(^_Nullable)(NSError *error))completion;
+- (void)transactionWithObject:(nullable id)object
+                  transaction:(id _Nullable(^)(id _Nullable object, dispatch_block_t save))transaction
+                   completion:(void(^_Nullable)(id _Nullable object, NSError * _Nullable error))completion;
 
-- (void)mutatePersistentObjects:(NSArray<id<CBRPersistentObject>> *)persistentObject
-                     withBlock:(NSArray *(^)(NSArray<id<CBRPersistentObject>> *persistentObjects))mutation
-                    completion:(void(^)(NSArray<id<CBRPersistentObject>> *persistentObjects, NSError *error))completion;
+- (void)unsafeTransactionWithObject:(nullable id)object transaction:(id _Nullable(^)(id _Nullable object, dispatch_block_t save))transaction;
+- (void)unsafeTransactionWithObject:(nullable id)object transaction:(id _Nullable(^)(id _Nullable object, dispatch_block_t save))transaction completion:(void(^_Nullable)(id _Nullable object))completion;
 
 - (void)deletePersistentObjects:(NSArray<id<CBRPersistentObject>> *)persistentObjects;
 
@@ -61,3 +64,5 @@
 - (void)saveChangesForPersistentObject:(id<CBRPersistentObject>)persistentObject;
 
 @end
+
+NS_ASSUME_NONNULL_END

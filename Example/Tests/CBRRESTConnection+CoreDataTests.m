@@ -24,6 +24,7 @@
 
 @property (nonatomic, strong) CBRRESTConnection *connection;
 @property (nonatomic, strong) CBRCoreDataDatabaseAdapter *adapter;
+@property (nonatomic, strong) CBRThreadingEnvironment *environment;
 @end
 
 @implementation CBRRESTConnection_CoreDataTests
@@ -44,9 +45,14 @@
 
     self.mockedSessionManager = OCMPartialMock(self.sessionManager);
 
+    __block __weak CBRCloudBridge *bridge = nil;
     self.connection = [[CBRRESTConnection alloc] initWithPropertyMapping:propertyMapping sessionManager:self.mockedSessionManager];
-    self.adapter = [[CBRCoreDataDatabaseAdapter alloc] initWithCoreDataStack:[CBRTestDataStore testStore]];
-    self.cloudBridge = [[CBRCloudBridge alloc] initWithCloudConnection:self.connection databaseAdapter:self.adapter];
+    self.adapter = [[CBRCoreDataDatabaseAdapter alloc] initWithStack:[CBRTestDataStore testStore] threadingEnvironment:^CBRThreadingEnvironment *{
+        return bridge.threadingEnvironment;
+    }];
+    self.environment = [[CBRThreadingEnvironment alloc] initWithCoreDataAdapter:self.adapter];
+    self.cloudBridge = [[CBRCloudBridge alloc] initWithCloudConnection:self.connection databaseAdapter:self.adapter threadingEnvironment:self.environment];
+    bridge = self.cloudBridge;
 
     [NSManagedObject setCloudBridge:self.cloudBridge];
 }

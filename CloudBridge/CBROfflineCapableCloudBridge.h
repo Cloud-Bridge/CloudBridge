@@ -42,7 +42,9 @@
 
 - (instancetype)init NS_DESIGNATED_INITIALIZER UNAVAILABLE_ATTRIBUTE;
 - (instancetype)initWithCloudConnection:(id<CBROfflineCapableCloudConnection>)cloudConnection
-                        databaseAdapter:(id<CBRDatabaseAdapter>)databaseAdapter NS_DESIGNATED_INITIALIZER;
+                        databaseAdapter:(id<CBRDatabaseAdapter>)databaseAdapter
+                   threadingEnvironment:(CBRThreadingEnvironment *)threadingEnvironment
+ NS_DESIGNATED_INITIALIZER;
 
 - (void)createPersistentObject:(id<CBROfflineCapablePersistentObject>)persistentObject
                   withUserInfo:(NSDictionary *)userInfo
@@ -55,13 +57,5 @@
 - (void)deletePersistentObject:(id<CBROfflineCapablePersistentObject>)persistentObject
                   withUserInfo:(NSDictionary *)userInfo
              completionHandler:(void(^)(NSError *error))completionHandler;
-
-@end
-
-
-
-@interface CBROfflineCapableCloudBridge (Deprecated)
-
-- (instancetype)initWithCloudConnection:(id<CBROfflineCapableCloudConnection>)cloudConnection coreDataStack:(CBRCoreDataStack *)coreDataStack DEPRECATED_ATTRIBUTE;
 
 @end

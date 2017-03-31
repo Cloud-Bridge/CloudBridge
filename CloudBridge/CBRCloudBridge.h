@@ -26,6 +26,8 @@
 #import <CloudBridge/CBRDatabaseAdapter.h>
 #import <CloudBridge/CBRCoreDataStack.h>
 
+@class CBRThreadingEnvironment;
+
 
 
 /**
@@ -35,12 +37,14 @@
 
 @property (nonatomic, readonly) id<CBRCloudConnection> cloudConnection;
 @property (nonatomic, readonly) id<CBRDatabaseAdapter> databaseAdapter;
+@property (nonatomic, readonly) CBRThreadingEnvironment *threadingEnvironment;
 
 @property (nonatomic, assign) BOOL transformsPersistentObjectsOnMainThread;
 
 - (instancetype)init NS_DESIGNATED_INITIALIZER UNAVAILABLE_ATTRIBUTE;
 - (instancetype)initWithCloudConnection:(id<CBRCloudConnection>)cloudConnection
-                        databaseAdapter:(id<CBRDatabaseAdapter>)databaseAdapter NS_DESIGNATED_INITIALIZER;
+                        databaseAdapter:(id<CBRDatabaseAdapter>)databaseAdapter
+                   threadingEnvironment:(CBRThreadingEnvironment *)threadingEnvironment NS_DESIGNATED_INITIALIZER;
 
 - (void)fetchPersistentObjectsOfClass:(Class)persistentClass
                     completionHandler:(void(^)(NSArray *fetchedObjects, NSError *error))completionHandler;
@@ -63,17 +67,5 @@
 - (void)reloadPersistentObject:(id<CBRPersistentObject>)persistentObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(id persistentObject, NSError *error))completionHandler;
 - (void)savePersistentObject:(id<CBRPersistentObject>)persistentObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(id persistentObject, NSError *error))completionHandler;
 - (void)deletePersistentObject:(id<CBRPersistentObject>)persistentObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(NSError *error))completionHandler;
-
-@end
-
-
-
-@interface CBRCloudBridge (Deprecated)
-
-@property (nonatomic, readonly) NSManagedObjectContext *mainThreadManagedObjectContext DEPRECATED_ATTRIBUTE;
-@property (nonatomic, readonly) NSManagedObjectContext *backgroundThreadManagedObjectContext DEPRECATED_ATTRIBUTE;
-
-@property (nonatomic, readonly) CBRCoreDataStack *coreDataStack UNAVAILABLE_ATTRIBUTE;
-- (instancetype)initWithCloudConnection:(id<CBRCloudConnection>)cloudConnection coreDataStack:(CBRCoreDataStack *)coreDataStack DEPRECATED_ATTRIBUTE;
 
 @end

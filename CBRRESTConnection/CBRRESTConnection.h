@@ -21,7 +21,7 @@
  THE SOFTWARE.
  */
 
-#import <CloudBridge/CloudBridge.h>
+#import <Foundation/Foundation.h>
 #import <AFNetworking/AFNetworking.h>
 
 #import <CloudBridge/CBRPropertyMapping.h>
@@ -34,11 +34,11 @@
 #import <CloudBridge/CBRAttributeDescription+CBRRESTConnection.h>
 #import <CloudBridge/CBRRelationshipDescription+CBRRESTConnection.h>
 
-#if __has_include(<CloudBridge/NSManagedObject+CBRRESTConnection.h>)
+#if CBRCoreDataAvailable
 #import <CloudBridge/NSManagedObject+CBRRESTConnection.h>
 #endif
 
-#if __has_include(<CloudBridge/CBRRealmObject+CBRRESTConnection.h>)
+#if CBRRealmAvailable
 #import <CloudBridge/CBRRealmObject+CBRRESTConnection.h>
 #endif
 
