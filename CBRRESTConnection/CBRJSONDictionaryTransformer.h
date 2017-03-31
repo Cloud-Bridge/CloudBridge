@@ -34,6 +34,7 @@
 /**
  Maps between `NSManagedObject` instances and `NSDictionary` instances.
  */
+__attribute__((objc_subclassing_restricted))
 @interface CBRJSONDictionaryTransformer : NSObject <CBRCloudObjectTransformer>
 
 /**

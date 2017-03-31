@@ -28,11 +28,35 @@
 #import "CBRCloudBridge.h"
 #import "CBREntityDescription.h"
 #import "CBREntityDescription+CBRCoreDataDatabaseAdapter.h"
-#import "CBRManagedObjectCache.h"
+#import "CBRPersistentObjectCache.h"
+
+static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSelector)
+{
+    Method origMethod = class_getInstanceMethod(class, originalSelector);
+    Method newMethod = class_getInstanceMethod(class, newSelector);
+    if(class_addMethod(class, originalSelector, method_getImplementation(newMethod), method_getTypeEncoding(newMethod))) {
+        class_replaceMethod(class, newSelector, method_getImplementation(origMethod), method_getTypeEncoding(origMethod));
+    } else {
+        method_exchangeImplementations(origMethod, newMethod);
+    }
+}
 
 
 
 @implementation NSManagedObject (CBRPersistentObject)
+
++ (void)load
+{
+    class_swizzleSelector(self, @selector(prepareForDeletion), @selector(__SLRESTfulCoreDataObjectCachePrepareForDeletion));
+}
+
+- (void)__SLRESTfulCoreDataObjectCachePrepareForDeletion
+{
+    [self __SLRESTfulCoreDataObjectCachePrepareForDeletion];
+
+    CBRCoreDataDatabaseAdapter *adapter = (CBRCoreDataDatabaseAdapter *)self.databaseAdapter;
+    [[adapter cacheForManagedObjectContext:self.managedObjectContext] removePersistentObject:self];
+}
 
 #pragma mark - CBRPersistentObject
 
@@ -249,6 +273,19 @@
     return self;
 }
 
+- (CBRPersistentObjectCache *)cacheForManagedObjectContext:(NSManagedObjectContext *)context
+{
+    @synchronized (context) {
+        if (objc_getAssociatedObject(context, _cmd)) {
+            return objc_getAssociatedObject(context, _cmd);
+        }
+
+        CBRPersistentObjectCache *cache = [[CBRPersistentObjectCache alloc] initWithDatabaseAdapter:self];
+        objc_setAssociatedObject(context, _cmd, cache, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        return cache;
+    }
+}
+
 #pragma mark - CBRDatabaseAdapter
 
 - (NSArray<CBREntityDescription *> *)entities
@@ -331,13 +368,13 @@
     NSString *attribute = [[NSClassFromString(entityDescription.name) cloudBridge].cloudConnection.objectTransformer primaryKeyOfEntitiyDescription:entityDescription];
     NSParameterAssert(attribute);
 
-    return [context.cloudBridgeCache objectOfType:entityDescription.name withValue:primaryKey forAttribute:attribute];
+    return [[self cacheForManagedObjectContext:context] objectOfType:entityDescription.name withValue:primaryKey forAttribute:attribute];
 }
 
 - (NSDictionary *)indexedObjectsOfType:(CBREntityDescription *)entityDescription withValues:(NSSet *)values forAttribute:(NSString *)attribute
 {
     NSManagedObjectContext *context = [NSThread currentThread].isMainThread ? self.stack.mainThreadManagedObjectContext : self.stack.backgroundThreadManagedObjectContext;
-    return [context.cloudBridgeCache indexedObjectsOfType:entityDescription.name withValues:values forAttribute:attribute];
+    return [[self cacheForManagedObjectContext:context] indexedObjectsOfType:entityDescription.name withValues:values forAttribute:attribute];
 }
 
 - (NSArray *)executeFetchRequest:(NSFetchRequest *)fetchRequest error:(NSError **)error

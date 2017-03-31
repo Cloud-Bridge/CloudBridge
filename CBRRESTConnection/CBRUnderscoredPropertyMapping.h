@@ -28,6 +28,7 @@
 /**
  Maps camelized objc properties onto underscored attributes.
  */
+__attribute__((objc_subclassing_restricted))
 @interface CBRUnderscoredPropertyMapping : NSObject <CBRPropertyMapping>
 
 /**

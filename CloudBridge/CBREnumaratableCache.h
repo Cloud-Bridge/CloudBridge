@@ -1,5 +1,5 @@
 /**
- CBRManagedObjectCache
+ CBRPersistentObjectCache
  Copyright (c) 2014 Oliver Letterer <oliver.letterer@gmail.com>, Sparrow-Labs
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,11 +21,14 @@
  THE SOFTWARE.
  */
 
+#import <Foundation/Foundation.h>
+
 
 
 /**
  NSCache subclass that is enumaratable.
  */
+__attribute__((objc_subclassing_restricted))
 @interface CBREnumaratableCache : NSCache <NSFastEnumeration>
 
 - (instancetype)init NS_DESIGNATED_INITIALIZER;

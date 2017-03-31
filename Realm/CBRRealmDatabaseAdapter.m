@@ -30,6 +30,50 @@
 #import "CBRThreadingEnvironment.h"
 #import "CBREntityDescription+Realm.h"
 
+static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSelector)
+{
+    Method origMethod = class_getInstanceMethod(class, originalSelector);
+    Method newMethod = class_getInstanceMethod(class, newSelector);
+    if(class_addMethod(class, originalSelector, method_getImplementation(newMethod), method_getTypeEncoding(newMethod))) {
+        class_replaceMethod(class, newSelector, method_getImplementation(origMethod), method_getTypeEncoding(origMethod));
+    } else {
+        method_exchangeImplementations(origMethod, newMethod);
+    }
+}
+
+
+
+@implementation RLMRealm (CBRRealmDatabaseAdapterHooks)
+
++ (void)load
+{
+    class_swizzleSelector(self, @selector(deleteObject:), @selector(__CBRRealmDatabaseAdapterHooksDeleteObject:));
+    class_swizzleSelector(self, @selector(deleteObjects:), @selector(__CBRRealmDatabaseAdapterHooksDeleteObjects:));
+}
+
+- (void)__CBRRealmDatabaseAdapterHooksDeleteObject:(CBRRealmObject *)object
+{
+    if ([object isKindOfClass:[CBRRealmObject class]]) {
+        CBRRealmDatabaseAdapter *adapter = object.databaseAdapter;
+        [[adapter cacheForRealm:object.realm] removePersistentObject:object];
+    }
+    [self __CBRRealmDatabaseAdapterHooksDeleteObject:object];
+}
+
+- (void)__CBRRealmDatabaseAdapterHooksDeleteObjects:(id)array
+{
+    for (CBRRealmObject *object in array) {
+        if ([object isKindOfClass:[CBRRealmObject class]]) {
+            CBRRealmDatabaseAdapter *adapter = object.databaseAdapter;
+            [[adapter cacheForRealm:object.realm] removePersistentObject:object];
+        }
+    }
+
+    [self __CBRRealmDatabaseAdapterHooksDeleteObjects:array];
+}
+
+@end
+
 @implementation CBRRelationshipDescription (CBRRealmDatabaseAdapter)
 
 - (void)_realmUpdateUserInfo
@@ -281,6 +325,21 @@
     return self;
 }
 
+- (CBRPersistentObjectCache *)cacheForRealm:(RLMRealm *)realm
+{
+    @synchronized (realm) {
+        if (objc_getAssociatedObject(realm, _cmd)) {
+            return objc_getAssociatedObject(realm, _cmd);
+        }
+
+        CBRPersistentObjectCache *cache = [[CBRPersistentObjectCache alloc] initWithDatabaseAdapter:self];
+        objc_setAssociatedObject(realm, _cmd, cache, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        return cache;
+    }
+}
+
+#pragma mark - CBRDatabaseAdapter
+
 - (NSArray<CBREntityDescription *> *)entities
 {
     NSMutableArray<CBREntityDescription *> *result = [NSMutableArray array];
@@ -380,7 +439,6 @@
     return result;
 }
 
-#warning cache
 - (id<CBRPersistentObject>)persistentObjectOfType:(CBREntityDescription *)entityDescription withPrimaryKey:(id)primaryKey
 {
     if (primaryKey == nil) {
@@ -391,23 +449,13 @@
     NSParameterAssert(attribute);
 
     RLMRealm *realm = self.realm;
-    return [NSClassFromString(entityDescription.name) objectsInRealm:realm where:@"%K == %@", attribute, primaryKey].firstObject;
+    return [[self cacheForRealm:realm] objectOfType:entityDescription.name withValue:primaryKey forAttribute:attribute];
 }
 
-#warning cache
 - (NSDictionary *)indexedObjectsOfType:(CBREntityDescription *)entityDescription withValues:(NSSet *)values forAttribute:(NSString *)attribute
 {
     RLMRealm *realm = self.realm;
-    RLMResults *results = [NSClassFromString(entityDescription.name) objectsInRealm:realm where:@"%K IN %@", attribute, values];
-
-    NSMutableDictionary *result = [NSMutableDictionary dictionary];
-    for (CBRRealmObject *object in results) {
-        if ([object valueForKey:attribute]) {
-            result[[object valueForKey:attribute]] = object;
-        }
-    }
-
-    return result;
+    return [[self cacheForRealm:realm] indexedObjectsOfType:entityDescription.name withValues:values forAttribute:attribute];
 }
 
 - (NSArray *)executeFetchRequest:(NSFetchRequest *)fetchRequest error:(NSError **)error
@@ -534,9 +582,7 @@
     RLMRealm *realm = self.realm;
 
     [self _transactionInRealm:realm block:^{
-        for (CBRRealmObject *object in persistentObjects) {
-            [realm deleteObject:object];
-        }
+        [realm deleteObjects:persistentObjects];
     }];
 }
 

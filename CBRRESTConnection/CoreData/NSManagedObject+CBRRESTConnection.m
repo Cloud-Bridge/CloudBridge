@@ -22,7 +22,7 @@
  */
 
 #import "NSManagedObject+CBRRESTConnection.h"
-#import <CloudBridge/CBRManagedObjectCache.h>
+#import <CloudBridge/CBRPersistentObjectCache.h>
 #import <CloudBridge/CBRRESTConnection.h>
 #import <CloudBridge/CBRCoreDataDatabaseAdapter.h>
 #import <CloudBridge/CBREntityDescription+CBRRESTConnection.h>

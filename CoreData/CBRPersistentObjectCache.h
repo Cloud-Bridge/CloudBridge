@@ -1,5 +1,5 @@
 /**
- CBRManagedObjectCache
+ CBRPersistentObjectCache
  Copyright (c) 2014 Oliver Letterer <oliver.letterer@gmail.com>, Sparrow-Labs
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,16 +21,20 @@
  THE SOFTWARE.
  */
 
+#import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+#import <CloudBridge/CBRDatabaseAdapter.h>
 
 
-@interface CBRManagedObjectCache : NSObject
 
-@property (nonatomic, weak) NSManagedObjectContext *managedObjectContext;
+__attribute__((objc_subclassing_restricted))
+@interface CBRPersistentObjectCache : NSObject
+
+@property (nonatomic, weak) id<CBRDatabaseAdapter> databaseAdapter;
 
 - (instancetype)init NS_DESIGNATED_INITIALIZER UNAVAILABLE_ATTRIBUTE;
-- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)managedObjectContext NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithDatabaseAdapter:(id<CBRDatabaseAdapter>)databaseAdapter NS_DESIGNATED_INITIALIZER;
 
 /**
  Returns a cached entity by attribute.
@@ -40,11 +44,6 @@
 - (id)objectOfType:(NSString *)type withValue:(id)value forAttribute:(NSString *)attribute;
 
 /**
- Convenience method around `objectOfType:withValue:forAttribute:`
- */
-- (id)objectOfClass:(Class)class withValue:(id)value forAttribute:(SEL)attribute;
-
-/**
  Caches and fetches multiple objects where `attribute IN values`.
 
  @param type `managedObjectContext.persistentStoreCoordinator.managedObjectModel.entitiesByName` must return a valid entity for this type.
@@ -52,21 +51,8 @@
 - (NSDictionary *)indexedObjectsOfType:(NSString *)type withValues:(NSSet *)values forAttribute:(NSString *)attribute;
 
 /**
- Convenience method around `objectOfType:withValue:forAttribute:`
- */
-- (NSDictionary *)indexedObjectsOfClass:(Class)class withValues:(NSSet *)values forAttribute:(SEL)attribute;
-
-/**
  Removes an object from the cache.
  */
-- (void)removeManagedObject:(NSManagedObject *)managedObject;
-
-@end
-
-
-
-@interface NSManagedObjectContext (CBRManagedObjectCache)
-
-@property (nonatomic, readonly) CBRManagedObjectCache *cloudBridgeCache;
+- (void)removePersistentObject:(id<CBRPersistentObject>)managedObject;
 
 @end

@@ -54,6 +54,7 @@ extern NSString * const CBRRESTConnectionUserInfoURLOverrideKey;
  * `requestSerializer` defaults to `AFJSONRequestSerializer` and `responseSerializer` to `AFJSONResponseSerializer`.
  * CRUD accessors require `restBaseURL` to be set on the corresponding `NSEntityDescription`.
  */
+__attribute__((objc_subclassing_restricted))
 @interface CBRRESTConnection : NSObject <CBRCloudConnection>
 
 @property (nonatomic, readonly) AFHTTPSessionManager *sessionManager;

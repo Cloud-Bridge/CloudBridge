@@ -60,6 +60,7 @@ typedef NS_ENUM(NSInteger, CBRThread) {
 
 NS_ASSUME_NONNULL_BEGIN
 
+__attribute__((objc_subclassing_restricted))
 @interface CBRThreadingEnvironment : NSObject
 
 #if CBRRealmAvailable

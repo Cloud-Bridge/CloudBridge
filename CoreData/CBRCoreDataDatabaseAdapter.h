@@ -26,7 +26,7 @@
 #import <CloudBridge/CBRDatabaseAdapter.h>
 #import <CloudBridge/CBRPersistentObject.h>
 
-@class CBRThreadingEnvironment;
+@class CBRThreadingEnvironment, CBRPersistentObjectCache;
 
 
 
@@ -56,6 +56,7 @@
 /**
  @abstract  <#abstract comment#>
  */
+__attribute__((objc_subclassing_restricted))
 @interface CBRCoreDataDatabaseAdapter : NSObject <CBRDatabaseAdapter>
 
 @property (nonatomic, readonly) CBRCoreDataStack *stack;
@@ -63,5 +64,7 @@
 
 - (instancetype)init NS_DESIGNATED_INITIALIZER UNAVAILABLE_ATTRIBUTE;
 - (instancetype)initWithStack:(CBRCoreDataStack *)stack threadingEnvironment:(CBRThreadingEnvironment *(^)(void))threadingEnvironment NS_DESIGNATED_INITIALIZER;
+
+- (CBRPersistentObjectCache *)cacheForManagedObjectContext:(NSManagedObjectContext *)context;
 
 @end

@@ -1,5 +1,5 @@
 /**
- CBRManagedObjectCache
+ CBRPersistentObjectCache
  Copyright (c) 2014 Oliver Letterer <oliver.letterer@gmail.com>, Sparrow-Labs
 
  Permission is hereby granted, free of charge, to any person obtaining a copy

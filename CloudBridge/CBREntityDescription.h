@@ -32,6 +32,7 @@ typedef NS_ENUM(NSInteger, CBRAttributeType) {
 
 
 
+__attribute__((objc_subclassing_restricted))
 @interface CBRAttributeDescription : NSObject <CBRPropertyDescription>
 
 @property (nonatomic, strong) NSString *name;
@@ -47,6 +48,7 @@ typedef NS_ENUM(NSInteger, CBRAttributeType) {
 
 
 
+__attribute__((objc_subclassing_restricted))
 @interface CBRRelationshipDescription : NSObject <CBRPropertyDescription>
 
 @property (nonatomic, strong) NSString *entityName;
@@ -71,6 +73,7 @@ typedef NS_ENUM(NSInteger, CBRAttributeType) {
 
 
 
+__attribute__((objc_subclassing_restricted))
 @interface CBREntityDescription : NSObject
 
 @property (nonatomic, strong) NSString *name;

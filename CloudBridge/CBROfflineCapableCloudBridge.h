@@ -30,6 +30,7 @@
 /**
  Entities which should benifit from the offline mode must conform to the `CBROfflineCapablePersistentObject` protocol.
  */
+__attribute__((objc_subclassing_restricted))
 @interface CBROfflineCapableCloudBridge : CBRCloudBridge
 
 @property (nonatomic, readonly) BOOL isRunningInOfflineMode;

@@ -1,5 +1,5 @@
 /**
- CBRManagedObjectCache
+ CBRPersistentObjectCache
  Copyright (c) 2014 Oliver Letterer <oliver.letterer@gmail.com>, Sparrow-Labs
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,44 +23,19 @@
 
 @import ObjectiveC.runtime;
 
-#import "CBRManagedObjectCache.h"
-#import <CBREnumaratableCache.h>
-
-static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSelector)
-{
-    Method origMethod = class_getInstanceMethod(class, originalSelector);
-    Method newMethod = class_getInstanceMethod(class, newSelector);
-    if(class_addMethod(class, originalSelector, method_getImplementation(newMethod), method_getTypeEncoding(newMethod))) {
-        class_replaceMethod(class, newSelector, method_getImplementation(origMethod), method_getTypeEncoding(origMethod));
-    } else {
-        method_exchangeImplementations(origMethod, newMethod);
-    }
-}
-
-@implementation NSManagedObject (CBRManagedObjectCache)
-
-+ (void)load
-{
-    class_swizzleSelector(self, @selector(prepareForDeletion), @selector(__SLRESTfulCoreDataObjectCachePrepareForDeletion));
-}
-
-- (void)__SLRESTfulCoreDataObjectCachePrepareForDeletion
-{
-    [self __SLRESTfulCoreDataObjectCachePrepareForDeletion];
-    [self.managedObjectContext.cloudBridgeCache removeManagedObject:self];
-}
-
-@end
+#import "CBRPersistentObjectCache.h"
+#import "CBREnumaratableCache.h"
+#import "CBRCoreDataDatabaseAdapter.h"
 
 
 
-@interface CBRManagedObjectCache ()
+@interface CBRPersistentObjectCache ()
 @property (nonatomic, strong) CBREnumaratableCache *internalCache;
 @end
 
 
 
-@implementation CBRManagedObjectCache
+@implementation CBRPersistentObjectCache
 
 #pragma mark - Initialization
 
@@ -69,10 +44,10 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
     return [super init];
 }
 
-- (id)initWithManagedObjectContext:(NSManagedObjectContext *)context
+- (id)initWithDatabaseAdapter:(id<CBRDatabaseAdapter>)databaseAdapter
 {
     if (self = [super init]) {
-        _managedObjectContext = context;
+        _databaseAdapter = databaseAdapter;
         _internalCache = [[CBREnumaratableCache alloc] init];
     }
     return self;
@@ -82,8 +57,7 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
 
 - (id)objectOfType:(NSString *)type withValue:(id)value forAttribute:(NSString *)attribute
 {
-    NSManagedObjectContext *context = self.managedObjectContext;
-    NSParameterAssert(context.persistentStoreCoordinator.managedObjectModel.entitiesByName[type]);
+    assert([self.databaseAdapter entityDescriptionForClass:NSClassFromString(type)]);
     if (!value) {
         return nil;
     }
@@ -98,7 +72,7 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
     fetchRequest.fetchLimit = 1;
 
     NSError *error = nil;
-    NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+    NSArray *fetchedObjects = [self.databaseAdapter executeFetchRequest:fetchRequest error:&error];
     NSAssert(error == nil, @"error fetching data: %@", error);
 
     if (fetchedObjects.count > 0) {
@@ -110,15 +84,9 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
     return nil;
 }
 
-- (id)objectOfClass:(Class)class withValue:(id)value forAttribute:(SEL)attribute
-{
-    return [self objectOfType:NSStringFromClass(class) withValue:value forAttribute:NSStringFromSelector(attribute)];
-}
-
 - (NSDictionary *)indexedObjectsOfType:(NSString *)type withValues:(NSSet *)values forAttribute:(NSString *)attribute
 {
-    NSManagedObjectContext *context = self.managedObjectContext;
-    NSParameterAssert(context.persistentStoreCoordinator.managedObjectModel.entitiesByName[type]);
+    assert([self.databaseAdapter entityDescriptionForClass:NSClassFromString(type)]);
     if (values.count == 0) {
         return @{};
     }
@@ -141,10 +109,10 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
     request.predicate = [NSPredicate predicateWithFormat:@"%K IN %@", attribute, valuesToFetch];
 
     NSError *error = nil;
-    NSArray *fetchedObjects = [context executeFetchRequest:request error:&error];
+    NSArray *fetchedObjects = [self.databaseAdapter executeFetchRequest:request error:&error];
     NSAssert(error == nil, @"error while fetching: %@", error);
 
-    for (NSManagedObject *managedObject in fetchedObjects) {
+    for (id managedObject in fetchedObjects) {
         id value = [managedObject valueForKey:attribute];
         NSString *cacheKey = [NSString stringWithFormat:@"%@#%@", type, value];
 
@@ -155,17 +123,12 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
     return [indexedObjects copy];
 }
 
-- (NSDictionary *)indexedObjectsOfClass:(Class)class withValues:(NSSet *)values forAttribute:(SEL)attribute
-{
-    return [self indexedObjectsOfType:NSStringFromClass(class) withValues:values forAttribute:NSStringFromSelector(attribute)];
-}
-
-- (void)removeManagedObject:(NSManagedObject *)managedObject
+- (void)removePersistentObject:(id<CBRPersistentObject>)managedObject
 {
     NSMutableSet *keysToRemove = [NSMutableSet set];
 
     for (id key in self.internalCache) {
-        if ([self.internalCache objectForKey:key]) {
+        if ([self.internalCache objectForKey:key] == managedObject) {
             [keysToRemove addObject:key];
         }
     }
@@ -176,23 +139,5 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
 }
 
 #pragma mark - Private category implementation ()
-
-@end
-
-
-
-@implementation NSManagedObjectContext (CBRManagedObjectCache)
-
-- (CBRManagedObjectCache *)cloudBridgeCache
-{
-    CBRManagedObjectCache *cache = objc_getAssociatedObject(self, _cmd);
-
-    if (!cache) {
-        cache = [[CBRManagedObjectCache alloc] initWithManagedObjectContext:self];
-        objc_setAssociatedObject(self, _cmd, cache, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    }
-
-    return cache;
-}
 
 @end

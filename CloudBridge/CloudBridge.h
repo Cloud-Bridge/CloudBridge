@@ -45,7 +45,7 @@
 
 #if CBRCoreDataAvailable
 #import <CloudBridge/CBRCoreDataStack.h>
-#import <CloudBridge/CBRManagedObjectCache.h>
+#import <CloudBridge/CBRPersistentObjectCache.h>
 #import <CloudBridge/CBRCoreDataDatabaseAdapter.h>
 #endif
 
