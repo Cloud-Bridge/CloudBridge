@@ -34,19 +34,20 @@
 #import <CloudBridge/CBRCloudBridge.h>
 #import <CloudBridge/CBROfflineCapableCloudBridge.h>
 
+#import <CloudBridge/CBRPersistentStoreInterface.h>
 #import <CloudBridge/CBRDatabaseAdapter.h>
 #import <CloudBridge/CBRCloudObjectTransformer.h>
 #import <CloudBridge/CBRThreadingEnvironment.h>
+#import <CloudBridge/CBRPersistentObjectCache.h>
 
 #if CBRRealmAvailable
 #import <CloudBridge/CBRRealmObject.h>
-#import <CloudBridge/CBRRealmDatabaseAdapter.h>
+#import <CloudBridge/CBRRealmInterface.h>
 #endif
 
 #if CBRCoreDataAvailable
 #import <CloudBridge/CBRCoreDataStack.h>
-#import <CloudBridge/CBRPersistentObjectCache.h>
-#import <CloudBridge/CBRCoreDataDatabaseAdapter.h>
+#import <CloudBridge/CBRCoreDataInterface.h>
 #endif
 
 #if __has_include(<CloudBridge/CBRRESTConnection.h>)

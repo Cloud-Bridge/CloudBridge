@@ -7,16 +7,16 @@
 //
 
 #import "CBREntityDescription+Realm.h"
-#import "CBRRealmDatabaseAdapter.h"
+#import "CBRRealmInterface.h"
 #import "CBRRealmObject.h"
 
 
 
 @implementation CBRRelationshipDescription (Realm)
 
-- (instancetype)initWithDatabaseAdapter:(CBRRealmDatabaseAdapter *)databaseAdapter schema:(RLMObjectSchema *)schema property:(RLMProperty *)property
+- (instancetype)initWithInterface:(id<CBRPersistentStoreInterface>)interface schema:(RLMObjectSchema *)schema property:(RLMProperty *)property
 {
-    if (self = [self initWithDatabaseAdapter:databaseAdapter]) {
+    if (self = [self initWithInterface:interface]) {
         self.entityName = schema.className;
 
         self.name = property.name;
@@ -34,11 +34,11 @@
 
 @implementation CBRAttributeDescription (Realm)
 
-- (instancetype)initWithDatabaseAdapter:(CBRRealmDatabaseAdapter *)databaseAdapter schema:(RLMObjectSchema *)schema property:(RLMProperty *)property
+- (instancetype)initWithInterface:(id<CBRPersistentStoreInterface>)interface schema:(RLMObjectSchema *)schema property:(RLMProperty *)property
 {
     NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithDictionary:[NSClassFromString(schema.className) propertyUserInfo][property.name]];
 
-    if (self = [self initWithDatabaseAdapter:databaseAdapter]) {
+    if (self = [self initWithInterface:interface]) {
         self.name = property.name;
         self.userInfo = userInfo;
 
@@ -84,9 +84,9 @@
     NSAssert([RLMObjectSchema instancesRespondToSelector:NSSelectorFromString(@"computedProperties")], @"RLMObjectSchema is expected to return computedProperties");
 }
 
-- (instancetype)initWithDatabaseAdapter:(CBRRealmDatabaseAdapter *)databaseAdapter realmObjectSchema:(RLMObjectSchema *)schema
+- (instancetype)initWithInterface:(id<CBRPersistentStoreInterface>)interface realmObjectSchema:(RLMObjectSchema *)schema
 {
-    if (self = [self initWithDatabaseAdapter:databaseAdapter]) {
+    if (self = [self initWithInterface:interface]) {
         self.name = schema.className;
         self.userInfo = [NSClassFromString(schema.className) userInfo];
         self.subentityNames = @[];
@@ -99,11 +99,11 @@
                 case RLMPropertyTypeObject:
                 case RLMPropertyTypeArray:
                 case RLMPropertyTypeLinkingObjects:
-                    [relationships addObject:[[CBRRelationshipDescription alloc] initWithDatabaseAdapter:databaseAdapter schema:schema property:property]];
+                    [relationships addObject:[[CBRRelationshipDescription alloc] initWithInterface:interface schema:schema property:property]];
                     break;
                     
                 default:
-                    [attributes addObject:[[CBRAttributeDescription alloc] initWithDatabaseAdapter:databaseAdapter schema:schema property:property]];
+                    [attributes addObject:[[CBRAttributeDescription alloc] initWithInterface:interface schema:schema property:property]];
                     break;
             }
         }

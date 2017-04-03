@@ -23,7 +23,7 @@
 
 #import "CBRRealmObject+CBRRESTConnection.h"
 #import "CBRRESTConnection.h"
-#import "CBRRealmDatabaseAdapter.h"
+#import "CBRRealmInterface.h"
 
 
 

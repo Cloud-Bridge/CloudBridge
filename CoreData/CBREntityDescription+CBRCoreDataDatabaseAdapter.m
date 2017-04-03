@@ -1,18 +1,18 @@
 //
-//  CBREntityDescription+CBRCoreDataDatabaseAdapter.m
+//  CBREntityDescription+CBRCoreDataInterface.m
 //  Pods
 //
 //  Created by Oliver Letterer.
 //  Copyright (c) 2015 __MyCompanyName__. All rights reserved.
 //
 
-#import "CBREntityDescription+CBRCoreDataDatabaseAdapter.h"
+#import "CBREntityDescription+CBRCoreDataInterface.h"
 
-@implementation CBRAttributeDescription (CBRCoreDataDatabaseAdapter)
+@implementation CBRAttributeDescription (CBRCoreDataInterface)
 
-- (instancetype)initWithDatabaseAdapter:(id<CBRDatabaseAdapter>)databaseAdapter coreDataAttributeDescription:(NSAttributeDescription *)attributeDescription
+- (instancetype)initWithInterface:(id<CBRPersistentStoreInterface>)interface coreDataAttributeDescription:(NSAttributeDescription *)attributeDescription
 {
-    if (self = [self initWithDatabaseAdapter:databaseAdapter]) {
+    if (self = [self initWithInterface:interface]) {
         self.name = attributeDescription.name;
         self.userInfo = attributeDescription.userInfo;
 
@@ -54,9 +54,9 @@
 
 
 
-@implementation CBRRelationshipDescription (CBRCoreDataDatabaseAdapter)
+@implementation CBRRelationshipDescription (CBRCoreDataInterface)
 
-- (instancetype)initWithDatabaseAdapter:(id<CBRDatabaseAdapter>)databaseAdapter coreDataRelationshipDescription:(NSRelationshipDescription *)relationshipDescription
+- (instancetype)initWithInterface:(id<CBRPersistentStoreInterface>)interface coreDataRelationshipDescription:(NSRelationshipDescription *)relationshipDescription
 {
     NSAssert(relationshipDescription.inverseRelationship != nil, @"No inverseRelationship found for %@", relationshipDescription);
     NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithDictionary:relationshipDescription.userInfo];
@@ -65,7 +65,7 @@
         userInfo[@"restBaseURL"] = relationshipDescription.inverseRelationship.userInfo[@"restBaseURL"];
     }
 
-    if (self = [self initWithDatabaseAdapter:databaseAdapter]) {
+    if (self = [self initWithInterface:interface]) {
         self.entityName = relationshipDescription.entity.name;
         
         self.name = relationshipDescription.name;
@@ -81,24 +81,24 @@
 
 
 
-@implementation CBREntityDescription (CBRCoreDataDatabaseAdapter)
+@implementation CBREntityDescription (CBRCoreDataInterface)
 
-- (instancetype)initWithDatabaseAdapter:(id<CBRDatabaseAdapter>)databaseAdapter coreDataEntityDescription:(NSEntityDescription *)entityDescription
+- (instancetype)initWithInterface:(id<CBRPersistentStoreInterface>)interface coreDataEntityDescription:(NSEntityDescription *)entityDescription
 {
-    if (self = [self initWithDatabaseAdapter:databaseAdapter]) {
+    if (self = [self initWithInterface:interface]) {
         self.name = entityDescription.name;
         self.userInfo = entityDescription.userInfo;
         self.subentityNames = entityDescription.subentitiesByName.allKeys;
 
         NSMutableArray *attributes = [NSMutableArray array];
         for (NSAttributeDescription *attributeDescription in entityDescription.attributesByName.allValues) {
-            [attributes addObject:[[CBRAttributeDescription alloc] initWithDatabaseAdapter:databaseAdapter coreDataAttributeDescription:attributeDescription] ];
+            [attributes addObject:[[CBRAttributeDescription alloc] initWithInterface:interface coreDataAttributeDescription:attributeDescription] ];
         }
         self.attributes = attributes.copy;
 
         NSMutableArray *relationships = [NSMutableArray array];
         for (NSRelationshipDescription *relationshipDescription in entityDescription.relationshipsByName.allValues) {
-            [relationships addObject:[[CBRRelationshipDescription alloc] initWithDatabaseAdapter:databaseAdapter coreDataRelationshipDescription:relationshipDescription] ];
+            [relationships addObject:[[CBRRelationshipDescription alloc] initWithInterface:interface coreDataRelationshipDescription:relationshipDescription] ];
         }
         self.relationships = relationships.copy;
     }

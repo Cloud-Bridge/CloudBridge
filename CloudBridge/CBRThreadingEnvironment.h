@@ -25,11 +25,11 @@
 #import <CloudBridge/CBRDefines.h>
 
 #if CBRCoreDataAvailable
-#import <CloudBridge/CBRCoreDataDatabaseAdapter.h>
+#import <CloudBridge/CBRCoreDataInterface.h>
 #endif
 
 #if CBRRealmAvailable
-#import <CloudBridge/CBRRealmDatabaseAdapter.h>
+#import <CloudBridge/CBRRealmInterface.h>
 #endif
 
 typedef NS_ENUM(NSInteger, CBRThread) {
@@ -64,17 +64,17 @@ __attribute__((objc_subclassing_restricted))
 @interface CBRThreadingEnvironment : NSObject
 
 #if CBRRealmAvailable
-@property (nonatomic, nullable, readonly) CBRRealmDatabaseAdapter *realmAdapter;
-- (instancetype)initWithRealmAdapter:(CBRRealmDatabaseAdapter *)realmAdapter NS_DESIGNATED_INITIALIZER;
+@property (nonatomic, nullable, readonly) CBRRealmInterface *realmAdapter;
+- (instancetype)initWithRealmAdapter:(CBRRealmInterface *)realmAdapter NS_DESIGNATED_INITIALIZER;
 #endif
 
 #if CBRCoreDataAvailable
-@property (nonatomic, nullable, readonly) CBRCoreDataDatabaseAdapter *coreDataAdapter;
-- (instancetype)initWithCoreDataAdapter:(CBRCoreDataDatabaseAdapter *)coreDataAdapter NS_DESIGNATED_INITIALIZER;
+@property (nonatomic, nullable, readonly) CBRCoreDataInterface *coreDataAdapter;
+- (instancetype)initWithCoreDataAdapter:(CBRCoreDataInterface *)coreDataAdapter NS_DESIGNATED_INITIALIZER;
 #endif
 
 #if CBRRealmAvailable && CBRCoreDataAvailable
-- (instancetype)initWithCoreDataAdapter:(CBRCoreDataDatabaseAdapter *)coreDataAdapter realmAdapter:(CBRRealmDatabaseAdapter *)realmAdapter NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithCoreDataAdapter:(CBRCoreDataInterface *)coreDataAdapter realmAdapter:(CBRRealmInterface *)realmAdapter NS_DESIGNATED_INITIALIZER;
 #endif
 
 @property (nonatomic, nullable, readonly) dispatch_queue_t queue;

@@ -24,10 +24,10 @@
 #import <objc/runtime.h>
 
 #import "CBRThreadingEnvironment.h"
-#import "CBRCoreDataDatabaseAdapter.h"
+#import "CBRCoreDataInterface.h"
 #import "CBRCloudBridge.h"
 #import "CBREntityDescription.h"
-#import "CBREntityDescription+CBRCoreDataDatabaseAdapter.h"
+#import "CBREntityDescription+CBRCoreDataInterface.h"
 #import "CBRPersistentObjectCache.h"
 
 static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSelector)
@@ -54,7 +54,8 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
 {
     [self __SLRESTfulCoreDataObjectCachePrepareForDeletion];
 
-    CBRCoreDataDatabaseAdapter *adapter = (CBRCoreDataDatabaseAdapter *)self.databaseAdapter;
+    CBRCoreDataInterface *adapter = (CBRCoreDataInterface *)self.databaseAdapter.interface;
+    assert([adapter isKindOfClass:[CBRCoreDataInterface class]] || !adapter);
     [[adapter cacheForManagedObjectContext:self.managedObjectContext] removePersistentObject:self];
 }
 
@@ -84,19 +85,19 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
     return [self.class cloudBridge];
 }
 
-+ (id<CBRDatabaseAdapter>)databaseAdapter
++ (CBRDatabaseAdapter *)databaseAdapter
 {
     return [self cloudBridge].databaseAdapter;
 }
 
-- (id<CBRDatabaseAdapter>)databaseAdapter
+- (CBRDatabaseAdapter *)databaseAdapter
 {
     return [self cloudBridge].databaseAdapter;
 }
 
 + (CBREntityDescription *)cloudBridgeEntityDescription
 {
-    return [[self cloudBridge].databaseAdapter entityDescriptionForClass:self];
+    return [self cloudBridge].databaseAdapter.entitiesByName[NSStringFromClass(self)];
 }
 
 - (CBREntityDescription *)cloudBridgeEntityDescription
@@ -122,10 +123,10 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
     return [[self cloudBridge].databaseAdapter indexedObjectsOfType:entityDescription withValues:[NSSet setWithArray:identifiers] forAttribute:attribute];
 }
 
-+ (instancetype)newWithBlock:(dispatch_block_t *)saveBlock
++ (instancetype)newCloudBrideObject
 {
     CBREntityDescription *entityDescription = [self cloudBridgeEntityDescription];
-    return [[self cloudBridge].databaseAdapter newMutablePersistentObjectOfType:entityDescription save:saveBlock];
+    return [[self cloudBridge].databaseAdapter newMutablePersistentObjectOfType:entityDescription];
 }
 
 + (void)fetchObjectsMatchingPredicate:(NSPredicate *)predicate
@@ -231,7 +232,7 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
 
 + (instancetype)persistentObjectFromCloudObject:(id<CBRCloudObject>)cloudObject
 {
-    CBREntityDescription *entity = [[self cloudBridge].databaseAdapter entityDescriptionForClass:self.class];
+    CBREntityDescription *entity = [self cloudBridgeEntityDescription];
     return (id)[[self cloudBridge].cloudConnection.objectTransformer persistentObjectFromCloudObject:cloudObject forEntity:entity];
 }
 
@@ -239,36 +240,40 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
 
 
 
-@interface CBRCoreDataDatabaseAdapter ()
+@interface CBRCoreDataInterface () <_CBRPersistentStoreInterfaceInternal>
 
-@property (nonatomic, readonly) NSMutableDictionary<NSString *, CBREntityDescription *> *entitesByName;
 @property (nonatomic, readonly) NSManagedObjectModel *managedObjectModel;
-@property (nonatomic, readonly) CBRThreadingEnvironment *(^threadingEnvironmentBlock)(void);
 
 @end
 
-@implementation CBRCoreDataDatabaseAdapter
-
-- (CBRThreadingEnvironment *)threadingEnvironment
-{
-    CBRThreadingEnvironment *threadingEnvironment = self.threadingEnvironmentBlock();
-    assert(threadingEnvironment.coreDataAdapter != nil);
-
-    return threadingEnvironment;
-}
+@implementation CBRCoreDataInterface
+@synthesize entities = _entities, entitiesByName = _entitiesByName;
 
 - (instancetype)init
 {
     return [super init];
 }
 
-- (instancetype)initWithStack:(CBRCoreDataStack *)stack threadingEnvironment:(CBRThreadingEnvironment *(^)(void))threadingEnvironment
+- (instancetype)initWithStack:(CBRCoreDataStack *)stack
 {
     if (self = [super init]) {
         _stack = stack;
-        _entitesByName = [NSMutableDictionary dictionary];
         _managedObjectModel = stack.persistentStoreCoordinator.managedObjectModel;
-        _threadingEnvironmentBlock = threadingEnvironment;
+
+        NSMutableArray<CBREntityDescription *> *result = [NSMutableArray array];
+
+        for (NSEntityDescription *entity in self.managedObjectModel.entities) {
+            [result addObject:[[CBREntityDescription alloc] initWithInterface:self coreDataEntityDescription:entity]];
+        }
+
+        _entities = result.copy;
+
+        NSMutableDictionary<NSString *, CBREntityDescription *> *entitiesByName = [NSMutableDictionary dictionary];
+        for (CBREntityDescription *description in _entities) {
+            entitiesByName[description.name] = description;
+        }
+
+        _entitiesByName = entitiesByName.copy;
     }
     return self;
 }
@@ -280,59 +285,13 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
             return objc_getAssociatedObject(context, _cmd);
         }
 
-        CBRPersistentObjectCache *cache = [[CBRPersistentObjectCache alloc] initWithDatabaseAdapter:self];
+        CBRPersistentObjectCache *cache = [[CBRPersistentObjectCache alloc] initWithInterface:self];
         objc_setAssociatedObject(context, _cmd, cache, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         return cache;
     }
 }
 
-#pragma mark - CBRDatabaseAdapter
-
-- (NSArray<CBREntityDescription *> *)entities
-{
-    NSMutableArray<CBREntityDescription *> *result = [NSMutableArray array];
-
-    for (NSEntityDescription *entity in self.managedObjectModel.entities) {
-        [result addObject:[self entityDescriptionForClass:NSClassFromString(entity.managedObjectClassName)]];
-    }
-
-    return result;
-}
-
-- (CBREntityDescription *)entityDescriptionForClass:(Class)persistentClass
-{
-    @synchronized(self) {
-        NSString *name = NSStringFromClass(persistentClass);
-        if (self.entitesByName[name]) {
-            return self.entitesByName[name];
-        }
-
-        NSEntityDescription *entity = self.managedObjectModel.entitiesByName[name];
-        CBREntityDescription *result = [[CBREntityDescription alloc] initWithDatabaseAdapter:self coreDataEntityDescription:entity];
-        self.entitesByName[name] = result;
-        return result;
-    }
-}
-
-- (CBRRelationshipDescription *)inverseRelationshipForEntity:(CBREntityDescription *)entity relationship:(CBRRelationshipDescription *)relationship
-{
-    NSRelationshipDescription *relationshipDescription = self.managedObjectModel.entitiesByName[entity.name].relationshipsByName[relationship.name];
-    NSParameterAssert(relationshipDescription);
-
-    NSRelationshipDescription *inverseRelationship = relationshipDescription.inverseRelationship;
-    NSParameterAssert(inverseRelationship);
-
-    return [self entityDescriptionForClass:NSClassFromString(relationship.destinationEntityName)].relationshipsByName[inverseRelationship.name];
-}
-
-- (void)saveChangesForPersistentObject:(NSManagedObject *)persistentObject
-{
-    if (persistentObject.hasChanges || persistentObject.isInserted) {
-        NSError *saveError = nil;
-        [persistentObject.managedObjectContext save:&saveError];
-        NSCAssert(saveError == nil, @"error saving managed object context: %@", saveError);
-    }
-}
+#pragma mark - _CBRPersistentStoreInterfaceInternal
 
 - (BOOL)hasPersistedObjects:(NSArray<NSManagedObject *> *)persistentObjects
 {
@@ -345,139 +304,59 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
     return YES;
 }
 
-- (__kindof id<CBRPersistentObject>)newMutablePersistentObjectOfType:(CBREntityDescription *)entityDescription save:(dispatch_block_t *)saveBlock
+- (BOOL)saveChangedForPersistentObject:(NSManagedObject *)persistentObject error:(NSError **)error
+{
+    if (persistentObject.isInserted || persistentObject.hasChanges) {
+        return [persistentObject.managedObjectContext save:error];
+    }
+
+    return YES;
+}
+
+#pragma mark - CBRPersistentStoreInterface
+
+- (CBRPersistentObjectCache *)persistentObjectCacheForCurrentThread
 {
     NSManagedObjectContext *context = [NSThread currentThread].isMainThread ? self.stack.mainThreadManagedObjectContext : self.stack.backgroundThreadManagedObjectContext;
+    return [self cacheForManagedObjectContext:context];
+}
 
+- (void)beginWriteTransaction
+{
+
+}
+
+- (BOOL)commitWriteTransaction:(NSError * _Nullable __autoreleasing *)error
+{
+    NSManagedObjectContext *context = [NSThread currentThread].isMainThread ? self.stack.mainThreadManagedObjectContext : self.stack.backgroundThreadManagedObjectContext;
+    return [context save:error];
+}
+
+- (CBRRelationshipDescription *)inverseRelationshipForEntity:(CBREntityDescription *)entity relationship:(CBRRelationshipDescription *)relationship
+{
+    NSRelationshipDescription *relationshipDescription = self.managedObjectModel.entitiesByName[entity.name].relationshipsByName[relationship.name];
+    NSParameterAssert(relationshipDescription);
+
+    NSRelationshipDescription *inverseRelationship = relationshipDescription.inverseRelationship;
+    NSParameterAssert(inverseRelationship);
+
+    return self.entitiesByName[relationship.destinationEntityName].relationshipsByName[inverseRelationship.name];
+}
+
+- (__kindof id<CBRPersistentObject>)newMutablePersistentObjectOfType:(CBREntityDescription *)entityDescription
+{
+    NSManagedObjectContext *context = [NSThread currentThread].isMainThread ? self.stack.mainThreadManagedObjectContext : self.stack.backgroundThreadManagedObjectContext;
     NSManagedObject *result = [NSEntityDescription insertNewObjectForEntityForName:entityDescription.name inManagedObjectContext:context];
-
-    if (saveBlock != NULL) {
-        *saveBlock = ^{
-            NSError *error = nil;
-            [context save:&error];
-            NSAssert(error == nil, @"error saving changes: %@", error);
-        };
-    }
 
     return result;
 }
 
-- (id<CBRPersistentObject>)persistentObjectOfType:(CBREntityDescription *)entityDescription withPrimaryKey:(id)primaryKey
-{
-    NSManagedObjectContext *context = [NSThread currentThread].isMainThread ? self.stack.mainThreadManagedObjectContext : self.stack.backgroundThreadManagedObjectContext;
-    NSString *attribute = [[NSClassFromString(entityDescription.name) cloudBridge].cloudConnection.objectTransformer primaryKeyOfEntitiyDescription:entityDescription];
-    NSParameterAssert(attribute);
-
-    return [[self cacheForManagedObjectContext:context] objectOfType:entityDescription.name withValue:primaryKey forAttribute:attribute];
-}
-
-- (NSDictionary *)indexedObjectsOfType:(CBREntityDescription *)entityDescription withValues:(NSSet *)values forAttribute:(NSString *)attribute
-{
-    NSManagedObjectContext *context = [NSThread currentThread].isMainThread ? self.stack.mainThreadManagedObjectContext : self.stack.backgroundThreadManagedObjectContext;
-    return [[self cacheForManagedObjectContext:context] indexedObjectsOfType:entityDescription.name withValues:values forAttribute:attribute];
-}
-
 - (NSArray *)executeFetchRequest:(NSFetchRequest *)fetchRequest error:(NSError **)error
 {
-    assert([self entityDescriptionForClass:NSClassFromString(fetchRequest.entityName)] != nil);
+    assert(self.entitiesByName[fetchRequest.entityName] != nil);
     
     NSManagedObjectContext *context = [NSThread currentThread].isMainThread ? self.stack.mainThreadManagedObjectContext : self.stack.backgroundThreadManagedObjectContext;
     return [context executeFetchRequest:fetchRequest error:error];
-}
-
-- (void)transactionWithBlock:(dispatch_block_t)transaction
-{
-    NSArray<NSString *> *callStack = [NSThread callStackSymbols];
-
-    [self transactionWithBlock:transaction completion:^(NSError * _Nonnull error) {
-        if (error != nil) {
-            [NSException raise:NSInternalInconsistencyException format:@"uncaught error after transaction %@, call stack: %@", error, callStack];
-        }
-    }];
-}
-
-- (void)transactionWithBlock:(dispatch_block_t)transaction completion:(void (^ _Nullable)(NSError * _Nonnull))completion
-{
-    [self transactionWithObject:nil transaction:^id _Nullable(id  _Nullable object) {
-        transaction();
-        return nil;
-    } completion:^(id  _Nullable object, NSError * _Nullable error) {
-        if (completion != nil) {
-            completion(error);
-        } else {
-            if (error != nil) {
-                [NSException raise:NSInternalInconsistencyException format:@"uncaught error moving to main thread %@", error];
-            }
-        }
-    }];
-}
-
-- (void)transactionWithObject:(id)object transaction:(id  _Nullable (^)(id _Nullable))transaction completion:(void (^)(id _Nullable, NSError * _Nullable))completion
-{
-    [self.threadingEnvironment moveObject:object toThread:CBRThreadBackground completion:^(id  _Nullable object, NSError * _Nullable error) {
-        if (error != nil) {
-            if (completion != nil) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    completion(nil, error);
-                });
-            } else {
-                [NSException raise:NSInternalInconsistencyException format:@"uncaught error moving to background thread %@", error];
-            }
-            return;
-        }
-
-        __block NSError *saveError = nil;
-        dispatch_block_t save = ^{
-            [self.stack.backgroundThreadManagedObjectContext save:&saveError];
-        };
-
-        id result = transaction(object);
-        save();
-
-        if (saveError != nil) {
-            if (completion != nil) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    completion(nil, saveError);
-                });
-            } else {
-                [NSException raise:NSInternalInconsistencyException format:@"uncaught error after transaction %@", error];
-            }
-            return;
-        }
-
-        [self.threadingEnvironment moveObject:result toThread:CBRThreadMain completion:^(id  _Nullable object, NSError * _Nullable error) {
-            if (completion != nil) {
-                completion(object, error);
-            } else {
-                if (error != nil) {
-                    [NSException raise:NSInternalInconsistencyException format:@"uncaught error moving to main thread %@", error];
-                }
-            }
-        }];
-    }];
-}
-
-- (void)unsafeTransactionWithObject:(id)object transaction:(void(^)(id _Nullable))transaction
-{
-    [self unsafeTransactionWithObject:object transaction:^id _Nullable(id  _Nullable object) {
-        transaction(object);
-        return nil;
-    } completion:nil];
-}
-
-- (void)unsafeTransactionWithObject:(id)object transaction:(id  _Nullable (^)(id _Nullable))transaction completion:(void (^)(id _Nullable))completion
-{
-    NSArray<NSString *> *callStack = [NSThread callStackSymbols];
-
-    [self transactionWithObject:object transaction:transaction completion:^(id  _Nullable object, NSError * _Nullable error) {
-        if (error != nil) {
-            [NSException raise:NSInternalInconsistencyException format:@"uncaught error after transaction %@, call stack: %@", error, callStack];
-        }
-
-        if (completion != nil) {
-            completion(object);
-        }
-    }];
 }
 
 - (void)deletePersistentObjects:(NSArray<NSManagedObject *> *)persistentObjects
@@ -487,10 +366,6 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
     for (NSManagedObject *managedObject in persistentObjects) {
         [context deleteObject:managedObject];
     }
-
-    NSError *saveError = nil;
-    [context save:&saveError];
-    NSCAssert(saveError == nil, @"error saving managed object context: %@", saveError);
 }
 
 @end

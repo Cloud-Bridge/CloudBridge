@@ -10,7 +10,7 @@
 #import <XCTest/XCTest.h>
 
 #import <CloudBridge/CBRRESTConnection.h>
-#import <CloudBridge/CBRRealmDatabaseAdapter.h>
+#import <CloudBridge/CBRRealmInterface.h>
 
 #import "CBRTestCase.h"
 #import "OCMStubRecorder+Tests.h"
@@ -26,7 +26,7 @@
 @property (nonatomic, strong) AFHTTPSessionManager *mockedSessionManager;
 
 @property (nonatomic, strong) CBRRESTConnection *connection;
-@property (nonatomic, strong) CBRRealmDatabaseAdapter *adapter;
+@property (nonatomic, strong) CBRRealmInterface *adapter;
 @property (nonatomic, strong) CBRThreadingEnvironment *environment;
 @end
 
@@ -50,17 +50,18 @@
 
     RLMRealmConfiguration *configuration = [RLMRealmConfiguration defaultConfiguration];
     configuration.inMemoryIdentifier = self.testRun.test.name;
+    configuration.objectClasses = @[ RLMEntity4.class, RLMEntity6.class, RLMEntity6Child.class ];
 
     __block __weak CBRCloudBridge *bridge = nil;
     self.connection = [[CBRRESTConnection alloc] initWithPropertyMapping:propertyMapping sessionManager:self.mockedSessionManager];
-    self.adapter = [[CBRRealmDatabaseAdapter alloc] initWithConfiguration:configuration threadingEnvironment:^CBRThreadingEnvironment *{
-        return bridge.threadingEnvironment;
-    }];
+    self.adapter = [[CBRRealmInterface alloc] initWithConfiguration:configuration];
     self.environment = [[CBRThreadingEnvironment alloc] initWithRealmAdapter:self.adapter];
-    self.cloudBridge = [[CBRCloudBridge alloc] initWithCloudConnection:self.connection databaseAdapter:self.adapter threadingEnvironment:self.environment];
+    self.cloudBridge = [[CBRCloudBridge alloc] initWithCloudConnection:self.connection interface:self.adapter threadingEnvironment:self.environment];
     bridge = self.cloudBridge;
 
     [CBRRealmObject setCloudBridge:self.cloudBridge];
+
+    assert([self.adapter assertClassesExcept:nil]);
 }
 
 - (void)testThatConnectionPostsCloudObject
@@ -146,7 +147,7 @@
     RLMEntity6 *entity = [[RLMEntity6 alloc] init];
     entity.identifier = @5;
 
-    CBREntityDescription *entityDescription = [self.adapter entityDescriptionForClass:[RLMEntity6Child class]];
+    CBREntityDescription *entityDescription = self.adapter.entitiesByName[NSStringFromClass([RLMEntity6Child class])];
 
     __block AFQueryDescription *query = nil;
     OCMStub([self.mockedSessionManager GET:OCMOCK_ANY parameters:OCMOCK_ANY progress:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY]).andQuery(^(AFQueryDescription *theQuery) {
@@ -165,7 +166,7 @@
     RLMEntity6 *entity = [[RLMEntity6 alloc] init];
     entity.identifier = @5;
 
-    CBREntityDescription *entityDescription = [self.adapter entityDescriptionForClass:[RLMEntity6Child class]];
+    CBREntityDescription *entityDescription = self.adapter.entitiesByName[NSStringFromClass([RLMEntity6Child class])];;
 
     __block AFQueryDescription *query = nil;
     OCMStub([self.mockedSessionManager GET:OCMOCK_ANY parameters:OCMOCK_ANY progress:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY]).andQuery(^(AFQueryDescription *theQuery) {

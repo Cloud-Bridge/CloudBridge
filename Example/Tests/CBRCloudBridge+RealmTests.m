@@ -18,7 +18,7 @@
 #import "RLMEntity6.h"
 
 @interface CBRCloudBridge_RealmTests : CBRTestCase
-@property (nonatomic, strong) CBRRealmDatabaseAdapter *adapter;
+@property (nonatomic, strong) CBRRealmInterface *adapter;
 @property (nonatomic, strong) CBRCloudBridge *cloudBridge;
 @property (nonatomic, strong) CBRTestConnection *connection;
 @property (nonatomic, strong) CBRThreadingEnvironment *environment;
@@ -32,22 +32,23 @@
 
     RLMRealmConfiguration *config = [RLMRealmConfiguration defaultConfiguration];
     config.inMemoryIdentifier = self.testRun.test.name;
+    config.objectClasses = @[ RLMEntity4.class, RLMEntity6.class, RLMEntity6Child.class ];
 
     self.connection = [[CBRTestConnection alloc] init];
     __block __weak CBRCloudBridge *bridge = nil;
-    self.adapter = [[CBRRealmDatabaseAdapter alloc] initWithConfiguration:config threadingEnvironment:^CBRThreadingEnvironment *{
-        return bridge.threadingEnvironment;
-    }];
+    self.adapter = [[CBRRealmInterface alloc] initWithConfiguration:config];
     self.environment = [[CBRThreadingEnvironment alloc] initWithRealmAdapter:self.adapter];
-    self.cloudBridge = [[CBRCloudBridge alloc] initWithCloudConnection:self.connection databaseAdapter:self.adapter threadingEnvironment:self.environment];
+    self.cloudBridge = [[CBRCloudBridge alloc] initWithCloudConnection:self.connection interface:self.adapter threadingEnvironment:self.environment];
     bridge = self.cloudBridge;
     [CBRRealmObject setCloudBridge:self.cloudBridge];
+
+    assert([self.adapter assertClassesExcept:nil]);
 }
 
 - (void)testInverseRelation
 {
-    CBREntityDescription *parent = [self.adapter entityDescriptionForClass:[RLMEntity6 class]];
-    CBREntityDescription *child = [self.adapter entityDescriptionForClass:[RLMEntity6Child class]];
+    CBREntityDescription *parent = self.adapter.entitiesByName[NSStringFromClass([RLMEntity6 class])];
+    CBREntityDescription *child = self.adapter.entitiesByName[NSStringFromClass([RLMEntity6Child class])];
 
     expect(parent.relationshipsByName[@"children"].inverseRelationship.name).to.equal(@"parent");
     expect(child.relationshipsByName[@"parent"].inverseRelationship.name).to.equal(@"children");
@@ -60,7 +61,7 @@
 
 - (void)testThatSubclassesOverrideGlobalCloudBridge
 {
-    CBRCloudBridge *otherCloudBridge = [[CBRCloudBridge alloc] initWithCloudConnection:self.connection databaseAdapter:self.adapter threadingEnvironment:self.environment];
+    CBRCloudBridge *otherCloudBridge = [[CBRCloudBridge alloc] initWithCloudConnection:self.connection interface:self.adapter threadingEnvironment:self.environment];
     expect(otherCloudBridge).toNot.equal(self.cloudBridge);
 
     [RLMEntity4 setCloudBridge:otherCloudBridge];

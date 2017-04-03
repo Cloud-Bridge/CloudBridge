@@ -23,7 +23,7 @@
 
 #import <Foundation/Foundation.h>
 
-#if __has_include(<CloudBridge/CBRRealmDatabaseAdapter.h>)
+#if __has_include(<CloudBridge/CBRRealmInterface.h>)
 #define CBRRealmAvailable 1
 #else
 #define CBRRealmAvailable 0
@@ -31,7 +31,7 @@
 
 
 
-#if __has_include(<CloudBridge/CBRCoreDataDatabaseAdapter.h>)
+#if __has_include(<CloudBridge/CBRCoreDataInterface.h>)
 #define CBRCoreDataAvailable 1
 #else
 #define CBRCoreDataAvailable 0

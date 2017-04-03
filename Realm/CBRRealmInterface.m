@@ -24,7 +24,7 @@
 #import <Realm/Realm.h>
 #import <objc/runtime.h>
 
-#import "CBRRealmDatabaseAdapter.h"
+#import "CBRRealmInterface.h"
 #import "CBRCloudBridge.h"
 #import "CBREntityDescription.h"
 #import "CBRThreadingEnvironment.h"
@@ -43,38 +43,42 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
 
 
 
-@implementation RLMRealm (CBRRealmDatabaseAdapterHooks)
+@implementation RLMRealm (CBRRealmInterfaceHooks)
 
 + (void)load
 {
-    class_swizzleSelector(self, @selector(deleteObject:), @selector(__CBRRealmDatabaseAdapterHooksDeleteObject:));
-    class_swizzleSelector(self, @selector(deleteObjects:), @selector(__CBRRealmDatabaseAdapterHooksDeleteObjects:));
+    class_swizzleSelector(self, @selector(deleteObject:), @selector(__CBRRealmInterfaceHooksDeleteObject:));
+    class_swizzleSelector(self, @selector(deleteObjects:), @selector(__CBRRealmInterfaceHooksDeleteObjects:));
 }
 
-- (void)__CBRRealmDatabaseAdapterHooksDeleteObject:(CBRRealmObject *)object
+- (void)__CBRRealmInterfaceHooksDeleteObject:(CBRRealmObject *)object
 {
     if ([object isKindOfClass:[CBRRealmObject class]]) {
-        CBRRealmDatabaseAdapter *adapter = object.databaseAdapter;
+        CBRRealmInterface *adapter = object.databaseAdapter.interface;
+        assert([adapter isKindOfClass:[CBRRealmInterface class]]);
+
         [[adapter cacheForRealm:object.realm] removePersistentObject:object];
     }
-    [self __CBRRealmDatabaseAdapterHooksDeleteObject:object];
+    [self __CBRRealmInterfaceHooksDeleteObject:object];
 }
 
-- (void)__CBRRealmDatabaseAdapterHooksDeleteObjects:(id)array
+- (void)__CBRRealmInterfaceHooksDeleteObjects:(id)array
 {
     for (CBRRealmObject *object in array) {
         if ([object isKindOfClass:[CBRRealmObject class]]) {
-            CBRRealmDatabaseAdapter *adapter = object.databaseAdapter;
+            CBRRealmInterface *adapter = object.databaseAdapter.interface;
+            assert([adapter isKindOfClass:[CBRRealmInterface class]]);
+            
             [[adapter cacheForRealm:object.realm] removePersistentObject:object];
         }
     }
 
-    [self __CBRRealmDatabaseAdapterHooksDeleteObjects:array];
+    [self __CBRRealmInterfaceHooksDeleteObjects:array];
 }
 
 @end
 
-@implementation CBRRelationshipDescription (CBRRealmDatabaseAdapter)
+@implementation CBRRelationshipDescription (CBRRealmInterface)
 
 - (void)_realmUpdateUserInfo
 {
@@ -123,19 +127,20 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
     return [self.class cloudBridge];
 }
 
-+ (id<CBRDatabaseAdapter>)databaseAdapter
++ (CBRDatabaseAdapter *)databaseAdapter
 {
     return [self cloudBridge].databaseAdapter;
 }
 
-- (id<CBRDatabaseAdapter>)databaseAdapter
+- (CBRDatabaseAdapter *)databaseAdapter
 {
     return [self cloudBridge].databaseAdapter;
 }
 
+#warning must be overwritten
 + (CBREntityDescription *)cloudBridgeEntityDescription
 {
-    return [[self cloudBridge].databaseAdapter entityDescriptionForClass:self];
+    return [self cloudBridge].databaseAdapter.entitiesByName[[self className]];
 }
 
 - (CBREntityDescription *)cloudBridgeEntityDescription
@@ -151,23 +156,23 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
         return nil;
     }
 
-    CBREntityDescription *entityDescription = [[self cloudBridge].databaseAdapter entityDescriptionForClass:self];
+    CBREntityDescription *entityDescription = [self cloudBridgeEntityDescription];
     return (id)[[self cloudBridge].databaseAdapter persistentObjectOfType:entityDescription withPrimaryKey:identifier];
 }
 
 + (NSDictionary<id<CBRPersistentIdentifier>, id> *)objectsWithRemoteIdentifiers:(NSArray<id<CBRPersistentIdentifier>> *)identifiers
 {
-    CBREntityDescription *entityDescription = [[self cloudBridge].databaseAdapter entityDescriptionForClass:self];
+    CBREntityDescription *entityDescription = [self cloudBridgeEntityDescription];
     NSString *attribute = [[self cloudBridge].cloudConnection.objectTransformer primaryKeyOfEntitiyDescription:entityDescription];
     NSParameterAssert(attribute);
 
     return [[self cloudBridge].databaseAdapter indexedObjectsOfType:entityDescription withValues:[NSSet setWithArray:identifiers] forAttribute:attribute];
 }
 
-+ (instancetype)newWithBlock:(dispatch_block_t *)saveBlock
++ (instancetype)newCloudBrideObject
 {
     CBREntityDescription *entityDescription = [self cloudBridgeEntityDescription];
-    return [[self cloudBridge].databaseAdapter newMutablePersistentObjectOfType:entityDescription save:saveBlock];
+    return [[self cloudBridge].databaseAdapter newMutablePersistentObjectOfType:entityDescription];
 }
 
 + (void)fetchObjectsMatchingPredicate:(NSPredicate *)predicate
@@ -247,7 +252,7 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
 
 - (void)fetchObjectForRelationship:(NSString *)relationship withCompletionHandler:(void(^)(id managedObject, NSError *error))completionHandler
 {
-    __assert_unused CBRRelationshipDescription *relationshipDescription = [self.cloudBridge.databaseAdapter entityDescriptionForClass:self.class].relationshipsByName[relationship];
+    __assert_unused CBRRelationshipDescription *relationshipDescription = self.cloudBridgeEntityDescription.relationshipsByName[relationship];
     NSParameterAssert(relationshipDescription);
     NSParameterAssert(!relationshipDescription.toMany);
 
@@ -276,7 +281,7 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
 
 + (instancetype)persistentObjectFromCloudObject:(id<CBRCloudObject>)cloudObject
 {
-    CBREntityDescription *entity = [[self cloudBridge].databaseAdapter entityDescriptionForClass:self.class];
+    CBREntityDescription *entity = [self cloudBridgeEntityDescription];
     return (id)[[self cloudBridge].cloudConnection.objectTransformer persistentObjectFromCloudObject:cloudObject forEntity:entity];
 }
 
@@ -284,22 +289,14 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
 
 
 
-@interface CBRRealmDatabaseAdapter ()
-
-@property (nonatomic, readonly) NSMutableDictionary<NSString *, CBREntityDescription *> *entitesByName;
-@property (nonatomic, readonly) CBRThreadingEnvironment *(^threadingEnvironmentBlock)(void);
+@interface CBRRealmInterface () <_CBRPersistentStoreInterfaceInternal>
 
 @end
 
-@implementation CBRRealmDatabaseAdapter
 
-- (CBRThreadingEnvironment *)threadingEnvironment
-{
-    CBRThreadingEnvironment *threadingEnvironment = self.threadingEnvironmentBlock();
-    assert(threadingEnvironment.realmAdapter != nil);
 
-    return threadingEnvironment;
-}
+@implementation CBRRealmInterface
+@synthesize entities = _entities, entitiesByName = _entitiesByName;
 
 - (RLMRealm *)realm
 {
@@ -315,12 +312,35 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
     return [super init];
 }
 
-- (instancetype)initWithConfiguration:(RLMRealmConfiguration *)configuration threadingEnvironment:(CBRThreadingEnvironment *(^)(void))threadingEnvironment
+- (instancetype)initWithConfiguration:(RLMRealmConfiguration *)configuration
 {
     if (self = [super init]) {
         _configuration = configuration;
-        _entitesByName = [NSMutableDictionary dictionary];
-        _threadingEnvironmentBlock = threadingEnvironment;
+
+        NSMutableArray<CBREntityDescription *> *entities = [NSMutableArray array];
+
+        for (Class klass in self.configuration.objectClasses) {
+            NSString *name = [klass className];
+
+            RLMObjectSchema *schema = self.realm.schema[name];
+            CBREntityDescription *result = [[CBREntityDescription alloc] initWithInterface:self realmObjectSchema:schema];
+
+            [entities addObject:result];
+        }
+        
+        _entities = entities.copy;
+
+        NSMutableDictionary *entitiesByName = [NSMutableDictionary dictionary];
+        for (CBREntityDescription *description in entities) {
+            entitiesByName[description.name] = description;
+        }
+        _entitiesByName = entitiesByName.copy;
+
+        for (CBREntityDescription *description in _entities) {
+            for (CBRRelationshipDescription *relationship in description.relationships) {
+                [relationship _realmUpdateUserInfo];
+            }
+        }
     }
     return self;
 }
@@ -332,43 +352,51 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
             return objc_getAssociatedObject(realm, _cmd);
         }
 
-        CBRPersistentObjectCache *cache = [[CBRPersistentObjectCache alloc] initWithDatabaseAdapter:self];
+        CBRPersistentObjectCache *cache = [[CBRPersistentObjectCache alloc] initWithInterface:self];
         objc_setAssociatedObject(realm, _cmd, cache, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         return cache;
     }
 }
 
-#pragma mark - CBRDatabaseAdapter
+#pragma mark - _CBRPersistentStoreInterfaceInternal
 
-- (NSArray<CBREntityDescription *> *)entities
+- (BOOL)hasPersistedObjects:(NSArray<CBRRealmObject *> *)persistentObjects
 {
-    NSMutableArray<CBREntityDescription *> *result = [NSMutableArray array];
-
-    for (Class klass in self.configuration.objectClasses) {
-        [result addObject:[self entityDescriptionForClass:klass]];
+    for (CBRRealmObject *object in persistentObjects) {
+        if (object.realm == nil) {
+            return NO;
+        }
     }
 
-    return result;
+    return YES;
 }
 
-- (CBREntityDescription *)entityDescriptionForClass:(Class)persistentClass
+- (BOOL)saveChangedForPersistentObject:(CBRRealmObject *)persistentObject error:(NSError **)error
 {
-    @synchronized(self) {
-        NSString *name = [persistentClass className];
-        if (self.entitesByName[name]) {
-            return self.entitesByName[name];
-        }
-
-        RLMObjectSchema *schema = self.realm.schema[name];
-        CBREntityDescription *result = [[CBREntityDescription alloc] initWithDatabaseAdapter:self realmObjectSchema:schema];
-        self.entitesByName[name] = result;
-
-        for (CBRRelationshipDescription *relationship in result.relationships) {
-            [relationship _realmUpdateUserInfo];
-        }
-
-        return result;
+    if (persistentObject.realm == nil) {
+        [self _transactionInRealm:self.realm block:^{
+            [self.realm addObject:persistentObject];
+        }];
     }
+
+    return YES;
+}
+
+#pragma mark - CBRPersistentStoreInterface
+
+- (CBRPersistentObjectCache *)persistentObjectCacheForCurrentThread
+{
+    return [self cacheForRealm:self.realm];
+}
+
+- (void)beginWriteTransaction
+{
+    [self.realm beginWriteTransaction];
+}
+
+- (BOOL)commitWriteTransaction:(NSError * _Nullable __autoreleasing *)error
+{
+    return [self.realm commitWriteTransaction:error];
 }
 
 - (CBRRelationshipDescription *)inverseRelationshipForEntity:(CBREntityDescription *)entity relationship:(CBRRelationshipDescription *)relationship
@@ -379,7 +407,7 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
         RLMPropertyDescriptor *inverseDescriptor = [NSClassFromString(entity.name) linkingObjectsProperties][relationship.name];
         NSParameterAssert(inverseDescriptor);
 
-        CBREntityDescription *destinationEntity = [self entityDescriptionForClass:inverseDescriptor.objectClass];
+        CBREntityDescription *destinationEntity = self.entitiesByName[NSStringFromClass(inverseDescriptor.objectClass)];
         CBRRelationshipDescription *inverseRelation = destinationEntity.relationshipsByName[inverseDescriptor.propertyName];
 
         NSParameterAssert(destinationEntity);
@@ -405,62 +433,22 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
     return nil;
 }
 
-- (BOOL)hasPersistedObjects:(NSArray<CBRRealmObject *> *)persistentObjects
-{
-    for (CBRRealmObject *object in persistentObjects) {
-        if (object.realm == nil) {
-            return NO;
-        }
-    }
-
-    return YES;
-}
-
-- (__kindof id<CBRPersistentObject>)newMutablePersistentObjectOfType:(CBREntityDescription *)entityDescription save:(dispatch_block_t *)saveBlock
+- (__kindof id<CBRPersistentObject>)newMutablePersistentObjectOfType:(CBREntityDescription *)entityDescription
 {
     RLMRealm *realm = self.realm;
 
     CBRRealmObject *result = [[NSClassFromString(entityDescription.name) alloc] init];
 
-    if (saveBlock != NULL) {
-        dispatch_block_t previousSaveBlock = *saveBlock;
-        *saveBlock = ^{
-            [self _transactionInRealm:realm block:^{
-                previousSaveBlock();
-                [realm addObject:result];
-            }];
-        };
-    } else {
-        [self _transactionInRealm:realm block:^{
-            [realm addObject:result];
-        }];
-    }
+    [self _transactionInRealm:realm block:^{
+        [realm addObject:result];
+    }];
 
     return result;
 }
 
-- (id<CBRPersistentObject>)persistentObjectOfType:(CBREntityDescription *)entityDescription withPrimaryKey:(id)primaryKey
-{
-    if (primaryKey == nil) {
-        return nil;
-    }
-
-    NSString *attribute = [[NSClassFromString(entityDescription.name) cloudBridge].cloudConnection.objectTransformer primaryKeyOfEntitiyDescription:entityDescription];
-    NSParameterAssert(attribute);
-
-    RLMRealm *realm = self.realm;
-    return [[self cacheForRealm:realm] objectOfType:entityDescription.name withValue:primaryKey forAttribute:attribute];
-}
-
-- (NSDictionary *)indexedObjectsOfType:(CBREntityDescription *)entityDescription withValues:(NSSet *)values forAttribute:(NSString *)attribute
-{
-    RLMRealm *realm = self.realm;
-    return [[self cacheForRealm:realm] indexedObjectsOfType:entityDescription.name withValues:values forAttribute:attribute];
-}
-
 - (NSArray *)executeFetchRequest:(NSFetchRequest *)fetchRequest error:(NSError **)error
 {
-    assert([self entityDescriptionForClass:NSClassFromString(fetchRequest.entityName)] != nil);
+    assert(self.entitiesByName[fetchRequest.entityName] != nil);
 
     RLMRealm *realm = self.realm;
     RLMResults *results = [NSClassFromString(fetchRequest.entityName) objectsInRealm:realm withPredicate:fetchRequest.predicate];
@@ -480,101 +468,6 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
     }
 
     return result;
-}
-
-- (void)transactionWithBlock:(dispatch_block_t)transaction
-{
-    NSArray<NSString *> *callStack = [NSThread callStackSymbols];
-
-    [self transactionWithBlock:transaction completion:^(NSError * _Nonnull error) {
-        if (error != nil) {
-            [NSException raise:NSInternalInconsistencyException format:@"uncaught error after transaction %@, call stack: %@", error, callStack];
-        }
-    }];
-}
-
-- (void)transactionWithBlock:(dispatch_block_t)transaction completion:(void (^ _Nullable)(NSError * _Nonnull))completion
-{
-    [self transactionWithObject:nil transaction:^id _Nullable(id  _Nullable object) {
-        transaction();
-        return nil;
-    } completion:^(id  _Nullable object, NSError * _Nullable error) {
-        if (completion != nil) {
-            completion(error);
-        } else {
-            if (error != nil) {
-                [NSException raise:NSInternalInconsistencyException format:@"uncaught error moving to main thread %@", error];
-            }
-        }
-    }];
-}
-
-- (void)transactionWithObject:(id)object transaction:(id  _Nullable (^)(id _Nullable))transaction completion:(void (^)(id _Nullable, NSError * _Nullable))completion
-{
-    [self.threadingEnvironment moveObject:object toThread:CBRThreadBackground completion:^(id _Nullable object, NSError * _Nullable error) {
-        if (error != nil) {
-            if (completion != nil) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    completion(nil, error);
-                });
-            } else {
-                [NSException raise:NSInternalInconsistencyException format:@"uncaught error moving to background thread %@", error];
-            }
-            return;
-        }
-
-        RLMRealm *realm = self.realm;
-
-        [realm beginWriteTransaction];
-        id result = transaction(object);
-
-        NSError *saveError = nil;
-        [realm commitWriteTransaction:&error];
-
-        if (saveError != nil) {
-            if (completion != nil) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    completion(nil, saveError);
-                });
-            } else {
-                [NSException raise:NSInternalInconsistencyException format:@"uncaught error after transaction %@", error];
-            }
-            return;
-        }
-
-        [self.threadingEnvironment moveObject:result toThread:CBRThreadMain completion:^(id  _Nullable object, NSError * _Nullable error) {
-            if (completion != nil) {
-                completion(object, error);
-            } else {
-                if (error != nil) {
-                    [NSException raise:NSInternalInconsistencyException format:@"uncaught error moving to main thread %@", error];
-                }
-            }
-        }];
-    }];
-}
-
-- (void)unsafeTransactionWithObject:(id)object transaction:(void(^)(id _Nullable))transaction
-{
-    [self unsafeTransactionWithObject:object transaction:^id _Nullable(id  _Nullable object) {
-        transaction(object);
-        return nil;
-    } completion:nil];
-}
-
-- (void)unsafeTransactionWithObject:(id)object transaction:(id  _Nullable (^)(id _Nullable))transaction completion:(void (^)(id _Nullable))completion
-{
-    NSArray<NSString *> *callStack = [NSThread callStackSymbols];
-
-    [self transactionWithObject:object transaction:transaction completion:^(id  _Nullable object, NSError * _Nullable error) {
-        if (error != nil) {
-            [NSException raise:NSInternalInconsistencyException format:@"uncaught error after transaction %@, call stack: %@", error, callStack];
-        }
-
-        if (completion != nil) {
-            completion(object);
-        }
-    }];
 }
 
 - (void)deletePersistentObjects:(NSArray<CBRRealmObject *> *)persistentObjects
@@ -599,6 +492,47 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
     if (transactionOwner) {
         [realm commitWriteTransaction];
     }
+}
+
+@end
+
+
+
+@implementation CBRRealmInterface (Convenience)
+
+- (BOOL)assertClasses:(NSArray<Class> *)classes
+{
+    for (Class klass in classes) {
+        if (![self.configuration.objectClasses containsObject:klass]) {
+            NSLog(@"Realm did not manage %@", klass);
+            return NO;
+        }
+    }
+
+    return YES;
+}
+
+- (BOOL)assertClassesExcept:(NSArray<Class> *)exceptClasses
+{
+    unsigned int count = 0;
+    Class *classes = objc_copyClassList(&count);
+    NSMutableArray<Class> *result = [NSMutableArray array];
+
+    for (unsigned int i = 0; i < count; i++) {
+        if (class_getSuperclass(classes[i]) != [CBRRealmObject class]) {
+            continue;
+        }
+
+        if ([exceptClasses containsObject:classes[i]]) {
+            continue;
+        }
+
+        [result addObject:classes[i]];
+    }
+
+    free(classes);
+
+    return [self assertClasses:result];
 }
 
 @end

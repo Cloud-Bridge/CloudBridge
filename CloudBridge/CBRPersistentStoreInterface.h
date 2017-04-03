@@ -21,19 +21,41 @@
  THE SOFTWARE.
  */
 
-#import <Realm/Realm.h>
 #import <Foundation/Foundation.h>
-#import <CloudBridge/CBREntityDescription.h>
+#import <CoreData/CoreData.h>
 
-@class CBRRealmInterface;
+@class CBREntityDescription, CBRRelationshipDescription, CBRPersistentObjectCache;
+@protocol CBRPersistentObject;
 
 
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface CBREntityDescription (Realm)
+@protocol CBRPersistentStoreInterface <NSObject>
 
-- (instancetype)initWithInterface:(id<CBRPersistentStoreInterface>)interface realmObjectSchema:(RLMObjectSchema *)schema;
+@property (nonatomic, readonly) NSArray<CBREntityDescription *> *entities;
+@property (nonatomic, readonly) NSDictionary<NSString *, CBREntityDescription *> *entitiesByName;
+
+- (CBRRelationshipDescription *)inverseRelationshipForEntity:(CBREntityDescription *)entity relationship:(CBRRelationshipDescription *)relationship;
+
+- (__kindof id<CBRPersistentObject>)newMutablePersistentObjectOfType:(CBREntityDescription *)entityDescription;
+
+- (void)beginWriteTransaction;
+- (BOOL)commitWriteTransaction:(NSError **)error;
+
+- (CBRPersistentObjectCache *)persistentObjectCacheForCurrentThread;
+
+- (NSArray *)executeFetchRequest:(NSFetchRequest *)fetchRequest error:(NSError **)error;
+- (void)deletePersistentObjects:(NSArray<id<CBRPersistentObject>> *)persistentObjects;
+
+@end
+
+
+
+@protocol _CBRPersistentStoreInterfaceInternal <NSObject>
+
+- (BOOL)hasPersistedObjects:(NSArray<id<CBRPersistentObject>> *)persistentObjects;
+- (BOOL)saveChangedForPersistentObject:(id<CBRPersistentObject>)persistentObject error:(NSError **)error;
 
 @end
 

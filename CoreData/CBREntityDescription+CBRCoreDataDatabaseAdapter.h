@@ -1,5 +1,5 @@
 //
-//  CBREntityDescription+CBRCoreDataDatabaseAdapter.h
+//  CBREntityDescription+CBRCoreDataInterface.h
 //  Pods
 //
 //  Created by Oliver Letterer.
@@ -13,9 +13,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface CBREntityDescription (CBRCoreDataDatabaseAdapter)
+@interface CBREntityDescription (CBRCoreDataInterface)
 
-- (instancetype)initWithDatabaseAdapter:(id<CBRDatabaseAdapter>)databaseAdapter coreDataEntityDescription:(NSEntityDescription *)entityDescription;
+- (instancetype)initWithInterface:(id<CBRPersistentStoreInterface>)interface coreDataEntityDescription:(NSEntityDescription *)entityDescription;
 
 @end
 

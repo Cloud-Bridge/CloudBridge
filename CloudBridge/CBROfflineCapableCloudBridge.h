@@ -24,6 +24,7 @@
 #import <CloudBridge/CBRCloudBridge.h>
 #import <CloudBridge/CBROfflineCapablePersistentObject.h>
 #import <CloudBridge/CBROfflineCapableCloudConnection.h>
+#import <CloudBridge/CBRPersistentStoreInterface.h>
 
 
 
@@ -43,7 +44,7 @@ __attribute__((objc_subclassing_restricted))
 
 - (instancetype)init NS_DESIGNATED_INITIALIZER UNAVAILABLE_ATTRIBUTE;
 - (instancetype)initWithCloudConnection:(id<CBROfflineCapableCloudConnection>)cloudConnection
-                        databaseAdapter:(id<CBRDatabaseAdapter>)databaseAdapter
+                        interface:(id<CBRPersistentStoreInterface>)interface
                    threadingEnvironment:(CBRThreadingEnvironment *)threadingEnvironment
  NS_DESIGNATED_INITIALIZER;
 

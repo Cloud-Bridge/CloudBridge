@@ -23,8 +23,8 @@
 
 #import <Foundation/Foundation.h>
 
-@class CBRCloudBridge, CBREntityDescription;
-@protocol CBRCloudObject, CBRDatabaseAdapter;
+@class CBRCloudBridge, CBREntityDescription, CBRDatabaseAdapter;
+@protocol CBRCloudObject;
 
 
 
@@ -81,7 +81,7 @@
 + (instancetype)objectWithRemoteIdentifier:(id<CBRPersistentIdentifier>)identifier;
 + (NSDictionary<id, id> *)objectsWithRemoteIdentifiers:(NSArray<id<CBRPersistentIdentifier>> *)identifiers;
 
-+ (instancetype)newWithBlock:(dispatch_block_t *)saveBlock;
++ (instancetype)newCloudBrideObject;
 
 + (void)fetchObjectsMatchingPredicate:(NSPredicate *)predicate
                 withCompletionHandler:(void(^)(NSArray *fetchedObjects, NSError *error))completionHandler;
@@ -105,8 +105,8 @@
 
 @property (nonatomic, readonly) CBRCloudBridge *cloudBridge;
 
-+ (id<CBRDatabaseAdapter>)databaseAdapter;
-@property (nonatomic, readonly) id<CBRDatabaseAdapter> databaseAdapter;
++ (CBRDatabaseAdapter *)databaseAdapter;
+@property (nonatomic, readonly) CBRDatabaseAdapter *databaseAdapter;
 
 + (CBREntityDescription *)cloudBridgeEntityDescription;
 @property (nonatomic, readonly) CBREntityDescription *cloudBridgeEntityDescription;

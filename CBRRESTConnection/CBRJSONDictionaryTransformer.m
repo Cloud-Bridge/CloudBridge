@@ -150,7 +150,7 @@
     NSMutableDictionary *cloudObject = [NSMutableDictionary dictionary];
     [self updateCloudObject:cloudObject withPropertiesFromPersistentObject:persistentObject];
 
-    CBREntityDescription *entity = [persistentObject.cloudBridge.databaseAdapter entityDescriptionForClass:persistentObject.class];
+    CBREntityDescription *entity = persistentObject.cloudBridgeEntityDescription;
     if (entity.restPrefix) {
         return @{ entity.restPrefix: cloudObject };
     }
@@ -164,7 +164,7 @@
         return;
     }
 
-    CBREntityDescription *entity = [persistentObject.cloudBridge.databaseAdapter entityDescriptionForClass:persistentObject.class];
+    CBREntityDescription *entity = persistentObject.cloudBridgeEntityDescription;
     for (CBRAttributeDescription *attributeDescription in entity.attributes) {
         if (attributeDescription.restDisabled) {
             continue;
@@ -247,9 +247,9 @@
         return nil;
     }
 
-    id<CBRPersistentObject> persistentObject = [entity.databaseAdapter persistentObjectOfType:entity withPrimaryKey:identifier];
+    id<CBRPersistentObject> persistentObject = [[NSClassFromString(entity.name) cloudBridge].databaseAdapter persistentObjectOfType:entity withPrimaryKey:identifier];
     if (!persistentObject) {
-        persistentObject = [entity.databaseAdapter newMutablePersistentObjectOfType:entity save:NULL];
+        persistentObject = [[NSClassFromString(entity.name) cloudBridge].databaseAdapter newMutablePersistentObjectOfType:entity];
         [persistentObject awakeFromCloudFetch];
     }
 
@@ -261,7 +261,7 @@
 {
     [persistentObject prepareForUpdateWithCloudObject:cloudObject];
 
-    CBREntityDescription *entity = [persistentObject.cloudBridge.databaseAdapter entityDescriptionForClass:persistentObject.class];
+    CBREntityDescription *entity = persistentObject.cloudBridgeEntityDescription;
     for (CBRAttributeDescription *attributeDescription in entity.attributes) {
         id jsonValue = [cloudObject valueForKeyPath:[self cloudKeyPathFromPropertyDescription:attributeDescription]];
         id newValue = [self persistentObjectValueFromCloudValue:jsonValue forAttributeDescription:attributeDescription];
@@ -301,7 +301,7 @@
             id identifier = [self persistentObjectValueFromCloudValue:jsonIdentifier forAttributeDescription:destinationEntity.attributesByName[destinationEntity.restIdentifier]];
 
             if (identifier) {
-                id<CBRPersistentObject> newPersistentObject = [destinationEntity.databaseAdapter persistentObjectOfType:destinationEntity withPrimaryKey:identifier];
+                id<CBRPersistentObject> newPersistentObject = [[NSClassFromString(destinationEntity.name) cloudBridge].databaseAdapter persistentObjectOfType:destinationEntity withPrimaryKey:identifier];
                 if (newPersistentObject) {
                     [persistentObject setValue:newPersistentObject forKey:relationshipDescription.name];
                 }
@@ -335,7 +335,7 @@
                 }
             }
 
-            NSDictionary *existingObjectsByPrimaryKey = [destinationEntity.databaseAdapter indexedObjectsOfType:destinationEntity withValues:uniqueIdentifiers forAttribute:primaryKey];
+            NSDictionary *existingObjectsByPrimaryKey = [[NSClassFromString(destinationEntity.name) cloudBridge].databaseAdapter indexedObjectsOfType:destinationEntity withValues:uniqueIdentifiers forAttribute:primaryKey];
 
             NSMutableSet *newEntities = [NSMutableSet set];
             for (NSDictionary *dictionary in cloudObjects) {
@@ -347,7 +347,7 @@
 
                 id<CBRPersistentObject> newPersistentObject = existingObjectsByPrimaryKey[dictionary[dictionaryPrimaryKey]];
                 if (!newPersistentObject) {
-                    newPersistentObject = [destinationEntity.databaseAdapter newMutablePersistentObjectOfType:realDestinationEntity save:NULL];
+                    newPersistentObject = [[NSClassFromString(destinationEntity.name) cloudBridge].databaseAdapter newMutablePersistentObjectOfType:realDestinationEntity];
                     [newPersistentObject awakeFromCloudFetch];
                 }
 

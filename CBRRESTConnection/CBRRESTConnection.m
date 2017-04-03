@@ -115,7 +115,7 @@ NSString * const CBRRESTConnectionUserInfoURLOverrideKey = @"restBaseURL";
         for (NSString *thisComponent in keyPathComponents) {
             if ([currentObject conformsToProtocol:@protocol(CBRPersistentObject)]) {
                 id<CBRPersistentObject> currentManagedObject = currentObject;
-                CBREntityDescription *entity = [persistentObject.cloudBridge.databaseAdapter entityDescriptionForClass:currentManagedObject.class];
+                CBREntityDescription *entity = currentManagedObject.cloudBridgeEntityDescription;
                 NSString *managedObjectKeyPath = [self.objectTransformer persistentObjectKeyPathFromCloudKeyPath:thisComponent ofEntity:entity];
 
                 currentObject = [currentManagedObject valueForKey:managedObjectKeyPath];
@@ -257,7 +257,7 @@ NSString * const CBRRESTConnectionUserInfoURLOverrideKey = @"restBaseURL";
     NSString *path = userInfo[CBRRESTConnectionUserInfoURLOverrideKey];
 
     if (!path) {
-        CBREntityDescription *entity = [persistentObject.cloudBridge.databaseAdapter entityDescriptionForClass:persistentObject.class];
+        CBREntityDescription *entity = persistentObject.cloudBridgeEntityDescription;
         NSParameterAssert(entity.restBaseURL);
         path = entity.restBaseURL;
 

@@ -10,6 +10,7 @@
 #import <CoreData/CoreData.h>
 
 #import <CloudBridge/CloudBridge.h>
+#import <CloudBridge/CBRCoreDataInterface.h>
 
 
 

@@ -29,10 +29,10 @@ static NSDictionary *indexBy(NSArray *array, NSString *key)
     return [super init];
 }
 
-- (instancetype)initWithDatabaseAdapter:(id<CBRDatabaseAdapter>)databaseAdapter
+- (instancetype)initWithInterface:(id<CBRPersistentStoreInterface>)interface
 {
     if (self = [super init]) {
-        _databaseAdapter = databaseAdapter;
+        _interface = interface;
     }
     return self;
 }
@@ -45,17 +45,17 @@ static NSDictionary *indexBy(NSArray *array, NSString *key)
 
 - (CBREntityDescription *)entity
 {
-    return [self.databaseAdapter entityDescriptionForClass:NSClassFromString(self.entityName)];
+    return self.interface.entitiesByName[self.entityName];
 }
 
 - (CBRRelationshipDescription *)inverseRelationship
 {
-    return [self.databaseAdapter inverseRelationshipForEntity:self.entity relationship:self];
+    return [self.interface inverseRelationshipForEntity:self.entity relationship:self];
 }
 
 - (CBREntityDescription *)destinationEntity
 {
-    return [self.databaseAdapter entityDescriptionForClass:NSClassFromString(self.destinationEntityName)];
+    return self.interface.entitiesByName[self.destinationEntityName];
 }
 
 - (instancetype)init
@@ -63,10 +63,10 @@ static NSDictionary *indexBy(NSArray *array, NSString *key)
     return [super init];
 }
 
-- (instancetype)initWithDatabaseAdapter:(id<CBRDatabaseAdapter>)databaseAdapter
+- (instancetype)initWithInterface:(id<CBRPersistentStoreInterface>)interface
 {
     if (self = [super init]) {
-        _databaseAdapter = databaseAdapter;
+        _interface = interface;
     }
     return self;
 }
@@ -92,7 +92,7 @@ static NSDictionary *indexBy(NSArray *array, NSString *key)
     NSMutableArray *result = [NSMutableArray array];
 
     for (NSString *name in self.subentityNames) {
-        [result addObject:[self.databaseAdapter entityDescriptionForClass:NSClassFromString(name)]];
+        [result addObject:self.interface.entitiesByName[name]];
     }
 
     return result;
@@ -103,10 +103,10 @@ static NSDictionary *indexBy(NSArray *array, NSString *key)
     return [super init];
 }
 
-- (instancetype)initWithDatabaseAdapter:(id<CBRDatabaseAdapter>)databaseAdapter
+- (instancetype)initWithInterface:(id<CBRPersistentStoreInterface>)interface
 {
     if (self = [super init]) {
-        _databaseAdapter = databaseAdapter;
+        _interface = interface;
     }
     return self;
 }

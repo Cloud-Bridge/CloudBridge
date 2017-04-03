@@ -141,10 +141,10 @@
 }
 
 - (instancetype)initWithCloudConnection:(id<CBROfflineCapableCloudConnection>)cloudConnection
-                        databaseAdapter:(id<CBRDatabaseAdapter>)databaseAdapter
+                              interface:(id<CBRPersistentStoreInterface>)interface
                    threadingEnvironment:(CBRThreadingEnvironment *)threadingEnvironment
 {
-    return [super initWithCloudConnection:cloudConnection databaseAdapter:databaseAdapter threadingEnvironment:threadingEnvironment];
+    return [super initWithCloudConnection:cloudConnection interface:interface threadingEnvironment:threadingEnvironment];
 }
 
 #pragma mark - CBRCloudBridge
@@ -158,11 +158,9 @@
     }
 
     if (self.isRunningInOfflineMode) {
+        [self.databaseAdapter.interface beginWriteTransaction];
         persistentObject.hasPendingCloudBridgeChanges = @YES;
-
-        if ([self.databaseAdapter respondsToSelector:@selector(saveChangesForPersistentObject:)]) {
-            [self.databaseAdapter saveChangesForPersistentObject:persistentObject];
-        }
+        [self.databaseAdapter.interface commitWriteTransaction:NULL];
 
         if (completionHandler) {
             completionHandler(persistentObject, nil);
@@ -197,9 +195,9 @@
     }
 
     if (self.isRunningInOfflineMode) {
+        [self.databaseAdapter.interface beginWriteTransaction];
         persistentObject.hasPendingCloudBridgeChanges = @YES;
-
-        [self.databaseAdapter saveChangesForPersistentObject:persistentObject];
+        [self.databaseAdapter.interface commitWriteTransaction:NULL];
 
         if (completionHandler) {
             completionHandler(persistentObject, nil);
@@ -234,8 +232,10 @@
     }
 
     if (self.isRunningInOfflineMode) {
-        NSString *cloudIdentifier = [self.cloudConnection.objectTransformer primaryKeyOfEntitiyDescription:[self.databaseAdapter entityDescriptionForClass:persistentObject.class]];
+        NSString *cloudIdentifier = [self.cloudConnection.objectTransformer primaryKeyOfEntitiyDescription:[persistentObject cloudBridgeEntityDescription]];
         id identifier = [persistentObject valueForKey:cloudIdentifier];
+
+        [self.databaseAdapter.interface beginWriteTransaction];
 
         BOOL identifierIsNil = identifier == nil || ([identifier isKindOfClass:[NSNumber class]] && [identifier integerValue] == 0) || ([identifier isKindOfClass:[NSString class]] && [identifier length] == 0);
         if (persistentObject.hasPendingCloudBridgeChanges.boolValue && identifierIsNil) {
@@ -243,9 +243,9 @@
         } else {
             persistentObject.hasPendingCloudBridgeChanges = @NO;
             persistentObject.hasPendingCloudBridgeDeletion = @YES;
-
-            [self.databaseAdapter saveChangesForPersistentObject:persistentObject];
         }
+
+        [self.databaseAdapter.interface commitWriteTransaction:NULL];
 
         if (completionHandler) {
             completionHandler(nil);
@@ -405,7 +405,7 @@
         NSMutableDictionary *result = [NSMutableDictionary dictionary];
 
         for (id<CBROfflineCapablePersistentObject> object in persistentObjects) {
-            CBREntityDescription *entityDescription = [self.databaseAdapter entityDescriptionForClass:object.class];
+            CBREntityDescription *entityDescription = [object cloudBridgeEntityDescription];
             NSString *cloudIdentifierKey = [self.cloudConnection.objectTransformer primaryKeyOfEntitiyDescription:entityDescription];
 
             CBRDeletedObjectIdentifier *identifier = [[CBRDeletedObjectIdentifier alloc] initWithCloudIdentifier:[object valueForKey:cloudIdentifierKey]

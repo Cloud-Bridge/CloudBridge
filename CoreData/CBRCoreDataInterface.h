@@ -21,19 +21,17 @@
  THE SOFTWARE.
  */
 
-#import <Realm/Realm.h>
 #import <Foundation/Foundation.h>
-
-#import <CloudBridge/CBRRealmObject.h>
+#import <CloudBridge/CBRCoreDataStack.h>
 #import <CloudBridge/CBRDatabaseAdapter.h>
 #import <CloudBridge/CBRPersistentObject.h>
-#import <CloudBridge/CBRPersistentObjectCache.h>
+#import <CloudBridge/CBRPersistentStoreInterface.h>
 
-@class CBRThreadingEnvironment;
+@class CBRThreadingEnvironment, CBRPersistentObjectCache;
 
 
 
-@interface CBRRealmObject (CBRPersistentObject) <CBRPersistentObject>
+@interface NSManagedObject (CBRPersistentObject) <CBRPersistentObject>
 
 /**
  Fetching object for a relationship queries the backend with `relationshipDescription.inverseRelationship == self`
@@ -56,16 +54,17 @@
 
 
 
+/**
+ @abstract  <#abstract comment#>
+ */
 __attribute__((objc_subclassing_restricted))
-@interface CBRRealmDatabaseAdapter : NSObject <CBRDatabaseAdapter>
+@interface CBRCoreDataInterface : NSObject <CBRPersistentStoreInterface>
 
-@property (nonatomic, readonly) RLMRealm *realm;
-@property (nonatomic, readonly) RLMRealmConfiguration *configuration;
-@property (nonatomic, readonly) CBRThreadingEnvironment *threadingEnvironment;
+@property (nonatomic, readonly) CBRCoreDataStack *stack;
 
 - (instancetype)init NS_DESIGNATED_INITIALIZER UNAVAILABLE_ATTRIBUTE;
-- (instancetype)initWithConfiguration:(RLMRealmConfiguration *)configuration threadingEnvironment:(CBRThreadingEnvironment *(^)(void))threadingEnvironment NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithStack:(CBRCoreDataStack *)stack NS_DESIGNATED_INITIALIZER;
 
-- (CBRPersistentObjectCache *)cacheForRealm:(RLMRealm *)realm;
+- (CBRPersistentObjectCache *)cacheForManagedObjectContext:(NSManagedObjectContext *)context;
 
 @end

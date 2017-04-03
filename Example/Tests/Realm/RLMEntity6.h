@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <CloudBridge/CBRRealmObject.h>
-#import <CloudBridge/CBRRealmDatabaseAdapter.h>
+#import <CloudBridge/CBRRealmInterface.h>
 
 @protocol RLMEntity6, RLMEntity6Child;
 @class RLMEntity6, RLMEntity6Child;

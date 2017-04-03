@@ -31,7 +31,7 @@
         return;
     }
 
-    CBREntityDescription *entity = [persistentObject.cloudBridge.databaseAdapter entityDescriptionForClass:[persistentObject class]];
+    CBREntityDescription *entity = persistentObject.cloudBridgeEntityDescription;
     for (CBRAttributeDescription *attributeDescription in entity.attributes) {
         [cloudObject setValue:[persistentObject valueForKey:attributeDescription.name] forKey:attributeDescription.name];
     }
@@ -44,9 +44,9 @@
     id identifier = cloudObject[@"identifier"];
     NSParameterAssert(identifier);
 
-    id<CBRPersistentObject> managedObject = [entity.databaseAdapter persistentObjectOfType:entity withPrimaryKey:identifier];
+    id<CBRPersistentObject> managedObject = [[NSClassFromString(entity.name) cloudBridge].databaseAdapter persistentObjectOfType:entity withPrimaryKey:identifier];
     if (!managedObject) {
-        managedObject = [entity.databaseAdapter newMutablePersistentObjectOfType:entity save:NULL];
+        managedObject = [[NSClassFromString(entity.name) cloudBridge].databaseAdapter newMutablePersistentObjectOfType:entity];
     }
 
     [self updatePersistentObject:managedObject withPropertiesFromCloudObject:cloudObject];
@@ -55,7 +55,9 @@
 
 - (void)updatePersistentObject:(id<CBRPersistentObject>)persistentObject withPropertiesFromCloudObject:(id<CBRCloudObject>)cloudObject
 {
-    CBREntityDescription *entity = [persistentObject.cloudBridge.databaseAdapter entityDescriptionForClass:[persistentObject class]];
+    CBREntityDescription *entity = persistentObject.cloudBridgeEntityDescription;
+    assert(entity);
+
     for (CBRAttributeDescription *attributeDescription in entity.attributes) {
         [persistentObject setValue:cloudObject[attributeDescription.name] forKey:attributeDescription.name];
     }

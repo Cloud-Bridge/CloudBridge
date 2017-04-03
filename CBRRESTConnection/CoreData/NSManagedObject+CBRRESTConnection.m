@@ -24,7 +24,7 @@
 #import "NSManagedObject+CBRRESTConnection.h"
 #import <CloudBridge/CBRPersistentObjectCache.h>
 #import <CloudBridge/CBRRESTConnection.h>
-#import <CloudBridge/CBRCoreDataDatabaseAdapter.h>
+#import <CloudBridge/CBRCoreDataInterface.h>
 #import <CloudBridge/CBREntityDescription+CBRRESTConnection.h>
 
 @implementation NSManagedObject (CBRRESTConnection)

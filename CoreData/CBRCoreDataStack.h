@@ -33,7 +33,6 @@ enum {
 
 
 
-__attribute__((objc_subclassing_restricted))
 @interface CBRCoreDataStack : NSObject
 
 @property (nonatomic, readonly) NSBundle *bundle;

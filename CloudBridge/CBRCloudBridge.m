@@ -52,10 +52,6 @@
             id<CBRPersistentObject> persistentObject = comparisionPredicate.rightExpression.constantValue;
 
             if (relationshipDescription && [persistentObject conformsToProtocol:@protocol(CBRPersistentObject)]) {
-                if ([entityDescription.databaseAdapter respondsToSelector:@selector(saveChangesForPersistentObject:)]) {
-                    [entityDescription.databaseAdapter saveChangesForPersistentObject:persistentObject];
-                }
-
                 NSString *primaryKey = [[cloudBridge.cloudConnection objectTransformer] primaryKeyOfEntitiyDescription:[persistentObject cloudBridgeEntityDescription]];
 
                 if (parent != NULL) {
@@ -99,14 +95,14 @@
 }
 
 - (instancetype)initWithCloudConnection:(id<CBRCloudConnection>)cloudConnection
-                        databaseAdapter:(id<CBRDatabaseAdapter>)databaseAdapter
+                              interface:(id<CBRPersistentStoreInterface>)interface
                    threadingEnvironment:(CBRThreadingEnvironment *)threadingEnvironment
 {
     NSParameterAssert(cloudConnection);
 
     if (self = [super init]) {
         _cloudConnection = cloudConnection;
-        _databaseAdapter = databaseAdapter;
+        _databaseAdapter = [[CBRDatabaseAdapter alloc] initWithInterface:interface threadingEnvironment:threadingEnvironment];
         _threadingEnvironment = threadingEnvironment;
     }
     return self;
@@ -132,14 +128,15 @@
                              userInfo:(NSDictionary *)userInfo
                     completionHandler:(void(^)(NSArray *fetchedObjects, NSError *error))completionHandler
 {
-    CBREntityDescription *entityDescription = [self.databaseAdapter entityDescriptionForClass:persistentClass];
+    CBREntityDescription *entityDescription = [persistentClass cloudBridgeEntityDescription];
     NSParameterAssert(entityDescription);
 
     id<CBRPersistentObject> parent = nil;
     _CBRCloudBridgePredicateDescription *description = [[_CBRCloudBridgePredicateDescription alloc] initWithPredicate:predicate forEntity:entityDescription cloudBridge:self parent:&parent];
 
-    if (parent) {
-        assert([self.databaseAdapter hasPersistedObjects:@[ parent ]]);
+    if (parent && [self.databaseAdapter.interface conformsToProtocol:@protocol(_CBRPersistentStoreInterfaceInternal)]) {
+        id<_CBRPersistentStoreInterfaceInternal> interface = (id<_CBRPersistentStoreInterfaceInternal>)self.databaseAdapter.interface;
+        assert([interface hasPersistedObjects:@[ parent ]]);
     }
 
     [self.cloudConnection fetchCloudObjectsForEntity:entityDescription withPredicate:predicate userInfo:userInfo completionHandler:^(NSArray *fetchedObjects, NSError *error) {
@@ -228,8 +225,9 @@
 
 - (void)createPersistentObject:(id<CBRPersistentObject>)persistentObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(id persistentObject, NSError *error))completionHandler
 {
-    if ([self.databaseAdapter respondsToSelector:@selector(saveChangesForPersistentObject:)]) {
-        [self.databaseAdapter saveChangesForPersistentObject:persistentObject];
+    if ([self.databaseAdapter.interface conformsToProtocol:@protocol(_CBRPersistentStoreInterfaceInternal)]) {
+        id<_CBRPersistentStoreInterfaceInternal> interface = (id<_CBRPersistentStoreInterfaceInternal>)self.databaseAdapter.interface;
+        [interface saveChangedForPersistentObject:persistentObject error:NULL];
     }
 
     id<CBRCloudObject> cloudObject = [self.cloudConnection.objectTransformer cloudObjectFromPersistentObject:persistentObject];
@@ -239,10 +237,6 @@
                 completionHandler(nil, error);
             }
             return;
-        }
-
-        if ([self.databaseAdapter respondsToSelector:@selector(saveChangesForPersistentObject:)]) {
-            [self.databaseAdapter saveChangesForPersistentObject:persistentObject];
         }
 
         [self.databaseAdapter transactionWithObject:persistentObject transaction:^id _Nullable(id  _Nullable persistentObject) {
@@ -258,8 +252,9 @@
 
 - (void)reloadPersistentObject:(id<CBRPersistentObject>)persistentObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(id persistentObject, NSError *error))completionHandler
 {
-    if ([self.databaseAdapter respondsToSelector:@selector(saveChangesForPersistentObject:)]) {
-        [self.databaseAdapter saveChangesForPersistentObject:persistentObject];
+    if ([self.databaseAdapter.interface conformsToProtocol:@protocol(_CBRPersistentStoreInterfaceInternal)]) {
+        id<_CBRPersistentStoreInterfaceInternal> interface = (id<_CBRPersistentStoreInterfaceInternal>)self.databaseAdapter.interface;
+        [interface saveChangedForPersistentObject:persistentObject error:NULL];
     }
 
     [self.cloudConnection latestCloudObjectForPersistentObject:persistentObject withUserInfo:userInfo completionHandler:^(id<CBRCloudObject> cloudObject, NSError *error) {
@@ -283,8 +278,9 @@
 
 - (void)savePersistentObject:(id<CBRPersistentObject>)persistentObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(id persistentObject, NSError *error))completionHandler
 {
-    if ([self.databaseAdapter respondsToSelector:@selector(saveChangesForPersistentObject:)]) {
-        [self.databaseAdapter saveChangesForPersistentObject:persistentObject];
+    if ([self.databaseAdapter.interface conformsToProtocol:@protocol(_CBRPersistentStoreInterfaceInternal)]) {
+        id<_CBRPersistentStoreInterfaceInternal> interface = (id<_CBRPersistentStoreInterfaceInternal>)self.databaseAdapter.interface;
+        [interface saveChangedForPersistentObject:persistentObject error:NULL];
     }
 
     id<CBRCloudObject> cloudObject = [self.cloudConnection.objectTransformer cloudObjectFromPersistentObject:persistentObject];
@@ -309,8 +305,9 @@
 
 - (void)deletePersistentObject:(id<CBRPersistentObject>)persistentObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(NSError *error))completionHandler
 {
-    if ([self.databaseAdapter respondsToSelector:@selector(saveChangesForPersistentObject:)]) {
-        [self.databaseAdapter saveChangesForPersistentObject:persistentObject];
+    if ([self.databaseAdapter.interface conformsToProtocol:@protocol(_CBRPersistentStoreInterfaceInternal)]) {
+        id<_CBRPersistentStoreInterfaceInternal> interface = (id<_CBRPersistentStoreInterfaceInternal>)self.databaseAdapter.interface;
+        [interface saveChangedForPersistentObject:persistentObject error:NULL];
     }
 
     id<CBRCloudObject> cloudObject = [self.cloudConnection.objectTransformer cloudObjectFromPersistentObject:persistentObject];

@@ -51,7 +51,7 @@
 @implementation CBRThreadingEnvironment
 
 #if CBRCoreDataAvailable
-- (instancetype)initWithCoreDataAdapter:(CBRCoreDataDatabaseAdapter *)coreDataAdapter
+- (instancetype)initWithCoreDataAdapter:(CBRCoreDataInterface *)coreDataAdapter
 {
     if (self = [super init]) {
         _coreDataAdapter = coreDataAdapter;
@@ -61,7 +61,7 @@
 #endif
 
 #if CBRRealmAvailable
-- (instancetype)initWithRealmAdapter:(CBRRealmDatabaseAdapter *)realmAdapter
+- (instancetype)initWithRealmAdapter:(CBRRealmInterface *)realmAdapter
 {
     if (self = [super init]) {
         _realmAdapter = realmAdapter;
@@ -72,7 +72,7 @@
 #endif
 
 #if CBRRealmAvailable && CBRCoreDataAvailable
-- (instancetype)initWithCoreDataAdapter:(CBRCoreDataDatabaseAdapter *)coreDataAdapter realmAdapter:(CBRRealmDatabaseAdapter *)realmAdapter
+- (instancetype)initWithCoreDataAdapter:(CBRCoreDataInterface *)coreDataAdapter realmAdapter:(CBRRealmInterface *)realmAdapter
 {
     if (self = [super init]) {
         _coreDataAdapter = coreDataAdapter;

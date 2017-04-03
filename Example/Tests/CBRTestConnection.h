@@ -7,7 +7,7 @@
 //
 
 #import <CloudBridge/CloudBridge.h>
-#import <CloudBridge/CBRCoreDataDatabaseAdapter.h>
+#import <CloudBridge/CBRCoreDataInterface.h>
 
 @interface NSDictionary () <CBRCloudObject>
 @end

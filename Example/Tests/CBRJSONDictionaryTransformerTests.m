@@ -20,7 +20,7 @@
 @property (nonatomic, strong) CBRCloudBridge *cloudBridge;
 @property (nonatomic, strong) AFHTTPSessionManager *sessionManager;
 @property (nonatomic, strong) CBRRESTConnection *connection;
-@property (nonatomic, strong) CBRCoreDataDatabaseAdapter *adapter;
+@property (nonatomic, strong) CBRCoreDataInterface *adapter;
 @property (nonatomic, strong) CBRThreadingEnvironment *environment;
 @end
 
@@ -43,11 +43,9 @@
     __block __weak CBRCloudBridge *bridge = nil;
     self.transformer = [[CBRJSONDictionaryTransformer alloc] initWithPropertyMapping:propertyMapping];
     self.connection = [[CBRRESTConnection alloc] initWithPropertyMapping:propertyMapping sessionManager:self.sessionManager];
-    self.adapter = [[CBRCoreDataDatabaseAdapter alloc] initWithStack:[CBRTestDataStore testStore] threadingEnvironment:^CBRThreadingEnvironment *{
-        return bridge.threadingEnvironment;
-    }];
+    self.adapter = [[CBRCoreDataInterface alloc] initWithStack:[CBRTestDataStore testStore]];
     self.environment = [[CBRThreadingEnvironment alloc] initWithCoreDataAdapter:self.adapter];
-    self.cloudBridge = [[CBRCloudBridge alloc] initWithCloudConnection:self.connection databaseAdapter:self.adapter threadingEnvironment:self.environment];
+    self.cloudBridge = [[CBRCloudBridge alloc] initWithCloudConnection:self.connection interface:self.adapter threadingEnvironment:self.environment];
     bridge = self.cloudBridge;
 
     [NSManagedObject setCloudBridge:self.cloudBridge];
@@ -143,7 +141,7 @@
                                  @"dictionary": @{ @"key": @"value" }
                                  };
 
-    CBREntityDescription *entityDescription = [self.adapter entityDescriptionForClass:[SLEntity5 class]];
+    CBREntityDescription *entityDescription = [SLEntity5 cloudBridgeEntityDescription];
     SLEntity5 *newEntity = (id)[self.transformer persistentObjectFromCloudObject:dictionary forEntity:entityDescription];
 
     expect(newEntity).toNot.beNil();
@@ -178,7 +176,7 @@
                                  @"dictionary": @{ @"key": @"value" }
                                  };
 
-    CBREntityDescription *entityDescription = [self.adapter entityDescriptionForClass:[SLEntity5 class]];
+    CBREntityDescription *entityDescription = [SLEntity5 cloudBridgeEntityDescription];
     SLEntity5 *newEntity = (id)[self.transformer persistentObjectFromCloudObject:dictionary forEntity:entityDescription];
 
     expect(newEntity).toNot.beNil();
@@ -207,7 +205,7 @@
                                  @"dictionary": @{ @"key": @"value" }
                                  };
 
-    CBREntityDescription *entityDescription = [self.adapter entityDescriptionForClass:[SLEntity5 class]];
+    CBREntityDescription *entityDescription = [SLEntity5 cloudBridgeEntityDescription];
     SLEntity5 *newEntity = (id)[self.transformer persistentObjectFromCloudObject:dictionary forEntity:entityDescription];
 
     expect(newEntity).toNot.beNil();
@@ -243,7 +241,7 @@
                                  @"dictionary": @{ @"key": @"value" }
                                  };
 
-    CBREntityDescription *entityDescription = [self.adapter entityDescriptionForClass:[SLEntity5 class]];
+    CBREntityDescription *entityDescription = [SLEntity5 cloudBridgeEntityDescription];
     SLEntity5 *newEntity = (id)[self.transformer persistentObjectFromCloudObject:dictionary forEntity:entityDescription];
 
     expect(newEntity).toNot.beNil();
@@ -276,7 +274,7 @@
                                  @"dictionary": @{ @"key": @"value" }
                                  };
 
-    CBREntityDescription *entityDescription = [self.adapter entityDescriptionForClass:[SLEntity5 class]];
+    CBREntityDescription *entityDescription = [SLEntity5 cloudBridgeEntityDescription];
     SLEntity5 *newEntity = (id)[self.transformer persistentObjectFromCloudObject:dictionary forEntity:entityDescription];
 
     expect(newEntity).toNot.beNil();
@@ -288,7 +286,7 @@
 
 - (void)testThatManagedObjectDoesntUpdateWithoutIdentifier
 {
-    CBREntityDescription *entityDescription = [self.adapter entityDescriptionForClass:[SLEntity5 class]];
+    CBREntityDescription *entityDescription = [SLEntity5 cloudBridgeEntityDescription];
 
     NSDate *now = [NSDate date];
     NSString *stringValue = [self.transformer.dateFormatter stringFromDate:now];
@@ -307,7 +305,7 @@
 
 - (void)testThatManageObjectUpdatesWithJSONObjectKeyPaths
 {
-    CBREntityDescription *entityDescription = [self.adapter entityDescriptionForClass:[SLEntity5 class]];
+    CBREntityDescription *entityDescription = [SLEntity5 cloudBridgeEntityDescription];
 
     NSDate *now = [NSDate date];
     NSString *stringValue = [self.transformer.dateFormatter stringFromDate:now];
@@ -331,7 +329,7 @@
 
 - (void)testThatManagedObjectUpdatesOneToOneRelationshipsWithJSONObjectIdentifier
 {
-    CBREntityDescription *entityDescription = [self.adapter entityDescriptionForClass:[SLEntity5 class]];
+    CBREntityDescription *entityDescription = [SLEntity5 cloudBridgeEntityDescription];
 
     SLEntity5Child1 *child = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([SLEntity5Child1 class])
                                                            inManagedObjectContext:self.context];
@@ -357,14 +355,14 @@
                                  @"child": @{ @"id": @6 }
                                  };
 
-    CBREntityDescription *entityDescription = [self.adapter entityDescriptionForClass:[SLEntity5 class]];
+    CBREntityDescription *entityDescription = [SLEntity5 cloudBridgeEntityDescription];
     SLEntity5 *entity = (id)[self.transformer persistentObjectFromCloudObject:dictionary forEntity:entityDescription];
     expect(entity.child.identifier).to.equal(6);
 }
 
 - (void)testThatManagedObjectUpdatesOneToManyRelationshipsWithJSONObject
 {
-    CBREntityDescription *entityDescription = [self.adapter entityDescriptionForClass:[SLEntity5Child3 class]];
+    CBREntityDescription *entityDescription = [SLEntity5Child3 cloudBridgeEntityDescription];
 
     NSDictionary *dictionary = @{
                                  @"id": @1,
@@ -392,7 +390,7 @@
                                  @"parent_id": @5
                                  };
 
-    CBREntityDescription *entityDescription = [self.adapter entityDescriptionForClass:[SLEntity5Child3 class]];
+    CBREntityDescription *entityDescription = [SLEntity5Child3 cloudBridgeEntityDescription];
     SLEntity5Child3 *entity = (id)[self.transformer persistentObjectFromCloudObject:dictionary forEntity:entityDescription];
 
     expect(entity.parent).to.equal(parent);
@@ -406,7 +404,7 @@
                                  @"to_many_childs": @[ @{ @"id": @1 }, @{ @"id": @2 } ]
                                  };
 
-    CBREntityDescription *entityDescription = [self.adapter entityDescriptionForClass:[SLEntity5 class]];
+    CBREntityDescription *entityDescription = [SLEntity5 cloudBridgeEntityDescription];
     SLEntity5 *entity = (id)[self.transformer persistentObjectFromCloudObject:dictionary forEntity:entityDescription];
 
     expect(entity.toManyChilds.count).to.equal(2);
@@ -428,7 +426,7 @@
                                  @"camelizedChilds": @[ @{ @"id": @1 } ]
                                  };
 
-    CBREntityDescription *entityDescription = [self.adapter entityDescriptionForClass:[SLEntity5 class]];
+    CBREntityDescription *entityDescription = [SLEntity5 cloudBridgeEntityDescription];
     SLEntity5 *entity = (id)[self.transformer persistentObjectFromCloudObject:dictionary forEntity:entityDescription];
 
     expect(entity.camelizedChilds.count).to.equal(1);
@@ -446,7 +444,7 @@
                                  @"differentChilds": @[ @{ @"foo_id": @1 } ]
                                  };
 
-    CBREntityDescription *entityDescription = [self.adapter entityDescriptionForClass:[SLEntity5 class]];
+    CBREntityDescription *entityDescription = [SLEntity5 cloudBridgeEntityDescription];
     SLEntity5 *entity = (id)[self.transformer persistentObjectFromCloudObject:dictionary forEntity:entityDescription];
 
     expect(entity.differentChilds.count).to.equal(1);
@@ -465,7 +463,7 @@
                                  @"string": @"maFooBar"
                                  };
 
-    CBREntityDescription *entityDescription = [self.adapter entityDescriptionForClass:[SLEntity5 class]];
+    CBREntityDescription *entityDescription = [SLEntity5 cloudBridgeEntityDescription];
     SLEntity5 *entity = (id)[self.transformer persistentObjectFromCloudObject:dictionary forEntity:entityDescription];
 
     expect(entity.class).to.equal([SLEntity5Subclass class]);
@@ -493,7 +491,7 @@
                                            @"name": @"foo",
                                            }};
 
-    CBREntityDescription *entityDescription = [self.adapter entityDescriptionForClass:[PrefixedEntitiy class]];
+    CBREntityDescription *entityDescription = [PrefixedEntitiy cloudBridgeEntityDescription];
     PrefixedEntitiy *managedObject = (id)[self.transformer persistentObjectFromCloudObject:cloudObject forEntity:entityDescription];
 
     expect(managedObject.identifier).to.equal(1);
@@ -507,7 +505,7 @@
                                  @"camelizedChilds": @[ @{ @"id": @1 } ]
                                  };
 
-    CBREntityDescription *entityDescription = [self.adapter entityDescriptionForClass:[SLEntity5 class]];
+    CBREntityDescription *entityDescription = [SLEntity5 cloudBridgeEntityDescription];
     SLEntity5 *entity = (id)[self.transformer persistentObjectFromCloudObject:dictionary forEntity:entityDescription];
 
     expect(entity.camelizedChilds.count).to.equal(1);

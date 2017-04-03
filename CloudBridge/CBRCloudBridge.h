@@ -24,6 +24,7 @@
 #import <CoreData/CoreData.h>
 #import <CloudBridge/CBRCloudConnection.h>
 #import <CloudBridge/CBRDatabaseAdapter.h>
+#import <CloudBridge/CBRPersistentStoreInterface.h>
 
 @class CBRThreadingEnvironment;
 
@@ -35,14 +36,14 @@
 @interface CBRCloudBridge : NSObject
 
 @property (nonatomic, readonly) id<CBRCloudConnection> cloudConnection;
-@property (nonatomic, readonly) id<CBRDatabaseAdapter> databaseAdapter;
+@property (nonatomic, readonly) CBRDatabaseAdapter *databaseAdapter;
 @property (nonatomic, readonly) CBRThreadingEnvironment *threadingEnvironment;
 
 @property (nonatomic, assign) BOOL transformsPersistentObjectsOnMainThread;
 
 - (instancetype)init NS_DESIGNATED_INITIALIZER UNAVAILABLE_ATTRIBUTE;
 - (instancetype)initWithCloudConnection:(id<CBRCloudConnection>)cloudConnection
-                        databaseAdapter:(id<CBRDatabaseAdapter>)databaseAdapter
+                              interface:(id<CBRPersistentStoreInterface>)interface
                    threadingEnvironment:(CBRThreadingEnvironment *)threadingEnvironment NS_DESIGNATED_INITIALIZER;
 
 - (void)fetchPersistentObjectsOfClass:(Class)persistentClass

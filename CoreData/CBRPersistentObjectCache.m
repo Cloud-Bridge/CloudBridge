@@ -25,7 +25,7 @@
 
 #import "CBRPersistentObjectCache.h"
 #import "CBREnumaratableCache.h"
-#import "CBRCoreDataDatabaseAdapter.h"
+#import "CBRCoreDataInterface.h"
 
 
 
@@ -44,10 +44,10 @@
     return [super init];
 }
 
-- (id)initWithDatabaseAdapter:(id<CBRDatabaseAdapter>)databaseAdapter
+- (instancetype)initWithInterface:(id<CBRPersistentStoreInterface>)interface
 {
     if (self = [super init]) {
-        _databaseAdapter = databaseAdapter;
+        _interface = interface;
         _internalCache = [[CBREnumaratableCache alloc] init];
     }
     return self;
@@ -57,7 +57,6 @@
 
 - (id)objectOfType:(NSString *)type withValue:(id)value forAttribute:(NSString *)attribute
 {
-    assert([self.databaseAdapter entityDescriptionForClass:NSClassFromString(type)]);
     if (!value) {
         return nil;
     }
@@ -72,7 +71,7 @@
     fetchRequest.fetchLimit = 1;
 
     NSError *error = nil;
-    NSArray *fetchedObjects = [self.databaseAdapter executeFetchRequest:fetchRequest error:&error];
+    NSArray *fetchedObjects = [self.interface executeFetchRequest:fetchRequest error:&error];
     NSAssert(error == nil, @"error fetching data: %@", error);
 
     if (fetchedObjects.count > 0) {
@@ -86,7 +85,6 @@
 
 - (NSDictionary *)indexedObjectsOfType:(NSString *)type withValues:(NSSet *)values forAttribute:(NSString *)attribute
 {
-    assert([self.databaseAdapter entityDescriptionForClass:NSClassFromString(type)]);
     if (values.count == 0) {
         return @{};
     }
@@ -109,7 +107,7 @@
     request.predicate = [NSPredicate predicateWithFormat:@"%K IN %@", attribute, valuesToFetch];
 
     NSError *error = nil;
-    NSArray *fetchedObjects = [self.databaseAdapter executeFetchRequest:request error:&error];
+    NSArray *fetchedObjects = [self.interface executeFetchRequest:request error:&error];
     NSAssert(error == nil, @"error while fetching: %@", error);
 
     for (id managedObject in fetchedObjects) {

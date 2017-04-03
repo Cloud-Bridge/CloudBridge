@@ -23,7 +23,7 @@
 @property (nonatomic, strong) AFHTTPSessionManager *mockedSessionManager;
 
 @property (nonatomic, strong) CBRRESTConnection *connection;
-@property (nonatomic, strong) CBRCoreDataDatabaseAdapter *adapter;
+@property (nonatomic, strong) CBRCoreDataInterface *adapter;
 @property (nonatomic, strong) CBRThreadingEnvironment *environment;
 @end
 
@@ -47,11 +47,9 @@
 
     __block __weak CBRCloudBridge *bridge = nil;
     self.connection = [[CBRRESTConnection alloc] initWithPropertyMapping:propertyMapping sessionManager:self.mockedSessionManager];
-    self.adapter = [[CBRCoreDataDatabaseAdapter alloc] initWithStack:[CBRTestDataStore testStore] threadingEnvironment:^CBRThreadingEnvironment *{
-        return bridge.threadingEnvironment;
-    }];
+    self.adapter = [[CBRCoreDataInterface alloc] initWithStack:[CBRTestDataStore testStore]];
     self.environment = [[CBRThreadingEnvironment alloc] initWithCoreDataAdapter:self.adapter];
-    self.cloudBridge = [[CBRCloudBridge alloc] initWithCloudConnection:self.connection databaseAdapter:self.adapter threadingEnvironment:self.environment];
+    self.cloudBridge = [[CBRCloudBridge alloc] initWithCloudConnection:self.connection interface:self.adapter threadingEnvironment:self.environment];
     bridge = self.cloudBridge;
 
     [NSManagedObject setCloudBridge:self.cloudBridge];
@@ -139,7 +137,7 @@
     SLEntity6 *entity = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([SLEntity6 class]) inManagedObjectContext:self.context];
     entity.identifier = @5;
 
-    CBREntityDescription *entityDescription = [self.adapter entityDescriptionForClass:[SLEntity6Child class]];
+    CBREntityDescription *entityDescription = self.adapter.entitiesByName[NSStringFromClass([SLEntity6Child class])];
 
     __block AFQueryDescription *query = nil;
     OCMStub([self.mockedSessionManager GET:OCMOCK_ANY parameters:OCMOCK_ANY progress:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY]).andQuery(^(AFQueryDescription *theQuery) {
@@ -158,7 +156,7 @@
     SLEntity6 *entity = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([SLEntity6 class]) inManagedObjectContext:self.context];
     entity.identifier = @5;
 
-    CBREntityDescription *entityDescription = [self.adapter entityDescriptionForClass:[SLEntity6Child class]];
+    CBREntityDescription *entityDescription = self.adapter.entitiesByName[NSStringFromClass([SLEntity6Child class])];
 
     __block AFQueryDescription *query = nil;
     OCMStub([self.mockedSessionManager GET:OCMOCK_ANY parameters:OCMOCK_ANY progress:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY]).andQuery(^(AFQueryDescription *theQuery) {

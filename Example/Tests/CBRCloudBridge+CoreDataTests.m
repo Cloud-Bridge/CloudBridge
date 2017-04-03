@@ -16,7 +16,7 @@
 #import "CBRTestConnection.h"
 
 @interface CBRCloudBridge_CoreDataTests : CBRTestCase
-@property (nonatomic, strong) CBRCoreDataDatabaseAdapter *adapter;
+@property (nonatomic, strong) CBRCoreDataInterface *adapter;
 @property (nonatomic, strong) CBRCloudBridge *cloudBridge;
 @property (nonatomic, strong) CBRTestConnection *connection;
 @property (nonatomic, strong) CBRThreadingEnvironment *environment;
@@ -30,11 +30,9 @@
 
     self.connection = [[CBRTestConnection alloc] init];
     __block __weak CBRCloudBridge *bridge = nil;
-    self.adapter = [[CBRCoreDataDatabaseAdapter alloc] initWithStack:[CBRTestDataStore testStore] threadingEnvironment:^CBRThreadingEnvironment *{
-        return bridge.threadingEnvironment;
-    }];
+    self.adapter = [[CBRCoreDataInterface alloc] initWithStack:[CBRTestDataStore testStore]];
     self.environment = [[CBRThreadingEnvironment alloc] initWithCoreDataAdapter:self.adapter];
-    self.cloudBridge = [[CBRCloudBridge alloc] initWithCloudConnection:self.connection databaseAdapter:self.adapter threadingEnvironment:self.environment];
+    self.cloudBridge = [[CBRCloudBridge alloc] initWithCloudConnection:self.connection interface:self.adapter threadingEnvironment:self.environment];
     bridge = self.cloudBridge;
 
     [NSManagedObject setCloudBridge:self.cloudBridge];
@@ -42,8 +40,8 @@
 
 - (void)testInverseRelation
 {
-    CBREntityDescription *parent = [self.adapter entityDescriptionForClass:[SLEntity6 class]];
-    CBREntityDescription *child = [self.adapter entityDescriptionForClass:[SLEntity6Child class]];
+    CBREntityDescription *parent = self.adapter.entitiesByName[NSStringFromClass([SLEntity6 class])];
+    CBREntityDescription *child = self.adapter.entitiesByName[NSStringFromClass([SLEntity6Child class])];
 
     expect(parent.relationshipsByName[@"children"].inverseRelationship.name).to.equal(@"parent");
     expect(child.relationshipsByName[@"parent"].inverseRelationship.name).to.equal(@"children");
@@ -56,7 +54,7 @@
 
 - (void)testThatSubclassesOverrideGlobalCloudBridge
 {
-    CBRCloudBridge *otherCloudBridge = [[CBRCloudBridge alloc] initWithCloudConnection:self.connection databaseAdapter:self.adapter threadingEnvironment:self.environment];
+    CBRCloudBridge *otherCloudBridge = [[CBRCloudBridge alloc] initWithCloudConnection:self.connection interface:self.adapter threadingEnvironment:self.environment];
     expect(otherCloudBridge).toNot.equal(self.cloudBridge);
 
     [SLEntity4 setCloudBridge:otherCloudBridge];
@@ -76,6 +74,8 @@
     entity.number = @5;
     entity.string = @"blubb";
 
+    [self.context save:NULL];
+
     self.connection.objectsToReturn = @[ @{@"identifier": @1337} ];
     [self.cloudBridge createPersistentObject:entity withCompletionHandler:NULL];
     expect(entity.identifier).will.equal(1337);
@@ -90,6 +90,8 @@
     entity.string = @"blubb";
     entity.identifier = @5;
 
+    [self.context save:NULL];
+
     self.connection.objectsToReturn = @[ @{ @"identifier": entity.identifier, @"string": @"bla" } ];
     [self.cloudBridge savePersistentObject:entity withCompletionHandler:NULL];
 
@@ -100,6 +102,8 @@
 {
     SLEntity4 *entity = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([SLEntity4 class]) inManagedObjectContext:self.context];
     entity.identifier = @5;
+
+    [self.context save:NULL];
 
     self.connection.objectsToReturn = @[ @{ @"identifier": entity.identifier, @"string": @"bla" } ];
     [self.cloudBridge reloadPersistentObject:entity withCompletionHandler:NULL];
@@ -112,6 +116,8 @@
     SLEntity4 *entity = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([SLEntity4 class]) inManagedObjectContext:self.context];
     entity.identifier = @5;
 
+    [self.context save:NULL];
+
     [self.cloudBridge deletePersistentObject:entity withCompletionHandler:NULL];
     expect(entity.isDeleted).will.beTruthy();
 }
@@ -120,6 +126,8 @@
 {
     SLEntity6 *entity = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([SLEntity6 class]) inManagedObjectContext:self.context];
     entity.identifier = @5;
+
+    [self.context save:NULL];
 
     self.connection.objectsToReturn = @[ @{ @"identifier": @1 }, @{ @"identifier": @2 } ];
 
@@ -138,6 +146,8 @@
     child.identifier = @5;
     entity.children = [NSSet setWithObject:child];
 
+    [self.context save:NULL];
+
     self.connection.objectsToReturn = @[ @{ @"identifier": @1 }, @{ @"identifier": @2 } ];
 
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"parent == %@", entity];
@@ -155,6 +165,8 @@
 
     SLEntity6Child *child = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([SLEntity6Child class]) inManagedObjectContext:self.context];
     child.identifier = @5;
+
+    [self.context save:NULL];
 
     self.connection.objectsToReturn = @[ @{ @"identifier": @1 }, @{ @"identifier": @2 } ];
 

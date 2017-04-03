@@ -23,32 +23,31 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
+#import <CloudBridge/CBRPersistentStoreInterface.h>
 
-@class CBREntityDescription, CBRRelationshipDescription;
+@class CBREntityDescription, CBRRelationshipDescription, CBRPersistentObjectCache, CBRThreadingEnvironment;
 @protocol CBRPersistentObject;
 
 
 
 NS_ASSUME_NONNULL_BEGIN
 
-/**
- @abstract  <#abstract comment#>
- */
-@protocol CBRDatabaseAdapter <NSObject>
+__attribute__((objc_subclassing_restricted))
+@interface CBRDatabaseAdapter : NSObject
+
+@property (nonatomic, readonly) id<CBRPersistentStoreInterface> interface;
+@property (nonatomic, readonly) CBRThreadingEnvironment *threadingEnvironment;
 
 @property (nonatomic, readonly) NSArray<CBREntityDescription *> *entities;
+@property (nonatomic, readonly) NSDictionary<NSString *, CBREntityDescription *> *entitiesByName;
 
-- (CBREntityDescription *)entityDescriptionForClass:(Class)persistentClass;
-- (CBRRelationshipDescription *)inverseRelationshipForEntity:(CBREntityDescription *)entity relationship:(CBRRelationshipDescription *)relationship;
+- (instancetype)initWithInterface:(id<CBRPersistentStoreInterface>)interface threadingEnvironment:(CBRThreadingEnvironment *)threadingEnvironment;
 
-- (BOOL)hasPersistedObjects:(NSArray<id<CBRPersistentObject>> *)persistentObjects;
-- (__kindof id<CBRPersistentObject>)newMutablePersistentObjectOfType:(CBREntityDescription *)entityDescription save:(dispatch_block_t _Nonnull *_Nullable)saveBlock;
+@end
 
-- (__kindof id<CBRPersistentObject>)persistentObjectOfType:(CBREntityDescription *)entityDescription withPrimaryKey:(id)primaryKey;
 
-- (NSDictionary *)indexedObjectsOfType:(CBREntityDescription *)entityDescription withValues:(NSSet *)values forAttribute:(NSString *)attribute;
 
-- (NSArray *)executeFetchRequest:(NSFetchRequest *)fetchRequest error:(NSError **)error;
+@interface CBRDatabaseAdapter (Transactions)
 
 - (void)transactionWithBlock:(dispatch_block_t)transaction;
 - (void)transactionWithBlock:(dispatch_block_t)transaction completion:(void(^_Nullable)(NSError *error))completion;
@@ -59,10 +58,23 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)unsafeTransactionWithObject:(nullable id)object transaction:(void(^)(id _Nullable object))transaction;
 - (void)unsafeTransactionWithObject:(nullable id)object transaction:(id _Nullable(^)(id _Nullable object))transaction completion:(void(^_Nullable)(id _Nullable object))completion;
 
-- (void)deletePersistentObjects:(NSArray<id<CBRPersistentObject>> *)persistentObjects;
+@end
 
-@optional
-- (void)saveChangesForPersistentObject:(id<CBRPersistentObject>)persistentObject;
+
+
+@interface CBRDatabaseAdapter (CBRPersistentStoreInterface)
+
+- (__kindof id<CBRPersistentObject>)newMutablePersistentObjectOfType:(CBREntityDescription *)entityDescription;
+
+- (__kindof id<CBRPersistentObject>)persistentObjectOfType:(CBREntityDescription *)entityDescription withPrimaryKey:(id)primaryKey;
+
+- (NSDictionary *)indexedObjectsOfType:(CBREntityDescription *)entityDescription withValues:(NSSet *)values forAttribute:(NSString *)attribute;
+
+@property (nonatomic, readonly) NSArray<CBREntityDescription *> *entities;
+- (CBRRelationshipDescription *)inverseRelationshipForEntity:(CBREntityDescription *)entity relationship:(CBRRelationshipDescription *)relationship;
+
+- (NSArray *)executeFetchRequest:(NSFetchRequest *)fetchRequest error:(NSError **)error;
+- (void)deletePersistentObjects:(id)persistentObjects;
 
 @end
 

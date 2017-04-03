@@ -7,7 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <CloudBridge/CBRDatabaseAdapter.h>
+#import <CloudBridge/CBRPersistentStoreInterface.h>
+
 @class CBREntityDescription;
 
 typedef NS_ENUM(NSInteger, CBRAttributeType) {
@@ -26,7 +27,7 @@ typedef NS_ENUM(NSInteger, CBRAttributeType) {
 
 @property (nonatomic, readonly) NSString *name;
 @property (nonatomic, readonly) NSDictionary *userInfo;
-@property (nonatomic, weak, readonly) id<CBRDatabaseAdapter> databaseAdapter;
+@property (nonatomic, weak, readonly) id<CBRPersistentStoreInterface> interface;
 
 @end
 
@@ -40,9 +41,9 @@ __attribute__((objc_subclassing_restricted))
 
 @property (nonatomic, strong) NSDictionary *userInfo;
 
-@property (nonatomic, weak, readonly) id<CBRDatabaseAdapter> databaseAdapter;
+@property (nonatomic, weak, readonly) id<CBRPersistentStoreInterface> interface;
 - (instancetype)init NS_DESIGNATED_INITIALIZER UNAVAILABLE_ATTRIBUTE;
-- (instancetype)initWithDatabaseAdapter:(id<CBRDatabaseAdapter>)databaseAdapter NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithInterface:(id<CBRPersistentStoreInterface>)interface NS_DESIGNATED_INITIALIZER;
 
 @end
 
@@ -65,9 +66,9 @@ __attribute__((objc_subclassing_restricted))
 
 @property (nonatomic, strong) NSDictionary *userInfo;
 
-@property (nonatomic, weak, readonly) id<CBRDatabaseAdapter> databaseAdapter;
+@property (nonatomic, weak, readonly) id<CBRPersistentStoreInterface> interface;
 - (instancetype)init NS_DESIGNATED_INITIALIZER UNAVAILABLE_ATTRIBUTE;
-- (instancetype)initWithDatabaseAdapter:(id<CBRDatabaseAdapter>)databaseAdapter NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithInterface:(id<CBRPersistentStoreInterface>)interface NS_DESIGNATED_INITIALIZER;
 
 @end
 
@@ -87,8 +88,8 @@ __attribute__((objc_subclassing_restricted))
 @property (nonatomic, readonly) NSDictionary<NSString *, CBRRelationshipDescription *> *relationshipsByName;
 @property (nonatomic, readonly) NSArray<CBRRelationshipDescription *> *subentities;
 
-@property (nonatomic, weak, readonly) id<CBRDatabaseAdapter> databaseAdapter;
+@property (nonatomic, weak, readonly) id<CBRPersistentStoreInterface> interface;
 - (instancetype)init NS_DESIGNATED_INITIALIZER UNAVAILABLE_ATTRIBUTE;
-- (instancetype)initWithDatabaseAdapter:(id<CBRDatabaseAdapter>)databaseAdapter NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithInterface:(id<CBRPersistentStoreInterface>)interface NS_DESIGNATED_INITIALIZER;
 
 @end

@@ -24,35 +24,39 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-#import <CloudBridge/CBRDatabaseAdapter.h>
+#import <CloudBridge/CBRPersistentStoreInterface.h>
 
 
+
+NS_ASSUME_NONNULL_BEGIN
 
 __attribute__((objc_subclassing_restricted))
 @interface CBRPersistentObjectCache : NSObject
 
-@property (nonatomic, weak) id<CBRDatabaseAdapter> databaseAdapter;
+@property (nonatomic, weak, readonly) id<CBRPersistentStoreInterface> interface;
 
 - (instancetype)init NS_DESIGNATED_INITIALIZER UNAVAILABLE_ATTRIBUTE;
-- (instancetype)initWithDatabaseAdapter:(id<CBRDatabaseAdapter>)databaseAdapter NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithInterface:(id<CBRPersistentStoreInterface>)interface NS_DESIGNATED_INITIALIZER;
 
 /**
  Returns a cached entity by attribute.
 
  @param type `managedObjectContext.persistentStoreCoordinator.managedObjectModel.entitiesByName` must return a valid entity for this type.
  */
-- (id)objectOfType:(NSString *)type withValue:(id)value forAttribute:(NSString *)attribute;
+- (nullable id)objectOfType:(NSString *)type withValue:(nullable id)value forAttribute:(NSString *)attribute;
 
 /**
  Caches and fetches multiple objects where `attribute IN values`.
 
  @param type `managedObjectContext.persistentStoreCoordinator.managedObjectModel.entitiesByName` must return a valid entity for this type.
  */
-- (NSDictionary *)indexedObjectsOfType:(NSString *)type withValues:(NSSet *)values forAttribute:(NSString *)attribute;
+- (NSDictionary *)indexedObjectsOfType:(NSString *)type withValues:(nullable NSSet *)values forAttribute:(NSString *)attribute;
 
 /**
  Removes an object from the cache.
  */
-- (void)removePersistentObject:(id<CBRPersistentObject>)managedObject;
+- (void)removePersistentObject:(id<CBRPersistentObject>)persistentObject;
 
 @end
+
+NS_ASSUME_NONNULL_END
