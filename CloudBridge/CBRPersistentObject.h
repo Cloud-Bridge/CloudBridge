@@ -28,6 +28,10 @@
 
 
 
+void class_implementProtocolExtension(Class klass, Protocol *protocol, Class prototype);
+
+
+
 @protocol CBRPersistentIdentifier <NSObject> @end
 
 @interface NSNumber (CBRPersistentIdentifier) <CBRPersistentIdentifier> @end
@@ -86,6 +90,14 @@
 + (void)fetchObjectsMatchingPredicate:(NSPredicate *)predicate
                 withCompletionHandler:(void(^)(NSArray *fetchedObjects, NSError *error))completionHandler;
 
+/**
+ Fetching object for a relationship queries the backend with `relationshipDescription.inverseRelationship == self`
+
+ @warning: Only supported if `relationshipDescription.inverseRelationship.isToMany` is `NO`.
+ */
+- (void)fetchObjectForRelationship:(NSString *)relationship withCompletionHandler:(void(^)(id managedObject, NSError *error))completionHandler;
+- (void)fetchObjectsForRelationship:(NSString *)relationship withCompletionHandler:(void(^)(NSArray *objects, NSError *error))completionHandler;
+
 - (void)createWithCompletionHandler:(void(^)(id managedObject, NSError *error))completionHandler;
 - (void)reloadWithCompletionHandler:(void(^)(id managedObject, NSError *error))completionHandler;
 - (void)saveWithCompletionHandler:(void(^)(id managedObject, NSError *error))completionHandler;
@@ -117,10 +129,23 @@
  @warning Overriding this property is not recommended because all internal implementations go directly through the corresponding object transformer.
  @note To change the resulting `cloudObjectRepresentation`, override `-[CBRPersistentObjectQueryInterface prepareCloudObject:]`.
  */
-@property (nonatomic, readonly) id /*<CBRCloudObject>*/ cloudObjectRepresentation;
+@property (nonatomic, readonly) id<CBRCloudObject> cloudObjectRepresentation;
+
+/**
+ Convenience method to transform a cloud object into a managed object.
+
+ @warning Overriding this impelmentation is not recommended because all internal implementations go directly through the corresponding object transformer.
+ */
++ (instancetype)persistentObjectFromCloudObject:(id<CBRCloudObject>)cloudObject;
 
 - (id)valueForKey:(NSString *)key;
 - (id)valueForKeyPath:(NSString *)keyPath;
 - (void)setValue:(id)value forKey:(NSString *)key;
+
+@end
+
+
+
+@interface CBRPersistentObjectPrototype : NSObject <CBRPersistentObject>
 
 @end

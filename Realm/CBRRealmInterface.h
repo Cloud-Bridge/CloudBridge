@@ -38,23 +38,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface CBRRealmObject (CBRPersistentObject) <CBRPersistentObject>
 
-/**
- Fetching object for a relationship queries the backend with `relationshipDescription.inverseRelationship == self`
-
- @warning: Only supported if `relationshipDescription.inverseRelationship.isToMany` is `NO`.
- */
-- (void)fetchObjectForRelationship:(NSString *)relationship withCompletionHandler:(void(^)(id managedObject, NSError *error))completionHandler;
-- (void)fetchObjectsForRelationship:(NSString *)relationship withCompletionHandler:(void(^)(NSArray *objects, NSError *error))completionHandler;
-
-/**
- Convenience method to transform a cloud object into a managed object.
-
- @warning Overriding this impelmentation is not recommended because all internal implementations go directly through the corresponding object transformer.
- */
-+ (instancetype)persistentObjectFromCloudObject:(id<CBRCloudObject>)cloudObject;
-
-@property (nonatomic, readonly) id<CBRCloudObject> cloudObjectRepresentation;
-
 @end
 
 
