@@ -27,6 +27,7 @@
 #import "CBRCloudConnection.h"
 #import "CBREntityDescription.h"
 #import "CBRThreadingEnvironment.h"
+#import "CBRPersistentObjectCache.h"
 
 @interface CBRDatabaseAdapter ()
 
@@ -54,6 +55,13 @@
 
 
 @implementation CBRDatabaseAdapter (Transactions)
+
+- (void)inlineTransaction:(NS_NOESCAPE dispatch_block_t)transaction
+{
+    [self.interface beginWriteTransaction];
+    transaction();
+    [self.interface commitWriteTransaction:NULL];
+}
 
 - (void)transactionWithBlock:(dispatch_block_t)transaction
 {

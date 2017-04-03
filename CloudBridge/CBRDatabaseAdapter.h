@@ -49,6 +49,8 @@ __attribute__((objc_subclassing_restricted))
 
 @interface CBRDatabaseAdapter (Transactions)
 
+- (void)inlineTransaction:(NS_NOESCAPE dispatch_block_t)transaction;
+
 - (void)transactionWithBlock:(dispatch_block_t)transaction;
 - (void)transactionWithBlock:(dispatch_block_t)transaction completion:(void(^_Nullable)(NSError *error))completion;
 - (void)transactionWithObject:(nullable id)object

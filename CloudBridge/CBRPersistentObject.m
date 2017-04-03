@@ -111,7 +111,7 @@ void class_implementProtocolExtension(Class klass, Protocol *protocol, Class pro
 
 + (CBREntityDescription *)cloudBridgeEntityDescription
 {
-    return [self cloudBridge].databaseAdapter.entitiesByName[NSStringFromClass(self)];
+    return [self cloudBridge].databaseAdapter.entitiesByName[NSStringFromClass([self class])];
 }
 
 - (CBREntityDescription *)cloudBridgeEntityDescription
