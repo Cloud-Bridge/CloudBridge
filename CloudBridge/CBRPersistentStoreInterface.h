@@ -33,6 +33,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol CBRNotificationToken <NSObject>
 - (void)invalidate;
+
+@property (nonatomic, readonly) NSInteger count;
+@property (nonatomic, readonly) NSArray *allObjects;
+
+- (id)objectAtIndexedSubscript:(NSUInteger)idx;
+
 @end
 
 

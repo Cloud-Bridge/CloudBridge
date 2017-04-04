@@ -57,6 +57,21 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
 
 @implementation _CBRFetchedResultsControllerObserver
 
+- (NSInteger)count
+{
+    return self.controller.fetchedObjects.count;
+}
+
+- (NSArray *)allObjects
+{
+    return self.controller.fetchedObjects;
+}
+
+- (id)objectAtIndexedSubscript:(NSUInteger)idx
+{
+    return self.controller.fetchedObjects[idx];
+}
+
 - (instancetype)initWithController:(NSFetchedResultsController *)controller observer:(void(^)(NSArray *objects, CBRPersistentObjectChange *change))observer
 {
     assert(controller.sectionNameKeyPath == nil);
@@ -70,8 +85,6 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
         NSError *error = nil;
         [_controller performFetch:&error];
         assert(error == nil);
-
-        observer(controller.fetchedObjects, nil);
     }
     return self;
 }
