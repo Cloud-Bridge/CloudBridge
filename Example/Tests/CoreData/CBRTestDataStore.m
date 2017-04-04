@@ -8,7 +8,7 @@
 
 #import "CBRTestDataStore.h"
 
-@implementation CBRTestDataStore
+@implementation CBRCoreDataStack (CBRTestDataStore)
 
 - (NSString *)humanReadableInterfaceName
 {
@@ -41,13 +41,13 @@
     NSAssert(saveError == nil, @"error saving NSManagedObjectContext: %@", saveError);
 }
 
-+ (CBRTestDataStore *)testStore
++ (CBRCoreDataStack *)testStore
 {
-    static CBRTestDataStore *testStore = nil;
+    static CBRCoreDataStack *testStore = nil;
 
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        testStore = [self newConvenientSQLiteStackWithModel:@"CBRTestDataStore" inBundle:[NSBundle bundleForClass:self]];
+        testStore = [self newConvenientSQLiteStackWithModel:@"CBRTestDataStore" inBundle:[NSBundle bundleForClass:[SLEntity6 class]]];
     });
 
     return testStore;

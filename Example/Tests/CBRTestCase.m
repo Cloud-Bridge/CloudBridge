@@ -14,13 +14,13 @@
 - (void)setUp
 {
     [super setUp];
-    _context = [CBRTestDataStore testStore].mainThreadManagedObjectContext;
+    _context = [CBRCoreDataStack testStore].mainThreadManagedObjectContext;
 }
 
 - (void)tearDown
 {
     [super tearDown];
-    [[CBRTestDataStore testStore] wipeAllData];
+    [[CBRCoreDataStack testStore] wipeAllData];
 }
 
 @end

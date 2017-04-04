@@ -30,7 +30,7 @@
 
     self.connection = [[CBRTestConnection alloc] init];
     __block __weak CBRCloudBridge *bridge = nil;
-    self.adapter = [[CBRCoreDataInterface alloc] initWithStack:[CBRTestDataStore testStore]];
+    self.adapter = [[CBRCoreDataInterface alloc] initWithStack:[CBRCoreDataStack testStore]];
     self.environment = [[CBRThreadingEnvironment alloc] initWithCoreDataAdapter:self.adapter];
     self.cloudBridge = [[CBRCloudBridge alloc] initWithCloudConnection:self.connection interface:self.adapter threadingEnvironment:self.environment];
     bridge = self.cloudBridge;

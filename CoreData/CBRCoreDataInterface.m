@@ -23,6 +23,7 @@
 
 #import <objc/runtime.h>
 
+#import "CBRPersistentObjectChange.h"
 #import "CBRThreadingEnvironment.h"
 #import "CBRCoreDataInterface.h"
 #import "CBRCloudBridge.h"
@@ -40,6 +41,93 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
         method_exchangeImplementations(origMethod, newMethod);
     }
 }
+
+
+
+@interface _CBRFetchedResultsControllerObserver : NSObject <CBRNotificationToken, NSFetchedResultsControllerDelegate>
+
+@property (nonatomic, strong) NSMutableArray<NSNumber *> *deletions;
+@property (nonatomic, strong) NSMutableArray<NSNumber *> *insertions;
+@property (nonatomic, strong) NSMutableArray<NSNumber *> *updates;
+
+@property (nonatomic, strong) NSFetchedResultsController *controller;
+@property (nonatomic, strong) void(^observer)(NSArray *objects, CBRPersistentObjectChange *change);
+
+@end
+
+@implementation _CBRFetchedResultsControllerObserver
+
+- (instancetype)initWithController:(NSFetchedResultsController *)controller observer:(void(^)(NSArray *objects, CBRPersistentObjectChange *change))observer
+{
+    assert(controller.sectionNameKeyPath == nil);
+
+    if (self = [super init]) {
+        _controller = controller;
+        _observer = observer;
+
+        _controller.delegate = self;
+
+        NSError *error = nil;
+        [_controller performFetch:&error];
+        assert(error == nil);
+
+        observer(controller.fetchedObjects, nil);
+    }
+    return self;
+}
+
+- (void)invalidate
+{
+    self.controller.delegate = nil;
+    self.controller = nil;
+
+    self.observer = nil;
+}
+
+#pragma mark - NSFetchedResultsControllerDelegate
+
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
+{
+    self.deletions = [NSMutableArray array];
+    self.insertions = [NSMutableArray array];
+    self.updates = [NSMutableArray array];
+}
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(NSManagedObject *)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath
+{
+    switch (type) {
+        case NSFetchedResultsChangeInsert: {
+            [self.insertions addObject:@(newIndexPath.row)];
+            break;
+        } case NSFetchedResultsChangeDelete: {
+            [self.deletions addObject:@(indexPath.row)];
+            break;
+        } case NSFetchedResultsChangeMove: {
+            [self.deletions addObject:@(indexPath.row)];
+            [self.insertions addObject:@(newIndexPath.row)];
+            break;
+        } case NSFetchedResultsChangeUpdate: {
+            if (anObject.changedValuesForCurrentEvent.count > 0) {
+                [self.updates addObject:@(indexPath.row)];
+            }
+            break;
+        }
+    }
+}
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
+{
+    if (self.observer != nil) {
+        CBRPersistentObjectChange *change = [[CBRPersistentObjectChange alloc] initWithDeletions:self.deletions insertions:self.insertions updates:self.updates];
+        self.observer(controller.fetchedObjects, change);
+    }
+
+    self.deletions = nil;
+    self.insertions = nil;
+    self.updates = nil;
+}
+
+@end
 
 
 
@@ -138,6 +226,14 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
 }
 
 #pragma mark - CBRPersistentStoreInterface
+
+- (id<CBRNotificationToken>)changesWithFetchRequest:(NSFetchRequest *)fetchRequest block:(void(^)(NSArray *objects, CBRPersistentObjectChange *change))block
+{
+    NSManagedObjectContext *context = [NSThread currentThread].isMainThread ? self.stack.mainThreadManagedObjectContext : self.stack.backgroundThreadManagedObjectContext;
+    NSFetchedResultsController *controller = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:context sectionNameKeyPath:nil cacheName:nil];
+
+    return [[_CBRFetchedResultsControllerObserver alloc] initWithController:controller observer:block];
+}
 
 - (CBRPersistentObjectCache *)persistentObjectCacheForCurrentThread
 {

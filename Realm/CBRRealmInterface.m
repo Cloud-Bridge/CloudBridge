@@ -24,6 +24,7 @@
 #import <Realm/Realm.h>
 #import <objc/runtime.h>
 
+#import "CBRPersistentObjectChange.h"
 #import "CBRRealmInterface.h"
 #import "CBRCloudBridge.h"
 #import "CBREntityDescription.h"
@@ -40,6 +41,21 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
         method_exchangeImplementations(origMethod, newMethod);
     }
 }
+
+
+
+@interface RLMNotificationToken (CBRNotificationToken) <CBRNotificationToken>
+
+@end
+
+@implementation RLMNotificationToken (CBRNotificationToken)
+
+- (void)invalidate
+{
+    [self stop];
+}
+
+@end
 
 
 
@@ -209,6 +225,35 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
 }
 
 #pragma mark - CBRPersistentStoreInterface
+
+- (id<CBRNotificationToken>)changesWithFetchRequest:(NSFetchRequest *)fetchRequest block:(void(^)(NSArray *objects, CBRPersistentObjectChange *change))block
+{
+    RLMRealm *realm = self.realm;
+    RLMResults *results = [NSClassFromString(fetchRequest.entityName) objectsInRealm:realm withPredicate:fetchRequest.predicate];
+
+    if (fetchRequest.sortDescriptors.count > 0) {
+        NSMutableArray<RLMSortDescriptor *> *sortDescriptors = [NSMutableArray array];
+        for (NSSortDescriptor *descriptor in fetchRequest.sortDescriptors) {
+            [sortDescriptors addObject:[RLMSortDescriptor sortDescriptorWithKeyPath:descriptor.key ascending:descriptor.ascending]];
+        }
+
+        results = [results sortedResultsUsingDescriptors:sortDescriptors];
+    }
+
+    NSArray *(^collect)(RLMResults *realmResult) = ^(RLMResults *realmResult) {
+        NSMutableArray *result = [NSMutableArray arrayWithCapacity:realmResult.count];
+        for (CBRRealmObject *object in realmResult) {
+            [result addObject:object];
+        }
+        return result;
+    };
+
+    block(collect(results), nil);
+
+    return [results addNotificationBlock:^(RLMResults * _Nullable results, RLMCollectionChange * _Nullable change, NSError * _Nullable error) {
+        block(collect(results), [[CBRPersistentObjectChange alloc] initWithDeletions:change.deletions insertions:change.insertions updates:change.modifications]);
+    }];
+}
 
 - (CBRPersistentObjectCache *)persistentObjectCacheForCurrentThread
 {

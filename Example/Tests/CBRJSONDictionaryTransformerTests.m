@@ -43,7 +43,7 @@
     __block __weak CBRCloudBridge *bridge = nil;
     self.transformer = [[CBRJSONDictionaryTransformer alloc] initWithPropertyMapping:propertyMapping];
     self.connection = [[CBRRESTConnection alloc] initWithPropertyMapping:propertyMapping sessionManager:self.sessionManager];
-    self.adapter = [[CBRCoreDataInterface alloc] initWithStack:[CBRTestDataStore testStore]];
+    self.adapter = [[CBRCoreDataInterface alloc] initWithStack:[CBRCoreDataStack testStore]];
     self.environment = [[CBRThreadingEnvironment alloc] initWithCoreDataAdapter:self.adapter];
     self.cloudBridge = [[CBRCloudBridge alloc] initWithCloudConnection:self.connection interface:self.adapter threadingEnvironment:self.environment];
     bridge = self.cloudBridge;

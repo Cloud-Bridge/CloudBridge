@@ -30,9 +30,9 @@
 #import "PrefixedEntitiy.h"
 
 
-@interface CBRTestDataStore : CBRCoreDataStack
+@interface CBRCoreDataStack (CBRTestDataStore)
 
-+ (CBRTestDataStore *)testStore;
++ (CBRCoreDataStack *)testStore;
 
 - (void)wipeAllData;
 

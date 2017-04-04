@@ -22,35 +22,26 @@
  */
 
 #import <Foundation/Foundation.h>
-#import <CoreData/CoreData.h>
 
-#import <CloudBridge/CBRDefines.h>
 
-#import <CloudBridge/CBREntityDescription.h>
-#import <CloudBridge/CBRCloudObject.h>
-#import <CloudBridge/CBRCloudConnection.h>
-#import <CloudBridge/CBRPersistentObject.h>
 
-#import <CloudBridge/CBRCloudBridge.h>
-#import <CloudBridge/CBROfflineCapableCloudBridge.h>
+NS_ASSUME_NONNULL_BEGIN
 
-#import <CloudBridge/CBRPersistentObjectChange.h>
-#import <CloudBridge/CBRPersistentStoreInterface.h>
-#import <CloudBridge/CBRDatabaseAdapter.h>
-#import <CloudBridge/CBRCloudObjectTransformer.h>
-#import <CloudBridge/CBRThreadingEnvironment.h>
-#import <CloudBridge/CBRPersistentObjectCache.h>
+__attribute__((objc_subclassing_restricted))
+@interface CBRPersistentObjectChange : NSObject
 
-#if CBRRealmAvailable
-#import <CloudBridge/CBRRealmObject.h>
-#import <CloudBridge/CBRRealmInterface.h>
-#endif
+@property (nonatomic, readonly) NSInteger count;
 
-#if CBRCoreDataAvailable
-#import <CloudBridge/CBRCoreDataStack.h>
-#import <CloudBridge/CBRCoreDataInterface.h>
-#endif
+@property (nonatomic, readonly) NSArray<NSNumber *> *deletions;
+@property (nonatomic, readonly) NSArray<NSNumber *> *insertions;
+@property (nonatomic, readonly) NSArray<NSNumber *> *updates;
 
-#if __has_include(<CloudBridge/CBRRESTConnection.h>)
-#import <CloudBridge/CBRRESTConnection.h>
-#endif
+- (NSArray<NSIndexPath *> *)deletionsWithSection:(NSInteger)section;
+- (NSArray<NSIndexPath *> *)insertionsWithSection:(NSInteger)section;
+- (NSArray<NSIndexPath *> *)updatesWithSection:(NSInteger)section;
+
+- (instancetype)initWithDeletions:(NSArray<NSNumber *> *)deletions insertions:(NSArray<NSNumber *> *)insertions updates:(NSArray<NSNumber *> *)updates;
+
+@end
+
+NS_ASSUME_NONNULL_END

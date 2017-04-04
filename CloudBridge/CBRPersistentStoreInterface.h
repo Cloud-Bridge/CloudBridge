@@ -24,12 +24,18 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class CBREntityDescription, CBRRelationshipDescription, CBRPersistentObjectCache;
+@class CBREntityDescription, CBRRelationshipDescription, CBRPersistentObjectCache, CBRPersistentObjectChange;
 @protocol CBRPersistentObject;
 
 
 
 NS_ASSUME_NONNULL_BEGIN
+
+@protocol CBRNotificationToken <NSObject>
+- (void)invalidate;
+@end
+
+
 
 @protocol CBRPersistentStoreInterface <NSObject>
 
@@ -47,6 +53,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSArray *)executeFetchRequest:(NSFetchRequest *)fetchRequest error:(NSError **)error;
 - (void)deletePersistentObjects:(NSArray<id<CBRPersistentObject>> *)persistentObjects;
+
+- (id<CBRNotificationToken>)changesWithFetchRequest:(NSFetchRequest *)fetchRequest block:(void(^)(NSArray *objects, CBRPersistentObjectChange *change))block;
 
 @end
 
