@@ -40,6 +40,7 @@
 #import <CloudBridge/CBRCloudObjectTransformer.h>
 #import <CloudBridge/CBRThreadingEnvironment.h>
 #import <CloudBridge/CBRPersistentObjectCache.h>
+#import <CloudBridge/CBRSharedDatabaseInterface.h>
 
 #if CBRRealmAvailable
 #import <CloudBridge/CBRRealmObject.h>

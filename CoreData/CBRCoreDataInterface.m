@@ -156,9 +156,8 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
 {
     [self __SLRESTfulCoreDataObjectCachePrepareForDeletion];
 
-    CBRCoreDataInterface *adapter = (CBRCoreDataInterface *)self.databaseAdapter.interface;
-    assert([adapter isKindOfClass:[CBRCoreDataInterface class]] || !adapter);
-    [[adapter cacheForManagedObjectContext:self.managedObjectContext] removePersistentObject:self];
+    CBRPersistentObjectCache *cache = [self.databaseAdapter.interface persistentObjectCacheOnCurrentThreadForEntity:self.cloudBridgeEntityDescription];
+    [cache removePersistentObject:self];
 }
 
 @end
@@ -248,7 +247,7 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
     return [[_CBRFetchedResultsControllerObserver alloc] initWithController:controller observer:block];
 }
 
-- (CBRPersistentObjectCache *)persistentObjectCacheForCurrentThread
+- (CBRPersistentObjectCache *)persistentObjectCacheOnCurrentThreadForEntity:(CBREntityDescription *)entityDescription
 {
     NSManagedObjectContext *context = [NSThread currentThread].isMainThread ? self.stack.mainThreadManagedObjectContext : self.stack.backgroundThreadManagedObjectContext;
     return [self cacheForManagedObjectContext:context];

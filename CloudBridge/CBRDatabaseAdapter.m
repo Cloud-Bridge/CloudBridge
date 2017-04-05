@@ -176,12 +176,12 @@
     NSString *attribute = [[NSClassFromString(entityDescription.name) cloudBridge].cloudConnection.objectTransformer primaryKeyOfEntitiyDescription:entityDescription];
     NSParameterAssert(attribute);
 
-    return [self.interface.persistentObjectCacheForCurrentThread objectOfType:entityDescription.name withValue:primaryKey forAttribute:attribute];
+    return [[self.interface persistentObjectCacheOnCurrentThreadForEntity:entityDescription] objectOfType:entityDescription.name withValue:primaryKey forAttribute:attribute];
 }
 
 - (NSDictionary *)indexedObjectsOfType:(CBREntityDescription *)entityDescription withValues:(NSSet *)values forAttribute:(NSString *)attribute
 {
-    return [self.interface.persistentObjectCacheForCurrentThread indexedObjectsOfType:entityDescription.name withValues:values forAttribute:attribute];
+    return [[self.interface persistentObjectCacheOnCurrentThreadForEntity:entityDescription] indexedObjectsOfType:entityDescription.name withValues:values forAttribute:attribute];
 }
 
 - (CBRRelationshipDescription *)inverseRelationshipForEntity:(CBREntityDescription *)entity relationship:(CBRRelationshipDescription *)relationship

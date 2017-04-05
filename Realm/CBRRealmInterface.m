@@ -118,10 +118,8 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
 - (void)__CBRRealmInterfaceHooksDeleteObject:(CBRRealmObject *)object
 {
     if ([object isKindOfClass:[CBRRealmObject class]]) {
-        CBRRealmInterface *adapter = object.databaseAdapter.interface;
-        assert([adapter isKindOfClass:[CBRRealmInterface class]]);
-
-        [[adapter cacheForRealm:object.realm] removePersistentObject:object];
+        CBRPersistentObjectCache *cache = [object.databaseAdapter.interface persistentObjectCacheOnCurrentThreadForEntity:object.cloudBridgeEntityDescription];
+        [cache removePersistentObject:object];
     }
     [self __CBRRealmInterfaceHooksDeleteObject:object];
 }
@@ -130,10 +128,8 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
 {
     for (CBRRealmObject *object in array) {
         if ([object isKindOfClass:[CBRRealmObject class]]) {
-            CBRRealmInterface *adapter = object.databaseAdapter.interface;
-            assert([adapter isKindOfClass:[CBRRealmInterface class]]);
-            
-            [[adapter cacheForRealm:object.realm] removePersistentObject:object];
+            CBRPersistentObjectCache *cache = [object.databaseAdapter.interface persistentObjectCacheOnCurrentThreadForEntity:object.cloudBridgeEntityDescription];
+            [cache removePersistentObject:object];
         }
     }
 
@@ -291,7 +287,7 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
     return [[_RLMResultNotificationToken alloc] initWithResults:results observer:block];
 }
 
-- (CBRPersistentObjectCache *)persistentObjectCacheForCurrentThread
+- (CBRPersistentObjectCache *)persistentObjectCacheOnCurrentThreadForEntity:(CBREntityDescription *)entityDescription
 {
     return [self cacheForRealm:self.realm];
 }

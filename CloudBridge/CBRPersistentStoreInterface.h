@@ -55,7 +55,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)beginWriteTransaction;
 - (BOOL)commitWriteTransaction:(NSError **)error;
 
-- (CBRPersistentObjectCache *)persistentObjectCacheForCurrentThread;
+- (CBRPersistentObjectCache *)persistentObjectCacheOnCurrentThreadForEntity:(CBREntityDescription *)entityDescription;
 
 - (NSArray *)executeFetchRequest:(NSFetchRequest *)fetchRequest error:(NSError **)error;
 - (void)deletePersistentObjects:(NSArray<id<CBRPersistentObject>> *)persistentObjects;
