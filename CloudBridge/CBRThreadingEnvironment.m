@@ -100,6 +100,12 @@
     id reference = [self _threadSafeReferenceForObject:object];
 
     dispatch_block_t block = ^{
+#if CBRRealmAvailable
+        if (self.realmAdapter != nil) {
+            [self.realmAdapter.realm refresh];
+        }
+#endif
+
         NSError *error = nil;
         id result = [self _resolveThreadSafeReference:reference onThread:thread error:&error];
         completion(result, error);

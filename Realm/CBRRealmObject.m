@@ -97,33 +97,8 @@
     return result;
 }
 
-- (id)valueForKey:(NSString *)key
-{
-    if ([key hasSuffix:@"Data"] && [[NSClassFromString([self.class className]) transformableProperties] containsObject:[key substringToIndex:key.length - 4]]) {
-        return objc_getAssociatedObject(self, NSSelectorFromString(key));
-    } else {
-        return [super valueForKey:key];
-    }
-}
-
-- (void)setValue:(id)value forKey:(NSString *)key
-{
-    if ([key isEqualToString:[self.class primaryKey]]) {
-        if ([value isEqual:[self valueForKey:[self.class primaryKey]]]) {
-            return;
-        }
-    }
-
-    if ([key hasSuffix:@"Data"] && [[NSClassFromString([self.class className]) transformableProperties] containsObject:[key substringToIndex:key.length - 4]]) {
-        objc_setAssociatedObject(self, NSSelectorFromString(key), value, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    } else {
-        [super setValue:value forKey:key];
-    }
-}
-
 + (void)initialize
 {
-    NSLog(@"%@", self);
     if ([self superclass] != [CBRRealmObject class]) {
         return;
     }

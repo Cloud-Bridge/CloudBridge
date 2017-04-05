@@ -67,11 +67,13 @@
 - (void)testThatConnectionPostsCloudObject
 {
     RLMEntity4 *entity = [[RLMEntity4 alloc] init];
-    [entity setValue:[NSData data] forKey:@"arrayData"];
     entity.array = @[ @1, @2 ];
     entity.date = [NSDate date];
     entity.number = @5;
     entity.string = @"blubb";
+
+    expect([entity valueForKey:@"array"]).to.beKindOf([NSArray class]);
+    expect([entity valueForKey:@"arrayData"]).to.beKindOf([NSData class]);
 
     NSDictionary *parameters = [self.connection.objectTransformer cloudObjectFromPersistentObject:entity];
 

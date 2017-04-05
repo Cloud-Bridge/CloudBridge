@@ -44,15 +44,63 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
 
 
 
-@interface RLMNotificationToken (CBRNotificationToken) <CBRNotificationToken>
+@interface _RLMResultNotificationToken : NSObject <CBRNotificationToken>
+
+@property (nonatomic, strong) NSArray *allObjects;
+
+@property (nonatomic, readonly) RLMResults *results;
+@property (nonatomic, readonly) RLMNotificationToken *token;
 
 @end
 
-@implementation RLMNotificationToken (CBRNotificationToken)
+@implementation _RLMResultNotificationToken
+@synthesize allObjects = _allObjects;
+
+- (NSInteger)count
+{
+    return self.allObjects.count;
+}
+
+- (instancetype)initWithResults:(RLMResults *)results observer:(void(^)(NSArray *objects, CBRPersistentObjectChange *change))observer
+{
+    if (self = [super init]) {
+        _results = results;
+
+        NSArray *(^collect)(RLMResults *realmResult) = ^(RLMResults *realmResult) {
+            NSMutableArray *result = [NSMutableArray arrayWithCapacity:realmResult.count];
+            for (CBRRealmObject *object in realmResult) {
+                [result addObject:object];
+            }
+            return result;
+        };
+
+        __weak typeof(self) weakSelf = self;
+        _token = [results addNotificationBlock:^(RLMResults * _Nullable results, RLMCollectionChange * _Nullable change, NSError * _Nullable error) {
+            __strong typeof(self) self = weakSelf;
+            assert(error == nil);
+
+            self.allObjects = collect(results);
+
+            if (change != nil) {
+                observer(self.allObjects, [[CBRPersistentObjectChange alloc] initWithDeletions:change.deletions insertions:change.insertions updates:change.modifications]);
+            }
+        }];
+    }
+    return self;
+}
 
 - (void)invalidate
 {
-    [self stop];
+    [self.token stop];
+
+    _allObjects = nil;
+    _results = nil;
+    _token = nil;
+}
+
+- (id)objectAtIndexedSubscript:(NSUInteger)idx
+{
+    return [self.allObjects objectAtIndexedSubscript:idx];
 }
 
 @end
@@ -205,7 +253,7 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
 - (BOOL)hasPersistedObjects:(NSArray<CBRRealmObject *> *)persistentObjects
 {
     for (CBRRealmObject *object in persistentObjects) {
-        if (object.realm == nil) {
+        if (object.realm == nil || object.invalidated) {
             return NO;
         }
     }
@@ -240,19 +288,7 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
         results = [results sortedResultsUsingDescriptors:sortDescriptors];
     }
 
-    NSArray *(^collect)(RLMResults *realmResult) = ^(RLMResults *realmResult) {
-        NSMutableArray *result = [NSMutableArray arrayWithCapacity:realmResult.count];
-        for (CBRRealmObject *object in realmResult) {
-            [result addObject:object];
-        }
-        return result;
-    };
-
-    block(collect(results), nil);
-
-    return [results addNotificationBlock:^(RLMResults * _Nullable results, RLMCollectionChange * _Nullable change, NSError * _Nullable error) {
-        block(collect(results), [[CBRPersistentObjectChange alloc] initWithDeletions:change.deletions insertions:change.insertions updates:change.modifications]);
-    }];
+    return [[_RLMResultNotificationToken alloc] initWithResults:results observer:block];
 }
 
 - (CBRPersistentObjectCache *)persistentObjectCacheForCurrentThread

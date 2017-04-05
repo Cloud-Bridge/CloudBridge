@@ -73,4 +73,9 @@
     return result;
 }
 
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"%@: {\n  deletions = (%@)\n  insertions = (%@)\n  updates = (%@)\n}", [super description], [self.deletions componentsJoinedByString:@", "], [self.insertions componentsJoinedByString:@", "], [self.updates componentsJoinedByString:@", "]];
+}
+
 @end
