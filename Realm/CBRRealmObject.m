@@ -24,6 +24,18 @@
 #import "CBRRealmObject.h"
 #import <objc/runtime.h>
 
+//static void dumpProperty(objc_property_t property, Class klass)
+//{
+//    unsigned int count = 0;
+//    objc_property_attribute_t *attributes = property_copyAttributeList(property, &count);
+//
+//    for (unsigned int j = 0; j < count; j++) {
+//        NSLog(@"[%@ - %s] %s => %s", klass, property_getName(property), attributes[j].name, attributes[j].value);
+//    }
+//
+//    free(attributes);
+//}
+
 @implementation CBRRealmObject
 
 + (NSString *)className
@@ -43,7 +55,87 @@
 
 + (nullable NSArray<NSString *> *)ignoredProperties
 {
-    return [self transformableProperties];
+    NSMutableArray<NSString *> *result = [NSMutableArray arrayWithArray:[self nonDynamicProperties]];
+    [result addObjectsFromArray:[self transformableProperties]];
+    [result removeObjectsInArray:[self primitiveProperties]];
+
+    return result;
+}
+
++ (nullable NSArray<NSString *> *)nonDynamicProperties
+{
+    Class klass = NSClassFromString([self className]);
+
+    if (objc_getAssociatedObject(klass, _cmd)) {
+        return objc_getAssociatedObject(klass, _cmd);
+    }
+
+    NSMutableArray<NSString *> *result = [NSMutableArray array];
+
+    unsigned int count = 0;
+    objc_property_t *properties = class_copyPropertyList(klass, &count);
+
+    for (unsigned int i = 0; i < count; i++) {
+        objc_property_t property = properties[i];
+
+        char *dynamic = property_copyAttributeValue(property, "D");
+
+        if (!dynamic) {
+            [result addObject:@(property_getName(property))];
+            continue;
+        }
+
+        free(dynamic);
+    }
+
+    objc_setAssociatedObject(klass, _cmd, result, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    return result;
+}
+
++ (nullable NSArray<NSString *> *)primitiveProperties
+{
+    Class klass = NSClassFromString([self className]);
+
+    if (objc_getAssociatedObject(klass, _cmd)) {
+        return objc_getAssociatedObject(klass, _cmd);
+    }
+
+    NSMutableArray<NSString *> *result = [NSMutableArray array];
+
+    unsigned int count = 0;
+    objc_property_t *properties = class_copyPropertyList(klass, &count);
+
+    for (unsigned int i = 0; i < count; i++) {
+        objc_property_t property = properties[i];
+
+        char *dynamic = property_copyAttributeValue(property, "D");
+        char *type = property_copyAttributeValue(property, "T");
+
+        if (!dynamic || !type || @(type).length <= 3) {
+            if (!dynamic) { free(dynamic); }
+            if (!type) { free(type); }
+            continue;
+        }
+
+        NSString *typeClass = [@(type) substringWithRange:NSMakeRange(2, strlen(type) - 3)];
+        if ([typeClass hasPrefix:@"NSNumber"] || [typeClass hasPrefix:@"NSString"] || [typeClass hasPrefix:@"NSDate"] || [typeClass hasPrefix:@"NSData"]) {
+            [result addObject:@(property_getName(property))];
+        } else if ([typeClass hasPrefix:@"RLMLinkingObjects<"]) {
+            [result addObject:@(property_getName(property))];
+        } else if ([NSClassFromString(typeClass) isSubclassOfClass:[CBRRealmObject class]]) {
+            [result addObject:@(property_getName(property))];
+        } else if ([NSClassFromString(typeClass) conformsToProtocol:@protocol(NSSecureCoding)]) {
+            continue;
+        } else if ([typeClass isEqualToString:@"?@"] || NSClassFromString(typeClass) == nil) {
+            assert(false);
+        }
+
+        free(dynamic);
+        free(type);
+    }
+
+    objc_setAssociatedObject(klass, _cmd, result, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    return result;
 }
 
 + (nullable NSArray<NSString *> *)transformableProperties
@@ -61,15 +153,6 @@
 
     for (unsigned int i = 0; i < count; i++) {
         objc_property_t property = properties[i];
-
-//        unsigned int count = 0;
-//        objc_property_attribute_t *attributes = property_copyAttributeList(property, &count);
-//
-//        for (unsigned int j = 0; j < count; j++) {
-//            NSLog(@"[%@ - %s] %s => %s", self, property_getName(property), attributes[j].name, attributes[j].value);
-//        }
-//
-//        free(attributes);
 
         char *dynamic = property_copyAttributeValue(property, "D");
         char *type = property_copyAttributeValue(property, "T");
@@ -103,6 +186,21 @@
         return;
     }
 
+    for (NSString *property in [self primitiveProperties]) {
+        IMP getter = imp_implementationWithBlock(^NSData *(id self) {
+            return objc_getAssociatedObject(self, NSSelectorFromString(property));
+        });
+        BOOL success = class_addMethod(self, NSSelectorFromString(property), getter, "@@:");
+        assert(success);
+
+        IMP setter = imp_implementationWithBlock(^(id self, NSData *data) {
+            objc_setAssociatedObject(self, NSSelectorFromString(property), data, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        });
+        NSArray *setterName = @[ @"set", [property substringToIndex:1].capitalizedString, [property substringFromIndex:1], @":" ];
+        success = class_addMethod(self, NSSelectorFromString([setterName componentsJoinedByString:@""]), setter, "v@:@");
+        assert(success);
+    }
+
     for (NSString *property in [self transformableProperties]) {
         NSString *backingProperty = [property stringByAppendingString:@"Data"];
 
@@ -122,6 +220,7 @@
         objc_property_attribute_t attributes[] = {
             {"&", ""},
             {"N", ""},
+            {"D", ""},
             {"G", [backingProperty cStringUsingEncoding:NSASCIIStringEncoding]},
             {"S", [[setterName componentsJoinedByString:@""] cStringUsingEncoding:NSASCIIStringEncoding]},
             {"T", "@\"NSData\""},

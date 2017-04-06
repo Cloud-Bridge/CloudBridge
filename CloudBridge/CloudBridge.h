@@ -45,6 +45,7 @@
 #if CBRRealmAvailable
 #import <CloudBridge/CBRRealmObject.h>
 #import <CloudBridge/CBRRealmInterface.h>
+#import <CloudBridge/RLMResults+CloudBridge.h>
 #endif
 
 #if CBRCoreDataAvailable

@@ -65,8 +65,8 @@
 
 - (BOOL)commitWriteTransaction:(NSError **)error
 {
-    BOOL coreDataSuccess = [self.coreDataInterface commitWriteTransaction:error];
     BOOL realmSuccess = [self.realmInterface commitWriteTransaction:error];
+    BOOL coreDataSuccess = [self.coreDataInterface commitWriteTransaction:error];
 
     return coreDataSuccess && realmSuccess;
 }

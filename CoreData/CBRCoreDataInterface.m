@@ -187,6 +187,13 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
         NSMutableArray<CBREntityDescription *> *result = [NSMutableArray array];
 
         for (NSEntityDescription *entity in self.managedObjectModel.entities) {
+            if (entity.managedObjectClassName == nil || [entity.managedObjectClassName isEqualToString:NSStringFromClass(NSManagedObject.class)]) {
+                continue;
+            }
+
+            assert(entity.managedObjectClassName != nil);
+            assert(NSClassFromString(entity.managedObjectClassName) != [NSManagedObject class]);
+            assert([NSClassFromString(entity.managedObjectClassName) isSubclassOfClass:[NSManagedObject class]]);
             [result addObject:[[CBREntityDescription alloc] initWithInterface:self coreDataEntityDescription:entity]];
         }
 

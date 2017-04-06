@@ -9,11 +9,13 @@
 #import "RLMEntity6.h"
 
 @implementation RLMEntity6Child
+@dynamic identifier, parent;
 @end
 
 
 
 @implementation RLMEntity6
+@dynamic identifier, name, children;
 
 + (NSDictionary *)linkingObjectsProperties
 {

@@ -30,6 +30,7 @@
 #import "CBREntityDescription.h"
 #import "CBRThreadingEnvironment.h"
 #import "CBREntityDescription+Realm.h"
+#import "RLMResults+CloudBridge.h"
 
 static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSelector)
 {
@@ -42,6 +43,26 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
     }
 }
 
+//static BOOL _logChangesInPredicate(NSPredicate *predicate)
+//{
+//    if ([predicate isKindOfClass:[NSCompoundPredicate class]]) {
+//        NSCompoundPredicate *compoundPredicate = (NSCompoundPredicate *)predicate;
+//        for (NSPredicate *child in compoundPredicate.subpredicates) {
+//            if (_logChangesInPredicate(child)) {
+//                return YES;
+//            }
+//        }
+//    } else if ([predicate isKindOfClass:[NSComparisonPredicate class]]) {
+//        NSComparisonPredicate *comparisonPredicate = (NSComparisonPredicate *)predicate;
+//
+//        if ([comparisonPredicate.leftExpression.keyPath isEqualToString:@"localOrderState"] && comparisonPredicate.predicateOperatorType == NSInPredicateOperatorType) {
+//            NSArray *array = comparisonPredicate.rightExpression.constantValue;
+//            return [array containsObject:@0];
+//        }
+//    }
+//
+//    return NO;
+//}
 
 
 @interface _RLMResultNotificationToken : NSObject <CBRNotificationToken>
@@ -61,25 +82,18 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
     return self.allObjects.count;
 }
 
-- (instancetype)initWithResults:(RLMResults *)results observer:(void(^)(NSArray *objects, CBRPersistentObjectChange *change))observer
+- (instancetype)initWithResults:(RLMResults *)results predicate:(NSPredicate *)predicate observer:(void(^)(NSArray *objects, CBRPersistentObjectChange *change))observer
 {
     if (self = [super init]) {
         _results = results;
-
-        NSArray *(^collect)(RLMResults *realmResult) = ^(RLMResults *realmResult) {
-            NSMutableArray *result = [NSMutableArray arrayWithCapacity:realmResult.count];
-            for (CBRRealmObject *object in realmResult) {
-                [result addObject:object];
-            }
-            return result;
-        };
+        _allObjects = results.allObjects;
 
         __weak typeof(self) weakSelf = self;
         _token = [results addNotificationBlock:^(RLMResults * _Nullable results, RLMCollectionChange * _Nullable change, NSError * _Nullable error) {
             __strong typeof(self) self = weakSelf;
             assert(error == nil);
 
-            self.allObjects = collect(results);
+            self.allObjects = results.allObjects;
 
             if (change != nil) {
                 observer(self.allObjects, [[CBRPersistentObjectChange alloc] initWithDeletions:change.deletions insertions:change.insertions updates:change.modifications]);
@@ -186,10 +200,16 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
 
 - (RLMRealm *)realm
 {
+    NSValue *value = [NSValue valueWithNonretainedObject:self];
+    if ([NSThread currentThread].threadDictionary[value]) {
+        return [NSThread currentThread].threadDictionary[value];
+    }
+
     NSError *error = nil;
     RLMRealm *realm = [RLMRealm realmWithConfiguration:self.configuration error:&error];
     NSAssert(realm != nil, @"error: %@", error);
 
+    [NSThread currentThread].threadDictionary[value] = realm;
     return realm;
 }
 
@@ -284,7 +304,7 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
         results = [results sortedResultsUsingDescriptors:sortDescriptors];
     }
 
-    return [[_RLMResultNotificationToken alloc] initWithResults:results observer:block];
+    return [[_RLMResultNotificationToken alloc] initWithResults:results predicate:fetchRequest.predicate observer:block];
 }
 
 - (CBRPersistentObjectCache *)persistentObjectCacheOnCurrentThreadForEntity:(CBREntityDescription *)entityDescription
@@ -365,12 +385,7 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
         results = [results sortedResultsUsingDescriptors:sortDescriptors];
     }
 
-    NSMutableArray *result = [NSMutableArray arrayWithCapacity:results.count];
-    for (CBRRealmObject *object in results) {
-        [result addObject:object];
-    }
-
-    return result;
+    return results.allObjects;
 }
 
 - (void)deletePersistentObjects:(NSArray<CBRRealmObject *> *)persistentObjects

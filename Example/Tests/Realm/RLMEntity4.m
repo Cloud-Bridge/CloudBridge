@@ -9,7 +9,7 @@
 #import "RLMEntity4.h"
 
 @implementation RLMEntity4
-@dynamic array;
+@dynamic array, date, identifier, number, string;
 
 + (NSDictionary<NSString *, NSString *> *)userInfo
 {

@@ -26,6 +26,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+NS_REQUIRES_PROPERTY_DEFINITIONS
 @interface CBRRealmObject : RLMObject
 
 + (NSDictionary<NSString *, NSString *> *)userInfo;
@@ -35,6 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (nullable NSArray<NSString *> *)ignoredProperties NS_REQUIRES_SUPER;
 
 + (nullable NSArray<NSString *> *)transformableProperties;
++ (nullable NSArray<NSString *> *)primitiveProperties;
 
 @end
 
