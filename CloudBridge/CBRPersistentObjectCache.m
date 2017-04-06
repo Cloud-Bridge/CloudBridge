@@ -21,11 +21,10 @@
  THE SOFTWARE.
  */
 
-@import ObjectiveC.runtime;
+#import <objc/runtime.h>
 
 #import "CBRPersistentObjectCache.h"
 #import "CBREnumaratableCache.h"
-#import "CBRCoreDataInterface.h"
 
 
 
