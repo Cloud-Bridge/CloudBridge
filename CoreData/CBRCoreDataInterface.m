@@ -110,18 +110,18 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
 {
     switch (type) {
         case NSFetchedResultsChangeInsert: {
-            [self.insertions addObject:@(newIndexPath.row)];
+            [self.insertions addObject:@([newIndexPath indexAtPosition:0])];
             break;
         } case NSFetchedResultsChangeDelete: {
-            [self.deletions addObject:@(indexPath.row)];
+            [self.deletions addObject:@([indexPath indexAtPosition:0])];
             break;
         } case NSFetchedResultsChangeMove: {
-            [self.deletions addObject:@(indexPath.row)];
-            [self.insertions addObject:@(newIndexPath.row)];
+            [self.deletions addObject:@([indexPath indexAtPosition:0])];
+            [self.insertions addObject:@([newIndexPath indexAtPosition:0])];
             break;
         } case NSFetchedResultsChangeUpdate: {
             if (anObject.changedValuesForCurrentEvent.count > 0) {
-                [self.updates addObject:@(indexPath.row)];
+                [self.updates addObject:@([indexPath indexAtPosition:0])];
             }
             break;
         }
