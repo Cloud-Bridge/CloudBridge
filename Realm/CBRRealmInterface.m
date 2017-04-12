@@ -388,7 +388,7 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
     return results.allObjects;
 }
 
-- (void)deletePersistentObjects:(NSArray<CBRRealmObject *> *)persistentObjects
+- (void)deletePersistentObjects:(id<NSFastEnumeration>)persistentObjects
 {
     RLMRealm *realm = self.realm;
 

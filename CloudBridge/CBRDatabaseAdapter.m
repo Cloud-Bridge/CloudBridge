@@ -196,7 +196,7 @@
 
 - (void)deletePersistentObjects:(id)persistentObjects
 {
-    if ([persistentObjects isKindOfClass:[NSArray class]]) {
+    if ([persistentObjects conformsToProtocol:@protocol(NSFastEnumeration)]) {
         [self.interface deletePersistentObjects:persistentObjects];
     } else {
         [self.interface deletePersistentObjects:@[ persistentObjects ]];

@@ -298,7 +298,7 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
     return [context executeFetchRequest:fetchRequest error:error];
 }
 
-- (void)deletePersistentObjects:(NSArray<NSManagedObject *> *)persistentObjects
+- (void)deletePersistentObjects:(id<NSFastEnumeration>)persistentObjects
 {
     NSManagedObjectContext *context = [NSThread currentThread].isMainThread ? self.stack.mainThreadManagedObjectContext : self.stack.backgroundThreadManagedObjectContext;
 

@@ -58,7 +58,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (CBRPersistentObjectCache *)persistentObjectCacheOnCurrentThreadForEntity:(CBREntityDescription *)entityDescription;
 
 - (NSArray *)executeFetchRequest:(NSFetchRequest *)fetchRequest error:(NSError **)error;
-- (void)deletePersistentObjects:(NSArray<id<CBRPersistentObject>> *)persistentObjects;
+- (void)deletePersistentObjects:(id<NSFastEnumeration>)persistentObjects;
 
 - (id<CBRNotificationToken>)changesWithFetchRequest:(NSFetchRequest *)fetchRequest block:(void(^)(NSArray *objects, CBRPersistentObjectChange *change))block;
 
