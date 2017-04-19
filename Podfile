@@ -1,6 +1,5 @@
 project 'Example/CloudBridge'
 
-source "git@github.com:OliverLetterer/Specs.git"
 source "https://github.com/CocoaPods/Specs.git"
 
 # use_frameworks!

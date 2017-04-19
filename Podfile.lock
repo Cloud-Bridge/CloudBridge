@@ -14,29 +14,29 @@ PODS:
   - AFNetworking/Serialization (3.1.0)
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
-  - CloudBridge/CBRRESTConnection (2.0.0):
+  - CloudBridge/CBRRESTConnection (2.1.1):
     - AFNetworking (~> 3.0)
     - CloudBridge/CloudBridge
-  - CloudBridge/CloudBridge (2.0.0)
-  - CloudBridge/Core (2.0.0):
+  - CloudBridge/CloudBridge (2.1.1)
+  - CloudBridge/Core (2.1.1):
     - CloudBridge/CoreData+REST
     - CloudBridge/Realm+REST
-  - CloudBridge/CoreData (2.0.0):
+  - CloudBridge/CoreData (2.1.1):
     - CloudBridge/CloudBridge
-  - CloudBridge/CoreData+REST (2.0.0):
+  - CloudBridge/CoreData+REST (2.1.1):
     - CloudBridge/CBRRESTConnection
     - CloudBridge/CoreData
-  - CloudBridge/Realm (2.0.0):
+  - CloudBridge/Realm (2.1.1):
     - CloudBridge/CloudBridge
     - Realm (~> 2.0)
-  - CloudBridge/Realm+REST (2.0.0):
+  - CloudBridge/Realm+REST (2.1.1):
     - CloudBridge/CBRRESTConnection
     - CloudBridge/Realm
   - Expecta (1.0.5)
   - OCMock (3.2.2)
-  - Realm (2.5.0.1):
-    - Realm/Headers (= 2.5.0.1)
-  - Realm/Headers (2.5.0.1)
+  - Realm (2.6.1):
+    - Realm/Headers (= 2.6.1)
+  - Realm/Headers (2.6.1)
 
 DEPENDENCIES:
   - CloudBridge/Core (from `.`)
@@ -49,11 +49,11 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
-  CloudBridge: b09bf93a60b32cfad3889e30c02be25c1411966d
+  CloudBridge: ca7e09e7beae1e27924bac43219989f4299e13cf
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
   OCMock: 18c9b7e67d4c2770e95bb77a9cc1ae0c91fe3835
-  Realm: 3facc691bb8b693a0118a90cbd2e659aead63c03
+  Realm: 9abfd4f87519376daa5ae3a4603155de408bf8b3
 
-PODFILE CHECKSUM: f9c5c87737f21a5318971cc02d414c8954d103de
+PODFILE CHECKSUM: 0a01498a6ba27a38f658200586f15834bde5a844
 
 COCOAPODS: 1.2.0
