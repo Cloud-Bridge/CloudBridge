@@ -207,7 +207,7 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
 
     NSError *error = nil;
     RLMRealm *realm = [RLMRealm realmWithConfiguration:self.configuration error:&error];
-    NSAssert(realm != nil, @"error: %@", error);
+    assert(realm != nil);
 
     [NSThread currentThread].threadDictionary[value] = realm;
     return realm;
@@ -233,7 +233,7 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
 
             [entities addObject:result];
         }
-        
+
         _entities = entities.copy;
 
         NSMutableDictionary *entitiesByName = [NSMutableDictionary dictionary];
@@ -345,7 +345,7 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
     for (NSString *result in linkingObjectsProperties) {
         RLMPropertyDescriptor *inverseDescriptor = linkingObjectsProperties[result];
 
-        if ([inverseDescriptor.propertyName isEqualToString:relationship.name]) {
+        if ([NSStringFromClass(inverseDescriptor.objectClass) isEqualToString:entity.name] && [inverseDescriptor.propertyName isEqualToString:relationship.name]) {
             CBRRelationshipDescription *inverseRelation = destinationEntity.relationshipsByName[result];
             NSParameterAssert(inverseRelation);
 

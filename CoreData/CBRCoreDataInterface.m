@@ -150,6 +150,21 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
 {
     class_swizzleSelector(self, @selector(prepareForDeletion), @selector(__SLRESTfulCoreDataObjectCachePrepareForDeletion));
     class_implementProtocolExtension(self, @protocol(CBRPersistentObject), [CBRPersistentObjectPrototype class]);
+
+    class_swizzleSelector(object_getClass(self), @selector(resolveInstanceMethod:), @selector(__CBRRelationshipResolverResolveInstanceMethod:));
+}
+
++ (BOOL)__CBRRelationshipResolverResolveInstanceMethod:(SEL)selector
+{
+    if ([self __CBRRelationshipResolverResolveInstanceMethod:selector]) {
+        return YES;
+    }
+
+    if ([CBRPersistentObjectPrototype resolveRelationshipForSelector:selector inClass:self]) {
+        return YES;
+    }
+
+    return NO;
 }
 
 - (void)__SLRESTfulCoreDataObjectCachePrepareForDeletion

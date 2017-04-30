@@ -45,7 +45,7 @@
     NSMutableArray<NSIndexPath *> *result = [NSMutableArray array];
 
     for (NSNumber *number in self.deletions) {
-        NSUInteger indexes[] = { number.unsignedIntegerValue, 0 };
+        NSUInteger indexes[] = { section, number.unsignedIntegerValue };
         [result addObject:[NSIndexPath indexPathWithIndexes:indexes length:2]];
     }
 
@@ -57,7 +57,7 @@
     NSMutableArray<NSIndexPath *> *result = [NSMutableArray array];
 
     for (NSNumber *number in self.insertions) {
-        NSUInteger indexes[] = { number.unsignedIntegerValue, 0 };
+        NSUInteger indexes[] = { section, number.unsignedIntegerValue };
         [result addObject:[NSIndexPath indexPathWithIndexes:indexes length:2]];
     }
 
@@ -69,7 +69,7 @@
     NSMutableArray<NSIndexPath *> *result = [NSMutableArray array];
 
     for (NSNumber *number in self.updates) {
-        NSUInteger indexes[] = { number.unsignedIntegerValue, 0 };
+        NSUInteger indexes[] = { section, number.unsignedIntegerValue };
         [result addObject:[NSIndexPath indexPathWithIndexes:indexes length:2]];
     }
 

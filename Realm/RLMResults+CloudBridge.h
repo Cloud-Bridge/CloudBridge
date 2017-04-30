@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface RLMResults<RLMObjectType: RLMObject *> (CloudBridge)
 
+- (NSSet<RLMObjectType> *)setValue;
 - (NSArray<RLMObjectType> *)allObjects;
 - (NSArray<RLMObjectType> *)sortedArrayUsingDescriptors:(NSArray<NSSortDescriptor *> *)sortDescriptors;
 

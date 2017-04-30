@@ -73,6 +73,49 @@ void class_implementProtocolExtension(Class klass, Protocol *protocol, Class pro
 
 @implementation CBRPersistentObjectPrototype
 
++ (BOOL)resolveRelationshipForSelector:(SEL)selector inClass:(Class)klass
+{
+    assert([klass conformsToProtocol:@protocol(CBRPersistentObject)]);
+    if (![klass cloudBridge]) {
+        return NO;
+    }
+
+    NSString *selectorName = NSStringFromSelector(selector);
+    if (![selectorName hasSuffix:@"WithCompletionHandler:"]) {
+        return NO;
+    }
+
+    if ([selectorName rangeOfString:@":"].location != selectorName.length - 1) {
+        return NO;
+    }
+
+    // CoreData is creating for the entity SLEntity1 an new subclass SLEntity1_SLEntity1 and KVO an additional NSKeyValueObserving_SLEntity1_SLEntity1
+    while (klass != [klass class]) {
+        klass = [klass class];
+    }
+
+    NSRange range = [selectorName rangeOfString:@"WithCompletionHandler:"];
+    NSString *relationship = [selectorName substringToIndex:range.location];
+
+    CBREntityDescription *entityDescription = [klass cloudBridgeEntityDescription];
+    CBRRelationshipDescription *relationshipDescription = entityDescription.relationshipsByName[relationship];
+
+    if (!relationshipDescription) {
+        return NO;
+    }
+
+    BOOL isToMany = relationshipDescription.toMany;
+    IMP implementation = imp_implementationWithBlock(^(id<CBRPersistentObject> blockSelf, void(^completionHandler)(id object, NSError *error)) {
+        if (isToMany) {
+            [blockSelf fetchObjectsForRelationship:relationship withCompletionHandler:completionHandler];
+        } else {
+            [blockSelf fetchObjectForRelationship:relationship withCompletionHandler:completionHandler];
+        }
+    });
+
+    return class_addMethod(klass, selector, implementation, "v@:@");
+}
+
 #pragma mark - CBRPersistentObject
 
 + (CBRCloudBridge *)cloudBridge

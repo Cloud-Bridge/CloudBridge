@@ -23,6 +23,7 @@
 
 #import "CBRRealmObject.h"
 #import <objc/runtime.h>
+#import "CBRPersistentObject.h"
 
 //static void dumpProperty(objc_property_t property, Class klass)
 //{
@@ -37,6 +38,39 @@
 //}
 
 @implementation CBRRealmObject
+
++ (BOOL)resolveInstanceMethod:(SEL)selector
+{
+    if ([super resolveInstanceMethod:selector]) {
+        return YES;
+    }
+
+    if ([CBRPersistentObjectPrototype resolveRelationshipForSelector:selector inClass:NSClassFromString(self.className)]) {
+        return YES;
+    }
+
+    return NO;
+}
+
+- (id)valueForKey:(NSString *)key
+{
+    if (self.isInvalidated) {
+        NSLog(@"[Realm] Accessing %@ of invalidated object", key);
+        return nil;
+    } else {
+        return [super valueForKey:key];
+    }
+}
+
+- (id)valueForKeyPath:(NSString *)keyPath
+{
+    if (self.isInvalidated) {
+        NSLog(@"[Realm] Accessing %@ of invalidated object", keyPath);
+        return nil;
+    } else {
+        return [super valueForKeyPath:keyPath];
+    }
+}
 
 + (NSString *)className
 {
@@ -188,17 +222,15 @@
 
     for (NSString *property in [self primitiveProperties]) {
         IMP getter = imp_implementationWithBlock(^NSData *(id self) {
-            return objc_getAssociatedObject(self, NSSelectorFromString(property));
+            return [self primitiveValueForKey:property];
         });
-        BOOL success = class_addMethod(self, NSSelectorFromString(property), getter, "@@:");
-        assert(success);
+        class_addMethod(self, NSSelectorFromString(property), getter, "@@:");
 
-        IMP setter = imp_implementationWithBlock(^(id self, NSData *data) {
-            objc_setAssociatedObject(self, NSSelectorFromString(property), data, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        IMP setter = imp_implementationWithBlock(^(id self, id value) {
+            [self setPrimitiveValue:value forKey:property];
         });
         NSArray *setterName = @[ @"set", [property substringToIndex:1].capitalizedString, [property substringFromIndex:1], @":" ];
-        success = class_addMethod(self, NSSelectorFromString([setterName componentsJoinedByString:@""]), setter, "v@:@");
-        assert(success);
+        class_addMethod(self, NSSelectorFromString([setterName componentsJoinedByString:@""]), setter, "v@:@");
     }
 
     for (NSString *property in [self transformableProperties]) {
@@ -231,40 +263,58 @@
 
         {
             IMP getter = imp_implementationWithBlock(^id(id self) {
-                if (objc_getAssociatedObject(self, NSSelectorFromString(property))) {
-                    return objc_getAssociatedObject(self, NSSelectorFromString(property));
-                }
-
-                NSData *data = [self valueForKey:backingProperty];
-                if (data != nil) {
-                    NSError *error = nil;
-                    id result = [NSKeyedUnarchiver unarchiveTopLevelObjectWithData:data error:&error];
-
-                    if (error != nil) {
-                        NSLog(@"[%@ - %@], error unarchiving: %@", [self class], property, error);
-                    }
-
-                    objc_setAssociatedObject(self, NSSelectorFromString(property), result, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-                }
-
-                return objc_getAssociatedObject(self, NSSelectorFromString(property));
+                return [self primitiveValueForKey:property];
             });
-            success = class_addMethod(self, NSSelectorFromString(property), getter, "@@:");
-            assert(success);
+            class_addMethod(self, NSSelectorFromString(property), getter, "@@:");
 
             IMP setter = imp_implementationWithBlock(^(id self, id value) {
-                objc_setAssociatedObject(self, NSSelectorFromString(property), value, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-
-                if (value == nil) {
-                    [self setValue:nil forKey:backingProperty];
-                } else {
-                    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:value];
-                    [self setValue:data forKey:backingProperty];
-                }
+                [self setPrimitiveValue:value forKey:property];
             });
             NSArray *setterName = @[ @"set", [property substringToIndex:1].capitalizedString, [property substringFromIndex:1], @":" ];
-            success = class_addMethod(self, NSSelectorFromString([setterName componentsJoinedByString:@""]), setter, "v@:@");
-            assert(success);
+            class_addMethod(self, NSSelectorFromString([setterName componentsJoinedByString:@""]), setter, "v@:@");
+        }
+    }
+}
+
+- (nullable id)primitiveValueForKey:(NSString *)property
+{
+    if (objc_getAssociatedObject(self, NSSelectorFromString(property))) {
+        return objc_getAssociatedObject(self, NSSelectorFromString(property));
+    }
+
+    if ([[self.class transformableProperties] containsObject:property]) {
+        NSString *backingProperty = [property stringByAppendingString:@"Data"];
+
+        NSData *data = [self valueForKey:backingProperty];
+        if (data != nil) {
+            NSError *error = nil;
+            id result = [NSKeyedUnarchiver unarchiveTopLevelObjectWithData:data error:&error];
+
+            if (error != nil) {
+                NSLog(@"[%@ - %@], error unarchiving: %@", [self class], property, error);
+            }
+
+            objc_setAssociatedObject(self, NSSelectorFromString(property), result, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        }
+
+        return objc_getAssociatedObject(self, NSSelectorFromString(property));
+    }
+
+    return nil;
+}
+
+- (void)setPrimitiveValue:(nullable id)value forKey:(NSString *)property
+{
+    objc_setAssociatedObject(self, NSSelectorFromString(property), value, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+
+    if ([[self.class transformableProperties] containsObject:property]) {
+        NSString *backingProperty = [property stringByAppendingString:@"Data"];
+
+        if (value == nil) {
+            [self setValue:nil forKey:backingProperty];
+        } else {
+            NSData *data = [NSKeyedArchiver archivedDataWithRootObject:value];
+            [self setValue:data forKey:backingProperty];
         }
     }
 }

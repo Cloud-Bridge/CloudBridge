@@ -12,6 +12,11 @@
 
 @implementation RLMResults (CloudBridge)
 
+- (NSSet *)setValue
+{
+    return [NSSet setWithArray:self.allObjects];
+}
+
 - (NSArray *)allObjects
 {
     return [self sortedArrayUsingDescriptors:@[]];

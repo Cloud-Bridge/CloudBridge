@@ -20,7 +20,7 @@
         self.entityName = schema.className;
 
         self.name = property.name;
-        self.toMany = property.type == RLMPropertyTypeArray;
+        self.toMany = property.type == RLMPropertyTypeArray || property.type == RLMPropertyTypeLinkingObjects;
         self.destinationEntityName = property.objectClassName;
         self.userInfo = [NSClassFromString(schema.className) propertyUserInfo][property.name] ?: @{};
         self.cascades = self.userInfo[@"cloudBridgeCascades"] != nil;
@@ -86,6 +86,8 @@
 
 - (instancetype)initWithInterface:(id<CBRPersistentStoreInterface>)interface realmObjectSchema:(RLMObjectSchema *)schema
 {
+    assert(schema);
+
     if (self = [self initWithInterface:interface]) {
         self.name = schema.className;
         self.userInfo = [NSClassFromString(schema.className) userInfo];
@@ -111,6 +113,7 @@
         self.attributes = attributes.copy;
         self.relationships = relationships.copy;
     }
+
     return self;
 }
 

@@ -149,4 +149,6 @@ void class_implementProtocolExtension(Class klass, Protocol *protocol, Class pro
 __attribute__((objc_subclassing_restricted))
 @interface CBRPersistentObjectPrototype : NSObject <CBRPersistentObject>
 
++ (BOOL)resolveRelationshipForSelector:(SEL)selector inClass:(Class)klass;
+
 @end

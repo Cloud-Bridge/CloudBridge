@@ -23,6 +23,9 @@
 
 #import <Realm/Realm.h>
 #import <Foundation/Foundation.h>
+#import <CoreData/NSFetchRequest.h>
+
+
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -38,6 +41,14 @@ NS_REQUIRES_PROPERTY_DEFINITIONS
 + (nullable NSArray<NSString *> *)transformableProperties;
 + (nullable NSArray<NSString *> *)primitiveProperties;
 
+- (nullable id)primitiveValueForKey:(NSString *)key;
+- (void)setPrimitiveValue:(nullable id)value forKey:(NSString *)key;
+
+@end
+
+
+
+@interface CBRRealmObject (NSFetchRequestResult) <NSFetchRequestResult>
 @end
 
 NS_ASSUME_NONNULL_END
