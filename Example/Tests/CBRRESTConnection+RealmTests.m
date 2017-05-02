@@ -73,7 +73,7 @@
     entity.string = @"blubb";
 
     expect([entity valueForKey:@"array"]).to.beKindOf([NSArray class]);
-    expect([entity valueForKey:@"arrayData"]).to.beKindOf([NSData class]);
+    expect([entity valueForKey:@"array_Data"]).to.beKindOf([NSData class]);
 
     NSDictionary *parameters = [self.connection.objectTransformer cloudObjectFromPersistentObject:entity];
 

@@ -37,6 +37,7 @@
 - (instancetype)initWithInterface:(id<CBRPersistentStoreInterface>)interface schema:(RLMObjectSchema *)schema property:(RLMProperty *)property
 {
     NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithDictionary:[NSClassFromString(schema.className) propertyUserInfo][property.name]];
+    NSArray<NSString *> *transformableProperties = [NSClassFromString(schema.className) transformableProperties];
 
     if (self = [self initWithInterface:interface]) {
         self.name = property.name;
@@ -63,7 +64,12 @@
                 self.type = CBRAttributeTypeTransformable;
                 break;
             case RLMPropertyTypeData:
-                self.type = CBRAttributeTypeBinary;
+                if ([property.name hasSuffix:@"_Data"] && [transformableProperties containsObject:[property.name stringByReplacingOccurrencesOfString:@"_Data" withString:@""]]) {
+                    self.name = [property.name stringByReplacingOccurrencesOfString:@"_Data" withString:@""];
+                    self.type = CBRAttributeTypeTransformable;
+                } else {
+                    self.type = CBRAttributeTypeBinary;
+                }
                 break;
             default:
                 self.type = CBRAttributeTypeUnknown;

@@ -198,10 +198,7 @@
 
         CBRRealmObject *realmObject = object;
         if (realmObject.realm == nil) {
-            assert(!self.realmAdapter.realm.inWriteTransaction);
-            [self.realmAdapter.realm beginWriteTransaction];
-            [self.realmAdapter.realm addObject:realmObject];
-            [self.realmAdapter.realm commitWriteTransaction];
+            return realmObject;
         }
 
         return [RLMThreadSafeReference referenceWithThreadConfined:object];
@@ -312,6 +309,8 @@
         }
 
         return object;
+    } else if ([reference isKindOfClass:[RLMObject class]]) {
+        return reference;
 #endif
     } else if ([reference conformsToProtocol:@protocol(CBRThreadTransferable)]) {
         return reference;

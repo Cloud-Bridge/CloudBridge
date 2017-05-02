@@ -234,7 +234,7 @@
     }
 
     for (NSString *property in [self transformableProperties]) {
-        NSString *backingProperty = [property stringByAppendingString:@"Data"];
+        NSString *backingProperty = [property stringByAppendingString:@"_Data"];
 
         IMP getter = imp_implementationWithBlock(^NSData *(id self) {
             return objc_getAssociatedObject(self, NSSelectorFromString(backingProperty));
@@ -283,7 +283,7 @@
     }
 
     if ([[self.class transformableProperties] containsObject:property]) {
-        NSString *backingProperty = [property stringByAppendingString:@"Data"];
+        NSString *backingProperty = [property stringByAppendingString:@"_Data"];
 
         NSData *data = [self valueForKey:backingProperty];
         if (data != nil) {
@@ -308,7 +308,7 @@
     objc_setAssociatedObject(self, NSSelectorFromString(property), value, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 
     if ([[self.class transformableProperties] containsObject:property]) {
-        NSString *backingProperty = [property stringByAppendingString:@"Data"];
+        NSString *backingProperty = [property stringByAppendingString:@"_Data"];
 
         if (value == nil) {
             [self setValue:nil forKey:backingProperty];

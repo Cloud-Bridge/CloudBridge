@@ -18,6 +18,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+__attribute__((objc_subclassing_restricted))
 @interface CBRSharedDatabaseInterface : NSObject <CBRPersistentStoreInterface>
 
 @property (nonatomic, readonly) CBRCoreDataInterface *coreDataInterface;

@@ -54,6 +54,16 @@
     expect(child.relationshipsByName[@"parent"].inverseRelationship.name).to.equal(@"children");
 }
 
+- (void)testTransformableAttributes
+{
+    CBREntityDescription *entity = self.adapter.entitiesByName[NSStringFromClass([RLMEntity4 class])];
+    expect(entity).toNot.beNil();
+
+    expect(entity.attributesByName[@"array"]).toNot.beNil();
+    expect(entity.attributesByName[@"array"].type).to.equal(CBRAttributeTypeTransformable);
+    expect(entity.attributesByName[@"array_Data"]).to.beNil();
+}
+
 - (void)testThatManagedObjectReturnsGlobalCloudBridge
 {
     expect([CBRRealmObject cloudBridge]).to.equal(self.cloudBridge);
