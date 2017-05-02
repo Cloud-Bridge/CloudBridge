@@ -36,12 +36,10 @@
 
 - (instancetype)initWithInterface:(id<CBRPersistentStoreInterface>)interface schema:(RLMObjectSchema *)schema property:(RLMProperty *)property
 {
-    NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithDictionary:[NSClassFromString(schema.className) propertyUserInfo][property.name]];
     NSArray<NSString *> *transformableProperties = [NSClassFromString(schema.className) transformableProperties];
 
     if (self = [self initWithInterface:interface]) {
         self.name = property.name;
-        self.userInfo = userInfo;
 
         switch (property.type) {
             case RLMPropertyTypeInt:
@@ -75,6 +73,8 @@
                 self.type = CBRAttributeTypeUnknown;
                 break;
         }
+
+        self.userInfo = [NSClassFromString(schema.className) propertyUserInfo][self.name];
     }
     return self;
 }
