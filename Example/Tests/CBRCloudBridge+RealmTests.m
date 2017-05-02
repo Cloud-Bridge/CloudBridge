@@ -35,11 +35,10 @@
     config.objectClasses = @[ RLMEntity4.class, RLMEntity6.class, RLMEntity6Child.class ];
 
     self.connection = [[CBRTestConnection alloc] init];
-    __block __weak CBRCloudBridge *bridge = nil;
     self.adapter = [[CBRRealmInterface alloc] initWithConfiguration:config];
     self.environment = [[CBRThreadingEnvironment alloc] initWithRealmAdapter:self.adapter];
     self.cloudBridge = [[CBRCloudBridge alloc] initWithCloudConnection:self.connection interface:self.adapter threadingEnvironment:self.environment];
-    bridge = self.cloudBridge;
+
     [CBRRealmObject setCloudBridge:self.cloudBridge];
 
     assert([self.adapter assertClassesExcept:nil]);

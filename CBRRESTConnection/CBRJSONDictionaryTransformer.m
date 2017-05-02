@@ -206,7 +206,7 @@
             continue;
         }
 
-        NSSet *entities = [persistentObject valueForKey:relationshipDescription.name];
+        id<NSFastEnumeration> entities = [persistentObject valueForKey:relationshipDescription.name];
         NSMutableArray *newArray = [NSMutableArray array];
 
         for (id<CBRPersistentObject> persistentObject in entities) {
@@ -287,6 +287,10 @@
         CBREntityDescription *destinationEntity = relationshipDescription.destinationEntity;
         NSString *restKeyPath = [self cloudKeyPathFromPropertyDescription:relationshipDescription];
 
+        if ([relationshipDescription.name isEqualToString:@"children"]) {
+            NSLog(@"");
+        }
+
         if (!relationshipDescription.toMany) {
             // map destination_entity_id to destinationEntity
             NSString *restIdentifier = destinationEntity.restIdentifier;
@@ -316,6 +320,7 @@
         }
 
         if (relationshipDescription.toMany) {
+            assert(!relationshipDescription.inverseRelationship.toMany);
             if (![relationshipObject isKindOfClass:[NSArray class]]) {
                 continue;
             }
@@ -337,7 +342,10 @@
 
             NSDictionary *existingObjectsByPrimaryKey = [[NSClassFromString(destinationEntity.name) cloudBridge].databaseAdapter indexedObjectsOfType:destinationEntity withValues:uniqueIdentifiers forAttribute:primaryKey];
 
-            NSMutableSet *newEntities = [NSMutableSet set];
+            for (id oldPersistentObject in [persistentObject valueForKey:relationshipDescription.name]) {
+                [oldPersistentObject setValue:nil forKey:relationshipDescription.inverseRelationship.name];
+            }
+
             for (NSDictionary *dictionary in cloudObjects) {
                 if (![dictionary isKindOfClass:[NSDictionary class]]) {
                     continue;
@@ -352,10 +360,8 @@
                 }
 
                 [self updatePersistentObject:newPersistentObject withPropertiesFromCloudObject:dictionary];
-                [newEntities addObject:newPersistentObject];
+                [newPersistentObject setValue:persistentObject forKey:relationshipDescription.inverseRelationship.name];
             }
-
-            [persistentObject setValue:newEntities forKey:relationshipDescription.name];
         } else {
             if (![relationshipObject isKindOfClass:[NSDictionary class]]) {
                 continue;
