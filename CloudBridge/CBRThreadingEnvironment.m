@@ -35,6 +35,7 @@
 @implementation NSData (CBRThreadTransferable) @end
 @implementation NSArray (CBRThreadTransferable) @end
 @implementation NSDictionary (CBRThreadTransferable) @end
+@implementation NSNull (CBRThreadTransferable) @end
 
 #if CBRCoreDataAvailable
 @implementation NSManagedObject (CBRThreadTransferable) @end
