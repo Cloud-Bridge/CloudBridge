@@ -72,6 +72,16 @@
     }
 }
 
+- (void)setValue:(id)value forKey:(NSString *)key
+{
+    if (self.isInvalidated) {
+        NSLog(@"[Realm] Accessing %@ of invalidated object", key);
+        return;
+    } else {
+        return [super setValue:value forKey:key];
+    }
+}
+
 + (NSString *)className
 {
     return [super className];
@@ -257,7 +267,7 @@
             {"S", [[setterName componentsJoinedByString:@""] cStringUsingEncoding:NSASCIIStringEncoding]},
             {"T", "@\"NSData\""},
         };
-        
+
         success = class_addProperty(self, [backingProperty cStringUsingEncoding:NSASCIIStringEncoding], attributes, sizeof(attributes) / sizeof(objc_property_attribute_t));
         assert(success);
 
