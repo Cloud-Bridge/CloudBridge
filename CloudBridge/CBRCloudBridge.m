@@ -43,10 +43,6 @@
 - (instancetype)initWithPredicate:(NSPredicate *)predicate forEntity:(CBREntityDescription *)entityDescription cloudBridge:(CBRCloudBridge *)cloudBridge parent:(id<CBRPersistentObject> *)parent
 {
     if (self = [super init]) {
-        if (!predicate || [predicate isEqual:[NSPredicate predicateWithValue:YES]]) {
-            _deleteEveryOtherObject = YES;
-        }
-
         [self _enumerateComparisionPredicatesInPredicate:predicate withBlock:^(NSComparisonPredicate *comparisionPredicate) {
             CBRRelationshipDescription *relationshipDescription = entityDescription.relationshipsByName[comparisionPredicate.leftExpression.keyPath];
             id<CBRPersistentObject> persistentObject = comparisionPredicate.rightExpression.constantValue;

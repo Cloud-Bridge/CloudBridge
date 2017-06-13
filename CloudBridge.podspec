@@ -9,7 +9,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "CloudBridge"
-  s.version          = "2.1.4"
+  s.version          = "2.2.0"
   s.summary          = "The missing bridge between your data model and various Cloud backends."
   s.homepage         = "https://github.com/OliverLetterer"
   s.license          = 'MIT'
@@ -24,7 +24,7 @@ Pod::Spec.new do |s|
   s.default_subspec = 'CoreData+REST'
 
   s.subspec 'CloudBridge' do |ss|
-    ss.source_files = 'CloudBridge'
+    ss.source_files = 'CloudBridge', 'JSON'
   end
 
   s.subspec 'CoreData' do |ss|

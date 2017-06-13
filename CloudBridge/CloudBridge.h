@@ -24,6 +24,8 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+#import <CloudBridge/CBRJSONModel.h>
+
 #import <CloudBridge/CBRDefines.h>
 
 #import <CloudBridge/CBREntityDescription.h>

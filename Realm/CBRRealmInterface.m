@@ -390,6 +390,10 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
 
 - (void)deletePersistentObjects:(id<NSFastEnumeration>)persistentObjects
 {
+    if ([(id)persistentObjects respondsToSelector:@selector(count)] && [(id)persistentObjects count] == 0) {
+        return;
+    }
+
     RLMRealm *realm = self.realm;
 
     [self _transactionInRealm:realm block:^{
