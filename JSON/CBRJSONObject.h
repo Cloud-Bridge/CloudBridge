@@ -9,15 +9,16 @@
 #import <Foundation/Foundation.h>
 #import <CloudBridge/CBRThreadingEnvironment.h>
 
-@class AFHTTPSessionManager;
-
 
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface CBRJSONModel : NSObject <NSSecureCoding, NSCopying, CBRThreadTransferable>
+@protocol CBRJSONObject <NSObject>
+@end
 
-@property (nonatomic, class) AFHTTPSessionManager *sessionManager;
+
+
+@interface CBRJSONObject : NSObject <NSSecureCoding, NSCopying, CBRThreadTransferable>
 
 + (NSDictionary<NSString *, Class> *)propertyClassMapping;
 + (NSArray<NSString *> *)serializableProperties;
@@ -30,14 +31,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable instancetype)initWithDictionary:(NSDictionary *)dictionary error:(NSError **)error NS_DESIGNATED_INITIALIZER;
 
 - (BOOL)patchWithDictionary:(NSDictionary *)dictionary error:(NSError **)error;
-+ (void)fetchObjectsFromPath:(NSString *)path completion:(void(^)(NSArray * _Nullable objects, NSError * _Nullable error))completion;
-- (void)createToPath:(NSString *)path completion:(void(^ _Nullable)(id _Nullable object, NSError * _Nullable error))completion;
 
 @end
 
 
 
-@interface CBRJSONModelValueTransformer : NSValueTransformer
+@interface CBRJSONObjectValueTransformer : NSValueTransformer
 
 + (Class)destinationClass;
 

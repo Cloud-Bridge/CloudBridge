@@ -1,16 +1,15 @@
 //
-//  CBRJSONModel.m
+//  CBRJSONObject.m
 //  Pods
 //
 //  Created by Oliver Letterer on 13.06.17.
 //
 //
 
-#import "CBRJSONModel.h"
+#import "CBRJSONObject.h"
 
 #import <objc/runtime.h>
 #import <CloudBridge/CloudBridge.h>
-#import <AFNetworking/AFHTTPSessionManager.h>
 
 
 
@@ -59,19 +58,7 @@ static Class property_getClass(objc_property_t property)
 
 
 
-static AFHTTPSessionManager *_sessionManager = nil;
-@implementation CBRJSONModel
-
-
-+ (void)setSessionManager:(AFHTTPSessionManager *)sessionManager
-{
-    _sessionManager = sessionManager;
-}
-
-+ (AFHTTPSessionManager *)sessionManager
-{
-    return _sessionManager;
-}
+@implementation CBRJSONObject
 
 + (NSDictionary<NSString *, Class> *)relationMapping
 {
@@ -127,50 +114,6 @@ static AFHTTPSessionManager *_sessionManager = nil;
         }
     }
     return self;
-}
-
-+ (void)fetchObjectsFromPath:(NSString *)path completion:(void(^)(NSArray * _Nullable objects, NSError * _Nullable error))completion
-{
-    assert([self sessionManager]);
-    [[self sessionManager] GET:path parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        if ([responseObject isKindOfClass:[NSDictionary class]]) {
-            responseObject = @[ responseObject ];
-        }
-
-        NSError *error = nil;
-        NSMutableArray *results = [NSMutableArray array];
-        for (NSDictionary *json in responseObject) {
-            CBRJSONModel *model = [[self alloc] initWithDictionary:json error:&error];
-
-            if (error == nil) {
-                [results addObject:model];
-            } else {
-                completion(nil, error);
-                return;
-            }
-        }
-
-        completion(results, nil);
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        completion(nil, error);
-    }];
-}
-
-- (void)createToPath:(NSString *)path completion:(void(^ _Nullable)(id _Nullable object, NSError * _Nullable error))completion
-{
-    assert([self.class sessionManager]);
-    [[self.class sessionManager] POST:path parameters:self.jsonRepresentation progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        NSError *error = nil;
-        [self patchWithDictionary:responseObject error:&error];
-
-        if (completion) {
-            completion(self, error);
-        }
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        if (completion) {
-            completion(nil, error);
-        }
-    }];
 }
 
 #pragma mark - NSCopying
@@ -245,8 +188,8 @@ static AFHTTPSessionManager *_sessionManager = nil;
         id value = [self valueForKey:property];
         NSString *jsonProperty = [connection.propertyMapping cloudKeyPathFromPersistentObjectProperty:property];
 
-        if ([[value class] isSubclassOfClass:[CBRJSONModel class]]) {
-            CBRJSONModel *nextModel = value;
+        if ([[value class] isSubclassOfClass:[CBRJSONObject class]]) {
+            CBRJSONObject *nextModel = value;
             result[jsonProperty] = nextModel.jsonRepresentation ?: [NSNull null];
         } else if ([[value class] isSubclassOfClass:[NSArray class]]) {
 
@@ -289,7 +232,7 @@ static AFHTTPSessionManager *_sessionManager = nil;
         Class expectedClass = propertyClassMapping[property];
         id value = dictionary[jsonProperty];
 
-        if ([expectedClass isSubclassOfClass:[CBRJSONModel class]]) {
+        if ([expectedClass isSubclassOfClass:[CBRJSONObject class]]) {
             if (![value isKindOfClass:[NSDictionary class]]) {
                 continue;
             }
@@ -337,7 +280,7 @@ static AFHTTPSessionManager *_sessionManager = nil;
 
 
 
-@implementation CBRJSONModelValueTransformer
+@implementation CBRJSONObjectValueTransformer
 
 + (Class)destinationClass
 {
@@ -352,7 +295,7 @@ static AFHTTPSessionManager *_sessionManager = nil;
 
         for (id jsonvalue in value) {
             NSError *error = nil;
-            CBRJSONModel *object = [[[self.class destinationClass] alloc] initWithDictionary:jsonvalue error:&error];
+            CBRJSONObject *object = [[[self.class destinationClass] alloc] initWithDictionary:jsonvalue error:&error];
 
             if (object != nil) {
                 [result addObject:object];
@@ -373,13 +316,13 @@ static AFHTTPSessionManager *_sessionManager = nil;
     if ([value isKindOfClass:[NSArray class]]) {
         NSMutableArray *result = [NSMutableArray array];
 
-        for (CBRJSONModel *jsonModel in value) {
+        for (CBRJSONObject *jsonModel in value) {
             [result addObject:jsonModel.jsonRepresentation ?: @{}];
         }
 
         return result;
-    } else if ([value isKindOfClass:[CBRJSONModel class]]) {
-        CBRJSONModel *jsonModel = value;
+    } else if ([value isKindOfClass:[CBRJSONObject class]]) {
+        CBRJSONObject *jsonModel = value;
         return jsonModel.jsonRepresentation ?: @{};
     } else {
         return [NSNull null];

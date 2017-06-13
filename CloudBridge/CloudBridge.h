@@ -24,7 +24,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-#import <CloudBridge/CBRJSONModel.h>
+#import <CloudBridge/CBRJSONObject.h>
 
 #import <CloudBridge/CBRDefines.h>
 
@@ -57,4 +57,5 @@
 
 #if __has_include(<CloudBridge/CBRRESTConnection.h>)
 #import <CloudBridge/CBRRESTConnection.h>
+#import <CloudBridge/CBRJSONObject+REST.h>
 #endif

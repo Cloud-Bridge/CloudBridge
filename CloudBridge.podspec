@@ -41,7 +41,7 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'CBRRESTConnection' do |ss|
-    ss.source_files = 'CBRRESTConnection'
+    ss.source_files = 'CBRRESTConnection', 'CBRRESTConnection/JSON'
 
     ss.dependency 'AFNetworking', '~> 3.0'
     ss.dependency 'CloudBridge/CloudBridge'
