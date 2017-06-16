@@ -135,6 +135,7 @@
         assert([interface hasPersistedObjects:@[ parent ]]);
     }
 
+    __block NSString *inverseParentRelationship = nil;
     [self.cloudConnection fetchCloudObjectsForEntity:entityDescription withPredicate:predicate userInfo:userInfo completionHandler:^(NSArray *fetchedObjects, NSError *error) {
         if (error) {
             if (completionHandler) {
@@ -173,6 +174,7 @@
 
                 if (description.relationshipToUpdate) {
                     CBRRelationshipDescription *relationship = entityDescription.relationshipsByName[description.relationshipToUpdate];
+                    inverseParentRelationship = relationship.inverseRelationship.name;
 
                     if (!relationship.toMany) {
                         NSPredicate *newPredicate = [NSPredicate predicateWithFormat:@"%K == %@", relationship.name, parentObject];
@@ -189,11 +191,21 @@
 
                 [self.databaseAdapter deletePersistentObjects:objectsToBeDeleted];
             }
-            
+
+            if (parentObject != nil && inverseParentRelationship) {
+                return parentObject;
+            }
+
             return parsedPersistentObjects;
         } completion:^(id  _Nullable object, NSError * _Nullable error) {
-            if (completionHandler) {
-                completionHandler(object, error);
+            if (![object conformsToProtocol:@protocol(NSFastEnumeration)] && inverseParentRelationship) {
+                if (completionHandler) {
+                    completionHandler([[object valueForKey:inverseParentRelationship] allObjects], error);
+                }
+            } else {
+                if (completionHandler) {
+                    completionHandler(object, error);
+                }
             }
         }];
     }];
