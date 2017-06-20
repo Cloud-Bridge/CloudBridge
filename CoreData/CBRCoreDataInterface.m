@@ -110,18 +110,18 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
 {
     switch (type) {
         case NSFetchedResultsChangeInsert: {
-            [self.insertions addObject:@([newIndexPath indexAtPosition:0])];
+            [self.insertions addObject:@([newIndexPath indexAtPosition:1])];
             break;
         } case NSFetchedResultsChangeDelete: {
-            [self.deletions addObject:@([indexPath indexAtPosition:0])];
+            [self.deletions addObject:@([indexPath indexAtPosition:1])];
             break;
         } case NSFetchedResultsChangeMove: {
-            [self.deletions addObject:@([indexPath indexAtPosition:0])];
-            [self.insertions addObject:@([newIndexPath indexAtPosition:0])];
+            [self.deletions addObject:@([indexPath indexAtPosition:1])];
+            [self.insertions addObject:@([newIndexPath indexAtPosition:1])];
             break;
         } case NSFetchedResultsChangeUpdate: {
             if (anObject.changedValuesForCurrentEvent.count > 0) {
-                [self.updates addObject:@([indexPath indexAtPosition:0])];
+                [self.updates addObject:@([indexPath indexAtPosition:1])];
             }
             break;
         }
@@ -308,7 +308,7 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
 - (NSArray *)executeFetchRequest:(NSFetchRequest *)fetchRequest error:(NSError **)error
 {
     assert(self.entitiesByName[fetchRequest.entityName] != nil);
-    
+
     NSManagedObjectContext *context = [NSThread currentThread].isMainThread ? self.stack.mainThreadManagedObjectContext : self.stack.backgroundThreadManagedObjectContext;
     return [context executeFetchRequest:fetchRequest error:error];
 }

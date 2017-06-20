@@ -342,7 +342,9 @@
 
             NSDictionary *existingObjectsByPrimaryKey = [[NSClassFromString(destinationEntity.name) cloudBridge].databaseAdapter indexedObjectsOfType:destinationEntity withValues:uniqueIdentifiers forAttribute:primaryKey];
 
-            for (id oldPersistentObject in [persistentObject valueForKey:relationshipDescription.name]) {
+            id relationshipObjects = [persistentObject valueForKey:relationshipDescription.name];
+            id enumartionObjects = [relationshipObjects conformsToProtocol:@protocol(NSCopying)] ? [relationshipObjects copy] : relationshipObjects;
+            for (id oldPersistentObject in enumartionObjects) {
                 [oldPersistentObject setValue:nil forKey:relationshipDescription.inverseRelationship.name];
             }
 

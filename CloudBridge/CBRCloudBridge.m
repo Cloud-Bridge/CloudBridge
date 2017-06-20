@@ -192,20 +192,10 @@
                 [self.databaseAdapter deletePersistentObjects:objectsToBeDeleted];
             }
 
-            if (parentObject != nil && inverseParentRelationship) {
-                return parentObject;
-            }
-
             return parsedPersistentObjects;
         } completion:^(id  _Nullable object, NSError * _Nullable error) {
-            if (![object conformsToProtocol:@protocol(NSFastEnumeration)] && inverseParentRelationship) {
-                if (completionHandler) {
-                    completionHandler([[object valueForKey:inverseParentRelationship] allObjects], error);
-                }
-            } else {
-                if (completionHandler) {
-                    completionHandler(object, error);
-                }
+            if (completionHandler) {
+                completionHandler(object, error);
             }
         }];
     }];
