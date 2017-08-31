@@ -202,7 +202,7 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
         NSMutableArray<CBREntityDescription *> *result = [NSMutableArray array];
 
         for (NSEntityDescription *entity in self.managedObjectModel.entities) {
-            if (entity.managedObjectClassName == nil || [entity.managedObjectClassName isEqualToString:NSStringFromClass(NSManagedObject.class)]) {
+            if (entity.managedObjectClassName.length == 0 || [entity.managedObjectClassName isEqualToString:NSStringFromClass(NSManagedObject.class)]) {
                 continue;
             }
 
