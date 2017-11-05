@@ -12,7 +12,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface RLMResults<RLMObjectType: RLMObject *> (CloudBridge)
+@interface RLMResults<RLMObjectType> (CloudBridge)
 
 - (NSSet<RLMObjectType> *)setValue;
 - (NSArray<RLMObjectType> *)allObjects;

@@ -36,7 +36,7 @@ Pod::Spec.new do |s|
   s.subspec 'Realm' do |ss|
     ss.source_files = 'Realm'
 
-    ss.dependency 'Realm', '~> 2.0'
+    ss.dependency 'Realm', '~> 3.0'
     ss.dependency 'CloudBridge/CloudBridge'
   end
 

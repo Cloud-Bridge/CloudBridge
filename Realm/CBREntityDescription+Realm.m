@@ -20,7 +20,7 @@
         self.entityName = schema.className;
 
         self.name = property.name;
-        self.toMany = property.type == RLMPropertyTypeArray || property.type == RLMPropertyTypeLinkingObjects;
+        self.toMany = property.type == RLMPropertyTypeLinkingObjects;
         self.destinationEntityName = property.objectClassName;
         self.userInfo = [NSClassFromString(schema.className) propertyUserInfo][property.name] ?: @{};
         self.cascades = self.userInfo[@"cloudBridgeCascades"] != nil;
@@ -105,7 +105,6 @@
         for (RLMProperty *property in [schema.properties arrayByAddingObjectsFromArray:[schema valueForKey:@"computedProperties"]]) {
             switch (property.type) {
                 case RLMPropertyTypeObject:
-                case RLMPropertyTypeArray:
                 case RLMPropertyTypeLinkingObjects:
                     [relationships addObject:[[CBRRelationshipDescription alloc] initWithInterface:interface schema:schema property:property]];
                     break;

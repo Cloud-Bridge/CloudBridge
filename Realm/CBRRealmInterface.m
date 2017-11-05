@@ -105,7 +105,7 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
 
 - (void)invalidate
 {
-    [self.token stop];
+    [self.token invalidate];
 
     _allObjects = nil;
     _results = nil;
