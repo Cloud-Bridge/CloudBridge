@@ -75,6 +75,8 @@ void class_implementProtocolExtension(Class klass, Protocol *protocol, Class pro
 
 + (BOOL)resolveRelationshipForSelector:(SEL)selector inClass:(Class)klass
 {
+    klass = klass.class; // Google Analytics fix
+
     assert([klass conformsToProtocol:@protocol(CBRPersistentObject)]);
     if (![klass cloudBridge]) {
         return NO;

@@ -476,7 +476,7 @@ NSString *const CBRCoreDataStackErrorDomain = @"CBRCoreDataStackErrorDomain";
 
 - (BOOL)_performMigrationFromDataStoreAtURL:(NSURL *)dataStoreURL
                          toDestinationModel:(NSManagedObjectModel *)destinationModel
-                                      error:(NSError **)error
+                                      error:(NSError * __autoreleasing *)error
 {
     BOOL(^updateError)(NSInteger errorCode, NSString *description) = ^BOOL(NSInteger errorCode, NSString *description) {
         if (!error) {

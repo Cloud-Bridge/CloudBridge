@@ -40,7 +40,7 @@
 
 @implementation _CBRCloudBridgePredicateDescription
 
-- (instancetype)initWithPredicate:(NSPredicate *)predicate forEntity:(CBREntityDescription *)entityDescription cloudBridge:(CBRCloudBridge *)cloudBridge parent:(id<CBRPersistentObject> *)parent
+- (instancetype)initWithPredicate:(NSPredicate *)predicate forEntity:(CBREntityDescription *)entityDescription cloudBridge:(CBRCloudBridge *)cloudBridge parent:(id<CBRPersistentObject> __autoreleasing *)parent
 {
     if (self = [super init]) {
         [self _enumerateComparisionPredicatesInPredicate:predicate withBlock:^(NSComparisonPredicate *comparisionPredicate) {
