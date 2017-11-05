@@ -9,7 +9,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "CloudBridge"
-  s.version          = "2.3.2"
+  s.version          = "2.3.3"
   s.summary          = "The missing bridge between your data model and various Cloud backends."
   s.homepage         = "https://github.com/OliverLetterer"
   s.license          = 'MIT'
