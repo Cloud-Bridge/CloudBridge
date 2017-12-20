@@ -52,7 +52,7 @@ static Class property_getClass(objc_property_t property)
         NSString *className = [string substringWithRange:NSMakeRange(2, string.length - 3)];
         return NSClassFromString(className);
     }
-    
+
     return Nil;
 }
 
@@ -181,7 +181,7 @@ static Class property_getClass(objc_property_t property)
     NSArray<NSString *> *serializableProperties = [self.class serializableProperties];
     NSMutableDictionary<NSString *, id> *result = [NSMutableDictionary dictionary];
 
-    CBRRESTConnection *connection = [CBRRealmObject cloudBridge].cloudConnection;
+    CBRRESTConnection *connection = [NSManagedObject cloudBridge].cloudConnection;
     NSDateFormatter *dateFormatter = connection.objectTransformer.dateFormatter;
 
     for (NSString *property in serializableProperties) {
@@ -221,7 +221,7 @@ static Class property_getClass(objc_property_t property)
         return NO;
     }
 
-    CBRRESTConnection *connection = [CBRRealmObject cloudBridge].cloudConnection;
+    CBRRESTConnection *connection = [NSManagedObject cloudBridge].cloudConnection;
     NSDateFormatter *dateFormatter = connection.objectTransformer.dateFormatter;
 
     NSDictionary *propertyClassMapping = [self.class propertyClassMapping];
@@ -268,11 +268,11 @@ static Class property_getClass(objc_property_t property)
             if (![value isKindOfClass:expectedClass]) {
                 continue;
             }
-            
+
             [self setValue:value forKey:property];
         }
     }
-    
+
     return YES;
 }
 
