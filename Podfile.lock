@@ -1,42 +1,42 @@
 PODS:
-  - AFNetworking (3.1.0):
-    - AFNetworking/NSURLSession (= 3.1.0)
-    - AFNetworking/Reachability (= 3.1.0)
-    - AFNetworking/Security (= 3.1.0)
-    - AFNetworking/Serialization (= 3.1.0)
-    - AFNetworking/UIKit (= 3.1.0)
-  - AFNetworking/NSURLSession (3.1.0):
+  - AFNetworking (3.2.0):
+    - AFNetworking/NSURLSession (= 3.2.0)
+    - AFNetworking/Reachability (= 3.2.0)
+    - AFNetworking/Security (= 3.2.0)
+    - AFNetworking/Serialization (= 3.2.0)
+    - AFNetworking/UIKit (= 3.2.0)
+  - AFNetworking/NSURLSession (3.2.0):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/Reachability (3.1.0)
-  - AFNetworking/Security (3.1.0)
-  - AFNetworking/Serialization (3.1.0)
-  - AFNetworking/UIKit (3.1.0):
+  - AFNetworking/Reachability (3.2.0)
+  - AFNetworking/Security (3.2.0)
+  - AFNetworking/Serialization (3.2.0)
+  - AFNetworking/UIKit (3.2.0):
     - AFNetworking/NSURLSession
-  - CloudBridge/CBRRESTConnection (2.3.3):
+  - CloudBridge/CBRRESTConnection (2.4.1):
     - AFNetworking (~> 3.0)
     - CloudBridge/CloudBridge
-  - CloudBridge/CloudBridge (2.3.3)
-  - CloudBridge/Core (2.3.3):
+  - CloudBridge/CloudBridge (2.4.1)
+  - CloudBridge/Core (2.4.1):
     - CloudBridge/CoreData+REST
     - CloudBridge/Realm+REST
-  - CloudBridge/CoreData (2.3.3):
+  - CloudBridge/CoreData (2.4.1):
     - CloudBridge/CloudBridge
-  - CloudBridge/CoreData+REST (2.3.3):
+  - CloudBridge/CoreData+REST (2.4.1):
     - CloudBridge/CBRRESTConnection
     - CloudBridge/CoreData
-  - CloudBridge/Realm (2.3.3):
+  - CloudBridge/Realm (2.4.1):
     - CloudBridge/CloudBridge
     - Realm (~> 3.0)
-  - CloudBridge/Realm+REST (2.3.3):
+  - CloudBridge/Realm+REST (2.4.1):
     - CloudBridge/CBRRESTConnection
     - CloudBridge/Realm
   - Expecta (1.0.6)
   - OCMock (3.2.2)
-  - Realm (3.0.1):
-    - Realm/Headers (= 3.0.1)
-  - Realm/Headers (3.0.1)
+  - Realm (3.1.1):
+    - Realm/Headers (= 3.1.1)
+  - Realm/Headers (3.1.1)
 
 DEPENDENCIES:
   - CloudBridge/Core (from `.`)
@@ -45,15 +45,15 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   CloudBridge:
-    :path: "."
+    :path: .
 
 SPEC CHECKSUMS:
-  AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
-  CloudBridge: 3d2c4111720ce70da0edab6999a6c03f1d2ab8f4
+  AFNetworking: 8ac6017b94ea105479f7776e5288e48ae9c59bb4
+  CloudBridge: e548141a5f9eff0356eae289f2abeb0c791a89fb
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   OCMock: 18c9b7e67d4c2770e95bb77a9cc1ae0c91fe3835
-  Realm: ba6144c74f835f7497791f6599d63a7755377b83
+  Realm: 42d1c38a5b1bbcc828b48a7ce702cb86fc68adf4
 
 PODFILE CHECKSUM: 0a01498a6ba27a38f658200586f15834bde5a844
 
-COCOAPODS: 1.2.0
+COCOAPODS: 1.4.0

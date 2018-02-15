@@ -22,6 +22,7 @@
  */
 
 #import "CBRRESTConnection.h"
+#import "CBRJSONObject.h"
 
 #import <CBRUnderscoredPropertyMapping.h>
 #import <CBREntityDescription+CBRRESTConnection.h>
@@ -55,6 +56,10 @@ NSString * const CBRRESTConnectionUserInfoURLOverrideKey = @"restBaseURL";
         _propertyMapping = propertyMapping;
         _objectTransformer = [[CBRJSONDictionaryTransformer alloc] initWithPropertyMapping:propertyMapping];
         _sessionManager = sessionManager;
+
+        if ([CBRJSONObject restConnection] == nil) {
+            [CBRJSONObject setRestConnection:self];
+        }
     }
     return self;
 }

@@ -54,9 +54,9 @@
                     *parent = persistentObject;
                 }
 
-                _relationshipToUpdate = relationshipDescription.name;
-                _primaryKey = [persistentObject valueForKey:primaryKey];
-                _deleteEveryOtherObject = relationshipDescription.cascades;
+                self->_relationshipToUpdate = relationshipDescription.name;
+                self->_primaryKey = [persistentObject valueForKey:primaryKey];
+                self->_deleteEveryOtherObject = relationshipDescription.cascades;
             }
         }];
     }
