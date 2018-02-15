@@ -160,7 +160,14 @@ static Class property_getClass(objc_property_t property)
 
 - (instancetype)init
 {
-    return [super init];
+    if (self = [super init]) {
+        [[self.class propertyClassMapping] enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, Class  _Nonnull obj, BOOL * _Nonnull stop) {
+            if (obj == [NSDate class] || [obj isKindOfClass:[NSDate class]]) {
+                [self setValue:[NSDate date] forKey:key];
+            }
+        }];
+    }
+    return self;
 }
 
 - (nullable instancetype)initWithDictionary:(NSDictionary *)dictionary error:(NSError * _Nullable __autoreleasing * _Nullable)error
