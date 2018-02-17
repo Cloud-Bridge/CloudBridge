@@ -34,6 +34,8 @@
 #import <CloudBridge/CBRAttributeDescription+CBRRESTConnection.h>
 #import <CloudBridge/CBRRelationshipDescription+CBRRESTConnection.h>
 
+#import <CloudBridge/CBRJSONObject+CBRRESTConnection.h>
+
 #if CBRCoreDataAvailable
 #import <CloudBridge/NSManagedObject+CBRRESTConnection.h>
 #endif

@@ -57,5 +57,4 @@
 
 #if __has_include(<CloudBridge/CBRRESTConnection.h>)
 #import <CloudBridge/CBRRESTConnection.h>
-#import <CloudBridge/CBRJSONObject+REST.h>
 #endif
