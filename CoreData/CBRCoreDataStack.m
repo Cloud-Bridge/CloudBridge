@@ -41,86 +41,17 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
 
 NSString *const CBRCoreDataStackErrorDomain = @"CBRCoreDataStackErrorDomain";
 
-@interface NSManagedObjectContext (CBRCoreDataStackInternal)
-
-@property (nonatomic, strong) NSMutableArray *CBRCoreDataStack_deallocationHandlers;
-- (void)CBRCoreDataStack_addDeallocationHandler:(void(^)(__unsafe_unretained NSManagedObjectContext *context))handler;
-
-@end
-
-@implementation NSManagedObjectContext (CBRCoreDataStackInternal)
-
-#pragma mark - setters and getters
-
-- (NSMutableArray *)CBRCoreDataStack_deallocationHandlers
-{
-    return objc_getAssociatedObject(self, @selector(CBRCoreDataStack_deallocationHandlers));
-}
-
-- (void)setCBRCoreDataStack_deallocationHandlers:(NSMutableArray *)CBRCoreDataStack_deallocationHandlers
-{
-    objc_setAssociatedObject(self, @selector(CBRCoreDataStack_deallocationHandlers), CBRCoreDataStack_deallocationHandlers, OBJC_ASSOCIATION_RETAIN);
-}
-
-#pragma mark - instance methods
-
-- (void)CBRCoreDataStack_addDeallocationHandler:(void(^)(__unsafe_unretained NSManagedObjectContext *context))handler
-{
-    [self.CBRCoreDataStack_deallocationHandlers addObject:handler];
-}
-
-#pragma mark - Hooked implementations
-
-+ (void)load
-{
-    class_swizzleSelector(self, @selector(initWithConcurrencyType:), @selector(__CBRCoreDataStackInitWithConcurrencyType:));
-    class_swizzleSelector(self, NSSelectorFromString(@"dealloc"), @selector(__CBRCoreDataStackDealloc));
-}
-
-- (id)__CBRCoreDataStackInitWithConcurrencyType:(NSManagedObjectContextConcurrencyType)ct __attribute__((objc_method_family(init)))
-{
-    if ((self = [self __CBRCoreDataStackInitWithConcurrencyType:ct])) {
-        self.CBRCoreDataStack_deallocationHandlers = [NSMutableArray array];
-    }
-
-    return self;
-}
-
-- (void)__CBRCoreDataStackDealloc
-{
-    for (id uncastedHandler in self.CBRCoreDataStack_deallocationHandlers) {
-        void(^handler)(__unsafe_unretained NSManagedObjectContext *context) = uncastedHandler;
-        handler(self);
-    }
-
-    [self __CBRCoreDataStackDealloc];
-}
-
-@end
-
 
 
 @interface CBRCoreDataStack ()
-
-@property (nonatomic, strong) NSPointerArray *observingManagedObjectContexts;
 
 @end
 
 
 @implementation CBRCoreDataStack
-@synthesize mainThreadManagedObjectContext = _mainThreadManagedObjectContext, backgroundThreadManagedObjectContext = _backgroundThreadManagedObjectContext, managedObjectModel = _managedObjectModel, persistentStoreCoordinator = _persistentStoreCoordinator;
+@synthesize mainThreadManagedObjectContext = _mainThreadManagedObjectContext, backgroundThreadManagedObjectContext = _backgroundThreadManagedObjectContext, managedObjectModel = _managedObjectModel, persistentStoreCoordinator = _persistentStoreCoordinator, persistentManagedObjectContext = _persistentManagedObjectContext;
 
 #pragma mark - setters and getters
-
-- (id)mainThreadMergePolicy
-{
-    return NSMergeByPropertyObjectTrumpMergePolicy;
-}
-
-- (id)backgroundThreadMergePolicy
-{
-    return NSMergeByPropertyObjectTrumpMergePolicy;
-}
 
 #pragma mark - Initialization
 
@@ -147,7 +78,7 @@ NSString *const CBRCoreDataStackErrorDomain = @"CBRCoreDataStackErrorDomain";
                                                                      inDomains:NSUserDomainMask].lastObject;
 
     NSURL *location = [libraryDirectory URLByAppendingPathComponent:[NSString stringWithFormat:@"%@.sqlite", model]];
-    return [[self alloc] initWithType:NSSQLiteStoreType location:location model:momURL ?: momdURL inBundle:bundle];
+    return [[self alloc] initWithType:NSSQLiteStoreType location:location model:momURL ?: momdURL inBundle:bundle type:CBRCoreDataStackTypeParallel];
 }
 
 - (instancetype)init
@@ -155,15 +86,14 @@ NSString *const CBRCoreDataStackErrorDomain = @"CBRCoreDataStackErrorDomain";
     return [super init];
 }
 
-- (instancetype)initWithType:(NSString *)storeType location:(NSURL *)storeLocation model:(NSURL *)modelURL inBundle:(NSBundle *)bundle
+- (instancetype)initWithType:(NSString *)storeType location:(NSURL *)storeLocation model:(NSURL *)modelURL inBundle:(NSBundle *)bundle type:(CBRCoreDataStackType)type
 {
     if (self = [super init]) {
         _storeLocation = storeLocation;
         _storeType = storeType;
         _managedObjectModelURL = modelURL;
         _bundle = bundle;
-
-        _observingManagedObjectContexts = [NSPointerArray pointerArrayWithOptions:NSPointerFunctionsWeakMemory];
+        _type = type;
 
         NSString *parentDirectory = storeLocation.URLByDeletingLastPathComponent.path;
         if (![[NSFileManager defaultManager] fileExistsAtPath:parentDirectory isDirectory:NULL]) {
@@ -175,20 +105,6 @@ NSString *const CBRCoreDataStackErrorDomain = @"CBRCoreDataStackErrorDomain";
 
             NSAssert(error == nil, @"error while creating parentDirectory '%@':\n\nerror: \"%@\"", parentDirectory, error);
         }
-
-#if TARGET_OS_IOS
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_automaticallySaveDataStore)
-                                                   name:UIApplicationWillTerminateNotification
-                                                   object:nil];
-
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_automaticallySaveDataStore)
-                                                     name:UIApplicationDidEnterBackgroundNotification
-                                                   object:nil];
-#elif TARGET_OS_WATCH
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_automaticallySaveDataStore)
-                                                   name:NSExtensionHostDidEnterBackgroundNotification
-                                                   object:nil];
-#endif
     }
     return self;
 }
@@ -210,12 +126,36 @@ NSString *const CBRCoreDataStackErrorDomain = @"CBRCoreDataStackErrorDomain";
     return _managedObjectModel;
 }
 
+- (NSManagedObjectContext *)persistentManagedObjectContext
+{
+    if (self.type == CBRCoreDataStackTypeParallel) {
+        return nil;
+    }
+
+    if (!_persistentManagedObjectContext) {
+        _persistentManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+        _persistentManagedObjectContext.persistentStoreCoordinator = self.persistentStoreCoordinator;
+        _persistentManagedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+        _persistentManagedObjectContext.name = @"persistent context";
+
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_managedObjectContextDidSaveNotificationCallback:) name:NSManagedObjectContextDidSaveNotification object:_persistentManagedObjectContext];
+    }
+
+    return _persistentManagedObjectContext;
+}
+
 - (NSManagedObjectContext *)mainThreadManagedObjectContext
 {
     if (!_mainThreadManagedObjectContext) {
         _mainThreadManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-        _mainThreadManagedObjectContext.persistentStoreCoordinator = self.persistentStoreCoordinator;
         _mainThreadManagedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+        _mainThreadManagedObjectContext.name = @"main context";
+
+        if (self.type == CBRCoreDataStackTypeParallel) {
+            _mainThreadManagedObjectContext.persistentStoreCoordinator = self.persistentStoreCoordinator;
+        } else {
+            _mainThreadManagedObjectContext.parentContext = self.persistentManagedObjectContext;
+        }
 
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_managedObjectContextDidSaveNotificationCallback:) name:NSManagedObjectContextDidSaveNotification object:_mainThreadManagedObjectContext];
     }
@@ -227,8 +167,14 @@ NSString *const CBRCoreDataStackErrorDomain = @"CBRCoreDataStackErrorDomain";
 {
     if (!_backgroundThreadManagedObjectContext) {
         _backgroundThreadManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-        _backgroundThreadManagedObjectContext.persistentStoreCoordinator = self.persistentStoreCoordinator;
         _backgroundThreadManagedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+        _backgroundThreadManagedObjectContext.name = @"background context";
+
+        if (self.type == CBRCoreDataStackTypeParallel) {
+            _backgroundThreadManagedObjectContext.persistentStoreCoordinator = self.persistentStoreCoordinator;
+        } else {
+            _backgroundThreadManagedObjectContext.parentContext = self.mainThreadManagedObjectContext;
+        }
 
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_managedObjectContextDidSaveNotificationCallback:) name:NSManagedObjectContextDidSaveNotification object:_backgroundThreadManagedObjectContext];
     }
@@ -278,98 +224,36 @@ NSString *const CBRCoreDataStackErrorDomain = @"CBRCoreDataStackErrorDomain";
     return _persistentStoreCoordinator;
 }
 
-- (NSManagedObjectContext *)newManagedObjectContextWithConcurrencyType:(NSManagedObjectContextConcurrencyType)concurrencyType
-{
-    NSManagedObjectContext *context = [[NSManagedObjectContext alloc] initWithConcurrencyType:concurrencyType];
-    context.persistentStoreCoordinator = self.persistentStoreCoordinator;
-    context.mergePolicy = self.backgroundThreadMergePolicy;
-
-    [self.observingManagedObjectContexts addPointer:(__bridge void *)context];
-
-    __weak typeof(self) weakSelf = self;
-    [context CBRCoreDataStack_addDeallocationHandler:^(NSManagedObjectContext *__unsafe_unretained context) {
-        __strong typeof(weakSelf) strongSelf = weakSelf;
-
-        NSUInteger index = NSNotFound;
-
-        for (NSUInteger i = 0; i < strongSelf.observingManagedObjectContexts.count; i++) {
-            void *pointer = [strongSelf.observingManagedObjectContexts pointerAtIndex:i];
-
-            if (pointer == (__bridge void *)context) {
-                index = i;
-                break;
-            }
-        }
-
-        if (index != NSNotFound) {
-            [strongSelf.observingManagedObjectContexts removePointerAtIndex:index];
-        }
-
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextDidSaveNotification object:context];
-    }];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_managedObjectContextDidSaveNotificationCallback:) name:NSManagedObjectContextDidSaveNotification object:context];
-
-    return context;
-}
-
 #pragma mark - private implementation ()
-
-- (NSArray *)_observingManagedObjectsContexts
-{
-    NSMutableArray *observingManagedObjectsContexts = [NSMutableArray array];
-
-    NSManagedObjectContext *mainThreadManagedObjectContext = self.mainThreadManagedObjectContext;
-    if (mainThreadManagedObjectContext) {
-        [observingManagedObjectsContexts addObject:mainThreadManagedObjectContext];
-    }
-
-    NSManagedObjectContext *backgroundThreadManagedObjectContext = self.backgroundThreadManagedObjectContext;
-    if (backgroundThreadManagedObjectContext) {
-        [observingManagedObjectsContexts addObject:backgroundThreadManagedObjectContext];
-    }
-
-    for (NSManagedObjectContext *context in self.observingManagedObjectContexts) {
-        if (context) {
-            [observingManagedObjectsContexts addObject:context];
-        }
-    }
-
-    return observingManagedObjectsContexts;
-}
 
 - (void)_managedObjectContextDidSaveNotificationCallback:(NSNotification *)notification
 {
     NSManagedObjectContext *changedContext = notification.object;
 
-    for (NSManagedObjectContext *otherContext in [self _observingManagedObjectsContexts]) {
-        if (changedContext.persistentStoreCoordinator == otherContext.persistentStoreCoordinator && otherContext != changedContext) {
+    switch (self.type) {
+        case CBRCoreDataStackTypeParallel:
             if (changedContext == self.backgroundThreadManagedObjectContext) {
-                [otherContext performBlockAndWait:^{
-                    [otherContext mergeChangesFromContextDidSaveNotification:notification];
+                [self.mainThreadManagedObjectContext performBlockAndWait:^{
+                    [self.mainThreadManagedObjectContext mergeChangesFromContextDidSaveNotification:notification];
                 }];
-            } else {
-                [otherContext performBlock:^{
-                    [otherContext mergeChangesFromContextDidSaveNotification:notification];
+            } else if (changedContext == self.mainThreadManagedObjectContext) {
+                [self.backgroundThreadManagedObjectContext performBlock:^{
+                    [self.backgroundThreadManagedObjectContext mergeChangesFromContextDidSaveNotification:notification];
                 }];
             }
-        }
-    }
-}
+            break;
 
-- (void)_automaticallySaveDataStore
-{
-    for (NSManagedObjectContext *context in [self _observingManagedObjectsContexts]) {
-        if (!context.hasChanges) {
-            continue;
-        }
-
-        [context performBlock:^{
-            NSError *error = nil;
-            if (![context save:&error]) {
-                NSLog(@"WARNING: Error while automatically saving changes of data store of class %@: %@", self, error);
+        case CBRCoreDataStackTypeVertical:
+            if (changedContext == self.mainThreadManagedObjectContext) {
+                [self.persistentManagedObjectContext performBlock:^{
+                    [self.persistentManagedObjectContext save:NULL];
+                }];
+            } else if (changedContext == self.backgroundThreadManagedObjectContext) {
+                [self.mainThreadManagedObjectContext performBlock:^{
+                    [self.mainThreadManagedObjectContext save:NULL];
+                }];
             }
-        }];
+            break;
     }
 }
 
@@ -406,17 +290,6 @@ NSString *const CBRCoreDataStackErrorDomain = @"CBRCoreDataStackErrorDomain";
             objc_setAssociatedObject(class, _cmd, @YES, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         }
     }
-}
-
-@end
-
-
-
-@implementation CBRCoreDataStack (Singleton)
-
-+ (instancetype)sharedInstance
-{
-    return nil;
 }
 
 @end
@@ -637,3 +510,4 @@ NSString *const CBRCoreDataStackErrorDomain = @"CBRCoreDataStackErrorDomain";
 
 @end
 #endif
+

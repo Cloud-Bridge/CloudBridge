@@ -24,6 +24,8 @@
 #import <CoreData/CoreData.h>
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 extern NSString *const CBRCoreDataStackErrorDomain;
 
 enum {
@@ -31,12 +33,16 @@ enum {
     CBRCoreDataStackManagedObjectModelNotFound
 };
 
-
+typedef NS_ENUM(NSInteger, CBRCoreDataStackType) {
+    CBRCoreDataStackTypeParallel,
+    CBRCoreDataStackTypeVertical,
+};
 
 __attribute__((objc_subclassing_restricted))
 @interface CBRCoreDataStack : NSObject
 
 @property (nonatomic, readonly) NSBundle *bundle;
+@property (nonatomic, readonly) CBRCoreDataStackType type;
 
 @property (nonatomic, readonly) NSString *storeType;
 @property (nonatomic, readonly) NSURL *storeLocation;
@@ -45,23 +51,18 @@ __attribute__((objc_subclassing_restricted))
 @property (nonatomic, readonly) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
+@property (nonatomic, nullable, readonly) NSManagedObjectContext *persistentManagedObjectContext;
+
 @property (nonatomic, readonly) NSManagedObjectContext *mainThreadManagedObjectContext;
 @property (nonatomic, readonly) NSManagedObjectContext *backgroundThreadManagedObjectContext;
 
 - (instancetype)init NS_DESIGNATED_INITIALIZER NS_UNAVAILABLE;
-- (instancetype)initWithType:(NSString *)storeType location:(NSURL *)storeLocation model:(NSURL *)modelURL inBundle:(NSBundle *)bundle NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithType:(NSString *)storeType location:(NSURL *)storeLocation model:(NSURL *)modelURL inBundle:(NSBundle *)bundle type:(CBRCoreDataStackType)type NS_DESIGNATED_INITIALIZER;
 
 + (instancetype)newConvenientSQLiteStackWithModel:(NSString *)model inBundle:(NSBundle *)bundle;
 
 @end
 
-
-
-@interface CBRCoreDataStack (Singleton)
-
-+ (instancetype)sharedInstance NS_UNAVAILABLE;
-
-@end
 
 
 @interface CBRCoreDataStack (Migration)
@@ -70,3 +71,6 @@ __attribute__((objc_subclassing_restricted))
 - (BOOL)migrateDataStore:(NSError **)error;
 
 @end
+
+NS_ASSUME_NONNULL_END
+
