@@ -248,6 +248,10 @@ NSString *const CBRCoreDataStackErrorDomain = @"CBRCoreDataStackErrorDomain";
                 [self.persistentManagedObjectContext performBlock:^{
                     [self.persistentManagedObjectContext save:NULL];
                 }];
+
+                [self.backgroundThreadManagedObjectContext performBlock:^{
+                    [self.backgroundThreadManagedObjectContext mergeChangesFromContextDidSaveNotification:notification];
+                }];
             } else if (changedContext == self.backgroundThreadManagedObjectContext) {
                 [self.mainThreadManagedObjectContext performBlock:^{
                     [self.mainThreadManagedObjectContext save:NULL];
