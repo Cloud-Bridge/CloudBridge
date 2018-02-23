@@ -37,10 +37,7 @@ static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSele
     }
 }
 
-
-
 NSString *const CBRCoreDataStackErrorDomain = @"CBRCoreDataStackErrorDomain";
-
 
 
 @interface CBRCoreDataStack ()
@@ -155,6 +152,10 @@ NSString *const CBRCoreDataStackErrorDomain = @"CBRCoreDataStackErrorDomain";
             _mainThreadManagedObjectContext.persistentStoreCoordinator = self.persistentStoreCoordinator;
         } else {
             _mainThreadManagedObjectContext.parentContext = self.persistentManagedObjectContext;
+
+            if (@available(iOS 10.0, *)) {
+                _mainThreadManagedObjectContext.automaticallyMergesChangesFromParent = YES;
+            }
         }
 
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_managedObjectContextDidSaveNotificationCallback:) name:NSManagedObjectContextDidSaveNotification object:_mainThreadManagedObjectContext];
@@ -174,6 +175,10 @@ NSString *const CBRCoreDataStackErrorDomain = @"CBRCoreDataStackErrorDomain";
             _backgroundThreadManagedObjectContext.persistentStoreCoordinator = self.persistentStoreCoordinator;
         } else {
             _backgroundThreadManagedObjectContext.parentContext = self.mainThreadManagedObjectContext;
+
+            if (@available(iOS 10.0, *)) {
+                _backgroundThreadManagedObjectContext.automaticallyMergesChangesFromParent = YES;
+            }
         }
 
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_managedObjectContextDidSaveNotificationCallback:) name:NSManagedObjectContextDidSaveNotification object:_backgroundThreadManagedObjectContext];
@@ -249,13 +254,25 @@ NSString *const CBRCoreDataStackErrorDomain = @"CBRCoreDataStackErrorDomain";
                     [self.persistentManagedObjectContext save:NULL];
                 }];
 
-                [self.backgroundThreadManagedObjectContext performBlock:^{
-                    [self.backgroundThreadManagedObjectContext mergeChangesFromContextDidSaveNotification:notification];
-                }];
+                if (@available(iOS 10.0, *)) {} else {
+                    [self.backgroundThreadManagedObjectContext performBlock:^{
+                        [self.backgroundThreadManagedObjectContext mergeChangesFromContextDidSaveNotification:notification];
+                    }];
+                }
             } else if (changedContext == self.backgroundThreadManagedObjectContext) {
                 [self.mainThreadManagedObjectContext performBlock:^{
                     [self.mainThreadManagedObjectContext save:NULL];
                 }];
+            } else if (changedContext == self.persistentManagedObjectContext) {
+                if (@available(iOS 10.0, *)) {} else {
+                    [self.mainThreadManagedObjectContext performBlock:^{
+                        [self.mainThreadManagedObjectContext mergeChangesFromContextDidSaveNotification:notification];
+                    }];
+
+                    [self.backgroundThreadManagedObjectContext performBlock:^{
+                        [self.backgroundThreadManagedObjectContext mergeChangesFromContextDidSaveNotification:notification];
+                    }];
+                }
             }
             break;
     }

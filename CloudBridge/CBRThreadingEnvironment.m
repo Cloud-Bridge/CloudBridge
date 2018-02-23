@@ -190,6 +190,7 @@
     } else if ([object isKindOfClass:[NSManagedObject class]]) {
         [self _assertCoreData];
         assert([object objectID]);
+
         return [object objectID];
     } else if ([object isKindOfClass:[NSManagedObjectID class]]) {
         return object;
@@ -286,15 +287,7 @@
                 break;
         }
 
-        NSError *localError = nil;
-        NSManagedObject *managedObject = [context existingObjectWithID:reference error:&localError];
-
-        if (localError) {
-            *error = localError;
-            return nil;
-        }
-
-        return managedObject;
+        return [context objectWithID:reference];
 #endif
 #if CBRRealmAvailable
     } else if ([reference isKindOfClass:[RLMThreadSafeReference class]]) {
@@ -322,3 +315,4 @@
 }
 
 @end
+
