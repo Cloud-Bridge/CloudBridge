@@ -27,6 +27,8 @@
 #import <CloudBridge/CBRPersistentObject.h>
 #import <CloudBridge/CBRPersistentStoreInterface.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class CBRThreadingEnvironment, CBRPersistentObjectCache;
 
 
@@ -51,3 +53,5 @@ __attribute__((objc_subclassing_restricted))
 - (CBRPersistentObjectCache *)cacheForManagedObjectContext:(NSManagedObjectContext *)context;
 
 @end
+
+NS_ASSUME_NONNULL_END

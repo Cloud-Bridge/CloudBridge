@@ -11,6 +11,26 @@
 
 @implementation OfflineEntity
 @dynamic identifier, hasPendingCloudBridgeChanges, hasPendingCloudBridgeDeletion;
-@dynamic cloudObjectRepresentation, cloudBridge, cloudBridgeEntityDescription;
+@dynamic cloudObjectRepresentation, cloudBridge, cloudBridgeEntityDescription, databaseAdapter;
+
++ (CBRDatabaseAdapter *)databaseAdapter
+{
+    return [super databaseAdapter];
+}
+
++ (CBREntityDescription *)cloudBridgeEntityDescription
+{
+    return [super cloudBridgeEntityDescription];
+}
+
++ (CBRCloudBridge *)cloudBridge
+{
+    return [super cloudBridge];
+}
+
++ (void)setCloudBridge:(CBRCloudBridge *)cloudBridge
+{
+    [super setCloudBridge:cloudBridge];
+}
 
 @end

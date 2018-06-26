@@ -23,7 +23,7 @@
 
 #import <CoreData/CoreData.h>
 
-
+NS_ASSUME_NONNULL_BEGIN
 
 @protocol CBRPropertyMapping <NSObject>
 
@@ -31,3 +31,5 @@
 - (NSString *)persistentObjectPropertyFromCloudKeyPath:(NSString *)cloudKeyPath;
 
 @end
+
+NS_ASSUME_NONNULL_END

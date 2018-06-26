@@ -75,8 +75,8 @@ __attribute__((objc_subclassing_restricted))
  Fetches entites of a given type from a path with or without search parameters.
  */
 - (void)fetchCloudObjectsFromPath:(NSString *)path
-                       parameters:(NSDictionary *)parameters
-            withCompletionHandler:(void (^)(NSArray *fetchedCloudObjects, NSError *error))completionHandler;
+                       parameters:(nullable NSDictionary *)parameters
+            withCompletionHandler:(void (^_Nullable)(NSArray * _Nullable fetchedCloudObjects, NSError * _Nullable error))completionHandler;
 
 /**
  Substitues parameters (aka `:id`) with the corresponding values from `managedObject` based on `objectTransformer.propertyMapping`

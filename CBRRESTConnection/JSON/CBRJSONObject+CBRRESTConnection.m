@@ -27,11 +27,9 @@ static NSString *substitutePath(CBRJSONObject *object, NSString *path, CBRRESTCo
         NSMutableArray *newKeyPathComponents = [NSMutableArray array];
         NSArray *keyPathComponents = [keyPath componentsSeparatedByString:@"."];
 
-        id currentObject = object;
         for (NSString *thisComponent in keyPathComponents) {
             NSString *managedObjectKeyPath = [connection.propertyMapping persistentObjectPropertyFromCloudKeyPath:thisComponent];
 
-            currentObject = [currentObject valueForKey:managedObjectKeyPath];
             [newKeyPathComponents addObject:managedObjectKeyPath];
         }
 

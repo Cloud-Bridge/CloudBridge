@@ -26,7 +26,7 @@
 #import <CloudBridge/CBROfflineCapableCloudConnection.h>
 #import <CloudBridge/CBRPersistentStoreInterface.h>
 
-
+NS_ASSUME_NONNULL_BEGIN
 
 /**
  Entities which should benifit from the offline mode must conform to the `CBROfflineCapablePersistentObject` protocol.
@@ -38,7 +38,7 @@ __attribute__((objc_subclassing_restricted))
 - (void)enableOfflineMode;
 
 @property (nonatomic, readonly) BOOL isReenablingOnlineMode;
-- (void)reenableOnlineModeWithCompletionHandler:(void(^)(NSError *error))completionHandler;
+- (void)reenableOnlineModeWithCompletionHandler:(void(^_Nullable)(NSError * _Nullable error))completionHandler;
 
 @property (nonatomic, readonly) id<CBROfflineCapableCloudConnection> cloudConnection;
 
@@ -49,15 +49,17 @@ __attribute__((objc_subclassing_restricted))
  NS_DESIGNATED_INITIALIZER;
 
 - (void)createPersistentObject:(id<CBROfflineCapablePersistentObject>)persistentObject
-                  withUserInfo:(NSDictionary *)userInfo
-             completionHandler:(void(^)(id persistentObject, NSError *error))completionHandler;
+                  withUserInfo:(nullable NSDictionary *)userInfo
+             completionHandler:(void(^_Nullable)(id _Nullable persistentObject, NSError * _Nullable error))completionHandler;
 
 - (void)savePersistentObject:(id<CBROfflineCapablePersistentObject>)persistentObject
-                withUserInfo:(NSDictionary *)userInfo
-           completionHandler:(void(^)(id persistentObject, NSError *error))completionHandler;
+                withUserInfo:(nullable NSDictionary *)userInfo
+           completionHandler:(void(^_Nullable)(id _Nullable persistentObject, NSError * _Nullable error))completionHandler;
 
 - (void)deletePersistentObject:(id<CBROfflineCapablePersistentObject>)persistentObject
-                  withUserInfo:(NSDictionary *)userInfo
-             completionHandler:(void(^)(NSError *error))completionHandler;
+                  withUserInfo:(nullable NSDictionary *)userInfo
+             completionHandler:(void(^_Nullable)(NSError * _Nullable error))completionHandler;
 
 @end
+
+NS_ASSUME_NONNULL_END

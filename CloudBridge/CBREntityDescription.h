@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <CloudBridge/CBRPersistentStoreInterface.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class CBREntityDescription;
 
 typedef NS_ENUM(NSInteger, CBRAttributeType) {
@@ -26,7 +28,7 @@ typedef NS_ENUM(NSInteger, CBRAttributeType) {
 @protocol CBRPropertyDescription <NSObject>
 
 @property (nonatomic, readonly) NSString *name;
-@property (nonatomic, readonly) NSDictionary *userInfo;
+@property (nonatomic, nullable, readonly) NSDictionary *userInfo;
 @property (nonatomic, weak, readonly) id<CBRPersistentStoreInterface> interface;
 
 @end
@@ -39,9 +41,10 @@ __attribute__((objc_subclassing_restricted))
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, assign) CBRAttributeType type;
 
-@property (nonatomic, strong) NSDictionary *userInfo;
+@property (nonatomic, nullable) NSDictionary *userInfo;
 
 @property (nonatomic, weak, readonly) id<CBRPersistentStoreInterface> interface;
+
 - (instancetype)init NS_DESIGNATED_INITIALIZER UNAVAILABLE_ATTRIBUTE;
 - (instancetype)initWithInterface:(id<CBRPersistentStoreInterface>)interface NS_DESIGNATED_INITIALIZER;
 
@@ -59,14 +62,15 @@ __attribute__((objc_subclassing_restricted))
 @property (nonatomic, assign) BOOL toMany;
 @property (nonatomic, assign) BOOL cascades;
 
-@property (nonatomic, strong) NSString *destinationEntityName;
-@property (nonatomic, readonly) CBREntityDescription *destinationEntity;
+@property (nonatomic, nullable) NSString *destinationEntityName;
+@property (nonatomic, nullable, readonly) CBREntityDescription *destinationEntity;
 
-@property (nonatomic, readonly) CBRRelationshipDescription *inverseRelationship;
+@property (nonatomic, nullable, readonly) CBRRelationshipDescription *inverseRelationship;
 
-@property (nonatomic, strong) NSDictionary *userInfo;
+@property (nonatomic, nullable) NSDictionary *userInfo;
 
 @property (nonatomic, weak, readonly) id<CBRPersistentStoreInterface> interface;
+
 - (instancetype)init NS_DESIGNATED_INITIALIZER UNAVAILABLE_ATTRIBUTE;
 - (instancetype)initWithInterface:(id<CBRPersistentStoreInterface>)interface NS_DESIGNATED_INITIALIZER;
 
@@ -78,7 +82,7 @@ __attribute__((objc_subclassing_restricted))
 @interface CBREntityDescription : NSObject
 
 @property (nonatomic, strong) NSString *name;
-@property (nonatomic, strong) NSDictionary *userInfo;
+@property (nonatomic, nullable) NSDictionary *userInfo;
 
 @property (nonatomic, strong) NSArray<CBRAttributeDescription *> *attributes;
 @property (nonatomic, strong) NSArray<CBRRelationshipDescription *> *relationships;
@@ -89,7 +93,10 @@ __attribute__((objc_subclassing_restricted))
 @property (nonatomic, readonly) NSArray<CBRRelationshipDescription *> *subentities;
 
 @property (nonatomic, weak, readonly) id<CBRPersistentStoreInterface> interface;
+
 - (instancetype)init NS_DESIGNATED_INITIALIZER UNAVAILABLE_ATTRIBUTE;
 - (instancetype)initWithInterface:(id<CBRPersistentStoreInterface>)interface NS_DESIGNATED_INITIALIZER;
 
 @end
+
+NS_ASSUME_NONNULL_END

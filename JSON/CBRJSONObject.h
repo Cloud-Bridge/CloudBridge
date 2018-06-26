@@ -13,12 +13,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+NS_SWIFT_NAME(CBRJSONObjectProtocol)
 @protocol CBRJSONObject <NSObject>
 @end
 
 
 
-@interface CBRJSONObject : NSObject <NSSecureCoding, NSCopying, CBRThreadTransferable>
+@interface CBRJSONObject : NSObject <NSSecureCoding, NSCopying, CBRThreadTransferable, CBRJSONObject>
 
 + (NSDictionary<NSString *, Class> *)propertyClassMapping;
 + (NSArray<NSString *> *)serializableProperties;
@@ -29,8 +30,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)init NS_DESIGNATED_INITIALIZER;
 - (id)initWithCoder:(NSCoder *)aDecoder NS_DESIGNATED_INITIALIZER;
 
-- (nullable instancetype)initWithDictionary:(NSDictionary *)dictionary error:(NSError **)error NS_DESIGNATED_INITIALIZER;
-- (BOOL)patchWithDictionary:(NSDictionary *)dictionary error:(NSError **)error;
+- (nullable instancetype)initWithDictionary:(nullable NSDictionary<NSString *, id> *)dictionary error:(NSError **)error NS_DESIGNATED_INITIALIZER;
+- (BOOL)patchWithDictionary:(nullable NSDictionary<NSString *, id> *)dictionary error:(NSError **)error;
 
 @end
 

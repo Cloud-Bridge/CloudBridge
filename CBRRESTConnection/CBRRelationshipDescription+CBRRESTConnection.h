@@ -23,14 +23,14 @@
 
 #import <CloudBridge/CBREntityDescription.h>
 
-
+NS_ASSUME_NONNULL_BEGIN
 
 @interface CBRRelationshipDescription (CBRRESTConnection)
 
 /**
  Set `restKeyPath` of the attribute's `userInfo` dictionary to override the mapping model's propery mapping.
  */
-@property (nonatomic, readonly) NSString *restKeyPath;
+@property (nonatomic, nullable, readonly) NSString *restKeyPath;
 
 /**
  Set `restDisabled` of the attribute's `userInfo` dictionary to `1` to disable this attribute from the propery mapping. Defaults to `NO`.
@@ -40,11 +40,13 @@
 /**
  Add `restBaseURL` to the relationship's `userInfo` dictionary to enable `-[NSManagedObject fetchObjectsForRelationship:withCompletionHandler:]`.
  */
-@property (nonatomic, readonly) NSString *restBaseURL;
+@property (nonatomic, nullable, readonly) NSString *restBaseURL;
 
 /**
  Add `restIncluded` to the relationship's `userInfo` dictionary to include that relationship when construction a cloud object.
  */
-@property (nonatomic, readonly) NSString *restIncluded;
+@property (nonatomic, nullable, readonly) NSString *restIncluded;
 
 @end
+
+NS_ASSUME_NONNULL_END

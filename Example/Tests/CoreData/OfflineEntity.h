@@ -9,8 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-#import <CloudBridge/CloudBridge.h>
-#import <CloudBridge/CBRCoreDataInterface.h>
+@import CloudBridge;
 
 
 

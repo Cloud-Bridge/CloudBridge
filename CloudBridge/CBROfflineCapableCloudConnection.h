@@ -23,6 +23,8 @@
 
 #import <CloudBridge/CBRCloudConnection.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface CBRDeletedObjectIdentifier : NSObject <NSCopying>
 
 @property (nonatomic, readonly) id cloudIdentifier;
@@ -40,8 +42,10 @@
  */
 @protocol CBROfflineCapableCloudConnection <CBRCloudConnection>
 
-- (void)bulkCreateCloudObjects:(NSArray *)cloudObjects forPersistentObjects:(NSArray *)persistentObject completionHandler:(void (^)(NSArray *cloudObjects, NSError *error))completionHandler;
-- (void)bulkSaveCloudObjects:(NSArray *)cloudObjects forPersistentObjects:(NSArray *)persistentObject completionHandler:(void (^)(NSArray *cloudObjects, NSError *error))completionHandler;
-- (void)bulkDeleteCloudObjects:(NSArray *)cloudObjects forPersistentObjects:(NSArray *)persistentObject completionHandler:(void (^)(NSArray *deletedObjectIdentifiers, NSError *error))completionHandler;
+- (void)bulkCreateCloudObjects:(NSArray *)cloudObjects forPersistentObjects:(NSArray *)persistentObject completionHandler:(void (^_Nullable)(NSArray * _Nullable cloudObjects, NSError * _Nullable error))completionHandler;
+- (void)bulkSaveCloudObjects:(NSArray *)cloudObjects forPersistentObjects:(NSArray *)persistentObject completionHandler:(void (^_Nullable)(NSArray * _Nullable cloudObjects, NSError * _Nullable error))completionHandler;
+- (void)bulkDeleteCloudObjects:(NSArray *)cloudObjects forPersistentObjects:(NSArray *)persistentObject completionHandler:(void (^_Nullable)(NSArray * _Nullable deletedObjectIdentifiers, NSError * _Nullable error))completionHandler;
 
 @end
+
+NS_ASSUME_NONNULL_END

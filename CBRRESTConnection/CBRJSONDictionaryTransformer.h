@@ -29,7 +29,7 @@
 @class CBRAttributeDescription;
 @protocol CBRPropertyDescription;
 
-
+NS_ASSUME_NONNULL_BEGIN
 
 /**
  Maps between `NSManagedObject` instances and `NSDictionary` instances.
@@ -57,7 +57,7 @@ __attribute__((objc_subclassing_restricted))
  
  Defaults to `yyyy-MM-dd'T'HH:mm:ss'Z'` format GMT timezone.
  */
-@property (nonatomic, copy) NSDateFormatter *dateFormatter;
+@property (nonatomic, nullable) NSDateFormatter *dateFormatter;
 
 /**
  Transforms a `NSManagedObject` instance into a `NSDictionary`.
@@ -101,3 +101,5 @@ __attribute__((objc_subclassing_restricted))
 - (NSString *)persistentObjectKeyPathFromCloudKeyPath:(NSString *)cloudKeyPath ofEntity:(CBREntityDescription *)entity;
 
 @end
+
+NS_ASSUME_NONNULL_END

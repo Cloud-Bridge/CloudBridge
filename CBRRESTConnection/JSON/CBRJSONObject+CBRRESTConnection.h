@@ -18,18 +18,18 @@ NS_ASSUME_NONNULL_BEGIN
 @interface CBRJSONObject (CBRPersistentObjectQueryInterface)
 
 @property (nonatomic, class, nullable) CBRRESTConnection *restConnection;
-@property (nonatomic, readonly) CBRRESTConnection *restConnection;
+@property (nonatomic, nullable, readonly) CBRRESTConnection *restConnection;
 
-+ (void)fetchObject:(NSString *)path withCompletionHandler:(void(^)(id fetchedObject, NSError *error))completionHandler;
-+ (void)fetchObjects:(NSString *)path withCompletionHandler:(void(^)(NSArray *fetchedObjects, NSError *error))completionHandler;
++ (void)fetchObject:(NSString *)path withCompletionHandler:(void(^)(id _Nullable fetchedObject, NSError * _Nullable error))completionHandler NS_REFINED_FOR_SWIFT;
++ (void)fetchObjects:(NSString *)path withCompletionHandler:(void(^)(NSArray * _Nullable fetchedObjects, NSError * _Nullable error))completionHandler NS_REFINED_FOR_SWIFT;
 
-- (void)fetchRelation:(Class)relation path:(NSString *)path withCompletionHandler:(void(^)(id object, NSError *error))completionHandler;
-- (void)fetchRelations:(Class)relation path:(NSString *)path withCompletionHandler:(void(^)(NSArray *objects, NSError *error))completionHandler;
+- (void)fetchRelation:(Class)relation path:(NSString *)path withCompletionHandler:(void(^)(id _Nullable object, NSError * _Nullable error))completionHandler NS_REFINED_FOR_SWIFT;
+- (void)fetchRelations:(Class)relation path:(NSString *)path withCompletionHandler:(void(^)(NSArray * _Nullable objects, NSError * _Nullable error))completionHandler NS_REFINED_FOR_SWIFT;
 
-- (void)create:(NSString *)path withCompletionHandler:(void(^)(id managedObject, NSError *error))completionHandler;
-- (void)reload:(NSString *)path withCompletionHandler:(void(^)(id managedObject, NSError *error))completionHandler;
-- (void)save:(NSString *)path withCompletionHandler:(void(^)(id managedObject, NSError *error))completionHandler;
-- (void)delete:(NSString *)path withCompletionHandler:(void(^)(NSError *error))completionHandler;
+- (void)create:(NSString *)path withCompletionHandler:(void(^)(id _Nullable object, NSError * _Nullable error))completionHandler NS_REFINED_FOR_SWIFT;
+- (void)reload:(NSString *)path withCompletionHandler:(void(^)(id _Nullable object, NSError * _Nullable error))completionHandler NS_REFINED_FOR_SWIFT;
+- (void)save:(NSString *)path withCompletionHandler:(void(^)(id _Nullable object, NSError * _Nullable error))completionHandler NS_REFINED_FOR_SWIFT;
+- (void)delete:(NSString *)path withCompletionHandler:(void(^)(NSError * _Nullable error))completionHandler NS_REFINED_FOR_SWIFT;
 
 @end
 

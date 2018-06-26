@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5B1ED0BBE01BC5B6572DEF82 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D5FB358378AAE3D8484FC581 /* libPods-Tests.a */; };
+		44F129D1EE397FE9AA90BD97 /* Pods_iOS_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43DE42BF9BF933B5684ED70E /* Pods_iOS_Tests.framework */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
 		6003F592195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
@@ -20,6 +20,7 @@
 		6003F5B1195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F5B2195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
 		6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5B8195388D20070C39A /* InfoPlist.strings */; };
+		A74B7A9E20E15E9A00339ECD /* DummyTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74B7A9D20E15E9A00339ECD /* DummyTest.swift */; };
 		A7561C0B1E8947470065654D /* CBRRESTConnection+RealmTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7561C0A1E8947470065654D /* CBRRESTConnection+RealmTests.m */; };
 		A7561C0E1E8947A80065654D /* OCMStubRecorder+Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7561C0D1E8947A80065654D /* OCMStubRecorder+Tests.m */; };
 		A7561C3A1E8949280065654D /* CBRTestDataStore.m in Sources */ = {isa = PBXBuildFile; fileRef = A7561C111E8949280065654D /* CBRTestDataStore.m */; };
@@ -55,7 +56,7 @@
 		A7F817531E896A6C001EDA01 /* RLMEntity6.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F817521E896A6C001EDA01 /* RLMEntity6.m */; };
 		A7F817571E897390001EDA01 /* CBRCloudBridge+RealmTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F817561E897390001EDA01 /* CBRCloudBridge+RealmTests.m */; };
 		A7F817581E897580001EDA01 /* CBRCloudBridge+CoreDataTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D1AC361A55529E00D25D50 /* CBRCloudBridge+CoreDataTests.m */; };
-		C7AAF75B09793C31DCCD9FE4 /* libPods-iOS-CloudBridge.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C56332626E5FCB48AC6AC20 /* libPods-iOS-CloudBridge.a */; };
+		FC90CB5BA5197FA9E4625AFE /* Pods_iOS_CloudBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B18517AB33DD3CD1F9BA1991 /* Pods_iOS_CloudBridge.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,12 +70,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0848B9A684A15F379CA30766 /* Pods-iOS-Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS-Tests.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-iOS-Tests/Pods-iOS-Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		1B7DF1EBB473983AE6EB7EE5 /* Pods-Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-Tests/Pods-Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		2385E0AAB2B17F897725911E /* Pods-tvOS-CloudBridgeTV.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tvOS-CloudBridgeTV.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-tvOS-CloudBridgeTV/Pods-tvOS-CloudBridgeTV.debug.xcconfig"; sourceTree = "<group>"; };
 		2DE14DC1F7377675EEC3E53E /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		43DE42BF9BF933B5684ED70E /* Pods_iOS_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iOS_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4515D808F79C89B3893787D8 /* Pods-iOS-CloudBridge.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS-CloudBridge.release.xcconfig"; path = "../Pods/Target Support Files/Pods-iOS-CloudBridge/Pods-iOS-CloudBridge.release.xcconfig"; sourceTree = "<group>"; };
 		4673337293DFD4CF0AAE0B1D /* Pods-iOS-CloudBridge.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS-CloudBridge.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-iOS-CloudBridge/Pods-iOS-CloudBridge.debug.xcconfig"; sourceTree = "<group>"; };
-		4C56332626E5FCB48AC6AC20 /* libPods-iOS-CloudBridge.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-iOS-CloudBridge.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F918352D5685A4FDF9AE9B5 /* Pods-Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.release.xcconfig"; path = "../Pods/Target Support Files/Pods-Tests/Pods-Tests.release.xcconfig"; sourceTree = "<group>"; };
 		6003F58A195388D20070C39A /* CloudBridge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CloudBridge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -95,7 +97,10 @@
 		6003F5B9195388D20070C39A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
 		773FA18944A4C73A2C3772F3 /* libPods-tvOS-CloudBridgeTV.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-tvOS-CloudBridgeTV.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8BBE4A153DC264B3B8A8847A /* Pods-iOS-Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS-Tests.release.xcconfig"; path = "../Pods/Target Support Files/Pods-iOS-Tests/Pods-iOS-Tests.release.xcconfig"; sourceTree = "<group>"; };
 		8FB2AC50918F3490E1C5BF02 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		A74B7A9C20E15E9900339ECD /* Tests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Bridging-Header.h"; sourceTree = "<group>"; };
+		A74B7A9D20E15E9A00339ECD /* DummyTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyTest.swift; sourceTree = "<group>"; };
 		A7561C0A1E8947470065654D /* CBRRESTConnection+RealmTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CBRRESTConnection+RealmTests.m"; sourceTree = "<group>"; };
 		A7561C0C1E8947A80065654D /* OCMStubRecorder+Tests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OCMStubRecorder+Tests.h"; sourceTree = "<group>"; };
 		A7561C0D1E8947A80065654D /* OCMStubRecorder+Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "OCMStubRecorder+Tests.m"; sourceTree = "<group>"; };
@@ -143,14 +148,6 @@
 		A7561C391E8949280065654D /* SLSubclassOfEntity1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SLSubclassOfEntity1.m; sourceTree = "<group>"; };
 		A7561C501E89495C0065654D /* RLMEntity4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMEntity4.h; sourceTree = "<group>"; };
 		A7561C511E89495C0065654D /* RLMEntity4.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMEntity4.m; sourceTree = "<group>"; };
-		A7C532A21E8BABF40007B882 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		A7C532A41E8BABF40007B882 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		A7C532A51E8BABF40007B882 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		A7C532A71E8BABF40007B882 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		A7C532A81E8BABF40007B882 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		A7C532AB1E8BABF40007B882 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		A7C532AD1E8BABF40007B882 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		A7C532AF1E8BABF40007B882 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A7CEDCCD1B0229D20011FA33 /* CBRIdentityPropertyMappingTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBRIdentityPropertyMappingTest.m; sourceTree = "<group>"; };
 		A7CEDCCE1B0229D20011FA33 /* CBRJSONDictionaryTransformerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBRJSONDictionaryTransformerTests.m; sourceTree = "<group>"; };
 		A7CEDCFE1B022B2C0011FA33 /* CBRUnderscoredPropertyMappingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBRUnderscoredPropertyMappingTests.m; sourceTree = "<group>"; };
@@ -165,6 +162,7 @@
 		A7F817511E896A6C001EDA01 /* RLMEntity6.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RLMEntity6.h; sourceTree = "<group>"; };
 		A7F817521E896A6C001EDA01 /* RLMEntity6.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RLMEntity6.m; sourceTree = "<group>"; };
 		A7F817561E897390001EDA01 /* CBRCloudBridge+RealmTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CBRCloudBridge+RealmTests.m"; sourceTree = "<group>"; };
+		B18517AB33DD3CD1F9BA1991 /* Pods_iOS_CloudBridge.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iOS_CloudBridge.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5FB358378AAE3D8484FC581 /* libPods-Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6B5409ED320939F22765006 /* CloudBridge.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = CloudBridge.podspec; path = ../CloudBridge.podspec; sourceTree = "<group>"; };
 		F88C019D5B0F69C1E89568BA /* Pods-tvOS-CloudBridgeTV.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tvOS-CloudBridgeTV.release.xcconfig"; path = "../Pods/Target Support Files/Pods-tvOS-CloudBridgeTV/Pods-tvOS-CloudBridgeTV.release.xcconfig"; sourceTree = "<group>"; };
@@ -178,7 +176,7 @@
 				6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */,
 				6003F592195388D20070C39A /* UIKit.framework in Frameworks */,
 				6003F58E195388D20070C39A /* Foundation.framework in Frameworks */,
-				C7AAF75B09793C31DCCD9FE4 /* libPods-iOS-CloudBridge.a in Frameworks */,
+				FC90CB5BA5197FA9E4625AFE /* Pods_iOS_CloudBridge.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -189,7 +187,7 @@
 				6003F5B0195388D20070C39A /* XCTest.framework in Frameworks */,
 				6003F5B2195388D20070C39A /* UIKit.framework in Frameworks */,
 				6003F5B1195388D20070C39A /* Foundation.framework in Frameworks */,
-				5B1ED0BBE01BC5B6572DEF82 /* libPods-Tests.a in Frameworks */,
+				44F129D1EE397FE9AA90BD97 /* Pods_iOS_Tests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -202,7 +200,6 @@
 				60FF7A9C1954A5C5007DD14C /* Podspec Metadata */,
 				6003F593195388D20070C39A /* CloudBridge */,
 				6003F5B5195388D20070C39A /* Tests */,
-				A7C532A01E8BABF40007B882 /* CloudBridgeTV */,
 				6003F58C195388D20070C39A /* Frameworks */,
 				6003F58B195388D20070C39A /* Products */,
 				C825E37983CEBD76D38D3EE5 /* Pods */,
@@ -226,8 +223,9 @@
 				6003F591195388D20070C39A /* UIKit.framework */,
 				6003F5AF195388D20070C39A /* XCTest.framework */,
 				D5FB358378AAE3D8484FC581 /* libPods-Tests.a */,
-				4C56332626E5FCB48AC6AC20 /* libPods-iOS-CloudBridge.a */,
 				773FA18944A4C73A2C3772F3 /* libPods-tvOS-CloudBridgeTV.a */,
+				B18517AB33DD3CD1F9BA1991 /* Pods_iOS_CloudBridge.framework */,
+				43DE42BF9BF933B5684ED70E /* Pods_iOS_Tests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -272,6 +270,8 @@
 				A7561C4F1E8949500065654D /* Realm */,
 				A7561C0F1E8949280065654D /* CoreData */,
 				6003F5B6195388D20070C39A /* Supporting Files */,
+				A74B7A9D20E15E9A00339ECD /* DummyTest.swift */,
+				A74B7A9C20E15E9900339ECD /* Tests-Bridging-Header.h */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -361,29 +361,6 @@
 			path = Realm;
 			sourceTree = "<group>";
 		};
-		A7C532A01E8BABF40007B882 /* CloudBridgeTV */ = {
-			isa = PBXGroup;
-			children = (
-				A7C532A41E8BABF40007B882 /* AppDelegate.h */,
-				A7C532A51E8BABF40007B882 /* AppDelegate.m */,
-				A7C532A71E8BABF40007B882 /* ViewController.h */,
-				A7C532A81E8BABF40007B882 /* ViewController.m */,
-				A7C532AA1E8BABF40007B882 /* Main.storyboard */,
-				A7C532AD1E8BABF40007B882 /* Assets.xcassets */,
-				A7C532AF1E8BABF40007B882 /* Info.plist */,
-				A7C532A11E8BABF40007B882 /* Supporting Files */,
-			);
-			path = CloudBridgeTV;
-			sourceTree = "<group>";
-		};
-		A7C532A11E8BABF40007B882 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				A7C532A21E8BABF40007B882 /* main.m */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 		C825E37983CEBD76D38D3EE5 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -393,6 +370,8 @@
 				4515D808F79C89B3893787D8 /* Pods-iOS-CloudBridge.release.xcconfig */,
 				2385E0AAB2B17F897725911E /* Pods-tvOS-CloudBridgeTV.debug.xcconfig */,
 				F88C019D5B0F69C1E89568BA /* Pods-tvOS-CloudBridgeTV.release.xcconfig */,
+				0848B9A684A15F379CA30766 /* Pods-iOS-Tests.debug.xcconfig */,
+				8BBE4A153DC264B3B8A8847A /* Pods-iOS-Tests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -408,8 +387,7 @@
 				6003F586195388D20070C39A /* Sources */,
 				6003F587195388D20070C39A /* Frameworks */,
 				6003F588195388D20070C39A /* Resources */,
-				5E03F0F4355CCC78AA14248F /* [CP] Embed Pods Frameworks */,
-				511FBE3E3184CA7DB327F5E7 /* [CP] Copy Pods Resources */,
+				4101021F0D8BC68C4F59CEDF /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -428,8 +406,7 @@
 				6003F5AA195388D20070C39A /* Sources */,
 				6003F5AB195388D20070C39A /* Frameworks */,
 				6003F5AC195388D20070C39A /* Resources */,
-				BF467B0F3AD6F24817FDACF2 /* [CP] Embed Pods Frameworks */,
-				4DC2460CABE79065B1BFD3BA /* [CP] Copy Pods Resources */,
+				297D20E74BAC6334BDEFD09A /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -455,6 +432,7 @@
 						DevelopmentTeam = 2JBBR5F9KT;
 					};
 					6003F5AD195388D20070C39A = {
+						LastSwiftMigration = 1000;
 						TestTargetID = 6003F589195388D20070C39A;
 					};
 				};
@@ -499,45 +477,52 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		4DC2460CABE79065B1BFD3BA /* [CP] Copy Pods Resources */ = {
+		297D20E74BAC6334BDEFD09A /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-Tests/Pods-Tests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		511FBE3E3184CA7DB327F5E7 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-iOS-CloudBridge/Pods-iOS-CloudBridge-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		5E03F0F4355CCC78AA14248F /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
+				"${SRCROOT}/../Pods/Target Support Files/Pods-iOS-Tests/Pods-iOS-Tests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
+				"${BUILT_PRODUCTS_DIR}/CloudBridge/CloudBridge.framework",
+				"${BUILT_PRODUCTS_DIR}/Expecta/Expecta.framework",
+				"${BUILT_PRODUCTS_DIR}/OCMock/OCMock.framework",
+				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CloudBridge.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Expecta.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OCMock.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-iOS-Tests/Pods-iOS-Tests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		4101021F0D8BC68C4F59CEDF /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/../Pods/Target Support Files/Pods-iOS-CloudBridge/Pods-iOS-CloudBridge-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
+				"${BUILT_PRODUCTS_DIR}/CloudBridge/CloudBridge.framework",
+				"${BUILT_PRODUCTS_DIR}/Expecta/Expecta.framework",
+				"${BUILT_PRODUCTS_DIR}/OCMock/OCMock.framework",
+				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CloudBridge.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Expecta.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OCMock.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -573,26 +558,11 @@
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Tests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-iOS-Tests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		BF467B0F3AD6F24817FDACF2 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-Tests/Pods-Tests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -646,6 +616,7 @@
 				A7CEDCD01B0229D20011FA33 /* CBRJSONDictionaryTransformerTests.m in Sources */,
 				A7D1AC3C1A55529E00D25D50 /* CBRTestCase.m in Sources */,
 				A7CEDCCF1B0229D20011FA33 /* CBRIdentityPropertyMappingTest.m in Sources */,
+				A74B7A9E20E15E9A00339ECD /* DummyTest.swift in Sources */,
 				A7561C521E89495C0065654D /* RLMEntity4.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -675,14 +646,6 @@
 				6003F5B9195388D20070C39A /* en */,
 			);
 			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		A7C532AA1E8BABF40007B882 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				A7C532AB1E8BABF40007B882 /* Base */,
-			);
-			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -823,9 +786,10 @@
 		};
 		6003F5C3195388D20070C39A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1B7DF1EBB473983AE6EB7EE5 /* Pods-Tests.debug.xcconfig */;
+			baseConfigurationReference = 0848B9A684A15F379CA30766 /* Pods-iOS-Tests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/CloudBridge.app/CloudBridge";
+				CLANG_ENABLE_MODULES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tests/Tests-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -833,8 +797,12 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "Tests/Tests-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Tests/Tests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.2;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -842,14 +810,18 @@
 		};
 		6003F5C4195388D20070C39A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4F918352D5685A4FDF9AE9B5 /* Pods-Tests.release.xcconfig */;
+			baseConfigurationReference = 8BBE4A153DC264B3B8A8847A /* Pods-iOS-Tests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/CloudBridge.app/CloudBridge";
+				CLANG_ENABLE_MODULES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tests/Tests-Prefix.pch";
 				INFOPLIST_FILE = "Tests/Tests-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Tests/Tests-Bridging-Header.h";
+				SWIFT_VERSION = 4.2;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};

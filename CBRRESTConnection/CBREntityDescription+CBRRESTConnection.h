@@ -23,38 +23,40 @@
 
 #import <CloudBridge/CloudBridge.h>
 
-
+NS_ASSUME_NONNULL_BEGIN
 
 @interface CBREntityDescription (CBRRESTConnection)
 
 /**
  Add `restBaseURL` to the entities `userInfo` dictionary to enable CRUD methods.
  */
-@property (nonatomic, readonly) NSString *restBaseURL;
+@property (nonatomic, nullable, readonly) NSString *restBaseURL;
 
 /**
  The key path which is mapped to the unique identifier of the cloud object through the property mapping. Defaults to `identifier`.
  */
-@property (nonatomic, readonly) NSString *restIdentifier;
+@property (nonatomic, nullable, readonly) NSString *restIdentifier;
 
 /**
  Add the keyPath `stiKeyPath` to the entities `userInfo` dictionary to enable single table inheritance. Your subclass must specify the matching `stiValue`.
  */
-@property (nonatomic, readonly) NSString *stiKeyPath;
+@property (nonatomic, nullable, readonly) NSString *stiKeyPath;
 
 /**
  The value that the `stiKeyPath` must match to use this subclass.
  */
-@property (nonatomic, readonly) NSString *stiValue;
+@property (nonatomic, nullable, readonly) NSString *stiValue;
 
 /**
  Returns an array of possible subentities, valid for single table inheritance.
  */
-@property (nonatomic, readonly) NSArray *stiSubentities;
+@property (nonatomic, nullable, readonly) NSArray *stiSubentities;
 
 /**
  The value of `restPrefix` will be used to prefix JSON dictionaries with this prefix.
  */
-@property (nonatomic, readonly) NSString *restPrefix;
+@property (nonatomic, nullable, readonly) NSString *restPrefix;
 
 @end
+
+NS_ASSUME_NONNULL_END

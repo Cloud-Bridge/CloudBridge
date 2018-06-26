@@ -26,7 +26,7 @@
 #import <CloudBridge/CBRPersistentObject.h>
 #import <CloudBridge/CBRCloudObjectTransformer.h>
 
-
+NS_ASSUME_NONNULL_BEGIN
 
 /**
  Abstract interface that handles all communication with a specific Cloud backend.
@@ -36,27 +36,29 @@
 @property (nonatomic, readonly) id<CBRCloudObjectTransformer> objectTransformer;
 
 - (void)fetchCloudObjectsForEntity:(CBREntityDescription *)entity
-                     withPredicate:(NSPredicate *)predicate
-                          userInfo:(NSDictionary *)userInfo
-                 completionHandler:(void(^)(NSArray *fetchedObjects, NSError *error))completionHandler;
+                     withPredicate:(nullable NSPredicate *)predicate
+                          userInfo:(nullable NSDictionary *)userInfo
+                 completionHandler:(void(^_Nullable)(NSArray * _Nullable fetchedObjects, NSError * _Nullable error))completionHandler;
 
-- (void)createCloudObject:(id<CBRCloudObject>)cloudObject
+- (void)createCloudObject:(nullable id<CBRCloudObject>)cloudObject
       forPersistentObject:(id<CBRPersistentObject>)persistentObject
-             withUserInfo:(NSDictionary *)userInfo
-        completionHandler:(void(^)(id<CBRCloudObject> cloudObject, NSError *error))completionHandler;
+             withUserInfo:(nullable NSDictionary *)userInfo
+        completionHandler:(void(^_Nullable)(id<CBRCloudObject> _Nullable cloudObject, NSError * _Nullable error))completionHandler;
 
 - (void)latestCloudObjectForPersistentObject:(id<CBRPersistentObject>)persistentObject
-                                withUserInfo:(NSDictionary *)userInfo
-                           completionHandler:(void(^)(id<CBRCloudObject> cloudObject, NSError *error))completionHandler;
+                                withUserInfo:(nullable NSDictionary *)userInfo
+                           completionHandler:(void(^_Nullable)(id<CBRCloudObject> _Nullable cloudObject, NSError * _Nullable error))completionHandler;
 
-- (void)saveCloudObject:(id<CBRCloudObject>)cloudObject
+- (void)saveCloudObject:(nullable id<CBRCloudObject>)cloudObject
     forPersistentObject:(id<CBRPersistentObject>)persistentObject
-           withUserInfo:(NSDictionary *)userInfo
-      completionHandler:(void(^)(id<CBRCloudObject> cloudObject, NSError *error))completionHandler;
+           withUserInfo:(nullable NSDictionary *)userInfo
+      completionHandler:(void(^_Nullable)(id<CBRCloudObject> _Nullable cloudObject, NSError * _Nullable error))completionHandler;
 
-- (void)deleteCloudObject:(id<CBRCloudObject>)cloudObject
+- (void)deleteCloudObject:(nullable id<CBRCloudObject>)cloudObject
       forPersistentObject:(id<CBRPersistentObject>)persistentObject
-             withUserInfo:(NSDictionary *)userInfo
-        completionHandler:(void(^)(NSError *error))completionHandler;
+             withUserInfo:(nullable NSDictionary *)userInfo
+        completionHandler:(void(^_Nullable)(NSError * _Nullable error))completionHandler;
 
 @end
+
+NS_ASSUME_NONNULL_END

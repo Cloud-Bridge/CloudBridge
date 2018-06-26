@@ -23,7 +23,7 @@
 
 #import <CloudBridge/CBRPropertyMapping.h>
 
-
+NS_ASSUME_NONNULL_BEGIN
 
 __attribute__((objc_subclassing_restricted))
 @interface CBRIdentityPropertyMapping : NSObject <CBRPropertyMapping>
@@ -35,3 +35,5 @@ __attribute__((objc_subclassing_restricted))
              forJSONNamingConvention:(NSString *)JSONNamingConvention;
 
 @end
+
+NS_ASSUME_NONNULL_END

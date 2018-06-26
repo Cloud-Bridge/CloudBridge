@@ -24,7 +24,7 @@ Pod::Spec.new do |s|
   s.default_subspec = 'CoreData+REST'
 
   s.subspec 'CloudBridge' do |ss|
-    ss.source_files = 'CloudBridge', 'JSON'
+    ss.source_files = 'CloudBridge', 'JSON', 'Swift'
   end
 
   s.subspec 'CoreData' do |ss|
@@ -41,14 +41,14 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'CBRRESTConnection' do |ss|
-    ss.source_files = 'CBRRESTConnection', 'CBRRESTConnection/JSON'
+    ss.source_files = 'CBRRESTConnection', 'CBRRESTConnection/JSON', 'CBRRESTConnection/Swift'
 
     ss.dependency 'AFNetworking', '~> 3.0'
     ss.dependency 'CloudBridge/CloudBridge'
   end
 
   s.subspec 'CoreData+REST' do |ss|
-    ss.source_files = 'CBRRESTConnection/CoreData'
+    ss.source_files = 'CBRRESTConnection/CoreData', 'CBRRESTConnection/CoreData/Swift'
 
     ss.dependency 'CloudBridge/CoreData'
     ss.dependency 'CloudBridge/CBRRESTConnection'

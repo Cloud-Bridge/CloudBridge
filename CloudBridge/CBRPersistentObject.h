@@ -23,6 +23,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class CBRCloudBridge, CBREntityDescription, CBRDatabaseAdapter;
 @protocol CBRCloudObject;
 
@@ -49,32 +51,32 @@ void class_implementProtocolExtension(Class klass, Protocol *protocol, Class pro
 /**
  Called right before the framework tries to map the cloud object to a managed object.
  */
-+ (id<CBRCloudObject>)prepareForUpdateWithCloudObject:(id<CBRCloudObject>)cloudObject;
++ (__kindof id<CBRCloudObject>)prepareForUpdateWithCloudObject:(__kindof id<CBRCloudObject>)cloudObject;
 
 /**
  Called right before an update is started.
  */
-- (void)prepareForUpdateWithCloudObject:(id<CBRCloudObject>)cloudObject;
+- (void)prepareForUpdateWithCloudObject:(__kindof id<CBRCloudObject>)cloudObject;
 
 /**
  Called after the framework updated the managed object with the cloud object.
  */
-- (void)finalizeUpdateWithCloudObject:(id<CBRCloudObject>)cloudObject;
+- (void)finalizeUpdateWithCloudObject:(__kindof id<CBRCloudObject>)cloudObject;
 
 /**
  Gives an instance the change to prepare a cloud object right before its being sent over the wire.
  */
-- (id<CBRCloudObject>)finalizeCloudObject:(id<CBRCloudObject>)cloudObject;
+- (__kindof id<CBRCloudObject>)finalizeCloudObject:(__kindof id<CBRCloudObject>)cloudObject;
 
 /**
  Sets a value for a key for a specific cloud object.
  */
-- (void)setCloudValue:(id)value forKey:(NSString *)key fromCloudObject:(id<CBRCloudObject>)cloudObject;
+- (void)setCloudValue:(nullable id)value forKey:(NSString *)key fromCloudObject:(__kindof id<CBRCloudObject>)cloudObject;
 
 /**
  Returns a cloud value for a given key.
  */
-- (id)cloudValueForKey:(NSString *)key;
+- (nullable id)cloudValueForKey:(NSString *)key;
 
 @end
 
@@ -82,26 +84,26 @@ void class_implementProtocolExtension(Class klass, Protocol *protocol, Class pro
 
 @protocol CBRPersistentObjectQueryInterface
 
-+ (instancetype)objectWithRemoteIdentifier:(id<CBRPersistentIdentifier>)identifier;
-+ (NSDictionary<id, id> *)objectsWithRemoteIdentifiers:(NSArray<id<CBRPersistentIdentifier>> *)identifiers;
++ (nullable instancetype)objectWithRemoteIdentifier:(nullable id<CBRPersistentIdentifier>)identifier;
++ (NSDictionary *)objectsWithRemoteIdentifiers:(nullable NSArray<id<CBRPersistentIdentifier>> *)identifiers;
 
 + (instancetype)newCloudBrideObject;
 
-+ (void)fetchObjectsMatchingPredicate:(NSPredicate *)predicate
-                withCompletionHandler:(void(^)(NSArray *fetchedObjects, NSError *error))completionHandler;
++ (void)fetchObjectsMatchingPredicate:(nullable NSPredicate *)predicate
+                withCompletionHandler:(void(^)(NSArray * _Nullable fetchedObjects, NSError * _Nullable error))completionHandler;
 
 /**
  Fetching object for a relationship queries the backend with `relationshipDescription.inverseRelationship == self`
 
  @warning: Only supported if `relationshipDescription.inverseRelationship.isToMany` is `NO`.
  */
-- (void)fetchObjectForRelationship:(NSString *)relationship withCompletionHandler:(void(^)(id managedObject, NSError *error))completionHandler;
-- (void)fetchObjectsForRelationship:(NSString *)relationship withCompletionHandler:(void(^)(NSArray *objects, NSError *error))completionHandler;
+- (void)fetchObjectForRelationship:(NSString *)relationship withCompletionHandler:(void(^_Nullable)(id _Nullable object, NSError * _Nullable error))completionHandler NS_REFINED_FOR_SWIFT;
+- (void)fetchObjectsForRelationship:(NSString *)relationship withCompletionHandler:(void(^_Nullable)(NSArray * _Nullable objects, NSError * _Nullable error))completionHandler NS_REFINED_FOR_SWIFT;
 
-- (void)createWithCompletionHandler:(void(^)(id managedObject, NSError *error))completionHandler;
-- (void)reloadWithCompletionHandler:(void(^)(id managedObject, NSError *error))completionHandler;
-- (void)saveWithCompletionHandler:(void(^)(id managedObject, NSError *error))completionHandler;
-- (void)deleteWithCompletionHandler:(void(^)(NSError *error))completionHandler;
+- (void)createWithCompletionHandler:(void(^_Nullable)(id _Nullable managedObject, NSError * _Nullable error))completionHandler NS_REFINED_FOR_SWIFT;
+- (void)reloadWithCompletionHandler:(void(^_Nullable)(id _Nullable managedObject, NSError * _Nullable error))completionHandler NS_REFINED_FOR_SWIFT;
+- (void)saveWithCompletionHandler:(void(^_Nullable)(id _Nullable managedObject, NSError * _Nullable error))completionHandler NS_REFINED_FOR_SWIFT;
+- (void)deleteWithCompletionHandler:(void(^_Nullable)(NSError * _Nullable error))completionHandler NS_REFINED_FOR_SWIFT;
 
 @end
 
@@ -112,16 +114,14 @@ void class_implementProtocolExtension(Class klass, Protocol *protocol, Class pro
  */
 @protocol CBRPersistentObject <CBRPersistentObjectSubclassHooks, CBRPersistentObjectQueryInterface, NSObject>
 
-+ (CBRCloudBridge *)cloudBridge;
-+ (void)setCloudBridge:(CBRCloudBridge *)cloudBridge;
+@property (nonatomic, class, nullable) CBRCloudBridge *cloudBridge;
+@property (nonatomic, nullable, readonly) CBRCloudBridge *cloudBridge;
 
-@property (nonatomic, readonly) CBRCloudBridge *cloudBridge;
+@property (nonatomic, class, nullable, readonly) CBRDatabaseAdapter *databaseAdapter;
+@property (nonatomic, nullable, readonly) CBRDatabaseAdapter *databaseAdapter;
 
-+ (CBRDatabaseAdapter *)databaseAdapter;
-@property (nonatomic, readonly) CBRDatabaseAdapter *databaseAdapter;
-
-+ (CBREntityDescription *)cloudBridgeEntityDescription;
-@property (nonatomic, readonly) CBREntityDescription *cloudBridgeEntityDescription;
+@property (nonatomic, class, nullable, readonly) CBREntityDescription *cloudBridgeEntityDescription;
+@property (nonatomic, nullable, readonly) CBREntityDescription *cloudBridgeEntityDescription;
 
 /**
  Convenience property to return the cloud representation for this object.
@@ -136,11 +136,11 @@ void class_implementProtocolExtension(Class klass, Protocol *protocol, Class pro
 
  @warning Overriding this impelmentation is not recommended because all internal implementations go directly through the corresponding object transformer.
  */
-+ (instancetype)persistentObjectFromCloudObject:(id<CBRCloudObject>)cloudObject;
++ (instancetype)persistentObjectFromCloudObject:(__kindof id<CBRCloudObject>)cloudObject;
 
-- (id)valueForKey:(NSString *)key;
-- (id)valueForKeyPath:(NSString *)keyPath;
-- (void)setValue:(id)value forKey:(NSString *)key;
+- (nullable id)valueForKey:(NSString *)key;
+- (nullable id)valueForKeyPath:(NSString *)keyPath;
+- (void)setValue:(nullable id)value forKey:(NSString *)key;
 
 @end
 
@@ -152,3 +152,5 @@ __attribute__((objc_subclassing_restricted))
 + (BOOL)resolveRelationshipForSelector:(SEL)selector inClass:(Class)klass;
 
 @end
+
+NS_ASSUME_NONNULL_END

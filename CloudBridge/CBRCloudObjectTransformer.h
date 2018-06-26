@@ -26,6 +26,7 @@
 @protocol CBRPersistentObject, CBRCloudObject, CBRMutableCloudObject;
 @class CBREntityDescription;
 
+NS_ASSUME_NONNULL_BEGIN
 
 @protocol CBRCloudObjectTransformer <NSObject>
 
@@ -55,3 +56,5 @@
 - (void)updatePersistentObject:(id<CBRPersistentObject>)persistentObject withPropertiesFromCloudObject:(id<CBRCloudObject>)cloudObject;
 
 @end
+
+NS_ASSUME_NONNULL_END

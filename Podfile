@@ -2,7 +2,7 @@ project 'Example/CloudBridge'
 
 source "https://github.com/CocoaPods/Specs.git"
 
-# use_frameworks!
+use_frameworks!
 
 abstract_target "iOS" do
     platform :ios, "9.0"
@@ -13,8 +13,5 @@ abstract_target "iOS" do
     pod 'OCMock', '< 3.3'
 
     target "CloudBridge"
-
-    target "Tests" do
-        inherit! :search_paths
-    end
+    target "Tests"
 end

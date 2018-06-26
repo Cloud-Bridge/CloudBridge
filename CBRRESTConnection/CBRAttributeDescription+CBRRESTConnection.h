@@ -23,14 +23,14 @@
 
 #import <CloudBridge/CBREntityDescription.h>
 
-
+NS_ASSUME_NONNULL_BEGIN
 
 @interface CBRAttributeDescription (CBRRESTConnection)
 
 /**
  Set `restKeyPath` of the attribute's `userInfo` dictionary to override the mapping model's propery mapping.
  */
-@property (nonatomic, readonly) NSString *restKeyPath;
+@property (nonatomic, nullable, readonly) NSString *restKeyPath;
 
 /**
  Set `restDisabled` of the attribute's `userInfo` dictionary to `1` to disable this attribute from the propery mapping. Defaults to `NO`.
@@ -40,6 +40,8 @@
 /**
  Set `restValueTransformer` of the attribute's `userInfo` for a custom value transformer for transformable attributes.
  */
-@property (nonatomic, readonly) NSValueTransformer *restValueTransformer;
+@property (nonatomic, nullable, readonly) NSValueTransformer *restValueTransformer;
 
 @end
+
+NS_ASSUME_NONNULL_END

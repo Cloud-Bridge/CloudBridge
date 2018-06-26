@@ -23,7 +23,7 @@
 
 #import <Foundation/Foundation.h>
 
-
+NS_ASSUME_NONNULL_BEGIN
 
 /**
  NSCache subclass that is enumaratable.
@@ -34,3 +34,5 @@ __attribute__((objc_subclassing_restricted))
 - (instancetype)init NS_DESIGNATED_INITIALIZER;
 
 @end
+
+NS_ASSUME_NONNULL_END

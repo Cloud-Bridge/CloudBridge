@@ -30,6 +30,8 @@
 
 
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  Bridges between a persistent database layer and a cloud backend.
  */
@@ -47,25 +49,27 @@
                    threadingEnvironment:(CBRThreadingEnvironment *)threadingEnvironment NS_DESIGNATED_INITIALIZER;
 
 - (void)fetchPersistentObjectsOfClass:(Class)persistentClass
-                    completionHandler:(void(^)(NSArray *fetchedObjects, NSError *error))completionHandler;
+                    completionHandler:(void(^_Nullable)(NSArray * _Nullable fetchedObjects, NSError * _Nullable error))completionHandler;
 
 - (void)fetchPersistentObjectsOfClass:(Class)persistentClass
-                        withPredicate:(NSPredicate *)predicate
-                    completionHandler:(void(^)(NSArray *fetchedObjects, NSError *error))completionHandler;
+                        withPredicate:(nullable NSPredicate *)predicate
+                    completionHandler:(void(^_Nullable)(NSArray * _Nullable fetchedObjects, NSError * _Nullable error))completionHandler;
 
 - (void)fetchPersistentObjectsOfClass:(Class)persistentClass
-                        withPredicate:(NSPredicate *)predicate
-                             userInfo:(NSDictionary *)userInfo
-                    completionHandler:(void(^)(NSArray *fetchedObjects, NSError *error))completionHandler;
+                        withPredicate:(nullable NSPredicate *)predicate
+                             userInfo:(nullable NSDictionary *)userInfo
+                    completionHandler:(void(^_Nullable)(NSArray * _Nullable fetchedObjects, NSError * _Nullable error))completionHandler;
 
-- (void)createPersistentObject:(id<CBRPersistentObject>)persistentObject withCompletionHandler:(void(^)(id persistentObject, NSError *error))completionHandler;
-- (void)reloadPersistentObject:(id<CBRPersistentObject>)persistentObject withCompletionHandler:(void(^)(id persistentObject, NSError *error))completionHandler;
-- (void)savePersistentObject:(id<CBRPersistentObject>)persistentObject withCompletionHandler:(void(^)(id persistentObject, NSError *error))completionHandler;
-- (void)deletePersistentObject:(id<CBRPersistentObject>)persistentObject withCompletionHandler:(void(^)(NSError *error))completionHandler;
+- (void)createPersistentObject:(id<CBRPersistentObject>)persistentObject withCompletionHandler:(void(^_Nullable)(id _Nullable persistentObject, NSError * _Nullable error))completionHandler;
+- (void)reloadPersistentObject:(id<CBRPersistentObject>)persistentObject withCompletionHandler:(void(^_Nullable)(id _Nullable persistentObject, NSError * _Nullable error))completionHandler;
+- (void)savePersistentObject:(id<CBRPersistentObject>)persistentObject withCompletionHandler:(void(^_Nullable)(id _Nullable persistentObject, NSError * _Nullable error))completionHandler;
+- (void)deletePersistentObject:(id<CBRPersistentObject>)persistentObject withCompletionHandler:(void(^_Nullable)(NSError * _Nullable error))completionHandler;
 
-- (void)createPersistentObject:(id<CBRPersistentObject>)persistentObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(id persistentObject, NSError *error))completionHandler;
-- (void)reloadPersistentObject:(id<CBRPersistentObject>)persistentObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(id persistentObject, NSError *error))completionHandler;
-- (void)savePersistentObject:(id<CBRPersistentObject>)persistentObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(id persistentObject, NSError *error))completionHandler;
-- (void)deletePersistentObject:(id<CBRPersistentObject>)persistentObject withUserInfo:(NSDictionary *)userInfo completionHandler:(void(^)(NSError *error))completionHandler;
+- (void)createPersistentObject:(id<CBRPersistentObject>)persistentObject withUserInfo:(nullable NSDictionary *)userInfo completionHandler:(void(^_Nullable)(id _Nullable persistentObject, NSError * _Nullable error))completionHandler;
+- (void)reloadPersistentObject:(id<CBRPersistentObject>)persistentObject withUserInfo:(nullable NSDictionary *)userInfo completionHandler:(void(^_Nullable)(id _Nullable persistentObject, NSError * _Nullable error))completionHandler;
+- (void)savePersistentObject:(id<CBRPersistentObject>)persistentObject withUserInfo:(nullable NSDictionary *)userInfo completionHandler:(void(^_Nullable)(id _Nullable persistentObject, NSError * _Nullable error))completionHandler;
+- (void)deletePersistentObject:(id<CBRPersistentObject>)persistentObject withUserInfo:(nullable NSDictionary *)userInfo completionHandler:(void(^_Nullable)(NSError * _Nullable error))completionHandler;
 
 @end
+
+NS_ASSUME_NONNULL_END

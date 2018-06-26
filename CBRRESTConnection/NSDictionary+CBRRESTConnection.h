@@ -23,8 +23,12 @@
 
 #import <CloudBridge/CBRCloudObject.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface NSDictionary (CBRRESTConnection) <CBRCloudObject>
 @end
 
 @interface NSMutableDictionary (CBRRESTConnection) <CBRMutableCloudObject>
 @end
+
+NS_ASSUME_NONNULL_END
