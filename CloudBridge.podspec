@@ -9,7 +9,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "CloudBridge"
-  s.version          = "2.6.0"
+  s.version          = "2.6.1"
   s.summary          = "Synchronize your object graphed data model with it's cloud backend"
   s.homepage         = "https://github.com/layered-pieces/CloudBridge"
   s.license          = 'MIT'
