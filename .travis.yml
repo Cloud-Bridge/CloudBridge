@@ -3,4 +3,4 @@ before_install:
   - gem update xcpretty cocoapods
   - pod update
 script:
-- xcodebuild -workspace CloudBridge.xcworkspace -scheme CloudBridge test -sdk iphonesimulator -configuration Release | xcpretty -c; exit ${PIPESTATUS[0]}
+- xcodebuild -workspace CloudBridge.xcworkspace -scheme CloudBridge test -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone XS,OS=12.1' -configuration Release | xcpretty -c; exit ${PIPESTATUS[0]}

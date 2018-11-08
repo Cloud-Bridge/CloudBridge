@@ -42,7 +42,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "658AB67A68C6305A4901BE70F170E757"
+               BlueprintIdentifier = "0B51D5F21FF8D2F06BF196E384338035"
                BuildableName = "CloudBridge.framework"
                BlueprintName = "CloudBridge"
                ReferencedContainer = "container:../Pods/Pods.xcodeproj">

@@ -47,7 +47,7 @@
 
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        testStore = [self newConvenientSQLiteStackWithModel:@"CBRTestDataStore" inBundle:[NSBundle bundleForClass:[SLEntity6 class]]];
+        testStore = [self buildConvenientSQLiteStackWithModel:@"CBRTestDataStore" inBundle:[NSBundle bundleForClass:[SLEntity6 class]]];
     });
 
     return testStore;
