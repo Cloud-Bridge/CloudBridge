@@ -84,8 +84,6 @@ static id encodeJsonValue(id value, CBRRESTConnection *connection)
     return nil;
 }
 
-
-
 @implementation CBRJSONObject
 
 + (NSDictionary<NSString *, Class> *)relationMapping
@@ -215,15 +213,15 @@ static id encodeJsonValue(id value, CBRRESTConnection *connection)
 {
     NSArray<NSString *> *serializableProperties = [self.class serializableProperties];
     NSMutableDictionary<NSString *, id> *result = [NSMutableDictionary dictionary];
-
+    
     CBRRESTConnection *connection = [self.class restConnection];
-
+    
     for (NSString *property in serializableProperties) {
         id value = [self valueForKey:property];
         NSString *jsonProperty = [connection.propertyMapping cloudKeyPathFromPersistentObjectProperty:property];
         result[jsonProperty] = encodeJsonValue(value, connection) ?: [NSNull null];
     }
-
+    
     return result;
 }
 

@@ -26,21 +26,11 @@
 #import <objc/message.h>
 #import <libkern/OSAtomic.h>
 
-static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSelector)
-{
-    Method origMethod = class_getInstanceMethod(class, originalSelector);
-    Method newMethod = class_getInstanceMethod(class, newSelector);
-    if(class_addMethod(class, originalSelector, method_getImplementation(newMethod), method_getTypeEncoding(newMethod))) {
-        class_replaceMethod(class, newSelector, method_getImplementation(origMethod), method_getTypeEncoding(origMethod));
-    } else {
-        method_exchangeImplementations(origMethod, newMethod);
-    }
-}
-
 NSString *const CBRCoreDataStackErrorDomain = @"CBRCoreDataStackErrorDomain";
 
-
 @interface CBRCoreDataStack ()
+
+@property (nonatomic, readonly) NSLock *migrationLock;
 
 @end
 
@@ -53,6 +43,11 @@ NSString *const CBRCoreDataStackErrorDomain = @"CBRCoreDataStackErrorDomain";
 #pragma mark - Initialization
 
 + (instancetype)newConvenientSQLiteStackWithModel:(NSString *)model inBundle:(NSBundle *)bundle
+{
+    return [self buildConvenientSQLiteStackWithModel:model inBundle:bundle];
+}
+
++ (instancetype)buildConvenientSQLiteStackWithModel:(NSString *)model inBundle:(NSBundle *)bundle
 {
     NSURL *momURL = [bundle URLForResource:model withExtension:@"mom"];
     NSURL *momdURL = [bundle URLForResource:model withExtension:@"momd"];
@@ -91,6 +86,7 @@ NSString *const CBRCoreDataStackErrorDomain = @"CBRCoreDataStackErrorDomain";
         _managedObjectModelURL = modelURL;
         _bundle = bundle;
         _type = type;
+        _migrationLock = [[NSLock alloc] init];
 
         NSString *parentDirectory = storeLocation.URLByDeletingLastPathComponent.path;
         if (![[NSFileManager defaultManager] fileExistsAtPath:parentDirectory isDirectory:NULL]) {
@@ -341,9 +337,7 @@ NSString *const CBRCoreDataStackErrorDomain = @"CBRCoreDataStackErrorDomain";
 
 - (BOOL)migrateDataStore:(NSError **)error
 {
-    static OSSpinLock lock = OS_SPINLOCK_INIT;
-
-    OSSpinLockLock(&lock);
+    [self.migrationLock lock];
 
     NSDictionary *options = @{
                               NSMigratePersistentStoresAutomaticallyOption: @YES,
@@ -355,7 +349,7 @@ NSString *const CBRCoreDataStackErrorDomain = @"CBRCoreDataStackErrorDomain";
 
     if ([persistentStoreCoordinator addPersistentStoreWithType:self.storeType configuration:nil URL:self.storeLocation options:options error:&addStoreError]) {
         NSLog(@"[CBRCoreDataStack] automatic persistent store migration completed %@", options);
-        OSSpinLockUnlock(&lock);
+        [self.migrationLock unlock];
         return YES;
     } else {
         NSLog(@"[CBRCoreDataStack] could not automatic migrate persistent store with %@", options);
@@ -363,7 +357,7 @@ NSString *const CBRCoreDataStackErrorDomain = @"CBRCoreDataStackErrorDomain";
     }
 
     BOOL success = [self _performMigrationFromDataStoreAtURL:self.storeLocation toDestinationModel:self.managedObjectModel error:error];
-    OSSpinLockUnlock(&lock);
+    [self.migrationLock unlock];
 
     return success;
 }
@@ -481,6 +475,18 @@ NSString *const CBRCoreDataStackErrorDomain = @"CBRCoreDataStackErrorDomain";
 
 
 #ifdef DEBUG
+
+static void class_swizzleSelector(Class class, SEL originalSelector, SEL newSelector)
+{
+    Method origMethod = class_getInstanceMethod(class, originalSelector);
+    Method newMethod = class_getInstanceMethod(class, newSelector);
+    if(class_addMethod(class, originalSelector, method_getImplementation(newMethod), method_getTypeEncoding(newMethod))) {
+        class_replaceMethod(class, newSelector, method_getImplementation(origMethod), method_getTypeEncoding(origMethod));
+    } else {
+        method_exchangeImplementations(origMethod, newMethod);
+    }
+}
+
 @implementation NSManagedObject (CBRCoreDataStackCoreDataThreadDebugging)
 
 + (void)load

@@ -24,13 +24,14 @@
 #import <CoreData/CoreData.h>
 #import <Foundation/Foundation.h>
 
-@protocol CBRPersistentIdentifier;
-
-
+@class CBRRESTConnection;
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface NSManagedObject (CBRRESTConnection)
+
+@property (nonatomic, nullable, class, readonly) CBRRESTConnection *restConnection;
+@property (nonatomic, nullable, readonly) CBRRESTConnection *restConnection;
 
 + (void)fetchObjectFromPath:(NSString *)path withCompletionHandler:(void (^ _Nullable)(id _Nullable managedObject, NSError * _Nullable error))completionHandler;
 + (void)fetchObjectsFromPath:(NSString *)path withCompletionHandler:(void (^ _Nullable)(NSArray * _Nullable fetchedObjects, NSError * _Nullable error))completionHandler;

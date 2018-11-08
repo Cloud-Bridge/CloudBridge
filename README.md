@@ -1,114 +1,87 @@
-![Header](https://github.com/OliverLetterer/CloudBridge/blob/master/header.png?raw=true)
+![Header](https://github.com/layered-pieces/CloudBridge/blob/master/header.png?raw=true)
 
-[![CI Status](http://img.shields.io/travis/Cloud-Bridge/CloudBridge.svg?style=flat)](https://travis-ci.org/Cloud-Bridge/CloudBridge)
+[![CI Status](http://img.shields.io/travis/layered-pieces/CloudBridge.svg?style=flat)](https://travis-ci.org/layered-pieces/CloudBridge)
 [![Version](https://img.shields.io/cocoapods/v/CloudBridge.svg?style=flat)](http://cocoadocs.org/docsets/CloudBridge)
 [![License](https://img.shields.io/cocoapods/l/CloudBridge.svg?style=flat)](http://cocoadocs.org/docsets/CloudBridge)
 [![Platform](https://img.shields.io/cocoapods/p/CloudBridge.svg?style=flat)](http://cocoadocs.org/docsets/CloudBridge)
 
-CloudBridge helps synchronizing Your CoreData managed objects with various Cloud backends and ships with native support for RESTful JSON backends and CloudKit.
-
-## Public API
-
-CloudBridge exposes the following convenience methods on `NSManagedObject`:
-
-```
-+ (void)fetchObjectsMatchingPredicate:(NSPredicate *)predicate
-                withCompletionHandler:(void(^)(NSArray *fetchedObjects, NSError *error))completionHandler;
-
-- (void)fetchObjectsForRelationship:(NSString *)relationship withCompletionHandler:(void(^)(NSArray *objects, NSError *error))completionHandler;
-
-- (void)createWithCompletionHandler:(void(^)(id managedObject, NSError *error))completionHandler;
-- (void)reloadWithCompletionHandler:(void(^)(id managedObject, NSError *error))completionHandler;
-- (void)saveWithCompletionHandler:(void(^)(id managedObject, NSError *error))completionHandler;
-- (void)deleteWithCompletionHandler:(void(^)(NSError *error))completionHandler;
-```
-
-which can be called from any `NSManagedObjectContext` thread and are routed through the managed objects `CBRCloudBridge`. The callbacks are always guaranteed to be delivered on the main thread.
-
-## Quick start
-
-To start using the convenience methods on `NSManagedObject`, You need to configure a `CBRCloudBridge` instance. A `CBRCloudBridge` instance is responsible for bridging between a [CoreDataStack](https://github.com/OliverLetterer/CBRCoreDataStack) and your backend.
-
-### 1. Implement Your CoreDataStack
-
-Because setting up a correct and responsible CoreData stack can be challaging, `CloudBridge` relies on [CBRCoreDataStack](https://github.com/OliverLetterer/CBRCoreDataStack), which takes care of all the heavy lifting and edge cases for you. Implement your application specific CoreData stack as a subclass of `CBRCoreDataStack`:
-
-```
-@interface MyCoreDataStack : CBRCoreDataStack
-@end
-
-@implementation MyCoreDataStack
-
-- (NSString *)managedObjectModelName
-{
-    return @"MyManagedObjectModel";
-}
-
-@end
-```
-
-### 2. Choose Your Cloud backend
-
-The actual communication with each Cloud backend is encapsulated in an object conforming to the `CBRCloudConnection` protocol
-and is shipped in it's own CocoaPod dependency.
-
-If you want to connect to a CloudKit backend, add `pod 'CBRCloudKitConnection'` to Your Podfile.
-If you want to connect to a RESTful JSON backend, add `pod 'CBRRESTConnection'` to Your Podfile.
-
-More information can be found in the [CBRRESTConnection](https://github.com/Cloud-Bridge/CBRRESTConnection) or [CBRCloudKitConnection](https://github.com/Cloud-Bridge/CBRCloudKitConnection) documentation.
-
-### 3. Setup Your CloudBridge
-
-As a last step, setup your CloudBridge stack as follows:
-
-#### CloudKit backend
-```
-CKDatabase *database = [CKContainer defaultContainer].privateCloudDatabase;
-MyCoreDataStack *stack = [MyCoreDataStack sharedInstance];
-CBRCloudKitConnection *connection = [[CBRCloudKitConnection alloc] initWithDatabase:database];
-
-CBRCloudBridge *cloudBridge = [[CBRCloudBridge alloc] initWithCloudConnection:connection coreDataStack:stack];
-[NSManagedObject setCloudBridge:cloudBridge];
-
-```
-
-#### RESTful backend
-
-```
-NSURL *serverURL = ...;
-MyCoreDataStack *stack = [MyCoreDataStack sharedInstance];
-
-id<CBRPropertyMapping> propertyMapping = [[CBRUnderscoredPropertyMapping alloc] init];
-CBRRESTConnection *connection = [[CBRRESTConnection alloc] initWithBaseURL:serverURL propertyMapping:propertyMapping];
-
-CBRCloudBridge *cloudBridge = [[CBRCloudBridge alloc] initWithCloudConnection:connection coreDataStack:stack];
-[NSManagedObject setCloudBridge:cloudBridge];
-```
-
-### 4. Enjoy
+Synchronize your object graphed data model with it's cloud backend. CloudBridge supports CoreData, Realm and plain JSON models in combination with RESTful backends. It builds on top of [AFNetworking](https://github.com/AFNetworking/AFNetworking).
 
 ## Installation
 
-CloudBridge is available through [CocoaPods](http://cocoapods.org). To install
-it, simply add the following line to your Podfile:
+CloudBridge is available through [CocoaPods](https://cocoapods.org). To install it, simply add the following line to your Podfile:
 
     pod "CloudBridge"
 
-## Components status
+## Getting started
 
-| Component | State | Version | License | Platform |
-|-----------|-------|---------|---------|----------|
-| [CloudBridge](https://github.com/Cloud-Bridge/CloudBridge) | [![CI Status](http://img.shields.io/travis/Cloud-Bridge/CloudBridge.svg?style=flat)](https://travis-ci.org/Cloud-Bridge/CloudBridge) | [![Version](https://img.shields.io/cocoapods/v/CloudBridge.svg?style=flat)](http://cocoadocs.org/docsets/CloudBridge) | [![License](https://img.shields.io/cocoapods/l/CloudBridge.svg?style=flat)](http://cocoadocs.org/docsets/CloudBridge) | [![Platform](https://img.shields.io/cocoapods/p/CloudBridge.svg?style=flat)](http://cocoadocs.org/docsets/CloudBridge) |
-| [CBRRESTConnection](https://github.com/Cloud-Bridge/CBRRESTConnection) | [![CI Status](http://img.shields.io/travis/Cloud-Bridge/CBRRESTConnection.svg?style=flat)](https://travis-ci.org/Cloud-Bridge/CBRRESTConnection) | [![Version](https://img.shields.io/cocoapods/v/CBRRESTConnection.svg?style=flat)](http://cocoadocs.org/docsets/CBRRESTConnection) | [![License](https://img.shields.io/cocoapods/l/CBRRESTConnection.svg?style=flat)](http://cocoadocs.org/docsets/CBRRESTConnection) | [![Platform](https://img.shields.io/cocoapods/p/CBRRESTConnection.svg?style=flat)](http://cocoadocs.org/docsets/CBRRESTConnection) |
-| [CBRCloudKitConnection](https://github.com/Cloud-Bridge/CBRCloudKitConnection) | [![CI Status](http://img.shields.io/travis/Cloud-Bridge/CBRCloudKitConnection.svg?style=flat)](https://travis-ci.org/Cloud-Bridge/CBRCloudKitConnection) | [![Version](https://img.shields.io/cocoapods/v/CBRCloudKitConnection.svg?style=flat)](http://cocoadocs.org/docsets/CBRCloudKitConnection) | [![License](https://img.shields.io/cocoapods/l/CBRCloudKitConnection.svg?style=flat)](http://cocoadocs.org/docsets/CBRCloudKitConnection) | [![Platform](https://img.shields.io/cocoapods/p/CBRCloudKitConnection.svg?style=flat)](http://cocoadocs.org/docsets/CBRCloudKitConnection) |
-| [CBRPersistentObjectCache](https://github.com/Cloud-Bridge/CBRPersistentObjectCache) | [![CI Status](http://img.shields.io/travis/Cloud-Bridge/CBRPersistentObjectCache.svg?style=flat)](https://travis-ci.org/Cloud-Bridge/CBRPersistentObjectCache) | [![Version](https://img.shields.io/cocoapods/v/CBRPersistentObjectCache.svg?style=flat)](http://cocoadocs.org/docsets/CBRPersistentObjectCache) | [![License](https://img.shields.io/cocoapods/l/CBRPersistentObjectCache.svg?style=flat)](http://cocoadocs.org/docsets/CBRPersistentObjectCache) | [![Platform](https://img.shields.io/cocoapods/p/CBRPersistentObjectCache.svg?style=flat)](http://cocoadocs.org/docsets/CBRPersistentObjectCache) |
-| [CBRManagedObjectFormViewController](https://github.com/Cloud-Bridge/CBRManagedObjectFormViewController) | [![CI Status](http://img.shields.io/travis/Cloud-Bridge/CBRManagedObjectFormViewController.svg?style=flat)](https://travis-ci.org/Cloud-Bridge/CBRManagedObjectFormViewController) | [![Version](https://img.shields.io/cocoapods/v/CBRManagedObjectFormViewController.svg?style=flat)](http://cocoadocs.org/docsets/CBRManagedObjectFormViewController) | [![License](https://img.shields.io/cocoapods/l/CBRManagedObjectFormViewController.svg?style=flat)](http://cocoadocs.org/docsets/CBRManagedObjectFormViewController) | [![Platform](https://img.shields.io/cocoapods/p/CBRManagedObjectFormViewController.svg?style=flat)](http://cocoadocs.org/docsets/CBRManagedObjectFormViewController) |
-| [CBRRelationshipResolver](https://github.com/Cloud-Bridge/CBRRelationshipResolver) | [![CI Status](http://img.shields.io/travis/Cloud-Bridge/CBRRelationshipResolver.svg?style=flat)](https://travis-ci.org/Cloud-Bridge/CBRRelationshipResolver) | [![Version](https://img.shields.io/cocoapods/v/CBRRelationshipResolver.svg?style=flat)](http://cocoadocs.org/docsets/CBRRelationshipResolver) | [![License](https://img.shields.io/cocoapods/l/CBRRelationshipResolver.svg?style=flat)](http://cocoadocs.org/docsets/CBRRelationshipResolver) | [![Platform](https://img.shields.io/cocoapods/p/CBRRelationshipResolver.svg?style=flat)](http://cocoadocs.org/docsets/CBRRelationshipResolver) |
+### Initialising the stack
 
-## Author
+```objc
+// 1. Initializing a core data stack
 
-Oliver Letterer, oliver.letterer@gmail.com
+NSURL *momURL = [NSBundle.mainBundle URLForResource:@"MyModel" withExtension:@"mom"];
 
-## License
+NSURL *libraryDirectory = [[NSFileManager defaultManager] URLsForDirectory:NSLibraryDirectory inDomains:NSUserDomainMask].lastObject;
+NSURL *location = [libraryDirectory URLByAppendingPathComponent:@"store.sqlite"];
 
-CloudBridge is available under the MIT license. See the LICENSE file for more info.
+CBRCoreDataStack *coreDataStack = [[CBRCoreDataStack alloc] initWithType:NSSQLiteStoreType location:location model:momURL inBundle:NSBundle.mainBundle type:CBRCoreDataStackTypeParallel];
+
+// 2. Defining the data interface
+
+CBRCoreDataInterface *coreDataInterface = [[CBRCoreDataInterface alloc] initWithStack:[CBRCoreDataStack iCuisineStack]];
+
+// 3. Defining a property mapping
+
+CBRUnderscoredPropertyMapping *propertyMapping = [[CBRUnderscoredPropertyMapping alloc] init];
+[propertyMapping registerObjcNamingConvention:@"uuid" forJSONNamingConvention:@"UUID"];
+[propertyMapping registerObjcNamingConvention:@"identifier" forJSONNamingConvention:@"id"];
+[propertyMapping registerObjcNamingConvention:@"identifiers" forJSONNamingConvention:@"ids"];
+
+// 4. Defining the network connection
+
+AFHTTPSessionManager *sessionManager = ...
+CBRRESTConnection *connection = [[CBRRESTConnection alloc] initWithPropertyMapping:propertyMapping sessionManager:sessionManager];
+
+connection.objectTransformer.dateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+connection.objectTransformer.dateFormatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
+
+// 5. Creating the cloud bridge
+
+CBRThreadingEnvironment *threadingEnvironment = [[CBRThreadingEnvironment alloc] initWithCoreDataAdapter:coreDataInterface];
+CBRCloudBridge *cloudBridge = [[CBRCloudBridge alloc] initWithCloudConnection:connection interface:coreDataInterface threadingEnvironment:threadingEnvironment];
+
+// 6. Initialising the data model
+
+NSManagedObject.cloudBridge = cloudBridge;
+```
+
+## Transmitting data
+
+CloudBridge exposes a set of convinient methods on the data model to interact with the cloud backend
+
+```objc
++ (void)fetchObjectFromPath:(NSString *)path withCompletionHandler:(void (^)(id fetchedObject, NSError *error))completionHandler; // GET path
++ (void)fetchObjectsFromPath:(NSString *)path withCompletionHandler:(void (^)(NSArray *fetchedObjects, NSError *error))completionHandler; // GET path
+
+- (void)createToPath:(NSString *)path withCompletionHandler:(void(^)(id fetchedObject, NSError *error))completionHandler; // POST path
+- (void)reloadFromPath:(NSString *)path withCompletionHandler:(void(^)(id fetchedObject, NSError *error))completionHandler; // GET path
+- (void)saveToPath:(NSString *)path withCompletionHandler:(void(^)(id fetchedObject, NSError *error))completionHandler; // PUT path
+- (void)deleteToPath:(NSString *)path withCompletionHandler:(void(^)(NSError *error))completionHandler; // DELETE path
+```
+
+and supports objects graphs
+
+```objc
+- (void)fetchObjectForRelationship:(NSString *)relationship withCompletionHandler:(void(^)(idobject, NSError *error))completionHandler;
+- (void)fetchObjectsForRelationship:(NSString *)relationship withCompletionHandler:(void(^)(NSArray *objects, NSError *error))completionHandler;
+```
+
+If the path mapping is stored in the models user info dictionary, more convinient methods are available
+
+```objc
+- (void)createWithCompletionHandler:(void(^_Nullable)(id fetchedObject, NSError *error))completionHandler;
+- (void)reloadWithCompletionHandler:(void(^)(id fetchedObject, NSError *error))completionHandler;
+- (void)saveWithCompletionHandler:(void(^)(id fetchedObject, NSError *error))completionHandler;
+- (void)deleteWithCompletionHandler:(void(^)(NSError *error))completionHandler;
+```

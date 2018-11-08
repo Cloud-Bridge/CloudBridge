@@ -59,7 +59,8 @@ __attribute__((objc_subclassing_restricted))
 - (instancetype)init NS_DESIGNATED_INITIALIZER NS_UNAVAILABLE;
 - (instancetype)initWithType:(NSString *)storeType location:(NSURL *)storeLocation model:(NSURL *)modelURL inBundle:(NSBundle *)bundle type:(CBRCoreDataStackType)type NS_DESIGNATED_INITIALIZER;
 
-+ (instancetype)newConvenientSQLiteStackWithModel:(NSString *)model inBundle:(NSBundle *)bundle;
++ (instancetype)newConvenientSQLiteStackWithModel:(NSString *)model inBundle:(NSBundle *)bundle DEPRECATED_ATTRIBUTE;
++ (instancetype)buildConvenientSQLiteStackWithModel:(NSString *)model inBundle:(NSBundle *)bundle;
 
 @end
 

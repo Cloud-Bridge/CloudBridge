@@ -1,6 +1,6 @@
 /**
  CloudBridge
- Copyright (c) 2015 Oliver Letterer <oliver.letterer@gmail.com>, Sparrow-Labs
+ Copyright (c) 2018 Layered Pieces gUG
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -23,8 +23,6 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
-
-#import <CloudBridge/CBRJSONObject.h>
 
 #import <CloudBridge/CBRDefines.h>
 
@@ -56,5 +54,6 @@
 #endif
 
 #if __has_include(<CloudBridge/CBRRESTConnection.h>)
+#import <CloudBridge/CBRJSONObject.h>
 #import <CloudBridge/CBRRESTConnection.h>
 #endif

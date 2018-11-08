@@ -29,6 +29,16 @@
 
 @implementation NSManagedObject (CBRRESTConnection)
 
++ (CBRRESTConnection *)restConnection
+{
+    return [[self cloudBridge].cloudConnection isKindOfClass:CBRRESTConnection.class] ? (CBRRESTConnection *)[self cloudBridge].cloudConnection : nil;
+}
+
+- (CBRRESTConnection *)restConnection
+{
+    return [self.class restConnection];
+}
+
 + (void)fetchObjectFromPath:(NSString *)path withCompletionHandler:(void (^)(id, NSError *))completionHandler
 {
     [self fetchObjectsFromPath:path withCompletionHandler:^(NSArray *fetchedObjects, NSError *error) {

@@ -483,7 +483,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/../Pods/Target Support Files/Pods-iOS-Tests/Pods-iOS-Tests-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-iOS-Tests/Pods-iOS-Tests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
 				"${BUILT_PRODUCTS_DIR}/CloudBridge/CloudBridge.framework",
 				"${BUILT_PRODUCTS_DIR}/Expecta/Expecta.framework",
@@ -500,7 +500,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-iOS-Tests/Pods-iOS-Tests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-iOS-Tests/Pods-iOS-Tests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		4101021F0D8BC68C4F59CEDF /* [CP] Embed Pods Frameworks */ = {
@@ -509,7 +509,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/../Pods/Target Support Files/Pods-iOS-CloudBridge/Pods-iOS-CloudBridge-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-iOS-CloudBridge/Pods-iOS-CloudBridge-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
 				"${BUILT_PRODUCTS_DIR}/CloudBridge/CloudBridge.framework",
 				"${BUILT_PRODUCTS_DIR}/Expecta/Expecta.framework",
@@ -526,7 +526,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-iOS-CloudBridge/Pods-iOS-CloudBridge-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-iOS-CloudBridge/Pods-iOS-CloudBridge-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		8A3CE2F4D3963F4757281952 /* [CP] Check Pods Manifest.lock */ = {

@@ -10,21 +10,22 @@
 Pod::Spec.new do |s|
   s.name             = "CloudBridge"
   s.version          = "2.6.0"
-  s.summary          = "The missing bridge between your data model and various Cloud backends."
-  s.homepage         = "https://github.com/OliverLetterer"
+  s.summary          = "Synchronize your object graphed data model with it's cloud backend"
+  s.homepage         = "https://github.com/layered-pieces/CloudBridge"
   s.license          = 'MIT'
   s.author           = { "Oliver Letterer" => "oliver.letterer@gmail.com" }
   s.source           = { :git => "https://github.com/OliverLetterer/CloudBridge.git", :tag => s.version.to_s }
-  s.social_media_url = 'https://twitter.com/oletterer'
+  s.social_media_url = 'https://twitter.com/OliverLetterer'
+  s.swift_version    = "4.2"
 
-  s.platforms    = { :ios => '9.0', :tvos => '9.0', :watchos => '2.0' }
+  s.platforms    = { :ios => '9.0', :tvos => '10.0', :watchos => '3.0' }
   s.requires_arc = true
 
   s.frameworks = 'Foundation'
   s.default_subspec = 'CoreData+REST'
 
   s.subspec 'CloudBridge' do |ss|
-    ss.source_files = 'CloudBridge', 'JSON', 'Swift'
+    ss.source_files = 'CloudBridge', 'Swift'
   end
 
   s.subspec 'CoreData' do |ss|
