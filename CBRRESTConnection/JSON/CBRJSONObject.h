@@ -33,6 +33,8 @@ NS_SWIFT_NAME(CBRJSONObjectProtocol)
 - (nullable instancetype)initWithDictionary:(nullable NSDictionary<NSString *, id> *)dictionary error:(NSError **)error NS_DESIGNATED_INITIALIZER;
 - (BOOL)patchWithDictionary:(nullable NSDictionary<NSString *, id> *)dictionary error:(NSError **)error;
 
++ (nullable NSArray *)parse:(id)object error:(NSError **)error;
+
 @end
 
 

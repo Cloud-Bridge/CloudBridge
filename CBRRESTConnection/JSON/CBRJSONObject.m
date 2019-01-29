@@ -124,6 +124,47 @@ static id encodeJsonValue(id value, CBRRESTConnection *connection)
     return properties;
 }
 
++ (NSArray *)parse:(id)object error:(NSError **)error
+{
+    id jsonObject = nil;
+    if ([object isKindOfClass:NSArray.class] || [object isKindOfClass:NSDictionary.class]) {
+        jsonObject = object;
+    } else if ([object isKindOfClass:NSData.class]) {
+        jsonObject = [NSJSONSerialization JSONObjectWithData:object options:kNilOptions error:error];
+    } else if ([object isKindOfClass:NSString.class]) {
+        jsonObject = [NSJSONSerialization JSONObjectWithData:[object dataUsingEncoding:NSUTF8StringEncoding] options:kNilOptions error:error];
+    }
+
+    if (jsonObject == nil) {
+        return nil;
+    }
+
+    NSMutableArray *result = [NSMutableArray array];
+    if ([jsonObject isKindOfClass:NSDictionary.class]) {
+        id object = [[self alloc] initWithDictionary:jsonObject error:error];
+
+        if (object != nil) {
+            [result addObject:object];
+            return result;
+        }
+
+        return nil;
+    } else if ([jsonObject isKindOfClass:NSArray.class]) {
+        for (id jsonDictionary in jsonObject) {
+            id object = [[self alloc] initWithDictionary:jsonDictionary error:error];
+
+            if (object == nil) {
+                return nil;
+            }
+
+            [result addObject:object];
+        }
+
+        return result;
+    }
+
+    return result;
+}
 
 #pragma mark - Initialization
 
@@ -213,15 +254,15 @@ static id encodeJsonValue(id value, CBRRESTConnection *connection)
 {
     NSArray<NSString *> *serializableProperties = [self.class serializableProperties];
     NSMutableDictionary<NSString *, id> *result = [NSMutableDictionary dictionary];
-    
+
     CBRRESTConnection *connection = [self.class restConnection];
-    
+
     for (NSString *property in serializableProperties) {
         id value = [self valueForKey:property];
         NSString *jsonProperty = [connection.propertyMapping cloudKeyPathFromPersistentObjectProperty:property];
         result[jsonProperty] = encodeJsonValue(value, connection) ?: [NSNull null];
     }
-    
+
     return result;
 }
 
